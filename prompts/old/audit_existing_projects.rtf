@@ -1,0 +1,44 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2868
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 You are auditing a Swedish data centre tracker used for academic research.\
+\
+Input files:\
+- data/master/projects_master.csv\
+- data/master/capacity_master.csv\
+- data/master/sources_master.csv\
+- docs/status_rules.md\
+- docs/schema.md\
+\
+Task:\
+1. Check each existing project against its registered sources.\
+2. Search for newer public sources about each project.\
+3. Check whether the current values are still supported:\
+   - developer\
+   - municipality\
+   - bidding_zone\
+   - project_status\
+   - project-level investment_decision\
+   - reported_capacity_mw\
+   - interpreted_it_load_mw\
+   - capacity_type\
+   - capacity_status\
+   - capacity-level investment_decision\
+   - start_year\
+   - construction_start_year\
+   - scenario_tag, using docs/status_rules.md rather than preserving old tags by default\
+4. When checking scenario_tag, remember that tags are for public display and filtering. They can mark smaller phase rows as relevant to a scenario when those rows sit inside a dated full-site or cumulative project path. Do not use tags alone to decide what is added in scenario totals.\
+5. Apply an investment-decision sanity check. Treat investment_decision = yes as a strong claim. It requires public evidence of a committed build, final investment decision, signed customer agreement or lease tied to the capacity, financed construction plan, construction start, or operational facility. Do not use yes only because a project has an announced MW value, expected operation year, permit, site selection, grid discussion, MoU, or marketing page.\
+6. Capacity-level investment_decision must be supported for that specific phase or capacity claim. Do not copy commitment from an initial phase to a full-campus potential row. Project-level yes is allowed when at least one material phase is committed, under construction, or operational, even if later phases remain no or unclear.\
+7. Cross-check project-level values against capacity-level values using the project-to-capacity consistency rules in docs/status_rules.md.\
+8. Do not modify master files.\
+9. Write proposed field-level changes to data/audit/suggested_project_updates.csv and data/audit/suggested_capacity_updates.csv.\
+10. Write unresolved conflicts to data/audit/source_conflicts.csv.\
+11. Write inaccessible URLs to data/audit/dead_links.csv.\
+12. Every proposed change must include source_url, source_title, source_date if available, access_date, evidence_excerpt, confidence, and rationale.\
+13. If evidence is ambiguous, mark confidence as unclear.\
+14. Do not infer capacity from backup generation, reactor capacity, land area, investment value, or number of GPUs unless the source explicitly links it to data centre load or IT capacity.}

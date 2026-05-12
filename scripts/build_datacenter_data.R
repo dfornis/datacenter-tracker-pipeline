@@ -7,11 +7,81 @@ library(stringr)
 library(tibble)
 library(tidyr)
 
-setwd("/Users/fornborg/Library/Mobile Documents/com~apple~CloudDocs/Artiklar/Datacenter/Data")
+script_path <- function() {
+  file_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
+  if (length(file_arg) > 0) {
+    return(normalizePath(sub("^--file=", "", file_arg[[1]]), mustWork = TRUE))
+  }
+
+  frames <- sys.frames()
+  frame_files <- vapply(frames, function(frame) {
+    if (!is.null(frame$ofile)) frame$ofile else NA_character_
+  }, character(1))
+  frame_files <- frame_files[!is.na(frame_files)]
+  if (length(frame_files) > 0) {
+    return(normalizePath(frame_files[[length(frame_files)]], mustWork = TRUE))
+  }
+
+  NA_character_
+}
+
+find_repo_root <- function(start_dir) {
+  current <- normalizePath(start_dir, mustWork = TRUE)
+
+  repeat {
+    if (
+      dir.exists(file.path(current, "data", "master")) &&
+        file.exists(file.path(current, "scripts", "build_datacenter_data.R"))
+    ) {
+      return(current)
+    }
+
+    parent <- dirname(current)
+    if (identical(parent, current)) {
+      stop("Could not find repository root from ", start_dir, call. = FALSE)
+    }
+    current <- parent
+  }
+}
+
+arg_value <- function(name) {
+  prefix <- paste0("--", name, "=")
+  match <- grep(paste0("^", prefix), commandArgs(trailingOnly = TRUE), value = TRUE)
+  if (length(match) == 0) {
+    return(NA_character_)
+  }
+  sub(paste0("^", prefix), "", match[[1]])
+}
+
+resolve_path <- function(path, base_dir) {
+  if (is.na(path) || path == "") {
+    return(NA_character_)
+  }
+
+  if (grepl("^(/|[A-Za-z]:)", path) || startsWith(path, "~")) {
+    return(normalizePath(path, mustWork = FALSE))
+  }
+
+  normalizePath(file.path(base_dir, path), mustWork = FALSE)
+}
+
+detected_script_path <- script_path()
+repo_root <- if (!is.na(detected_script_path)) {
+  find_repo_root(dirname(detected_script_path))
+} else {
+  find_repo_root(getwd())
+}
+
 # Paths
-csv_dir <- "data/"
+csv_dir <- file.path(repo_root, "data")
 master_dir <- file.path(csv_dir, "master")
-json_dir <- "assets/data/datacenters/"
+default_json_dir <- file.path(repo_root, "assets", "data", "datacenters")
+json_dir_arg <- arg_value("output-dir")
+json_dir_env <- Sys.getenv("DATACENTER_TRACKER_OUTPUT_DIR", unset = NA_character_)
+json_dir <- resolve_path(
+  dplyr::coalesce(json_dir_arg, json_dir_env, default_json_dir),
+  repo_root
+)
 
 dir.create(json_dir, recursive = TRUE, showWarnings = FALSE)
 
@@ -678,7 +748,7 @@ tryCatch(
   },
   error = function(e) {
     message("Could not refresh bidding zone GeoJSON: ", conditionMessage(e))
-    fallback_geojson <- file.path("assets/data", "bidding_zones.geojson")
+    fallback_geojson <- file.path(repo_root, "assets", "data", "bidding_zones.geojson")
     target_geojson <- file.path(json_dir, "bidding_zones.geojson")
 
     if (file.exists(fallback_geojson) && !file.exists(target_geojson)) {

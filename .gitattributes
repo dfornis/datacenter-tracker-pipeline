@@ -1,2 +1,9 @@
 # Preserve the generated upstream bootstrap script without cosmetic rewrites.
 renv/activate.R -whitespace
+# Frozen evidence/release hashes must not be changed by checkout newline conversion.
+data/releases/** -text
+data/runs/** -text
+data/legacy-v1/** -text
+data/reference/** -text
+# Preserve downloaded official responses byte-for-byte, including CRLF.
+data/reference/admin/*/raw/** -whitespace

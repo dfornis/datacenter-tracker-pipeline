@@ -17,6 +17,8 @@ jobs:
         run: Rscript -e 'renv::restore(prompt = FALSE, strict = TRUE, transactional = TRUE, retry = FALSE)'
       - name: Check environment
         run: Rscript -e 'stopifnot(renv::status()$synchronized)'
+      - name: Check generated schema documentation
+        run: Rscript scripts/render_schema_doc.R --check
       - name: Run regression and complete-export checks
         run: Rscript tests/run_tests.R
       - name: Validate selected data release

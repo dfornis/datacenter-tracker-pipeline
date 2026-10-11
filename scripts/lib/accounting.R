@@ -86,6 +86,8 @@ account_scenario <- function(tables, method, scenario) {
   if (isTRUE(scenario$require_decision)) {
     supported <- vapply(c$claim_id,function(id) field_is_verified(tables,'claim',id,'investment_decision') && field_is_verified(tables,'claim',id,'decision_basis'),logical(1))
     exclude(c$investment_decision != 'yes' | !c$decision_basis %in% unlist(method$eligible_decision_bases) | !supported,'scoped_commitment_not_verified')
+    critical <- vapply(c$claim_id,function(id)all(vapply(unlist(method$committed_required_verified_fields),function(field)field_is_verified(tables,'claim',id,field),logical(1))),logical(1))
+    exclude(!critical,'scoped_capacity_not_verified')
   }
   # Select envelopes only by explicit containment; never take max() by project name/ID.
   eligible_before_overlap <- eligible
@@ -113,7 +115,7 @@ account_scenario <- function(tables, method, scenario) {
   for (i in seq_len(n)) {
     flags <- character()
     ids <- split_values(c$source_ids[i]); source_states <- tables$sources_master$review_state[match(ids,tables$sources_master$source_id)]
-    if (c$review_state[i] != 'verified' || any(source_states != 'verified')) flags <- c(flags,'legacy_or_incomplete_field_review')
+    if (c$review_state[i] != 'verified') flags <- c(flags,'legacy_or_incomplete_field_review')
     if (c$capacity_qualifier[i] != 'exact') flags <- c(flags,paste0('qualifier:',c$capacity_qualifier[i]))
     if (c$reported_capacity_basis[i] == 'unspecified_headline') flags <- c(flags,'capacity_basis_unknown')
     if (c$reported_capacity_basis[i] == 'grid_connection') flags <- c(flags,paste0('connection:',c$connection_status[i]))
@@ -187,7 +189,10 @@ account_all <- function(tables,method) {
     target_known <- sum(!is.na(counted$target_year_energy_twh_low))
     rows[[length(rows)+1]] <- data.frame(scenario_id=scenario$scenario_id,target_year=if (is.null(scenario$year)) NA_integer_ else scenario$year,
       country=g$country[i],bidding_zone=g$bidding_zone[i],baseline_date=method$baseline_date,
-      counted_claims=nrow(counted),unresolved_claims=sum(uncertain),
+      inventory_claims=nrow(all),counted_claims=nrow(counted),unresolved_claims=sum(uncertain),
+      evidence_gap_claims=sum(all$reason %in% c('scoped_commitment_not_verified','scoped_capacity_not_verified','past_target_requires_status_refresh')),
+      timing_excluded_claims=sum(all$reason=='full_capacity_not_dated_by_target'),
+      totals_scope='qualifying_inventory_subset_only',
       # These are separate, non-additive measures. No total sums IT MW and facility MW.
       known_it_load_mw=sum_or_na('it_load_mw'),known_facility_power_mw=sum_or_na('facility_power_mw'),known_grid_connection_mw=sum_or_na('grid_connection_mw'),
       modelled_facility_equivalent_mw_low=sum_or_na('modelled_facility_equivalent_mw_low'),modelled_facility_equivalent_mw_high=sum_or_na('modelled_facility_equivalent_mw_high'),

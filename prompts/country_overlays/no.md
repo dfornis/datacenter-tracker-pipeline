@@ -12,7 +12,9 @@ Search in Norwegian and English. Norwegian public material often uses `datasente
 
 Useful search terms include `datasenter`, `data center`, `data centre`, `kunstig intelligens`, `skyregion`, `reguleringsplan`, `byggesak`, `konsesjon`, `nettilknytning`, `tilknytning`, `krafttilgang`, and `strømnett`.
 
-## Capacity-basis wording
+## Capacity-basis search clues
+
+These terms are leads, not classification rules. Generic words for capacity, consumption or power do not by themselves establish IT load, facility nameplate or connection maturity. Read the scoped numerical statement. Requested, queued, reserved, contracted, available and energised capacity are different states.
 
 - IT load: `IT-kapasitet`, `IT-last`, `kritisk IT-last`, `kritisk last`, `beregningskapasitet`, `MW IT`
 - Facility total: `total effekt`, `effektbehov`, `strømforbruk`, `kraftbehov`, `anleggseffekt`, `kapasitet`
@@ -21,15 +23,15 @@ Useful search terms include `datasenter`, `data center`, `data centre`, `kunstig
 
 ## Priority sources
 
-Prioritize company releases and project pages, then Norwegian public records and grid/energy sources:
+Select sources by the field being checked. Operator releases, public decisions and grid records have different authority:
 
-- Statnett for transmission-grid connection process and national grid context: https://www.statnett.no/en/for-stakeholders-in-the-power-industry/the-grid-connection-process/
+- Statnett for transmission-grid connection process and national grid context: https://www.statnett.no/nettkapasitet-til-produksjon-og-forbruk/hvordan-fa-okt-nettkapasitet/
 - NVE/RME for grid-connection obligations, large customers, licensing, and regulatory material: https://www.nve.no/
 - DSB for electrical safety and emergency-preparedness material where relevant: https://www.dsb.no/
 - Municipal records using `kommune`, `reguleringsplan`, `byggesak`, `planutvalg`, `formannskap`, `kommunestyre`
 
-Use Data Center Dynamics as shared trade press. Also search Norwegian business, energy, and regional outlets when primary sources are not enough, but keep their confidence below primary documents unless they cite documents or named officials.
+Use Data Center Dynamics as shared trade press. Also search Norwegian business, energy, and regional outlets when primary sources are not enough, and assess their field-specific support and independence rather than assigning confidence from publisher type alone.
 
 ## Administrative naming
 
-Use `municipality` for Norwegian `kommune`. Use `county` for `fylke`. Canonical names come from `data/master/admin_units.csv` in Bokmål, with Nynorsk and English variants available for search.
+Use `municipality` for Norwegian `kommune`. Use `county` for `fylke`. Canonical names come from `input/admin_units.csv` in Bokmål, with Nynorsk and English variants available for search.

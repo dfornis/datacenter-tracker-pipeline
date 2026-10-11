@@ -12,7 +12,9 @@ Search in Swedish and English. Use Swedish terms for public records, grid materi
 
 Useful search terms include `datacenter`, `data center`, `datorhall`, `serverhall`, `AI-center`, `beräkningscenter`, `molnregion`, `campus`, `bygglov`, `detaljplan`, `miljöprövning`, `samråd`, `tillstånd`, `elnätsanslutning`, and `anslutning`.
 
-## Capacity-basis wording
+## Capacity-basis search clues
+
+These terms are leads, not classification rules. Generic words for capacity, consumption or power do not by themselves establish IT load, facility nameplate or connection maturity. Read the scoped numerical statement. Requested, queued, reserved, contracted, available and energised capacity are different states.
 
 - IT load: `IT-effekt`, `IT-kapacitet`, `kritisk IT-last`, `kritisk last`, `compute capacity`, `MW IT`
 - Facility total: `total effekt`, `anläggningseffekt`, `effektbehov`, `elförbrukning`, `kapacitet`
@@ -21,7 +23,7 @@ Useful search terms include `datacenter`, `data center`, `datorhall`, `serverhal
 
 ## Priority sources
 
-Prioritize company releases and project pages, then Swedish public records and grid/energy sources:
+Select sources by the field being checked. Operator releases, public decisions and grid records have different authority:
 
 - Svenska kraftnät for transmission-grid context and large-connection material: https://www.svk.se/
 - Energimarknadsinspektionen for energy-market and network-regulation material: https://ei.se/
@@ -32,4 +34,4 @@ Use Data Center Dynamics as shared trade press. Local Swedish business, municipa
 
 ## Administrative naming
 
-Use `municipality` for Swedish `kommun`. Use `county` for `län`. Canonical names come from `data/master/admin_units.csv` using Swedish source names from SCB.
+Use `municipality` for Swedish `kommun`. Use `county` for `län`. Canonical names come from `input/admin_units.csv` using Swedish source names from SCB.

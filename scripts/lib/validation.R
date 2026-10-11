@@ -49,6 +49,7 @@ validate_state <- function(path, root, schema = read_json(file.path(root, 'confi
     p <- tables$projects_master; c <- tables$capacity_master; s <- tables$sources_master
     g <- tables$geography_config; countries <- tables$country_config; admin <- tables$admin_units
     registry <- tables$identity_registry
+    if (any(admin$municipality_code=='9999' & admin$country=='NO')) fail('Norway Uoppgitt is a statistical placeholder, not a project municipality')
     refs <- function(values, allowed, label, allow_blank = TRUE) {
       bad <- setdiff(unique(values), c(allowed, if (allow_blank) '' else character()))
       if (length(bad)) fail(paste(label, 'unknown reference(s)', paste(bad, collapse = ', ')))
@@ -74,6 +75,7 @@ validate_state <- function(path, root, schema = read_json(file.path(root, 'confi
       valid <- switch(precision, day = valid_date(raw), month = grepl('^[0-9]{4}-(0[1-9]|1[0-2])$', raw),
                       year = grepl('^[0-9]{4}$', raw), unknown = !nzchar(raw), FALSE)
       if (!valid || (precision == 'day' && s$source_date[i] != raw) || (precision != 'day' && nzchar(s$source_date[i]))) fail(paste('Inconsistent source date precision', s$source_id[i]))
+      if (nzchar(raw) && raw > substr(s$access_date[i],1,nchar(raw))) fail(paste('Source publication is after access at its stated precision',s$source_id[i]))
       entity_cols <- names(schema$tables[[if (nzchar(s$claim_id[i])) 'capacity_master' else 'projects_master']]$columns)
       # Legacy sources sometimes support both site and claim; a verified field still needs explicit support.
       allowed <- if (s$review_state[i] == 'verified') entity_cols else union(names(schema$tables$capacity_master$columns), names(schema$tables$projects_master$columns))
@@ -91,6 +93,13 @@ validate_state <- function(path, root, schema = read_json(file.path(root, 'confi
     }
     refs(p$physical_site_id, registry$entity_id[registry$entity_type == 'site' & registry$state == 'active'], 'physical site', FALSE)
     refs(c$phase_id, registry$entity_id[registry$entity_type == 'phase' & registry$state == 'active'], 'phase', FALSE)
+    for (data in list(p,c)) {
+      basis <- data$decision_basis; decision <- data$investment_decision
+      if (any(basis=='no_public_evidence' & decision!='unclear') || any(basis=='explicit_nondecision' & decision!='no') ||
+          any(basis %in% c('explicit_decision','execution_evidence') & decision!='yes') || any(basis=='not_applicable' & decision!='not_applicable') ||
+          any(basis=='conditional_commitment' & decision!='unclear')) fail('Decision value contradicts its evidence basis')
+      if (any(data$review_state=='verified' & basis=='legacy_unverified')) fail('A verified record cannot retain an unverified decision basis')
+    }
     for (entity in c('project','claim','source','site','phase','observation')) {
       prefix <- switch(entity, project='P',claim='C',source='S',site='SITE',phase='PH',observation='OBS')
       if (any(!grepl(paste0('^',prefix,'[0-9]{3,}$'), registry$entity_id[registry$entity_type == entity]))) fail(paste('Malformed identity',entity))
@@ -181,6 +190,13 @@ validate_state <- function(path, root, schema = read_json(file.path(root, 'confi
         if (any(!ids %in% allowed)) fail('Field review evidence targets another entity')
         supported <- any(vapply(s$supports_fields[match(ids,s$source_id)],function(v) f$field[i] %in% split_values(v),logical(1)))
         if (!supported) fail(paste('Field is not supported by cited evidence',f$field[i]))
+      }
+    }
+    for (entity in c('project','claim')) {
+      records <- if(entity=='project') p else c; key <- if(entity=='project') 'project_id' else 'claim_id'
+      for(i in which(records$review_state=='verified')) {
+        fields <- f$field[f$entity_type==entity & f$entity_id==records[[key]][i]]
+        if(any(!unlist(schema$verification_fields[[entity]]) %in% fields))fail(paste('Verified record lacks complete field reviews',records[[key]][i]))
       }
     }
     admin_key <- paste(admin$country, admin$municipality_code, sep = ':')

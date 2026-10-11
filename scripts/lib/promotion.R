@@ -19,6 +19,16 @@ assert_evidence <- function(row, fields) {
 attach_evidence <- function(tables, row, project_id, claim_id, fields, run_id) {
   assert_evidence(row,fields)
   sources <- tables$sources_master
+  reusable <- which(sources$project_id==project_id & sources$claim_id==claim_id & sources$review_state=='verified')
+  compare <- c('source_type','source_url','source_title','access_date','original_excerpt','original_language','translation','locator')
+  reusable <- reusable[vapply(reusable,function(i)all(vapply(compare,function(f)sources[[f]][i]==row[[f]],logical(1))),logical(1))]
+  reusable <- reusable[vapply(reusable,function(i)sources$source_date_raw[i]==row$source_date && (!'independence_group' %in% names(row) || !nzchar(row$independence_group) || sources$independence_group[i]==row$independence_group),logical(1))]
+  if (length(reusable) && (!'evidence_source_id' %in% names(row) || !nzchar(row$evidence_source_id))) {
+    i <- reusable[1]
+    sources$supports_fields[i] <- paste(unique(c(split_values(sources$supports_fields[i]),fields)),collapse=';')
+    tables$sources_master <- sources
+    return(list(tables=tables,id=sources$source_id[i]))
+  }
   supplied <- if ('evidence_source_id' %in% names(row)) row$evidence_source_id else ''
   if (nzchar(supplied)) {
     i <- match(supplied,sources$source_id)
@@ -38,9 +48,37 @@ attach_evidence <- function(tables, row, project_id, claim_id, fields, run_id) {
   values$source_date_raw <- raw_date; values$source_date_precision <- precision
   values$source_date <- if (precision == 'day') raw_date else ''
   values$review_state <- 'verified'; values$supports_fields <- paste(fields,collapse=';')
-  values$independence_group <- if (length(same_url)) same_url[1] else paste0('source-',allocation$id)
+  values$independence_group <- if ('independence_group' %in% names(row) && nzchar(row$independence_group)) row$independence_group else if (length(same_url)) same_url[1] else paste0('source-',allocation$id)
   tables$sources_master <- rbind(sources,row_frame(values,names(sources)))
   list(tables=tables,id=allocation$id)
+}
+attach_evidence_bundle <- function(tables,row,project_id,claim_id,fields,run_id) {
+  records <- list(row)
+  if ('additional_evidence' %in% names(row) && nzchar(row$additional_evidence)) {
+    extras <- jsonlite::fromJSON(row$additional_evidence,simplifyVector=FALSE)
+    if (!is.list(extras) || !is.null(names(extras))) stop('Additional evidence must be an array of evidence records')
+    for (extra in extras) {
+      allowed <- c('source_type','source_url','source_title','source_date','access_date','original_excerpt','original_language','translation','locator','evidence_kind','supports_fields','confidence','independence_group','evidence_excerpt')
+      if (any(!names(extra) %in% allowed)) stop('Unexpected additional-evidence fields')
+      record <- row
+      for (field in allowed) record[[field]] <- extra[[field]] %||% ''
+      record$evidence_source_id <- ''; record$additional_evidence <- ''
+      records[[length(records)+1]] <- record
+    }
+  }
+  supported <- unique(unlist(lapply(records,function(r)split_values(r$supports_fields))))
+  if (any(!fields %in% supported)) stop('Evidence bundle does not cover required fields')
+  ids <- character()
+  for (record in records) {
+    contributes <- intersect(fields,split_values(record$supports_fields))
+    if (!length(contributes)) next
+    evidence <- attach_evidence(tables,record,project_id,claim_id,contributes,run_id)
+    tables <- evidence$tables; ids <- c(ids,evidence$id)
+  }
+  list(tables=tables,id=unique(ids))
+}
+sources_for_field <- function(tables,ids,field) {
+  s <- tables$sources_master; ids[vapply(ids,function(id)field %in% split_values(s$supports_fields[match(id,s$source_id)]),logical(1))]
 }
 record_field_review <- function(tables, entity, id, field, value, sources, row) {
   reviews <- tables$field_reviews
@@ -50,6 +88,31 @@ record_field_review <- function(tables, entity, id, field, value, sources, row) 
   review <- row_frame(list(entity_type=entity,entity_id=id,field=field,value_sha256=sha_value(value),source_ids=paste(sources,collapse=';'),
     review_kind=if ('review_kind' %in% names(row) && nzchar(row$review_kind)) row$review_kind else 'source',reviewer=row$reviewed_by,reviewed_at=row$reviewed_at,run_id=row$run_id,notes=row$rationale %||% row$notes %||% ''),names(reviews))
   tables$field_reviews <- rbind(reviews[keep,,drop=FALSE],review)
+  tables
+}
+refresh_review_metadata <- function(tables,schema) {
+  groups <- list(timing_source_ids=c('timing_scope','operation_year_min','operation_year_max','construction_start_year'),
+    decision_source_ids=c('investment_decision','decision_basis'),pue_source_ids=c('site_pue','site_pue_kind','site_pue_qualifier'),
+    overlap_source_ids=c('relation','parent_claim_id','baseline_scope','baseline_claim_id','baseline_comparable','superseded_by_claim_id'))
+  f <- tables$field_reviews
+  for(entity in c('project','claim')) {
+    target <- if(entity=='project')'projects_master' else 'capacity_master'
+    key <- if(entity=='project')'project_id' else 'claim_id'
+    data <- tables[[target]]
+    for(i in seq_len(nrow(data))) {
+      reviews <- f[f$entity_type==entity & f$entity_id==data[[key]][i],,drop=FALSE]
+      if(!nrow(reviews))next
+      required <- unlist(schema$verification_fields[[entity]])
+      data$review_state[i] <- if(all(required %in% reviews$field))'verified' else 'needs_review'
+      last <- reviews[order(reviews$reviewed_at,decreasing=TRUE)[1],,drop=FALSE]
+      data$reviewed_by[i] <- last$reviewer; data$reviewed_at[i] <- last$reviewed_at
+      if(entity=='claim')for(field in names(groups)) {
+        selected <- reviews[reviews$field %in% groups[[field]],,drop=FALSE]
+        if(nrow(selected))data[[field]][i] <- paste(unique(unlist(lapply(selected$source_ids,split_values))),collapse=';')
+      }
+    }
+    tables[[target]] <- data
+  }
   tables
 }
 promotion_selection <- function(tables, source, level, ids, country, reviewer, expected_release) {
@@ -91,7 +154,7 @@ promote_rows <- function(root, source, level, ids, country, reviewer, request_id
       # Validate every expected value against the same original state, before any mutation.
       original <- tables[[target_name]]
       if (anyDuplicated(paste(updates[[key]],updates$field))) stop('Multiple proposals target the same field')
-      protected <- c(key,'project_id','physical_site_id','phase_id','accounting_group_id','source_ids','reviewed_by','reviewed_at','review_state', if (level == 'capacity') 'project_name')
+      protected <- c(key,'project_id','physical_site_id','phase_id','accounting_group_id','source_ids','timing_source_ids','decision_source_ids','pue_source_ids','overlap_source_ids','reviewed_by','reviewed_at','review_state', if (level == 'capacity') 'project_name')
       for (j in seq_len(nrow(updates))) {
         r <- updates[j,,drop=FALSE]; i <- match(r[[key]],original[[key]])
         if (is.na(i) || !r$field %in% names(original) || r$field %in% protected) stop('Unknown entity or protected field; use a scoped identity migration')
@@ -122,7 +185,7 @@ promote_rows <- function(root, source, level, ids, country, reviewer, request_id
             tables$capacity_master$review_state[tables$capacity_master$claim_id == source_row$claim_id] <- 'needs_review'
           }
         } else {
-          evidence <- attach_evidence(tables,r,r$project_id,if (level == 'capacity') r$claim_id else '',r$field,run_id)
+          evidence <- attach_evidence_bundle(tables,r,r$project_id,if (level == 'capacity') r$claim_id else '',r$field,run_id)
           tables <- evidence$tables; sid <- evidence$id
           if (level == 'capacity') {
             old <- tables$capacity_master$source_ids[i]
@@ -143,10 +206,10 @@ promote_rows <- function(root, source, level, ids, country, reviewer, request_id
         if (!nzchar(site)) { alloc <- allocate_identity(tables,'site',run_id); tables <- alloc$tables; site <- alloc$id }
         r$project_id <- pid; r$physical_site_id <- site
         required_fields <- c('project_name','developer','municipality','county','bidding_zone','project_status','investment_decision','decision_basis')
-        e <- attach_evidence(tables,r,pid,'',required_fields,run_id); tables <- e$tables
+        e <- attach_evidence_bundle(tables,r,pid,'',required_fields,run_id); tables <- e$tables
         r$review_state <- 'verified'
         tables$projects_master <- rbind(tables$projects_master,row_frame(as.list(r),names(tables$projects_master)))
-        for (field in required_fields) tables <- record_field_review(tables,'project',pid,field,r[[field]],e$id,r)
+        for (field in required_fields) tables <- record_field_review(tables,'project',pid,field,r[[field]],sources_for_field(tables,e$id,field),r)
         assigned$projects[[r$project_candidate_id]] <- pid
       }
       # Allocate all candidate claim IDs before resolving temporary relationships.
@@ -171,12 +234,13 @@ promote_rows <- function(root, source, level, ids, country, reviewer, request_id
         for (field in c('parent_claim_id','baseline_claim_id','superseded_by_claim_id')) if (r[[field]] %in% names(assigned$claims)) r[[field]] <- assigned$claims[[r[[field]]]]
         required_fields <- c('reported_capacity_mw','reported_capacity_basis','capacity_unit','measurement_kind','capacity_type','capacity_status','investment_decision','decision_basis','timing_scope','baseline_scope','relation')
         if (nzchar(r$operation_year_min)) required_fields <- c(required_fields,'operation_year_min','operation_year_max')
-        e <- attach_evidence(tables,r,pid,cid,required_fields,run_id); tables <- e$tables
+        e <- attach_evidence_bundle(tables,r,pid,cid,required_fields,run_id); tables <- e$tables
         r$source_ids <- paste(unique(c(split_values(r$source_ids),e$id)),collapse=';'); r$review_state <- 'verified'
         tables$capacity_master <- rbind(tables$capacity_master,row_frame(as.list(r),names(tables$capacity_master)))
-        for (field in required_fields) tables <- record_field_review(tables,'claim',cid,field,r[[field]],e$id,r)
+        for (field in required_fields) tables <- record_field_review(tables,'claim',cid,field,r[[field]],sources_for_field(tables,e$id,field),r)
       }
     }
+    tables <- refresh_review_metadata(tables,schema)
     for (name in names(rows)) {
       key <- schema$tables[[name]]$key[[1]]
       selected_ids <- rows[[name]][[key]]; index <- match(selected_ids,tables[[name]][[key]])

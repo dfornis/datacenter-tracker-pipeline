@@ -16,7 +16,9 @@ Useful Swedish search terms for bilingual Finnish material include `datacenter`,
 
 Also search English company terminology: `data center`, `data centre`, `cloud region`, `AI data center`, `campus`, `grid connection`, and `power capacity`.
 
-## Capacity-basis wording
+## Capacity-basis search clues
+
+These terms are leads, not classification rules. Generic words for capacity, consumption or power do not by themselves establish IT load, facility nameplate or connection maturity. Read the scoped numerical statement. Requested, queued, reserved, contracted, available and energised capacity are different states.
 
 - IT load: `IT-kapasiteetti`, `IT-kuorma`, `kriittinen IT-kuorma`, `laskentakapasiteetti`, `MW IT`
 - Facility total: `kokonaisteho`, `tehontarve`, `sähköteho`, `laitoksen teho`, `kapasiteetti`
@@ -27,7 +29,7 @@ For Swedish-language Finnish sources, also use the Swedish terms from the SE ove
 
 ## Priority sources
 
-Prioritize company releases and project pages, then Finnish public records and grid/energy sources:
+Select sources by the field being checked. Operator releases, public decisions and grid records have different authority:
 
 - Fingrid for main-grid connection process, connection terms, and grid context: https://www.fingrid.fi/en/grid/
 - Fingrid Finnish connection material for `liittyminen kantaverkkoon`: https://www.fingrid.fi/kantaverkko/liitynta-kantaverkkoon/
@@ -38,4 +40,4 @@ Use Data Center Dynamics as shared trade press. Also search Finnish business and
 
 ## Administrative naming
 
-Use `municipality` for Finnish `kunta` or `kaupunki`. Use `county` for `maakunta`. Canonical names come from `data/master/admin_units.csv` in Finnish, with Swedish and English variants available for search.
+Use `municipality` for Finnish `kunta` or `kaupunki`. Use `county` for `maakunta`. Canonical names come from `input/admin_units.csv` in Finnish, with Swedish and English variants available for search.

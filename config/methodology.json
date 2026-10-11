@@ -59,5 +59,23 @@
     "pue_id": "PUE_SENSITIVITY",
     "load_factor_id": "LF_NAMEPLATE_SENSITIVITY"
   },
-  "sensitivity_interpretation": "Illustrative parameter cases; not probability bounds, not calibrated Nordic forecasts. No central estimate."
+  "sensitivity_interpretation": "Illustrative parameter cases; not probability bounds, not calibrated Nordic forecasts. No central estimate.",
+  "committed_required_verified_fields": [
+    "reported_capacity_mw",
+    "reported_capacity_basis",
+    "capacity_unit",
+    "measurement_kind",
+    "capacity_qualifier",
+    "capacity_type",
+    "capacity_status",
+    "investment_decision",
+    "decision_basis",
+    "timing_scope",
+    "operation_year_min",
+    "operation_year_max",
+    "relation",
+    "baseline_scope",
+    "baseline_claim_id",
+    "baseline_comparable"
+  ]
 }

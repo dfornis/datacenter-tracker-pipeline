@@ -1,0 +1,2702 @@
+[
+  {
+    "original_path": "data/zones/AD.geojson",
+    "archived_path": "data/vendor/legacy-zones/AD.geojson",
+    "sha256": "fc9976b074c78dedeb13ee8f2741e74d2e1e70147e9244fb197f6e90db75b632",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AE.geojson",
+    "archived_path": "data/vendor/legacy-zones/AE.geojson",
+    "sha256": "586711c414908717627cc661c0880c176e352d8dfeded51646fe8faec8c4c2fc",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AF.geojson",
+    "archived_path": "data/vendor/legacy-zones/AF.geojson",
+    "sha256": "ceebcd4cfcb9ee83e8dd9c0d5d4135254b70020a1437b984f91b3852a639fe4b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AG.geojson",
+    "archived_path": "data/vendor/legacy-zones/AG.geojson",
+    "sha256": "80780f124b41516d31e51cfc9dda87518a59f367aa807b24debfed5e61c78c2f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AI.geojson",
+    "archived_path": "data/vendor/legacy-zones/AI.geojson",
+    "sha256": "ef5afa10abbede9956278a721a771f82d592f46c8da852b672d315471e0142c7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AL.geojson",
+    "archived_path": "data/vendor/legacy-zones/AL.geojson",
+    "sha256": "6c332a58a2fb8efa4b5581a41d25f094b21faad32d023fb2980b286437e93f5e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AM.geojson",
+    "archived_path": "data/vendor/legacy-zones/AM.geojson",
+    "sha256": "420be7e48068934c7fbb1c95d449c9cd2d4a6d6779debcdeed819ff7442033a8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AN.geojson",
+    "archived_path": "data/vendor/legacy-zones/AN.geojson",
+    "sha256": "01c96aa406a6a9503739456ce9bc2d0bc690fa3c7bf571a20d461594d333f2d6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AO.geojson",
+    "archived_path": "data/vendor/legacy-zones/AO.geojson",
+    "sha256": "6c1906f708ee652db5e26dbec705abbf21508b3552c962ad4be7c2effe1158b2",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AR.geojson",
+    "archived_path": "data/vendor/legacy-zones/AR.geojson",
+    "sha256": "dc5eaa90a60959707e4b7ff64a848ed39145d661c393f19b4701fd74368cff3b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AS.geojson",
+    "archived_path": "data/vendor/legacy-zones/AS.geojson",
+    "sha256": "f33299b91080edd975044ebc07db59e55ab3972df4fca5e04b7c705ecf48eb20",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AT.geojson",
+    "archived_path": "data/vendor/legacy-zones/AT.geojson",
+    "sha256": "fe19c91c30ebdbb950e37debb5b593234a5dda1261886c05608aec44a681ad24",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-NSW.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-NSW.geojson",
+    "sha256": "8fc059f69d90b4819307ee4ec61aca7ef051bf93eaec933c8b56a58520e11fe6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-NT.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-NT.geojson",
+    "sha256": "1918686411225c2e425017662e0a4a3c106f25bd558d891b73a7007fd41f062e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-QLD.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-QLD.geojson",
+    "sha256": "4c1035bed13fbcd594eef4ead313a1c1ca92191d58d681463db0dbab0cf8967d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-SA.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-SA.geojson",
+    "sha256": "97a6a48b2f6382ff4747fd6987688052de2caabb44de7dfc2e33841f6bc4838e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-TAS-CBI.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-TAS-CBI.geojson",
+    "sha256": "3bd75eb09b7b35895dce80467ef377c0bdf1c518728b4dedc49147499d05ed39",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-TAS-FI.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-TAS-FI.geojson",
+    "sha256": "0c9f593e1c06ad318185efd76cff5e873b20f94741fa29fdefdec9dc68b3b6ad",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-TAS-KI.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-TAS-KI.geojson",
+    "sha256": "09c56de6526c62bc7287c6cddbf2a5c1271b727382d777530aaabf26a16be227",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-TAS.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-TAS.geojson",
+    "sha256": "6546d7ee9d6cd9060d6e4d0fb4cc20a8505f39d601905b864bdc1761b8004306",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-VIC.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-VIC.geojson",
+    "sha256": "d01e0c27e732c866149ff57957f933118edc8ba3b32553f77280b5a318d828e7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-WA-RI.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-WA-RI.geojson",
+    "sha256": "6948e5ba5e68ae5beb78bd598326ae6a2deb1127ddd0f4794e19836aaaa492f6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AUS-WA.geojson",
+    "archived_path": "data/vendor/legacy-zones/AUS-WA.geojson",
+    "sha256": "eef920ea47388c63203e28fdc04453b2bd516274aa72065fd5353a1a68615b47",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AW.geojson",
+    "archived_path": "data/vendor/legacy-zones/AW.geojson",
+    "sha256": "392d6547d265a8daa46e4258596ec96b69b0f47dd696a821ad0775c474a9e55c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AX.geojson",
+    "archived_path": "data/vendor/legacy-zones/AX.geojson",
+    "sha256": "20c129ed91780f7b94cb93c206c7d018805f61444892ec82ca5320ea9bc1c54e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/AZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/AZ.geojson",
+    "sha256": "2b53192d68cbf0d1fbaf1120a2abedbf3438248b493d063fa56e506cd4476bb1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BA.geojson",
+    "archived_path": "data/vendor/legacy-zones/BA.geojson",
+    "sha256": "045677bca98e357be8bf30a1c90a7745d9b98eeb3924840cd8e36db674bc08bd",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BB.geojson",
+    "archived_path": "data/vendor/legacy-zones/BB.geojson",
+    "sha256": "6fd08d818052fbd33fb334e073c6121a7163f93eef006bc00134ac783442be26",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BD.geojson",
+    "archived_path": "data/vendor/legacy-zones/BD.geojson",
+    "sha256": "bf6823b4d73cbf6bb8591ceae0fbfde360ce2b6099959c0b52ef114af042b3df",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BE.geojson",
+    "archived_path": "data/vendor/legacy-zones/BE.geojson",
+    "sha256": "c8bab075d62a98f492d0b64f76173b344d27cc3bc1002b63f02dc7643b52cd1d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BF.geojson",
+    "archived_path": "data/vendor/legacy-zones/BF.geojson",
+    "sha256": "0b5959eabef89a9e3777adac98500519dfdae3906f6e32e224fcad25ec912781",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BG.geojson",
+    "archived_path": "data/vendor/legacy-zones/BG.geojson",
+    "sha256": "f31af223cc7abbeff25c276173a27694478074864ccdecf5865b087a4863611e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BH.geojson",
+    "archived_path": "data/vendor/legacy-zones/BH.geojson",
+    "sha256": "9e047dec91e4163b11d35e258ed8889affb66aabe375bc4baef50f50f3993db0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BI.geojson",
+    "archived_path": "data/vendor/legacy-zones/BI.geojson",
+    "sha256": "9a2a9999ab34badeb66a7340c0be36a078801590f6417d602196d7133bd48df6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BJ.geojson",
+    "archived_path": "data/vendor/legacy-zones/BJ.geojson",
+    "sha256": "96efc27ccf302e1ee26dc7846db33ff4664a47bf8e22d37bf9cae12af64391bf",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BL.geojson",
+    "archived_path": "data/vendor/legacy-zones/BL.geojson",
+    "sha256": "13442000caf7c8018f2268818804b87907a3fe67190f5048e9bf94c8a9e100a2",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BM.geojson",
+    "archived_path": "data/vendor/legacy-zones/BM.geojson",
+    "sha256": "fcd04ba53db12375cb9f3f639c1b4b4583ead39a931dd9434819f9de27a122c8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BN.geojson",
+    "archived_path": "data/vendor/legacy-zones/BN.geojson",
+    "sha256": "72907e1458ccabdff5532b8303f86cb751e045dc502fb54e8a2814108619267e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BO.geojson",
+    "archived_path": "data/vendor/legacy-zones/BO.geojson",
+    "sha256": "b1434f78fdca401af468f58cea0a3d61becae4f5ef803d8a560171ae9d95ab20",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BR-CS.geojson",
+    "archived_path": "data/vendor/legacy-zones/BR-CS.geojson",
+    "sha256": "b45da340d2102998b9698f96f3b936eb44c75a0aaa5f05698165443ea75f6f1b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BR-N.geojson",
+    "archived_path": "data/vendor/legacy-zones/BR-N.geojson",
+    "sha256": "e9d82e91607ab6cd45128ad83addb35e41064e44b86ae5176d574fda2c26e52d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BR-NE.geojson",
+    "archived_path": "data/vendor/legacy-zones/BR-NE.geojson",
+    "sha256": "cc42d1405b357550750194691c01c5464d98321bbace81047d38053f287ee7d7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BR-S.geojson",
+    "archived_path": "data/vendor/legacy-zones/BR-S.geojson",
+    "sha256": "89f9fd0eb43d9f1f210416ff04e6f585ab9fe1348aeea1b562596d1c6e3162f0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BS.geojson",
+    "archived_path": "data/vendor/legacy-zones/BS.geojson",
+    "sha256": "8e3622330dc62f82c70c502e7d2e8f9c362fb59fc2ba4b8ab484135c7651dcee",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BT.geojson",
+    "archived_path": "data/vendor/legacy-zones/BT.geojson",
+    "sha256": "f29f16931b65297d9fc567efffb7daf3ab65359ae2f2d2d2eb04d4c87a99dcbf",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BV.geojson",
+    "archived_path": "data/vendor/legacy-zones/BV.geojson",
+    "sha256": "c7e15ee4871bb8b5d3438dc793726d5428da3ec8ecaaf7cbeedd2fc702b13a88",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BW.geojson",
+    "archived_path": "data/vendor/legacy-zones/BW.geojson",
+    "sha256": "43d5cf2380e8e5d967b4ed8ba08052424fa2cb8944edacb4545d11239111eb1e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BY.geojson",
+    "archived_path": "data/vendor/legacy-zones/BY.geojson",
+    "sha256": "8d0d73f93ad5f1e2e7bdbda5dec7d5ecbb878332ef52cbc4875905b55cae3923",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/BZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/BZ.geojson",
+    "sha256": "f0f444c93326532e1ae02967e830567367575ded2bc09f115c4f73216b49061d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-AB.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-AB.geojson",
+    "sha256": "9f8a5ccb2788385433bed4cc70d276999317f59045d3c1bb8876d34fb31343f4",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-BC.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-BC.geojson",
+    "sha256": "4399260a55b21e4521f30c78db5548f80d201e089d0c4bf9cdcdebaa7d578c7a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-MB.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-MB.geojson",
+    "sha256": "06534501ceeca1e923d4525374c7a8e65f8251149ce0d8611e4dae018f0d5e54",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-NB.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-NB.geojson",
+    "sha256": "20624d405e3b0bb17876363d2417fff2599948964a5fca65aa637c8daff77a81",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-NL-LB.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-NL-LB.geojson",
+    "sha256": "361022ac2fa7a6791facbdf62569272ccb4c214d210798db8ecb420539164809",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-NL-NF.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-NL-NF.geojson",
+    "sha256": "972d06d8d94dfffdb7202bb27d27e775afce4be045217e65a7a380f042fa9b56",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-NS.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-NS.geojson",
+    "sha256": "27f3aabcff9521823d6d44269b6feabdcfd2470e7cc1e0ebdd18b2ef7301fe5b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-NT.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-NT.geojson",
+    "sha256": "b3bbe243be6585f08ea0e2a35791fffe333f40905f9debdc5382164c492a7c7c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-NU.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-NU.geojson",
+    "sha256": "1e4ded89fb6d1bb1ea4f7e881cf00ad86cf617c1a1c1402c9775f690d3189fe5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-ON.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-ON.geojson",
+    "sha256": "1be47cf256a2bf105e75a85fdcaf7e045cd4fdfd072444697bd000bff82612fd",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-PE.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-PE.geojson",
+    "sha256": "f8fc8396d620115347486a1d879ca5450b6c502365a22edf2029883a651aff4c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-QC.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-QC.geojson",
+    "sha256": "7c305bc92d7073669ecb2c7d65ccbdbe7e925a5533cf455ed871fd1c6e1cdf4a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-SK.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-SK.geojson",
+    "sha256": "7425522d4705dd7740e1acdc3cd6ae3f4f63df900e90ebcdb950159efb20cb73",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CA-YT.geojson",
+    "archived_path": "data/vendor/legacy-zones/CA-YT.geojson",
+    "sha256": "4a17a3c533d80c77ac53dc6f6400366416a222c348d25ebbaafc573041970199",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CC.geojson",
+    "archived_path": "data/vendor/legacy-zones/CC.geojson",
+    "sha256": "1ad2d1ccbb732ef68b3d2a0529970a06590e63afcff5819363e18b31ad525b95",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CD.geojson",
+    "archived_path": "data/vendor/legacy-zones/CD.geojson",
+    "sha256": "a550a59f9c579cbd3e32502488a0386570dcaec7c85ecea5f5cae5a74916e908",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CF.geojson",
+    "archived_path": "data/vendor/legacy-zones/CF.geojson",
+    "sha256": "692b580307562feff939b22d73df5cd71ac48c3a0b696a41bb17ff2fbbfa33d5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CG.geojson",
+    "archived_path": "data/vendor/legacy-zones/CG.geojson",
+    "sha256": "6153859d13de9789c519253b69336e491e928ba84f19ceef62ae8327dd3cbadf",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CH.geojson",
+    "archived_path": "data/vendor/legacy-zones/CH.geojson",
+    "sha256": "0c27865a65d88fa0d8ef2f1fe8045358483acea98341bd5af3c42adc001f2718",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CI.geojson",
+    "archived_path": "data/vendor/legacy-zones/CI.geojson",
+    "sha256": "37e2c5aeb7410849e128a97989f98a8e0dea65765ff65fa9e5f7d406f8e173c0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CK.geojson",
+    "archived_path": "data/vendor/legacy-zones/CK.geojson",
+    "sha256": "75475a5ffcabbc4b088c4955060c88107b047444a354cf361bb6966cdc02f96b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CL-CHP.geojson",
+    "archived_path": "data/vendor/legacy-zones/CL-CHP.geojson",
+    "sha256": "7b2b153a6446ea863d4acc94a6a8bf7bc5da53186750242ee0d7287fd001e6d8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CL-SEA.geojson",
+    "archived_path": "data/vendor/legacy-zones/CL-SEA.geojson",
+    "sha256": "05c8f140d8e39c3a6cc0fd06c77eb3b55305e63e8882d79af39d46068b156218",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CL-SEM.geojson",
+    "archived_path": "data/vendor/legacy-zones/CL-SEM.geojson",
+    "sha256": "c8876dcf81717f088e505d8d974826d68491167554fdebdf9d2a45d47ef3432d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CL-SEN.geojson",
+    "archived_path": "data/vendor/legacy-zones/CL-SEN.geojson",
+    "sha256": "fe02be86420ccb2afe758d18cf5747db5f77dc0ada7a3d03a88a8e2e0d93a864",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CM.geojson",
+    "archived_path": "data/vendor/legacy-zones/CM.geojson",
+    "sha256": "0e2a8a7b2c0a421194a60dd645ac26af69b83827029c97c93a972602db3eb38b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CN.geojson",
+    "archived_path": "data/vendor/legacy-zones/CN.geojson",
+    "sha256": "bace803fca28c9ef38c791b92a8976dd708a2f0ad86f5bdb69df069435d77b27",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CO.geojson",
+    "archived_path": "data/vendor/legacy-zones/CO.geojson",
+    "sha256": "ed862d2e24192d383ddf6fdad5d9315ce429497cd9fc4d82eeb38a0efe1db0ce",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CR.geojson",
+    "archived_path": "data/vendor/legacy-zones/CR.geojson",
+    "sha256": "fc01c1028b8a0d4f38a658c0d003688eb9eb0cd4ddea3a505f67831287d309e5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CU.geojson",
+    "archived_path": "data/vendor/legacy-zones/CU.geojson",
+    "sha256": "90b04643babe4ade66a480e43e45e0b9258149880443324d1cdbbef2e3b92b71",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CV.geojson",
+    "archived_path": "data/vendor/legacy-zones/CV.geojson",
+    "sha256": "77e4375f227b50cdc48d8595f7f50981a741a4c50b4248cbaceab61f6b0cef23",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CX.geojson",
+    "archived_path": "data/vendor/legacy-zones/CX.geojson",
+    "sha256": "623b07361e2e7d6fb9c8d361d50724855382962d71e269acd4fa3a7a020ddf88",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CY.geojson",
+    "archived_path": "data/vendor/legacy-zones/CY.geojson",
+    "sha256": "31cb4f8c12b4fa2d6ebc1db97cfead7a4380b6ef092bb51cc0227315fa3d249c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/CZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/CZ.geojson",
+    "sha256": "c3e6ea398711670c80198d7f7a6a1ba6e48af2158f9b67e377edf371948bd350",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/DE.geojson",
+    "archived_path": "data/vendor/legacy-zones/DE.geojson",
+    "sha256": "8aff301c8633573fbebdb9f8c4c122449519b4d65c19591546bbce1e57da5e92",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/DJ.geojson",
+    "archived_path": "data/vendor/legacy-zones/DJ.geojson",
+    "sha256": "812f2d8ff690637cb7474492249e556243afb72f67f7b13b16174c018c946a42",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/DK-BHM.geojson",
+    "archived_path": "data/vendor/legacy-zones/DK-BHM.geojson",
+    "sha256": "28f8ee90942f294b675404064b6f910b5d9f37c84d20f0837265e16cdcda414b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/DK-DK1.geojson",
+    "archived_path": "data/vendor/legacy-zones/DK-DK1.geojson",
+    "sha256": "4d85c68dc1bb3ced11de7d9fd6afcdd5e576af619c1c23339d4c488af6180e45",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/DK-DK2.geojson",
+    "archived_path": "data/vendor/legacy-zones/DK-DK2.geojson",
+    "sha256": "208b437b663d66e55a52f9e1b972556df2e3eeb1de844aa3464c3e694cba474d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/DM.geojson",
+    "archived_path": "data/vendor/legacy-zones/DM.geojson",
+    "sha256": "4b54dfc269b4d063788840e2fd1c26221b9d4888c0a9711fca71c7db67984692",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/DO.geojson",
+    "archived_path": "data/vendor/legacy-zones/DO.geojson",
+    "sha256": "d410006601325db96b478a55b0bae7af436beff0d4d8122f2a44c2080da1d91c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/DZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/DZ.geojson",
+    "sha256": "862b7e4fb85c6e1751bcfeb80a7bcebac738180677268be38d368030bcc82f97",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/EC.geojson",
+    "archived_path": "data/vendor/legacy-zones/EC.geojson",
+    "sha256": "9b56a1cd70d98c08a14f276edc8de843596b10fffc2ca09f5cf0ac294cc4918a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/EE.geojson",
+    "archived_path": "data/vendor/legacy-zones/EE.geojson",
+    "sha256": "cac728602f8ad33ada8f6edc8405b7172ccfa600bdb179e394975089d8dc15c4",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/EG.geojson",
+    "archived_path": "data/vendor/legacy-zones/EG.geojson",
+    "sha256": "c7d49b576c78060897e51c49c440af8385646991813db521f27e3b6c535feadb",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/EH.geojson",
+    "archived_path": "data/vendor/legacy-zones/EH.geojson",
+    "sha256": "c760690927e5c00da86a59fa3e286173ac95d22ddd0954a54d74d83f2fec1c3c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ER.geojson",
+    "archived_path": "data/vendor/legacy-zones/ER.geojson",
+    "sha256": "65f77f9931e00c58ac364b105fe5672796011c3adc1dd9f6292c4a8f55a7f481",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-CN-FVLZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-CN-FVLZ.geojson",
+    "sha256": "14deaa8ec8fdc98878438beb6f4b0554b945881605d6d6e0cb84851fdaea3bdd",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-CN-GC.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-CN-GC.geojson",
+    "sha256": "9d3fc9699813a1116f29bc2ce01fbd3e04d8dc56a4e0023f6e16733afcaf693f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-CN-HI.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-CN-HI.geojson",
+    "sha256": "f36bf68a7477735965ef7d3757d63b527b3d8645a6c646419ee940c59ab371a4",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-CN-IG.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-CN-IG.geojson",
+    "sha256": "3adedd11b14949b287d35498d1e9997a2757872fdd7e544276be313636fcafc7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-CN-LP.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-CN-LP.geojson",
+    "sha256": "baaeb11e0e29d5e86955e6f19d1798f564668490501ef87e7a4f85a4030452f4",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-CN-TE.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-CN-TE.geojson",
+    "sha256": "5085c7eb3b538831a5f3ba87d80263b3ac4fbec3a1f3effebadb1a317ee67bc1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-IB-FO.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-IB-FO.geojson",
+    "sha256": "01259d76bfcd97f5bbe79adc36360965a54a690368e8098df3ba60e39c73ae72",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-IB-IZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-IB-IZ.geojson",
+    "sha256": "c44521c13625cd65365d30497d6aa067741cc459230113a245470b7f91241118",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-IB-MA.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-IB-MA.geojson",
+    "sha256": "f0dc843c874b486508991edbd0f2a93fab0e0db3a7676545d2a7d3c7ab68ac51",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES-IB-ME.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES-IB-ME.geojson",
+    "sha256": "4fad3b8a200b2bdf99f0f2464101dbcb830e6d9f28e7f42ea43a1d87d6a7aa73",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ES.geojson",
+    "archived_path": "data/vendor/legacy-zones/ES.geojson",
+    "sha256": "7c93ea51795f1b7ebd0ec25c27f8de654746ccb908d26ec1d17c870973fbf551",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ET.geojson",
+    "archived_path": "data/vendor/legacy-zones/ET.geojson",
+    "sha256": "9fc071549f5f9aea9d7ac4dbdb37a966647a68a66bb8c03cf288acd4c2f06997",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/FI.geojson",
+    "archived_path": "data/vendor/legacy-zones/FI.geojson",
+    "sha256": "fa19894d49e3f91fbcdb40830ced5c32bea70659d6c9d07e1b4e0adbb0da80dd",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/FJ.geojson",
+    "archived_path": "data/vendor/legacy-zones/FJ.geojson",
+    "sha256": "a0fb5e7331d1700958c038f6b25b072b1ec6ce0a6d1cb77192550ae5d69ac584",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/FK.geojson",
+    "archived_path": "data/vendor/legacy-zones/FK.geojson",
+    "sha256": "7cae1feb046adcf1f95416b98d9e916080184d5e5a2747a45e346c6a7fa27e78",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/FM.geojson",
+    "archived_path": "data/vendor/legacy-zones/FM.geojson",
+    "sha256": "573c01ec7cbe78e88566b10d803f95d95618067ed64ec651d0810a4085aed26f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/FO.geojson",
+    "archived_path": "data/vendor/legacy-zones/FO.geojson",
+    "sha256": "c0c8b8dfbd498b0c1a0e78634bde9f4fea329bf4efee79a652069dbe031348a7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/FR-COR.geojson",
+    "archived_path": "data/vendor/legacy-zones/FR-COR.geojson",
+    "sha256": "41b12159471982373f6c67d3ff37ffe13891081125ee2ca079103cac11cc7e01",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/FR.geojson",
+    "archived_path": "data/vendor/legacy-zones/FR.geojson",
+    "sha256": "9e1aaf29ac3b82a27504987e2efc91ad052166c77daaa5be9acf0b56b245c036",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GA.geojson",
+    "archived_path": "data/vendor/legacy-zones/GA.geojson",
+    "sha256": "a6165b068f13162d72795c5adb9f2d7bcf11757a395f235f8205b913f5f0e44e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GB-NIR.geojson",
+    "archived_path": "data/vendor/legacy-zones/GB-NIR.geojson",
+    "sha256": "40847b4ad8107027cbd83cd9168b7f3e558c3cd706b47c7c74dc374b9f43d456",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GB-ORK.geojson",
+    "archived_path": "data/vendor/legacy-zones/GB-ORK.geojson",
+    "sha256": "6382ae72a431ff63df7680bb90c7c19c128737847c8b0c7421c8d8d7b2d320ff",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GB-SHI.geojson",
+    "archived_path": "data/vendor/legacy-zones/GB-SHI.geojson",
+    "sha256": "c30aa5c17f39ef2a571ab66c52cc9673d31f5483d7451373474755e7f054a513",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GB.geojson",
+    "archived_path": "data/vendor/legacy-zones/GB.geojson",
+    "sha256": "6e9f33d9ec48ea15bf0e33de5da60c4fa819c4ec8b7afb986f16c16499172197",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GD.geojson",
+    "archived_path": "data/vendor/legacy-zones/GD.geojson",
+    "sha256": "28bed114955bd6c5051c780893077e300c5836a59e22772d15e2e8b8664fde5c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GE.geojson",
+    "archived_path": "data/vendor/legacy-zones/GE.geojson",
+    "sha256": "570379e26210ddb1cf93fb63c57cf5470eb15d36ea6e4e9a27ae5cac819544ab",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GF.geojson",
+    "archived_path": "data/vendor/legacy-zones/GF.geojson",
+    "sha256": "e5948db3db7f83c68ce4cb9a7209add43431a547d05a2b803166a0dcca9022f1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GG.geojson",
+    "archived_path": "data/vendor/legacy-zones/GG.geojson",
+    "sha256": "9f4503a8ccacf592a95a60b968a4a8892dfec3ccb0d405e759dcca6ade498a27",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GH.geojson",
+    "archived_path": "data/vendor/legacy-zones/GH.geojson",
+    "sha256": "42c2b62a316a9e9e647d92153d374042e3f228122760694d4f9f63818065e86e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GI.geojson",
+    "archived_path": "data/vendor/legacy-zones/GI.geojson",
+    "sha256": "2215a6577e6d8fdbefff557e49f3e1b18149a2f659b7d8402b70c4058c409a70",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GL.geojson",
+    "archived_path": "data/vendor/legacy-zones/GL.geojson",
+    "sha256": "fa5f2b4af4b5bd87800e860e922b1f31814f5f8e59a5fc9b710a413bef732194",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GM.geojson",
+    "archived_path": "data/vendor/legacy-zones/GM.geojson",
+    "sha256": "a8a37c21e41e3e1a64fa17d58523f1591b89ce00d621cd5c6235b83f74707528",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GN.geojson",
+    "archived_path": "data/vendor/legacy-zones/GN.geojson",
+    "sha256": "f6e5e2a898a9ed510fefa6c9addfa2815553a3ebf2d6d88f37ec2232816aa1bb",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GP.geojson",
+    "archived_path": "data/vendor/legacy-zones/GP.geojson",
+    "sha256": "5f1f8c3f2bb7c0477730f290a3b057761605be8c5caa411efa1e42ed9e0bda5d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GQ.geojson",
+    "archived_path": "data/vendor/legacy-zones/GQ.geojson",
+    "sha256": "df7e7e617be0f99ada123a19ddbb79511d46fae7d541a374c53829779b64296a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GR-IS.geojson",
+    "archived_path": "data/vendor/legacy-zones/GR-IS.geojson",
+    "sha256": "972c4977521dce06235d386f6aebfcc6bf80b1546eed2de270dd47e92791a703",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GR.geojson",
+    "archived_path": "data/vendor/legacy-zones/GR.geojson",
+    "sha256": "f3ac2a264c8a09bf585b142b57853ba1594438583ef00f340a75cb5d19b605b1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GS.geojson",
+    "archived_path": "data/vendor/legacy-zones/GS.geojson",
+    "sha256": "c2f091ff5cbdff628f5b9ffe7a213a821188e289b8fdbaf7377671abc55182df",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GT.geojson",
+    "archived_path": "data/vendor/legacy-zones/GT.geojson",
+    "sha256": "fc2324f415b0f3af19704e0427b1722683bd50128aa8c9075edd463c6508fd66",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GU.geojson",
+    "archived_path": "data/vendor/legacy-zones/GU.geojson",
+    "sha256": "d15b670c39c513d06c866c2f2a12a9df2dfa0aaef076a6dde0cbbe7d8fe78edf",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GW.geojson",
+    "archived_path": "data/vendor/legacy-zones/GW.geojson",
+    "sha256": "4d10ae781f9a538b967e61e1fe09ae9c4f1fc2c5aca1cdf2872b7ffc7759de1b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/GY.geojson",
+    "archived_path": "data/vendor/legacy-zones/GY.geojson",
+    "sha256": "1f6e202612ea10afd71753de737762025e591734ebd08bfaf9eb418798353611",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/HK.geojson",
+    "archived_path": "data/vendor/legacy-zones/HK.geojson",
+    "sha256": "00cbe4a3fec0292817fb4eba718b50690daa53571b67341d383ecd108123f788",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/HM.geojson",
+    "archived_path": "data/vendor/legacy-zones/HM.geojson",
+    "sha256": "640284cc65f0113587c214025c9bdc66b1171755241679393085de8ae5b04574",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/HN.geojson",
+    "archived_path": "data/vendor/legacy-zones/HN.geojson",
+    "sha256": "2cf4e80bc94ac35a2c5d9dbb2600f5a9e4b4dcb7525ca972014b7074171c8e66",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/HR.geojson",
+    "archived_path": "data/vendor/legacy-zones/HR.geojson",
+    "sha256": "9d460019bc220b997a8307e4e189a4452aae15c7404379a1d601a77c23136667",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/HT.geojson",
+    "archived_path": "data/vendor/legacy-zones/HT.geojson",
+    "sha256": "17496122a700bd073203936ad5282fb1943d143036bab1b6899cc8585b3c02ca",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/HU.geojson",
+    "archived_path": "data/vendor/legacy-zones/HU.geojson",
+    "sha256": "0584bed7690502def71f609087f2fde44662def36a7df16c4c496343bbf68132",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ID.geojson",
+    "archived_path": "data/vendor/legacy-zones/ID.geojson",
+    "sha256": "59eb7f3fa3b3ab29e3957218e85a3b1e3710aedf453f23230c91a2c4e96a5d4f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IE.geojson",
+    "archived_path": "data/vendor/legacy-zones/IE.geojson",
+    "sha256": "985eb276fd8d3fd5f699c6cabd5f98e0b6529b806981d4703419914bc5b51c8d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IL.geojson",
+    "archived_path": "data/vendor/legacy-zones/IL.geojson",
+    "sha256": "d58b883596f0da5dc1c4ff6da662b8a7bc5395360df4f4f2d7c8d3d7461d3065",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IM.geojson",
+    "archived_path": "data/vendor/legacy-zones/IM.geojson",
+    "sha256": "f3be9074d533cb8dd36b5f7cbca9193a194547d002d3e36cbbb7a99fc9c20d8a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-AN.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-AN.geojson",
+    "sha256": "e9da6ff20b2c574116f44084a2a706c343353ce054273fb371b9342189f66352",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-AP.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-AP.geojson",
+    "sha256": "dd27091f168950de42afcb23622a5aa9b3705fbc2c422e8f759160138212d127",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-AR.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-AR.geojson",
+    "sha256": "e4a9e63bc46da3146ef67c9fc8c2e2b75273e6ab3d2a79e3db1da91aeed88433",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-AS.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-AS.geojson",
+    "sha256": "9b3416f904325e83c6017d4cd374d3c59e3e190a727082cf1fa29c151e935fae",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-BR.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-BR.geojson",
+    "sha256": "b2840d1930501d2994b3330400f6d1545f3ef9ceb2681649cf57edc9545de5ab",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-CH.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-CH.geojson",
+    "sha256": "e1b534586037b928f976875674ae5e0b41601f8371160db598ba41762f0a806b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-CT.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-CT.geojson",
+    "sha256": "0712dd98761a09798dc5ac89e71dcfd11c06e4032f87589e31ceba7c69e6165d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-DD.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-DD.geojson",
+    "sha256": "e09c3c95c9f4194b4937960ff32f6853e7217cad006893fe18a57030f91da823",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-DL.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-DL.geojson",
+    "sha256": "dc6c83508a38850197ca03daa2c6b02eaedb54f435af4638791b0b1bbb56ee56",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-DN.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-DN.geojson",
+    "sha256": "932eb8b60a85ea078938379c11383e40baba207c58a40333e5ec06272a675529",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-GA.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-GA.geojson",
+    "sha256": "5158c2ca9ec0ca86c2eb1b515040233e4992d638f8a217556e00c033051303fe",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-GJ.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-GJ.geojson",
+    "sha256": "06cd0573894c2600d3dab89a04b7aa9bd9f6bbd06068b0e07cde1821a924f830",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-HP.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-HP.geojson",
+    "sha256": "690e59b90e43ea3bcf0048f584c3adeddc7cfdd96bebc09a685a8f5d70f8db4c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-HR.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-HR.geojson",
+    "sha256": "74ea4d3615f08f70c7f6ec46a604005cac5184c91127eed478452f4738b512dc",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-JH.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-JH.geojson",
+    "sha256": "f4c374749ee2f4ade502ebafe787f746cf6c8ad935236435d07b216fc5fb3635",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-JK.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-JK.geojson",
+    "sha256": "5ed50a6b729d05c862ded1241d5755476fcf594beb7764f5451b17ccb598a5d3",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-KA.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-KA.geojson",
+    "sha256": "5791bf2805af588a7cef40f39103edbb82ea30c0551735a934043a4c03f6dd47",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-KL.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-KL.geojson",
+    "sha256": "40f165ff0dc53dd2b16bef4f78bdcd512eab9d4ebe5aef1e5e88f0957a5c04e6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-LD.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-LD.geojson",
+    "sha256": "70a2203b0531ccd3e149d9d9767c8daf9f56faef3bad595084fe0cd2f98186b4",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-MH.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-MH.geojson",
+    "sha256": "4d4567120a8c6b784c4ff9e7167790a8ebc35704d8ee4fa7b91d20c9d88fb805",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-ML.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-ML.geojson",
+    "sha256": "e732130cc35a19e7b4400df83bd81e20ec9d465d3729ac62a659380db72af152",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-MN.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-MN.geojson",
+    "sha256": "f08ff5cec1a7d83118bb5bb4ecb9af8092e356c8c0bff980267e29bffbefdd63",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-MP.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-MP.geojson",
+    "sha256": "8633aed30cc8eabb8d7413eb2a479bf68c4c6665e1cd528458a247b1ca8ee028",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-MZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-MZ.geojson",
+    "sha256": "5a7b6531603dcb487a1c7d321353f9b55c5dcb452c02562f9e3db8a080fb564f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-NL.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-NL.geojson",
+    "sha256": "0df575d803c396f439de175a97919a8d55b7fe5953eaec6d0419d75c4e4472e9",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-OR.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-OR.geojson",
+    "sha256": "07d32588442e4afa63a2b71e2492e2bdcd5a7563fba310cac802e875b35dd09e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-PB.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-PB.geojson",
+    "sha256": "f8aaf7bbcb4de3e9541029d1d5989289144701c227618b9b18c259399ea07acb",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-PY.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-PY.geojson",
+    "sha256": "4aed7b2c0cdbb7306f05028c41005269a825c4e6e75dd5bc4d891f8730694020",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-RJ.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-RJ.geojson",
+    "sha256": "b478b3972a773a02b3d3668ed1f629849747cc714509f2549267bcfb43057746",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-SK.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-SK.geojson",
+    "sha256": "398a8d1c3d7111ce1b6b2985e291b5f2711a8301e11b00183f94925d61c397ea",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-TG.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-TG.geojson",
+    "sha256": "288270c4bfe7216844eb17d0f2543179a77a9599d348f154b3a9fdc2fd0931e4",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-TN.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-TN.geojson",
+    "sha256": "1f96ac9ea911ae61b9983a7cf9f9de883a9f302b5f6d5b0aaa5bdf6658ac5390",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-TR.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-TR.geojson",
+    "sha256": "8bbfbbab9bae0a79ab617b2232c8151c5096861132b017fc2da9548ffb7f3dc6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-UP.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-UP.geojson",
+    "sha256": "0503e7f1e6a6cbc3e7c362a1c379d0773f92e7fb6bae7332d7ce01172ea62864",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-UT.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-UT.geojson",
+    "sha256": "9e9a58347d72fed0bdb50234f55ddc9fac69d3d7cabe87128b13892cf3ea4eb1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IN-WB.geojson",
+    "archived_path": "data/vendor/legacy-zones/IN-WB.geojson",
+    "sha256": "6799cf351cd5054210fab78ead65e6ee32e498459f9a6c533d509767ebb128a9",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IO.geojson",
+    "archived_path": "data/vendor/legacy-zones/IO.geojson",
+    "sha256": "aa75cb68b82779b502f82b757d7e8bf5ec3797c6e90a782931e2025dace62cd5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IQ-KUR.geojson",
+    "archived_path": "data/vendor/legacy-zones/IQ-KUR.geojson",
+    "sha256": "4acc5ccd263160225af74a0d44eba0a75cb509e1949d1583c97e021d0b51e8a0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IQ.geojson",
+    "archived_path": "data/vendor/legacy-zones/IQ.geojson",
+    "sha256": "08a01ba4dda204e213aa4e7cec9ea3edc9db292afeee11efd21189ea39012e97",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IR.geojson",
+    "archived_path": "data/vendor/legacy-zones/IR.geojson",
+    "sha256": "3bf21bc4a74ea8fecd1907f2f328dc6a619ddd2889060e3248b7ee9aeb9881a5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IS.geojson",
+    "archived_path": "data/vendor/legacy-zones/IS.geojson",
+    "sha256": "858d78305b1981d7662fb3d74519930dd561edb1c2a3946783bdc61074be7f51",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IT-CNO.geojson",
+    "archived_path": "data/vendor/legacy-zones/IT-CNO.geojson",
+    "sha256": "7869a8d1e1c14c5377ec6677516275748395df5943a463b3994f16f887c92b6d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IT-CSO.geojson",
+    "archived_path": "data/vendor/legacy-zones/IT-CSO.geojson",
+    "sha256": "88295fc41510841d0d6bceda9780f48c1f597abb6a2ed6e54ad67331be0c4ca3",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IT-NO.geojson",
+    "archived_path": "data/vendor/legacy-zones/IT-NO.geojson",
+    "sha256": "bd0dd244d17baf0e7b5f7f185ba6657d427b8b1cc16b3e3ac1fa79045a7b2b0b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IT-SAR.geojson",
+    "archived_path": "data/vendor/legacy-zones/IT-SAR.geojson",
+    "sha256": "03633f03f6531c09bd8e785049089b20b39a530f395f43ccad502b047cb6eff8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IT-SIC.geojson",
+    "archived_path": "data/vendor/legacy-zones/IT-SIC.geojson",
+    "sha256": "cce9a46dd74234c3945e55713ab8407b332a83ffb869b400e67c0c26abfeb8d9",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/IT-SO.geojson",
+    "archived_path": "data/vendor/legacy-zones/IT-SO.geojson",
+    "sha256": "028fb064e4b238795e701c78e4c66a857d60e984ba4994a134197e9335dbb316",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JE.geojson",
+    "archived_path": "data/vendor/legacy-zones/JE.geojson",
+    "sha256": "a3124b4c424fdc7419b3a00c92e418bb5a45328deae67fb6fbb5590946f43d32",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JM.geojson",
+    "archived_path": "data/vendor/legacy-zones/JM.geojson",
+    "sha256": "4e8ae2728fc8ccd4631b2320cc9a67d20ee3af088d86aa6ca5d03b81048eab88",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JO.geojson",
+    "archived_path": "data/vendor/legacy-zones/JO.geojson",
+    "sha256": "d60dc76c6a4d827a5afd55336b81f4c06b6b70895970c3e2d013b3c1d1776c95",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-CB.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-CB.geojson",
+    "sha256": "be133d27a69602fc11cbd9e7826625ef55c1431217bd80b24e12970db7c0e6a7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-CG.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-CG.geojson",
+    "sha256": "02c1ab6e33daf6c256ddf088bd5ae396db0b59340e68247f61bd2068ed635f6a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-HKD.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-HKD.geojson",
+    "sha256": "baa09562c0d08631d11058810c9ac9e28636905b4cab471a079c0cdd32020dca",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-HR.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-HR.geojson",
+    "sha256": "6ac5ead50c542517d1a02cd7b82fa7ebd6a5501f72145b68e6fe22a0d083237c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-KN.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-KN.geojson",
+    "sha256": "ba5fb55dbe7abbdee1d122ef84602f5533fcee1c9798aedd5ee3581b330048a1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-KY.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-KY.geojson",
+    "sha256": "f5ab642778ea9bb225997f81586b761950642cc47f85a04ea3dd92b1ff9ff4de",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-ON.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-ON.geojson",
+    "sha256": "dda63fc0a82a2f8c740abd3e7b19801987bb5e70a5c981a03b7ab0642437a041",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-SK.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-SK.geojson",
+    "sha256": "ddd6cfa6261c00cb554ed5a54304bdac1aa2326888db7ad8df87cb705c74ee6c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-TH.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-TH.geojson",
+    "sha256": "044a230738900a86886a3197edfcc96069d8c2b181b96bbd6412ec97b4679049",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/JP-TK.geojson",
+    "archived_path": "data/vendor/legacy-zones/JP-TK.geojson",
+    "sha256": "314614f8e7a9db207852fe88de87826299224d2c6e5e228c65e5d99eaf718c2a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KE.geojson",
+    "archived_path": "data/vendor/legacy-zones/KE.geojson",
+    "sha256": "c53abca97c5152e6dc0bded1b2c06125dd2de793e3d97af34600125f64fdb402",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KG.geojson",
+    "archived_path": "data/vendor/legacy-zones/KG.geojson",
+    "sha256": "52671ac7fe732bc814d308a6a62720c191b6ea0ee8268623e939c74b44018a69",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KH.geojson",
+    "archived_path": "data/vendor/legacy-zones/KH.geojson",
+    "sha256": "6b498f1f0f0b4b5a27fee4d1198a02077c4fb26f6e71e12cf2035f41278c0f47",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KI.geojson",
+    "archived_path": "data/vendor/legacy-zones/KI.geojson",
+    "sha256": "b02a29c2c30cf9b4efa5bedf37d12847188e692278993af1723f70559d290f42",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KM.geojson",
+    "archived_path": "data/vendor/legacy-zones/KM.geojson",
+    "sha256": "7edda5ff644cd27df591e575ed367ed37f5a21a92f06c0ec4bf5e90293c55b24",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KN.geojson",
+    "archived_path": "data/vendor/legacy-zones/KN.geojson",
+    "sha256": "7a5bfbcd037415b52d21fbe0b1ed0d47c0854f7895ad5f60fbacba69e54f9ea7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KP.geojson",
+    "archived_path": "data/vendor/legacy-zones/KP.geojson",
+    "sha256": "3a2f540b622518204e8345b3364a685df2a4a340d851434e60d1c002a15fe330",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KR.geojson",
+    "archived_path": "data/vendor/legacy-zones/KR.geojson",
+    "sha256": "724f6f490d0d2aff701a3acf5d6c452466c5b2a7cd59b9be57cb833396c1bfaa",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KW.geojson",
+    "archived_path": "data/vendor/legacy-zones/KW.geojson",
+    "sha256": "055062800056aea51a83a9cf9ea8580c45e773798b730ec302a8410208672673",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KY.geojson",
+    "archived_path": "data/vendor/legacy-zones/KY.geojson",
+    "sha256": "5c5133113abfb76060d1d5263a8854c390608f8160c6165cd936af2b1d180fd9",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/KZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/KZ.geojson",
+    "sha256": "3ff973ff326bedcd0d48d69d22f9c27957eb153d6dd9c3eb48def2f0d4e6b48a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LA.geojson",
+    "archived_path": "data/vendor/legacy-zones/LA.geojson",
+    "sha256": "af585ff50fb95c6eab8a5d04833ffebef39fce203b4f67a3301be12a64323653",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LB.geojson",
+    "archived_path": "data/vendor/legacy-zones/LB.geojson",
+    "sha256": "19e9b702e0d83c86049faeb97bc432aa6402f07bb504d3b2e6860339024c7d6e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LC.geojson",
+    "archived_path": "data/vendor/legacy-zones/LC.geojson",
+    "sha256": "9fe7873472256d9350bc9b656bf0878551feb1e272e472c10f9928653a322760",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LI.geojson",
+    "archived_path": "data/vendor/legacy-zones/LI.geojson",
+    "sha256": "0105f9c8f01e3f7738b9d4e72d42d6f6f5c9301c9b7b0cb27f2996b2deaafa51",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LK.geojson",
+    "archived_path": "data/vendor/legacy-zones/LK.geojson",
+    "sha256": "28f2b52ec22c4fcdf71e133b49cddae7adb1f432efef09e60fa572fc6f2a9ab5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LR.geojson",
+    "archived_path": "data/vendor/legacy-zones/LR.geojson",
+    "sha256": "9b5cdcf16ef41c45bb9942ea5f85cfb1e8213050e1511306a22fa627ff801fd4",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LS.geojson",
+    "archived_path": "data/vendor/legacy-zones/LS.geojson",
+    "sha256": "4e3b591fdcf15b7b024088118d39ece49d67bc2202370bc76b4d6ba37f3b4c06",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LT.geojson",
+    "archived_path": "data/vendor/legacy-zones/LT.geojson",
+    "sha256": "2f4d869e31ec36269c002c5c57ea789fee804b21e330f48abed215c1d1ab3a0e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LU.geojson",
+    "archived_path": "data/vendor/legacy-zones/LU.geojson",
+    "sha256": "3ade215917045751bf9ae661afc9fd3056b784d638a6ebadd2eac418e6e5cb4f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LV.geojson",
+    "archived_path": "data/vendor/legacy-zones/LV.geojson",
+    "sha256": "20e9b3518cca836336f7377d94930b14055b76b91b8cfe362a2d3b428d397385",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/LY.geojson",
+    "archived_path": "data/vendor/legacy-zones/LY.geojson",
+    "sha256": "d77ab67d9d4779c0abfc6e20a282c222f0ca7e3d20de096d8e4131b2e3b27c51",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MA.geojson",
+    "archived_path": "data/vendor/legacy-zones/MA.geojson",
+    "sha256": "c810ebedc0e0dca07596bd50926922d9a8800a82aaa87cb064529ce45e054132",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MC.geojson",
+    "archived_path": "data/vendor/legacy-zones/MC.geojson",
+    "sha256": "ba13fb26989c2372eb32e2e269e8304265366f0e24c4c8837c66a3002ae65df1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MD.geojson",
+    "archived_path": "data/vendor/legacy-zones/MD.geojson",
+    "sha256": "9376f4665161bb990b2b68bcde6d1f403a319a4d3c00b227c8643de2e0631274",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ME.geojson",
+    "archived_path": "data/vendor/legacy-zones/ME.geojson",
+    "sha256": "5e6f9c57be9b2748c14ebab6e37ac2e9c1e5eeb7e0efd265802a2e60bb2b787f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MF.geojson",
+    "archived_path": "data/vendor/legacy-zones/MF.geojson",
+    "sha256": "d1d794e155b2e993d3512b52318cb7f3aa1199a34d2a72910fe03fc6ae7e1d9d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MG.geojson",
+    "archived_path": "data/vendor/legacy-zones/MG.geojson",
+    "sha256": "317f768b99235fd53bebc837100702ba5df3fbefa536a2838e78826e46946db8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MH.geojson",
+    "archived_path": "data/vendor/legacy-zones/MH.geojson",
+    "sha256": "928ab513c6311bc4d82b8e53140eb71b6cfc7321016c916de2594bf8c88e7e62",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MK.geojson",
+    "archived_path": "data/vendor/legacy-zones/MK.geojson",
+    "sha256": "c6b790f04c4c7c947b7179d4548211075210f3ad850271fe9b86ea2efdd0d336",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ML.geojson",
+    "archived_path": "data/vendor/legacy-zones/ML.geojson",
+    "sha256": "b1fbf2d196ca1c548ca667f7d199bee5e415975139429e75e29ad814d9e5fc7b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MM.geojson",
+    "archived_path": "data/vendor/legacy-zones/MM.geojson",
+    "sha256": "229f487d84b3bfb4e5cad5601e65f4e66d091e71c8830edfa324ea098587390c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MN.geojson",
+    "archived_path": "data/vendor/legacy-zones/MN.geojson",
+    "sha256": "9c29ea5877c37177acef9aa0b24c36347eae47521321dae73933cf33d4622f56",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MO.geojson",
+    "archived_path": "data/vendor/legacy-zones/MO.geojson",
+    "sha256": "346d1f2ce3db3142867d8557b039f6a6417c53d51caaade6649e9cefbe2100ed",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MP.geojson",
+    "archived_path": "data/vendor/legacy-zones/MP.geojson",
+    "sha256": "63343a5ade5619107a5f9a9fa475e1d59193076d3f564a24f6cf3129c6638c4e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MQ.geojson",
+    "archived_path": "data/vendor/legacy-zones/MQ.geojson",
+    "sha256": "99153ec3f12f238b8a963eee99f0e95fea6be08507c4d25e02f7916cd9c674b7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MR.geojson",
+    "archived_path": "data/vendor/legacy-zones/MR.geojson",
+    "sha256": "93ee469c6ffd33f11625c278d0ffc3ec3ca89124478892a2cbb6499e7841deb5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MS.geojson",
+    "archived_path": "data/vendor/legacy-zones/MS.geojson",
+    "sha256": "67e986737df3348410515b25d33c0cb4aeaa2c5bde11adfdb7576a8516a5e1b7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MT.geojson",
+    "archived_path": "data/vendor/legacy-zones/MT.geojson",
+    "sha256": "492eb3f33e8570bd0ed1aeaaadcba9c411db718d4969ab27ad0e03b9f3ad91d6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MU.geojson",
+    "archived_path": "data/vendor/legacy-zones/MU.geojson",
+    "sha256": "bfe87b4b465386d9eba037666ca1722519d292c741dd5f935c3356d7c6755319",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MV.geojson",
+    "archived_path": "data/vendor/legacy-zones/MV.geojson",
+    "sha256": "2f65753cbf47b65ef17edecc8dac0c175945f55979b672a4930b86195ba3e36d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MW.geojson",
+    "archived_path": "data/vendor/legacy-zones/MW.geojson",
+    "sha256": "5e3c609ba3f81167c3376ff2185d1766592159e8a0465c36e80a31b0573b22af",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MX-BC.geojson",
+    "archived_path": "data/vendor/legacy-zones/MX-BC.geojson",
+    "sha256": "186ee9765a2ac0526e070ad17b7ed347cb2cd29cf587be34c3a0460e11956e0b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MX-CE.geojson",
+    "archived_path": "data/vendor/legacy-zones/MX-CE.geojson",
+    "sha256": "bfc932733a48fd41ea0dd20a4c2335e9f2bd4392d9db58350dee9620fde27f7e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MX-NE.geojson",
+    "archived_path": "data/vendor/legacy-zones/MX-NE.geojson",
+    "sha256": "4c2436fedc269756b216156223270cb20e4359cb3d32dfc2853dc58a916a9ef0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MX-NO.geojson",
+    "archived_path": "data/vendor/legacy-zones/MX-NO.geojson",
+    "sha256": "71c880e37b4a9a346e1200b2ad1bffe4a4af834666324c200e7390751caabce7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MX-NW.geojson",
+    "archived_path": "data/vendor/legacy-zones/MX-NW.geojson",
+    "sha256": "8029f8153e1d2efec824a1c894d1486a020ab960527ffed557a73717d05182f3",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MX-OC.geojson",
+    "archived_path": "data/vendor/legacy-zones/MX-OC.geojson",
+    "sha256": "520cbce2c944f01e5beecc1bdec2ec3cfbe5ae43b9e6fee7760ee8e68f781cd5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MX-OR.geojson",
+    "archived_path": "data/vendor/legacy-zones/MX-OR.geojson",
+    "sha256": "81188e5f60b4d9f434ffc631806592710fa1467592d09a71616927c0f5b4be62",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MX-PN.geojson",
+    "archived_path": "data/vendor/legacy-zones/MX-PN.geojson",
+    "sha256": "d743daddd7dcd395551aec9525d48043ea338d1004bca19f9478639b31da4475",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MY-EM.geojson",
+    "archived_path": "data/vendor/legacy-zones/MY-EM.geojson",
+    "sha256": "102e56f5400cd991efc729b8b24b863e02b482ec13dee6a258f888cbb5d3f8fd",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MY-WM.geojson",
+    "archived_path": "data/vendor/legacy-zones/MY-WM.geojson",
+    "sha256": "9500db0a604dc91a154de11457abf94719bc0d3757bfbd079a764612665b1488",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/MZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/MZ.geojson",
+    "sha256": "ba27eb2227191796867c60b0054beb8bd738b7634df1eb034bc741ff0bf276ba",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NA.geojson",
+    "archived_path": "data/vendor/legacy-zones/NA.geojson",
+    "sha256": "78897843304e54f720328895c53005b7aff619e56e811eb4b159daf4697ff392",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NC.geojson",
+    "archived_path": "data/vendor/legacy-zones/NC.geojson",
+    "sha256": "a665485e9b4337d081e9bcea493cef48293a61925c2a82cbd9794e962f0529e0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NE.geojson",
+    "archived_path": "data/vendor/legacy-zones/NE.geojson",
+    "sha256": "8912eb374d9a3f65b43d348189966ccc25b796c4c6b027d655b51ebbf830ea70",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NF.geojson",
+    "archived_path": "data/vendor/legacy-zones/NF.geojson",
+    "sha256": "08d677b7b2da89e0eb277318d0994c23c1b8c81c4d7e24e3d92fac3c1c918415",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NG.geojson",
+    "archived_path": "data/vendor/legacy-zones/NG.geojson",
+    "sha256": "705d038f803f628e33e814bcc809c26af81aff789d83b2b54d68e2acf7cfb06f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NI.geojson",
+    "archived_path": "data/vendor/legacy-zones/NI.geojson",
+    "sha256": "c1d326f1b1fb9c49a9ecd8b8370a0ca8180736c6a3367a29f46475ae103d4a5c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NKR.geojson",
+    "archived_path": "data/vendor/legacy-zones/NKR.geojson",
+    "sha256": "dc7ed07a5a71c266e74886673a366a91806819505dbfd32d57cea59eeb2c6975",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NL.geojson",
+    "archived_path": "data/vendor/legacy-zones/NL.geojson",
+    "sha256": "6cedc1f677805b357fd3efa715411a9b2ee29695b6084f2e09fe0bf310ee19eb",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NO-NO1.geojson",
+    "archived_path": "data/vendor/legacy-zones/NO-NO1.geojson",
+    "sha256": "755d1da0229ae48b9740e0b73a87d4d7bb81714de1194a470f58b149603178a4",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NO-NO2.geojson",
+    "archived_path": "data/vendor/legacy-zones/NO-NO2.geojson",
+    "sha256": "f2d963b609715180dc052caef679e86bc20c2965bb4594da8d642d2cc2bcf5b1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NO-NO3.geojson",
+    "archived_path": "data/vendor/legacy-zones/NO-NO3.geojson",
+    "sha256": "0eb5194cba3ea1b86e14eb3a68fb87aaeb5cd41ca1fe410ac7615c627153e9db",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NO-NO4.geojson",
+    "archived_path": "data/vendor/legacy-zones/NO-NO4.geojson",
+    "sha256": "b1e1fe7ea30a24b6c4261e0dbf9b1a6d0769158c2cd45314bd46b19047493488",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NO-NO5.geojson",
+    "archived_path": "data/vendor/legacy-zones/NO-NO5.geojson",
+    "sha256": "f60e46d9677c64fddfb3e939f26290a66183764d043e2cfcc2903281402d42fb",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NP.geojson",
+    "archived_path": "data/vendor/legacy-zones/NP.geojson",
+    "sha256": "2d5ca18b3ef36aa550a696d1c76a4256a006239d745037894324ef0026311f2a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NR.geojson",
+    "archived_path": "data/vendor/legacy-zones/NR.geojson",
+    "sha256": "6bef7139ec4c4f8f018b12bb18e0aaebac768cfa362b4717eb5fb78f5f9acf19",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NU.geojson",
+    "archived_path": "data/vendor/legacy-zones/NU.geojson",
+    "sha256": "e33ff4c40c3d6223c9f37b42bd873728bb701b2d21f0a7a95fdc9cbd606b2c21",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NZ-NZA.geojson",
+    "archived_path": "data/vendor/legacy-zones/NZ-NZA.geojson",
+    "sha256": "885ed67267da3d8c329546e0172aa887594c3bb79897280b8fffe72bd7d5ae11",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NZ-NZC.geojson",
+    "archived_path": "data/vendor/legacy-zones/NZ-NZC.geojson",
+    "sha256": "7028e51e0034f7d2f03d8c4438e7b13b822d4337b2fa413460df43d95df9c055",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NZ-NZN.geojson",
+    "archived_path": "data/vendor/legacy-zones/NZ-NZN.geojson",
+    "sha256": "44d9c7cc2825034c10083f03f1d32a4bea68e8cab3dda41b7f4ac0b15c3251b3",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NZ-NZS.geojson",
+    "archived_path": "data/vendor/legacy-zones/NZ-NZS.geojson",
+    "sha256": "a5213c664614c52afd5a855dc61a8b52e9473f80d8d4713e915704af41eef228",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/NZ-NZST.geojson",
+    "archived_path": "data/vendor/legacy-zones/NZ-NZST.geojson",
+    "sha256": "d07ecc67c9b4fa10dae57570b2aa24d1fac2d67411bce477913cf8d871ca3f04",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/OM.geojson",
+    "archived_path": "data/vendor/legacy-zones/OM.geojson",
+    "sha256": "071b4f888e75e9901facb286457fdef6aa2410770d2020a07997b1d006c768c2",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PA.geojson",
+    "archived_path": "data/vendor/legacy-zones/PA.geojson",
+    "sha256": "356115560960a4c6af3f70c7a09ce490f73e0771efbc2737e67039c571260be9",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PE.geojson",
+    "archived_path": "data/vendor/legacy-zones/PE.geojson",
+    "sha256": "bfa688f7be99a4e150809181556ecc4dd38774232fe8ac5c1aca221c691caa9f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PF.geojson",
+    "archived_path": "data/vendor/legacy-zones/PF.geojson",
+    "sha256": "ffcd0c46d070affb81240aca1dd7b71d2352d9a3ea1d169b791e083a83ce88e5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PG.geojson",
+    "archived_path": "data/vendor/legacy-zones/PG.geojson",
+    "sha256": "194d26314bb1400360b589ca26a8b0c66942954a35e4f668d01b3b1c90cff4e8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PH.geojson",
+    "archived_path": "data/vendor/legacy-zones/PH.geojson",
+    "sha256": "ae2cbaf865552b8ce7221cd608911d73367371d469d459652ab102900fe11418",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PK.geojson",
+    "archived_path": "data/vendor/legacy-zones/PK.geojson",
+    "sha256": "f2a4bf8662c22c91e13498fb839cfce3c8561b7b49bb3309bb8b82d995c8ee04",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PL.geojson",
+    "archived_path": "data/vendor/legacy-zones/PL.geojson",
+    "sha256": "4ded961ac1a5381c42568826853f0d5cfa102df656005ff3631e7d0aaacc6f6a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PM.geojson",
+    "archived_path": "data/vendor/legacy-zones/PM.geojson",
+    "sha256": "1dde7e3ae0dc92c733c2aad9a7c4cbdf63af63135163ad4d907ba5d13a62896b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PN.geojson",
+    "archived_path": "data/vendor/legacy-zones/PN.geojson",
+    "sha256": "8eba763d2ba61a78fc05563b6262232ef99efa63066ed62cb723e11f784d5802",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PR.geojson",
+    "archived_path": "data/vendor/legacy-zones/PR.geojson",
+    "sha256": "3ac5eee752aad190d793030dea813bbe5b1ac6b8be365afaed28f346fc706877",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PS.geojson",
+    "archived_path": "data/vendor/legacy-zones/PS.geojson",
+    "sha256": "133683abd8dcd2074c4f441e67b2efbf2aaaa252709cdce135af8626900ac8a5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PT-AC.geojson",
+    "archived_path": "data/vendor/legacy-zones/PT-AC.geojson",
+    "sha256": "6b14739794e59fc10b67a5224cd0a0f1a9a607ae870af4e33c899f38552bb23d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PT-MA.geojson",
+    "archived_path": "data/vendor/legacy-zones/PT-MA.geojson",
+    "sha256": "47e97e5e1f950a53be940741c726c0e6c46ff7fccd7f4d808b8d5c732d5ddda7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PT.geojson",
+    "archived_path": "data/vendor/legacy-zones/PT.geojson",
+    "sha256": "98199c327cd001963026d3737be1a50dca832c58a1f8c51474effd0133aade58",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PW.geojson",
+    "archived_path": "data/vendor/legacy-zones/PW.geojson",
+    "sha256": "1289e56c792f32288a41c0d5d59f478fad160ad63eb0f8629dc3259447a7fe34",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/PY.geojson",
+    "archived_path": "data/vendor/legacy-zones/PY.geojson",
+    "sha256": "b3cf85d709ec84fa2180f25015f07261a9ebc7368b161258bda7d585b74d6939",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/QA.geojson",
+    "archived_path": "data/vendor/legacy-zones/QA.geojson",
+    "sha256": "fe5344bfd3931be8ebf8e97c66797e3d4e4f4aa3375dfd8094fd17d3051398c6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/RE.geojson",
+    "archived_path": "data/vendor/legacy-zones/RE.geojson",
+    "sha256": "aed6f7b6959ed366eb2beba3804378985ab0dd7b1674603c0ac276ef85653e49",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/RO.geojson",
+    "archived_path": "data/vendor/legacy-zones/RO.geojson",
+    "sha256": "03455dea5f7fd6d4d51320c635b31dd813f9ced1bbd1331e1bd475daf3061c1e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/RS.geojson",
+    "archived_path": "data/vendor/legacy-zones/RS.geojson",
+    "sha256": "f1639d74386c2ec28e58a7746142815152f1f631c0a252f6033e6381a55d827b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/RU-1.geojson",
+    "archived_path": "data/vendor/legacy-zones/RU-1.geojson",
+    "sha256": "f258c4f0589d78f5c8194a5aa7653e02691aa78af81aa33694c8c757cca91e4d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/RU-2.geojson",
+    "archived_path": "data/vendor/legacy-zones/RU-2.geojson",
+    "sha256": "0b694d0132c1bb4eaf53c936e22f5ccfabd0a8178199a3bf97cb62123c80e130",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/RU-AS.geojson",
+    "archived_path": "data/vendor/legacy-zones/RU-AS.geojson",
+    "sha256": "c272fa28254f475021ddeff6917152ad203063332d5ac84efa8eb48a1eb62d48",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/RU-EU.geojson",
+    "archived_path": "data/vendor/legacy-zones/RU-EU.geojson",
+    "sha256": "8ecb1a587d33fe039d704ab4051b21a280fddeed926b3e190e8fdf6cbddf0fca",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/RU-KGD.geojson",
+    "archived_path": "data/vendor/legacy-zones/RU-KGD.geojson",
+    "sha256": "445042a489421375a7c1396d940306b59fc6519428593f38ffeb413dca386b44",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/RW.geojson",
+    "archived_path": "data/vendor/legacy-zones/RW.geojson",
+    "sha256": "3089999daac5262a9b748544565311812b253d5ec8746d401ebf59003b9c99a9",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SA.geojson",
+    "archived_path": "data/vendor/legacy-zones/SA.geojson",
+    "sha256": "f8e31a785358fca6c128b74e72f496ea77e272dc7dae3085707ef14dc70860ea",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SB.geojson",
+    "archived_path": "data/vendor/legacy-zones/SB.geojson",
+    "sha256": "e1df4167bd6647e520747dae95361c8058491491bf38122b034fe8bf8b233057",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SC.geojson",
+    "archived_path": "data/vendor/legacy-zones/SC.geojson",
+    "sha256": "1e8e6ded2d4b6341daafb9499f76239af9f367f68fe4d233ac2502327402d671",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SD.geojson",
+    "archived_path": "data/vendor/legacy-zones/SD.geojson",
+    "sha256": "700c52da8a6a1e35f641e768d7284d77ed1ee03b95dcd13c0dd1a2c76102b984",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SE.geojson",
+    "archived_path": "data/vendor/legacy-zones/SE.geojson",
+    "sha256": "951609f8b5e5e05dbbeac8951df479a3fe3e48bd2c5fadeca7d2aabc239a84f6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SG.geojson",
+    "archived_path": "data/vendor/legacy-zones/SG.geojson",
+    "sha256": "ea0daf3cccb829dea9510a31eeb9bec7852e64888d1713a241ce904e216a88e3",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SH.geojson",
+    "archived_path": "data/vendor/legacy-zones/SH.geojson",
+    "sha256": "dbd8677b6ee764564b37514a7177fa5d694d92cc12ca4e7549e59efa4f97450f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SI.geojson",
+    "archived_path": "data/vendor/legacy-zones/SI.geojson",
+    "sha256": "01972c0a9801d53b1d512b35d91af8e12a5720384f601fcbe258360c051489dd",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SJ.geojson",
+    "archived_path": "data/vendor/legacy-zones/SJ.geojson",
+    "sha256": "e3fab2db75527b42149b61553f278d867eb578f6ad1794e1e349be00c0aeae93",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SK.geojson",
+    "archived_path": "data/vendor/legacy-zones/SK.geojson",
+    "sha256": "5ecbd35201d3b1e27de62d03528b279f4af1da85edf5d933a760cafa954bf56b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SL.geojson",
+    "archived_path": "data/vendor/legacy-zones/SL.geojson",
+    "sha256": "4fe7f055559f4e8f8f917482f8ea372fef0ec44c0fea8f73f4146d79b17c3450",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SM.geojson",
+    "archived_path": "data/vendor/legacy-zones/SM.geojson",
+    "sha256": "d2b81eaf452093a3041e0d33f5d78cf06d696c53a9723742f3317e97bf3543a0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SN.geojson",
+    "archived_path": "data/vendor/legacy-zones/SN.geojson",
+    "sha256": "28b440070886923b37c25fbaa0e8ef29e758eb2ad02f3251c8ed2959daac7ea8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SO.geojson",
+    "archived_path": "data/vendor/legacy-zones/SO.geojson",
+    "sha256": "0457d1c5c4981b0401eed11f84fa1e303c6d472b980fbca5e3fdd49006105a51",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SR.geojson",
+    "archived_path": "data/vendor/legacy-zones/SR.geojson",
+    "sha256": "a62c43b6f0c4b299926d7d7afdcf24dae480ccaba8f5765018298405f13da924",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SS.geojson",
+    "archived_path": "data/vendor/legacy-zones/SS.geojson",
+    "sha256": "c16f5dc8b03a9fdae4c979c713e9f5ca257b9654fbf740822b7244a469e0d962",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ST.geojson",
+    "archived_path": "data/vendor/legacy-zones/ST.geojson",
+    "sha256": "5519f1f8f538e356bc619de2be9235d12783c92210d7b53d6afaa03cd5eca47c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SV.geojson",
+    "archived_path": "data/vendor/legacy-zones/SV.geojson",
+    "sha256": "e28951a3a0d8b73c64c356dc5058c55544e4b4a9f15c000bd14c4205402063da",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SY.geojson",
+    "archived_path": "data/vendor/legacy-zones/SY.geojson",
+    "sha256": "1ded4482a53e79e6830b560fc8a8c4fb74f9f48832ea7b1d55a9ff6ed3ce6ff8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/SZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/SZ.geojson",
+    "sha256": "59a879926a38e9cab0e8d639af2e5b0304cea15902b3c1ce27befdbadb22d177",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TC.geojson",
+    "archived_path": "data/vendor/legacy-zones/TC.geojson",
+    "sha256": "337ccf0effb0e0b6a84fbd34336fc3176ea9062f2181999ed28fe555cd08b8b3",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TD.geojson",
+    "archived_path": "data/vendor/legacy-zones/TD.geojson",
+    "sha256": "d9250f94b5652eb64c468f74bf6e80a09d11401fb8196d7494143be330133c0a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TF.geojson",
+    "archived_path": "data/vendor/legacy-zones/TF.geojson",
+    "sha256": "ad62262a9c71fe638fc59d45093743652ab896906e90b40fefa5d969aa20aa57",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TG.geojson",
+    "archived_path": "data/vendor/legacy-zones/TG.geojson",
+    "sha256": "15f47939498f2c1c610e559ba0b5e8fa9cdd44ee43928687b7f518994293c6f6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TH.geojson",
+    "archived_path": "data/vendor/legacy-zones/TH.geojson",
+    "sha256": "7786370e9f87c459e6fadd77ce333117312f76bf1421666e14e1f7d09635b8d2",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TJ.geojson",
+    "archived_path": "data/vendor/legacy-zones/TJ.geojson",
+    "sha256": "fbb494a773772ce4cd65112826d73262d204792d03d32fe94cbe5e79c9a1dad9",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TK.geojson",
+    "archived_path": "data/vendor/legacy-zones/TK.geojson",
+    "sha256": "c997101f6ca6201ae9c47f73ff3e768cfd96a575fe92e1cddb4aad0bad57f7ce",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TL.geojson",
+    "archived_path": "data/vendor/legacy-zones/TL.geojson",
+    "sha256": "9b1092f4d07c790b35273f6f4ce3434b2684b89bd3ff88fe44f7a1f409d2722f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TM.geojson",
+    "archived_path": "data/vendor/legacy-zones/TM.geojson",
+    "sha256": "4f04bd08fc48fbad36cd59e959e56a2faa07cf51be5904add36aba3599de42e0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TN.geojson",
+    "archived_path": "data/vendor/legacy-zones/TN.geojson",
+    "sha256": "00699e4d4806c254338703641aa659bec2fd62dd50327d85570bc77a20dc1e98",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TO.geojson",
+    "archived_path": "data/vendor/legacy-zones/TO.geojson",
+    "sha256": "005e404d5f28bc14a338786635ae34f695c1a1c99afb62956a3abe123a6c0857",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TR.geojson",
+    "archived_path": "data/vendor/legacy-zones/TR.geojson",
+    "sha256": "003ebc140363b5c85add5aba171ff5d94f00bf1984b6b649160c6381bc643628",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TT.geojson",
+    "archived_path": "data/vendor/legacy-zones/TT.geojson",
+    "sha256": "336b640b36c2c6176d29e9559abd974a7856a366f8408d72915a4a4dd79aeb19",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TV.geojson",
+    "archived_path": "data/vendor/legacy-zones/TV.geojson",
+    "sha256": "8f0cbd829109abf4110337fa44509825ab2ad75433b2b85f5018f1edf1de29ed",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TW.geojson",
+    "archived_path": "data/vendor/legacy-zones/TW.geojson",
+    "sha256": "0135b6f836b1f7550c4f3a42f8f90ee0644ac44ed73ae866fcc17de4a82bf099",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/TZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/TZ.geojson",
+    "sha256": "f0aa095a6067d0a508a7ddc773eb74c5e404f55982183c0dd426593603c48ae2",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/UA-CR.geojson",
+    "archived_path": "data/vendor/legacy-zones/UA-CR.geojson",
+    "sha256": "768cc3a0e8a46f63ea1d240b0a3b1f7a0a2ff8e97fba3e98e80358675d61ea0c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/UA.geojson",
+    "archived_path": "data/vendor/legacy-zones/UA.geojson",
+    "sha256": "6d18873b1c0d32cfcc7bcdfd1d5555aa473c1a95072d19afb98c06e49cfe9703",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/UG.geojson",
+    "archived_path": "data/vendor/legacy-zones/UG.geojson",
+    "sha256": "d7651c970313c8bc77d98e499aad8752af00582af4ca03a499cb7e35d74fb02a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/UM.geojson",
+    "archived_path": "data/vendor/legacy-zones/UM.geojson",
+    "sha256": "e0f65635074d4c0b0e9112edf04bb92dbe8e28e7b815b1e23e248090e3c67bee",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-AK.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-AK.geojson",
+    "sha256": "b404b8ac88904315cd182b81e1e605dfc552c9fb1a46a57cbb66930d88a726ac",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAL-BANC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAL-BANC.geojson",
+    "sha256": "46c624ef18eb035c40bd68b661ed014a9ce1605ce006b938a13b40208066ce7b",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAL-CISO.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAL-CISO.geojson",
+    "sha256": "254a4f9b93888d6eeb8d592b5d86dd4f4b0b3393c5017ca6e87c92b1212018ab",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAL-IID.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAL-IID.geojson",
+    "sha256": "3438b1f63e9047c06c12c3f5eb8e4226ef4389aeefd7d91818ac085a6dcffd28",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAL-LDWP.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAL-LDWP.geojson",
+    "sha256": "99e126d8cc4ad29d2f6824b3bce6a8ab2eff35ff87de21846de8a8c1df73a0a8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAL-TIDC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAL-TIDC.geojson",
+    "sha256": "d75ef60de6af1e030d894032bf6e460ea4419bfdabcfeaa9ca756d726237d945",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAR-CPLE.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAR-CPLE.geojson",
+    "sha256": "9081c542a0c9c559c2c13488568bd9900f8730118e1732b48364dcc32e19ce17",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAR-CPLW.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAR-CPLW.geojson",
+    "sha256": "01e418312b7f3ee2e034929bb8ab27b9855ac35ad56c3e3cd9872bd479240c2d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAR-DUK.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAR-DUK.geojson",
+    "sha256": "ec9832572626d5b55ab3ca95106001128f0ebdce0212f1018917b885efcb1785",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAR-SC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAR-SC.geojson",
+    "sha256": "7c12f95f091ad2e8412844fe9684b346d61aa6dd4f482166622862fc99ba96e6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAR-SCEG.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAR-SCEG.geojson",
+    "sha256": "cfd30f56110b8e51bbb0c2eb5bde878242e0d22a9819822e12ded2836dcc9f46",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CAR-YAD.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CAR-YAD.geojson",
+    "sha256": "2741c80ecbc38c9848f76d96b22729da530506ebbc7dbde396ff8952193f88af",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CENT-SPA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CENT-SPA.geojson",
+    "sha256": "a8192ac95c72010f09b4a2f8542aca21529620cc9152cbb1581b38c1ae4bfeb9",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-CENT-SWPP.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-CENT-SWPP.geojson",
+    "sha256": "6e064a19e7f5530b38d621ebe58c76077bd2f0b12e2f8f6d05c7eae0a4b7e565",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-FMPP.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-FMPP.geojson",
+    "sha256": "bd05bdb37f45b898e0480eaf909aa5fcd9ceb7fe2b18ed0d975a7e8767e41ced",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-FPC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-FPC.geojson",
+    "sha256": "b653c1baa6e805af44b93adf4b002a1cc38964f0411afc8dab1eeffe13f857b0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-FPL.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-FPL.geojson",
+    "sha256": "b85ca6144bd5f9faad0c828fb184cd8f45fa892721e0c2e3363fee2d5c61ce74",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-GVL.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-GVL.geojson",
+    "sha256": "43cdc4f2188f4136dfd7ccd2d5f69c95971ea385b49a5de7e380ec5f1af860fa",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-HST.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-HST.geojson",
+    "sha256": "c27e28d56dc10e924de3d6d1b0c716483bec175319a71d09867d71415f211660",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-JEA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-JEA.geojson",
+    "sha256": "0fc64dc87b4c07d8760f253e72d896d3a782833e819e4b10e4dcc102f59a251f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-NSB.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-NSB.geojson",
+    "sha256": "b494d428d0ea184031d6a296c31fa8ba07bd7f3c6d05316cfa70afba0734f51c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-SEC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-SEC.geojson",
+    "sha256": "e8b8061e91ec72e4d229f5ebf314c9041ad44080e3dd69ea37ddf7b1f77ebf34",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-TAL.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-TAL.geojson",
+    "sha256": "6ddb36be3599d9e8dbc2af3f4272a3e7e518a1ee36b565b896ba62634a2ddef6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-FLA-TEC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-FLA-TEC.geojson",
+    "sha256": "6338eeece338b81e19535a8727b44e3bd5a0876ffa57dda71bedfa94d62ac245",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-HI-HA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-HI-HA.geojson",
+    "sha256": "ee7c99222177b44b7cad48a50a0c36b650990b2730d203088119ecbe0dd3f657",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-HI-KA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-HI-KA.geojson",
+    "sha256": "7f239c7108c05f3201a43418400847b828d90e9db02650cd6b42b7a028743a73",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-HI-KH.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-HI-KH.geojson",
+    "sha256": "0ec23b9c9dc867db231c9cfd800a1ff1577a45a9ac35c6489f8c7fb4d905e67e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-HI-LA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-HI-LA.geojson",
+    "sha256": "14d90d5eb1753066167ebcf71798d8dc52003d6ca8ab4549fccfdd89d72cefe5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-HI-MA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-HI-MA.geojson",
+    "sha256": "c56fa3a192c95fb420131ef196080d79178495f5a1133ec637b6a1e85a040bda",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-HI-MO.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-HI-MO.geojson",
+    "sha256": "8a173d8caf51738be0e8645d3e81958bdc2f1e64f9dbad6c8366f5fe0876e8fe",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-HI-NI.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-HI-NI.geojson",
+    "sha256": "1accaa57b1e06ec3ec0d3734a0dae83125a83b85c7a4885fd8f9e4ab8161abbd",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-HI-OA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-HI-OA.geojson",
+    "sha256": "36a325a67d98e0834a393d05d358a0548248894c0014f59b441853081116d9e6",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-MIDA-OVEC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-MIDA-OVEC.geojson",
+    "sha256": "590f076eb259f34611e5f558ea91de3c595a06710636d3a46032329a43cffd02",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-MIDA-PJM.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-MIDA-PJM.geojson",
+    "sha256": "548915c077c6003c0e3bebd646d9e81ffe965a06499d5e50cedb0b1372c6cba8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-MIDW-AECI.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-MIDW-AECI.geojson",
+    "sha256": "fe88c3fc58a3818b543803a4aabae0aba032877c051046b027025eb0dca639ef",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-MIDW-EEI.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-MIDW-EEI.geojson",
+    "sha256": "d1bd5295667eafb3e8f7d342c3dfb4f31f090caf94bf6d13a8f7ae429be1a96c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-MIDW-LGEE.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-MIDW-LGEE.geojson",
+    "sha256": "a5e1fac3eec3ac15eb36774d93b0f12e40f98191b52fc3338b6b6139930e15d1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-MIDW-MISO.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-MIDW-MISO.geojson",
+    "sha256": "4cdda9a49f198fb817d2977e36d495281305046bce2e7f93d4fb35a1a48717bc",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NE-ISNE.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NE-ISNE.geojson",
+    "sha256": "d1f8dae4bdba9801d7d3e0c7afce2dbe6798ed92e200ce2e0446c390af4c0648",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-AVA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-AVA.geojson",
+    "sha256": "a251354770acdc6fa14cd681a36b391af401129b5d6850158cf7c4e59294c886",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-BPAT.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-BPAT.geojson",
+    "sha256": "87edd6b7ae89a02d83943722da59e3566edf893d3e91c379a544cc3e083864b1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-CHPD.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-CHPD.geojson",
+    "sha256": "ca17845542c36292d1ae15cde1a158f39083ced9ce627a4e920b8906f789c88c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-DOPD.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-DOPD.geojson",
+    "sha256": "8ac07f4377840911b546339ba3828d03c146c767a0929c60d97c5c0321277286",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-GCPD.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-GCPD.geojson",
+    "sha256": "393e25ee8132fcd197166169b03ded222af3313a6ae793a5b17b49a34333bed8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-GRID.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-GRID.geojson",
+    "sha256": "8ade2cf04204b80d310a538731693cac392733fe814d6d3681a17560c4183033",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-GWA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-GWA.geojson",
+    "sha256": "3e6661f8c757236c1a06d6f8eae71ed59963dc0cf0fefdc122be25efa11b3221",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-IPCO.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-IPCO.geojson",
+    "sha256": "ca07d2040d3af7fd8c9a20c401dfdd5cfe5dc73123c3495db9f9c4c3f0da09b0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-NEVP.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-NEVP.geojson",
+    "sha256": "606a12e3d518e6739d214528535f9b517fe1c87421dfe1532048a77a7f4ab779",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-NWMT.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-NWMT.geojson",
+    "sha256": "674a0d10a5400023c8cbdae7bc1407d71953a8991d44356956950e74bdea2c04",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-PACE.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-PACE.geojson",
+    "sha256": "a976facf3d11b7fd954b6943302f57d4b9c1202a6c806496b60728aff263d6e8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-PACW.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-PACW.geojson",
+    "sha256": "846b52cca030838c4ce229e65ec549903ec867d774ab7016c353b60413a1809d",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-PGE.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-PGE.geojson",
+    "sha256": "07b33ee6fc73c0590632dc377612b44e172c04c676386fd0de6191fe6489cad7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-PSCO.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-PSCO.geojson",
+    "sha256": "c3d3e0144853a89b09ff72f56fa6a711b98605b0008da91127b0e24c675822f0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-PSEI.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-PSEI.geojson",
+    "sha256": "b5a0f0811a905b3ae65691be39b51be459e39c70288944678ac9e47977d2e2dc",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-SCL.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-SCL.geojson",
+    "sha256": "95340c97e61da9d4ed31d74debc3cf2119e634aab5f666917fd57cfaf3879c46",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-TPWR.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-TPWR.geojson",
+    "sha256": "20bc6667908273ee612d386de122255f94d76bc5144363dbf953feb7530aed7f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-WACM.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-WACM.geojson",
+    "sha256": "236311d04c90195a48b22d74d6731ed2c89644d1970e54775125c726c645ec50",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-WAUW.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-WAUW.geojson",
+    "sha256": "ed136501be365f000901e3fafac32bddb8bd5f7d36c279960b81bbc94d057bbf",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NW-WWA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NW-WWA.geojson",
+    "sha256": "471ddb87f91b32d65ce6b93ff53f7d6388465450f568e7fe60389a6ff98d6114",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-NY-NYIS.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-NY-NYIS.geojson",
+    "sha256": "47ba1d006ad06f155ef351ea33351bfbcd47215fa519b25a0493663dccc4bcde",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SE-AEC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SE-AEC.geojson",
+    "sha256": "0288beb35e4c7023b957a8e342e2678f4d7bbfc9bc1619b23ff537d8636a05bb",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SE-SEPA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SE-SEPA.geojson",
+    "sha256": "fd9853bccd3ef93f9a378139de054690f90f4dd890ad45faba38a28c73997325",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SE-SOCO.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SE-SOCO.geojson",
+    "sha256": "e59b159047fabe626216842eb37f4b79f2686f98341e1e7a59582b34defc769e",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-AZPS.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-AZPS.geojson",
+    "sha256": "ce1b6b3483b9adea456cef1408b2fc88041c623ef012590daa92ebf23c8d19d8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-DEAA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-DEAA.geojson",
+    "sha256": "7783cf4eb23e8862a21698861f84aa53277449d7ffef6ff736d831502118c9ad",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-EPE.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-EPE.geojson",
+    "sha256": "6dbc9a74091d43488af1aa94651f2c9e6cf62db641fc6c6e4b58fdd328cf1ead",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-GRIF.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-GRIF.geojson",
+    "sha256": "2ef0f0f4245e799cddf8ffcb1367d96bd4a2a45b541778b21a081f68d6c0d2f5",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-GRMA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-GRMA.geojson",
+    "sha256": "98042e3d196186a0cacbd19ffb9f8952f3352b7dabce539333a525e590875cd0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-HGMA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-HGMA.geojson",
+    "sha256": "48b64291e357254f17d5f9801ec8ec8e80ff9f4a849ea8dd3456d9d411f801c0",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-PNM.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-PNM.geojson",
+    "sha256": "675f24e0164179d2bfb23c2c67f0df26edde6a7e062895282d0332a26d597e73",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-SRP.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-SRP.geojson",
+    "sha256": "980fc1d86d8d14f4be24ccd71b6451d89b189a4dd0aa32b2a4ce24e2be0b5855",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-TEPC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-TEPC.geojson",
+    "sha256": "dbb1fc0cd62e5a7fb1d0498dd5dc8a219f219a524055c0a306dbc891c66667ca",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-SW-WALC.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-SW-WALC.geojson",
+    "sha256": "48fc649d62272800ac0fe1bab87d827a67d253c4fc254f14dbf022905b0295ae",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-TEN-TVA.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-TEN-TVA.geojson",
+    "sha256": "fbf94a4e61b31c6056a54351e8b2622d792ce9578b1bbc1fa1797fd8fba00ec1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/US-TEX-ERCO.geojson",
+    "archived_path": "data/vendor/legacy-zones/US-TEX-ERCO.geojson",
+    "sha256": "b90da381c5e5488496ac0ecc38fdc88efc8878ec43d72501cce1b3cd5502f614",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/UY.geojson",
+    "archived_path": "data/vendor/legacy-zones/UY.geojson",
+    "sha256": "c096134716208755357498f95a495479507a6c8be3c57557a306109f19098038",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/UZ.geojson",
+    "archived_path": "data/vendor/legacy-zones/UZ.geojson",
+    "sha256": "7df1f8f1d14b0e64c8f4d77af4f6cb85097107a05ff4aea701e6f238b77978bb",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/VA.geojson",
+    "archived_path": "data/vendor/legacy-zones/VA.geojson",
+    "sha256": "6ca94c164efd477647d470a55c640d1559cd07b123a9c6edfc5814de4f136405",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/VC.geojson",
+    "archived_path": "data/vendor/legacy-zones/VC.geojson",
+    "sha256": "b47189b9072b07d43849d47ee9aabe1363bc3dbfc06a2b1f3ffecacdb91b7e70",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/VE.geojson",
+    "archived_path": "data/vendor/legacy-zones/VE.geojson",
+    "sha256": "bbbe0fb0ee09d51281515e917835089467c42bd49829c29a1d8dbe65b51b4776",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/VG.geojson",
+    "archived_path": "data/vendor/legacy-zones/VG.geojson",
+    "sha256": "b55f4224c56cbabd371aca84ef42f8e357b687ea239f09f81f829e5042d31613",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/VI.geojson",
+    "archived_path": "data/vendor/legacy-zones/VI.geojson",
+    "sha256": "96a7db5d2939d643b0914fe039cf14bc95e6756340abc7710d9b85570cb53424",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/VN.geojson",
+    "archived_path": "data/vendor/legacy-zones/VN.geojson",
+    "sha256": "3bcf52d197ea1a1e0fb7afafc5727e742b37f321adce22d32d7d5dc6f6555b38",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/VU.geojson",
+    "archived_path": "data/vendor/legacy-zones/VU.geojson",
+    "sha256": "fe4618687a5d5f5ed185ad6236cd67daf515a985acf591fe5e0c22856dc489b7",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/WF.geojson",
+    "archived_path": "data/vendor/legacy-zones/WF.geojson",
+    "sha256": "ff2b070ec50e79890686554cb78dd59ec3f6a204a747dea46cd949eac9c06166",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/WS.geojson",
+    "archived_path": "data/vendor/legacy-zones/WS.geojson",
+    "sha256": "6521abdb71ca8480cd766c3a0711ab9ca38ae746358d0a5566325ef46789a2cf",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/XK.geojson",
+    "archived_path": "data/vendor/legacy-zones/XK.geojson",
+    "sha256": "a99f6e54dc181367a5364cbaac37d12f3333edc49fd14f73590372a3990e7fe9",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/XX.geojson",
+    "archived_path": "data/vendor/legacy-zones/XX.geojson",
+    "sha256": "e83bb402b88001fcd15c71f433aa0d62355f9eba42084c8f838facfe3b6522ba",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/YE.geojson",
+    "archived_path": "data/vendor/legacy-zones/YE.geojson",
+    "sha256": "6e4950040baa21b837770e8d02eeba11ff74c070c1a06e624750e2a7509a33e8",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/YT.geojson",
+    "archived_path": "data/vendor/legacy-zones/YT.geojson",
+    "sha256": "7cd21061d52ad15a4c943381b634fbbce47f940409b9fa5261fc6880259cafda",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ZA.geojson",
+    "archived_path": "data/vendor/legacy-zones/ZA.geojson",
+    "sha256": "e153a67e0886c68e1221141f9e3707b2b93de1a7ffffa2a71a12d4c1ff950915",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ZM.geojson",
+    "archived_path": "data/vendor/legacy-zones/ZM.geojson",
+    "sha256": "4ecfcd45c675e4b61ab3e2d7d8e946cffd6a037e50d4a70289db2eb074c2f89a",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones/ZW.geojson",
+    "archived_path": "data/vendor/legacy-zones/ZW.geojson",
+    "sha256": "4ff499807ec525bf0649e2cd7bac8cd778f00363aae9ac09d48e6e32e5010f7f",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones_no_backup/NO-NO1.geojson",
+    "archived_path": "docs/archive/v1/geography/no-backup/NO-NO1.geojson",
+    "sha256": "755d1da0229ae48b9740e0b73a87d4d7bb81714de1194a470f58b149603178a4",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones_no_backup/NO-NO2.geojson",
+    "archived_path": "docs/archive/v1/geography/no-backup/NO-NO2.geojson",
+    "sha256": "f2d963b609715180dc052caef679e86bc20c2965bb4594da8d642d2cc2bcf5b1",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones_no_backup/NO-NO3.geojson",
+    "archived_path": "docs/archive/v1/geography/no-backup/NO-NO3.geojson",
+    "sha256": "0eb5194cba3ea1b86e14eb3a68fb87aaeb5cd41ca1fe410ac7615c627153e9db",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones_no_backup/NO-NO4.geojson",
+    "archived_path": "docs/archive/v1/geography/no-backup/NO-NO4.geojson",
+    "sha256": "b1e1fe7ea30a24b6c4261e0dbf9b1a6d0769158c2cd45314bd46b19047493488",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "data/zones_no_backup/NO-NO5.geojson",
+    "archived_path": "docs/archive/v1/geography/no-backup/NO-NO5.geojson",
+    "sha256": "f60e46d9677c64fddfb3e939f26290a66183764d043e2cfcc2903281402d42fb",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "assets/data/bidding_zones.geojson",
+    "archived_path": "docs/archive/v1/geography/se-input.geojson",
+    "sha256": "cb29a383083e75ff6d39c647d2b32476d0921ed2263842069fe6fff9843f0e9c",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "assets/projects_scenarios.csv",
+    "archived_path": "docs/archive/v1/assets/projects_scenarios.csv",
+    "sha256": "2398b632b8cf9c64fc268f04a57af691fcc7434a30c65ff1ad1ea78b9a05d576",
+    "origin_commit": "e3b85cc"
+  },
+  {
+    "original_path": "docs/old/schema.md",
+    "archived_path": "docs/archive/v1/docs/older-schema.md",
+    "sha256": "1c5cbe89d8cbb91e04d019f2bd36b36609925d64884ad13bb775ea4eeab457eb",
+    "origin_commit": "e3b85cc"
+  }
+]

@@ -1,5 +1,12 @@
 # One-time migration of baseline e3b85cc. No web access or fresh verification.
 migrate_v1_tables <- function(input, output, root) {
+  reviewed <- read_json(file.path(root,'docs/reviews/2026-10-11/granskningsunderlag.json'))$original_file_inventory
+  for (file in reviewed) {
+    if (grepl('^data/(master|audit)/.*[.]csv$',file$path)) {
+      path <- file.path(input,sub('^data/','',file$path))
+      if (!file.exists(path) || sha_file(path)!=file$sha256) stop('Legacy input differs from the reviewed baseline: ',file$path)
+    }
+  }
   schema <- read_json(file.path(root, 'config/schema.json'))
   tables <- list(); originals <- list()
   for (name in names(schema$tables)) {
@@ -35,6 +42,9 @@ migrate_v1_tables <- function(input, output, root) {
   c$physical_site_id <- p$physical_site_id[match(c$project_id,p$project_id)]
   c$phase_id <- sub('^C', 'PH', c$claim_id); c$accounting_group_id <- c$physical_site_id
   admin <- tables$admin_units
+  # SSB's statistical placeholder is not a municipality and cannot locate a project.
+  admin <- admin[!(admin$country=='NO' & admin$municipality_code=='9999'),,drop=FALSE]
+  tables$admin_units <- admin
   for (i in seq_len(nrow(p))) {
     name <- trimws(sub('\\s*\\([^)]*\\)\\s*$', '', p$municipality[i]))
     a <- which(admin$country == p$country[i] & admin$municipality_name == name)

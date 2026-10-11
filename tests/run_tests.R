@@ -4,6 +4,9 @@ source('scripts/lib/common.R'); source('scripts/lib/validation.R')
 source('scripts/lib/releases.R'); source('scripts/lib/migration_v2.R'); source('scripts/lib/promotion.R')
 source('scripts/lib/accounting.R')
 source('scripts/lib/geometry.R'); source('scripts/lib/export.R'); source('scripts/lib/runtime.R')
+source('scripts/lib/runs.R')
+source('scripts/lib/run_review.R')
+source('scripts/lib/admin.R')
 root <- pipeline_root(); schema <- read_json(file.path(root,'config/schema.json'))
 check_runtime(root)
 scratch <- tempfile('datacenter-tests-'); dir.create(scratch)
@@ -166,6 +169,7 @@ candidate_fixture <- function(t) {
   p <- t$projects_master[t$projects_master$project_id=='P038',,drop=FALSE]
   values <- as.list(p); values$project_candidate_id <- 'TEST-NP001'; values$project_name <- 'Synthetic new site'
   values$physical_site_id <- ''; values$run_id <- 'fixture-candidate'; values$review_state <- 'approved'
+  values$decision_basis <- 'execution_evidence'
   values$source_type <- 'company'; values$source_url <- 'https://example.org/candidate'; values$source_title <- 'Synthetic candidate source'
   values$source_date <- ''; values$access_date <- '2026-10-11'; values$original_excerpt <- 'Synthetic candidate used only for regression testing.'
   values$original_language <- 'en'; values$locator <- 'Test paragraph'; values$evidence_kind <- 'verbatim'; values$confidence <- 'high'
@@ -177,6 +181,7 @@ candidate_fixture <- function(t) {
   for (field in c('run_id','source_type','source_url','source_title','source_date','access_date','original_excerpt','original_language','locator','evidence_kind','confidence','reviewed_by','reviewed_at')) capacity[[field]] <- values[[field]]
   capacity$capacity_candidate_id <- 'TEST-NC001'; capacity$project_candidate_id <- 'TEST-NP001'; capacity$project_id <- ''
   capacity$source_ids <- ''; capacity$review_state <- 'approved'; capacity$project_name <- values$project_name
+  capacity$decision_basis <- 'execution_evidence'
   capacity$supports_fields <- 'reported_capacity_mw;reported_capacity_basis;capacity_unit;measurement_kind;capacity_type;capacity_status;investment_decision;decision_basis;timing_scope;baseline_scope;relation;operation_year_min;operation_year_max'
   t$new_capacity_claim_candidates <- rbind(t$new_capacity_claim_candidates,row_frame(capacity,names(t$new_capacity_claim_candidates)))
   t
@@ -291,6 +296,127 @@ test('map validation rejects wrong identities, invalid coordinates and non-WGS84
   expect_error(function() validate_geometry(polygon,'test'),'Invalid WGS84')
   t <- tables; t$geography_config$geojson_file[t$geography_config$bidding_zone=='NO1'] <- 'data/reference/bidding-zones/FI.geojson'
   expect_error(function() assemble_geometry(t,root),'exactly one named feature')
+})
+run_fixture <- function(task='audit') {
+  f <- fixture(); copy_directory(file.path(root,'prompts'),file.path(f,'prompts'))
+  dir.create(file.path(f,'docs'))
+  file.copy(file.path(root,'docs',c('methodology.md','energy-assumptions.md','status_rules.md')),file.path(f,'docs'))
+  created <- create_country_run(f,current_state(f),'FI',task,'test-fi-run','unit-test','synthetic-fixture')
+  list(root=f,path=created$path)
+}
+complete_response_fixture <- function(path) {
+  p <- read_table(file.path(path,'input/projects_master.csv')); c <- read_table(file.path(path,'input/capacity_master.csv'))
+  w <- read_json(file.path(path,'input/run_workflow.json')); manifest <- verify_run(path)
+  response <- list(run_id=manifest$run_id,searches=list(),evidence=list(),coverage=list(),proposals=list(),conflicts=list(),summary='Synthetic response validator fixture; not research.',limitations=list('All findings here are artificial test data.'))
+  for (id in c(p$project_id,'FI')) {
+    languages <- if(id=='FI') c('fi','sv') else 'en'
+    for (language in languages) response$searches[[length(response$searches)+1]] <- list(search_id=paste('Q',id,language,sep='-'),action='search',query=paste('Synthetic',id,'query'),language=language,engine='unit-test',searched_at='2026-10-11T12:00:00Z',route='operator',scope_id=id,result_urls=list(),outcome='Synthetic test result',limitations='No real web search')
+  }
+  for (type in c('project','claim')) {
+    entities <- if(type=='project') p else c; key <- if(type=='project') 'project_id' else 'claim_id'
+    for (i in seq_len(nrow(entities))) {
+      search <- paste('Q',entities$project_id[i],'en',sep='-')
+      fields <- lapply(unlist(w$audit_required_fields[[type]]),function(field)list(field=field,outcome='unknown',evidence_ids=list(),search_ids=list(search),review_kind='interpretation',notes='Synthetic unresolved field; no evidence claimed.'))
+      response$coverage[[length(response$coverage)+1]] <- list(entity_type=type,entity_id=entities[[key]][i],result='unresolved',field_outcomes=fields,search_ids=list(search),notes='Synthetic coverage only.')
+    }
+  }
+  response
+}
+test('country packets are filtered, chunked, frozen and cannot be silently replaced',function() {
+  r <- run_fixture(); path <- r$path
+  stopifnot(nrow(read_table(file.path(path,'input/projects_master.csv')))==14,nrow(read_table(file.path(path,'input/capacity_master.csv')))==13,
+    nrow(read_table(file.path(path,'input/sources_master.csv')))==27,length(list.files(file.path(path,'input'),pattern='^packet-'))==3,
+    nrow(read_table(file.path(path,'input/global_identity_index.csv')))==38)
+  expect_error(function() create_country_run(r$root,current_state(r$root),'FI','audit','test-fi-run','test','test'),'already exists')
+  cat('tamper',file=file.path(path,'instructions/prompt.md'),append=TRUE)
+  expect_error(function() verify_run(path),'were modified')
+})
+test('run validation requires languages, targeted searches and complete no-change coverage',function() {
+  r <- run_fixture(); response <- complete_response_fixture(r$path)
+  file <- file.path(r$path,'work/response.json'); write_json(response,file)
+  stopifnot(validate_run_response(r$path)$valid)
+  response$coverage <- response$coverage[-1]; write_json(response,file)
+  expect_error(function() validate_run_response(r$path),'Coverage missing')
+  response <- complete_response_fixture(r$path); response$searches <- Filter(function(s)s$language!='sv',response$searches); write_json(response,file)
+  expect_error(function() validate_run_response(r$path),'search languages')
+})
+test('model self-approval, unknown keys and unsupported confirmed fields are rejected',function() {
+  r <- run_fixture(); response <- complete_response_fixture(r$path); file <- file.path(r$path,'work/response.json')
+  response$approved <- TRUE; write_json(response,file)
+  expect_error(function() validate_run_response(r$path),'unknown keys')
+  response$approved <- NULL; response$coverage[[1]]$field_outcomes[[1]]$outcome <- 'confirmed'; write_json(response,file)
+  expect_error(function() validate_run_response(r$path),'lacks accessible same-entity evidence')
+})
+reviewable_response_fixture <- function(path) {
+  response <- complete_response_fixture(path)
+  response$evidence <- list(list(evidence_id='E001',project_id='P035',claim_id='C040',url='https://example.org/run-fixture',title='Synthetic fixture source',source_type='company',publication_date='2026-10-11',access_date='2026-10-11',original_language='en',original_excerpt='Synthetic test evidence: commitment to the full scope has not been established.',translation='',locator='Fixture paragraph 1',retrieval_status='accessible',independence_group='test-announcement',supports_fields=list('investment_decision','decision_basis'),confidence='high',limitations='Synthetic fixture; never real research.'))
+  response$proposals <- list(
+    list(proposal_id='PR001',table='suggested_capacity_updates',values=list(claim_id='C040',field='investment_decision',current_value='yes',suggested_value='unclear'),evidence_ids=list('E001'),rationale='Synthetic revision.',review_kind='interpretation'),
+    list(proposal_id='PR002',table='suggested_capacity_updates',values=list(claim_id='C040',field='decision_basis',current_value='legacy_unverified',suggested_value='no_public_evidence'),evidence_ids=list('E001'),rationale='Synthetic absence classification.',review_kind='interpretation'))
+  response
+}
+test('frozen response review imports selected approvals without changing masters, then promotes evidence',function() {
+  r <- run_fixture(); response <- reviewable_response_fixture(r$path)
+  write_json(response,file.path(r$path,'work/response.json'))
+  decisions <- data.frame(proposal_id=c('PR001','PR002'),decision=c('approved','needs_review'),reviewer='test-reviewer',reviewed_at='2026-10-11T12:00:00Z',reason=c('Checked fixture evidence','Deliberately not approved'),stringsAsFactors=FALSE)
+  decision_path <- file.path(r$path,'work/decisions.csv'); write_table(decisions,decision_path)
+  reviewed <- freeze_run_review(r$path,decision_path,'test-reviewer')
+  initial <- basename(current_state(r$root)); before <- file_inventory(file.path(current_state(r$root),'master'))
+  dry <- import_run_review(r$root,'test-fi-run',reviewed$review_id,initial,FALSE)
+  stopifnot(!dry$applied,basename(current_state(r$root))==initial)
+  imported <- import_run_review(r$root,'test-fi-run',reviewed$review_id,initial,TRUE)
+  stopifnot(identical(before,file_inventory(file.path(current_state(r$root),'master'))),import_run_review(r$root,'test-fi-run',reviewed$review_id,initial,TRUE)$replay)
+  expect_error(function() promote_rows(r$root,'audit','capacity','test-fi-run--PR002','FI','test-reviewer','unapproved-run-row',imported$release_id,TRUE),'explicitly approved')
+  result <- promote_rows(r$root,'audit','capacity','test-fi-run--PR001','FI','test-reviewer','run-fixture-promotion',imported$release_id,TRUE)
+  t <- load_state(current_state(r$root),schema)
+  stopifnot(result$applied,t$capacity_master$investment_decision[t$capacity_master$claim_id=='C040']=='unclear',t$sources_master$independence_group[t$sources_master$source_id=='S084']=='test-announcement')
+  cat('\n',file=file.path(r$path,'reviews',reviewed$review_id,'response.json'),append=TRUE)
+  expect_error(function() verify_review(r$path,reviewed$review_id),'was modified')
+})
+test('one verified source can support several approved fields without duplicate source records',function() {
+  f <- fixture(function(t) {
+    t <- approve_fixture(t); row <- tail(t$suggested_capacity_updates,1)
+    row$audit_id <- 'TEST-AC002'; row$field <- 'decision_basis'; row$current_value <- 'legacy_unverified'; row$suggested_value <- 'no_public_evidence'
+    row$supports_fields <- 'investment_decision;decision_basis'
+    t$suggested_capacity_updates <- rbind(t$suggested_capacity_updates,row);t
+  })
+  result <- promote_rows(f,'audit','capacity',c('TEST-AC001','TEST-AC002'),'FI','test-reviewer','deduplicated-evidence-request',basename(current_state(f)),TRUE)
+  t <- load_state(current_state(f),schema)
+  stopifnot(result$applied,nrow(t$sources_master)==71,nrow(t$field_reviews)==2,setequal(split_values(t$sources_master$supports_fields[t$sources_master$source_id=='S084']),c('investment_decision','decision_basis')))
+})
+test('official reference refresh validates year/counts, preserves configuration and rejects tampering',function() {
+  f <- fixture(); old <- file_inventory(file.path(current_state(f),'master'))
+  proposal <- file.path(f,'admin-proposal')
+  result <- prepare_admin_reference(f,current_state(f),'2026',file.path(root,'data/reference/admin/2026/raw'),proposal)
+  stopifnot(result$counts$SE==290,result$counts$FI==308,result$counts$NO==357,result$semantic_changes==0)
+  initial <- basename(current_state(f)); dry <- apply_admin_reference(f,proposal,initial,'test-reviewer',FALSE)
+  stopifnot(!dry$applied,basename(current_state(f))==initial)
+  applied <- apply_admin_reference(f,proposal,initial,'test-reviewer',TRUE)
+  stopifnot(applied$applied,sha_file(file.path(current_state(f),'master/country_config.csv'))==old[['country_config.csv']])
+  expect_error(function()prepare_admin_reference(f,current_state(f),'2027',file.path(root,'data/reference/admin/2026/raw'),file.path(f,'new')),'not configured')
+  cat('tamper',file=file.path(proposal,'admin_units.csv'),append=TRUE)
+  expect_error(function()apply_admin_reference(f,proposal,applied$release_id,'test-reviewer',TRUE),'changed since preparation')
+})
+test('partial evidence stays partial and automatically supplies scoped decision references',function() {
+  f <- fixture(approve_fixture)
+  promote_rows(f,'audit','capacity','TEST-AC001','FI','test-reviewer','scoped-reference-test',basename(current_state(f)),TRUE)
+  t <- load_state(current_state(f),schema); c <- t$capacity_master[t$capacity_master$claim_id=='C040',,drop=FALSE]
+  stopifnot(c$review_state=='needs_review',c$decision_source_ids=='S084',c$reviewed_by=='test-reviewer')
+  invalid(function(t) {t$capacity_master$decision_basis[1]<-'explicit_decision';t$capacity_master$investment_decision[1]<-'unclear';t},'Decision value contradicts')
+})
+test('publication precision and correction coverage cannot bypass response checks',function() {
+  r <- run_fixture(); response <- reviewable_response_fixture(r$path); file <- file.path(r$path,'work/response.json')
+  response$evidence[[1]]$publication_date <- '2027'; write_json(response,file)
+  expect_error(function()validate_run_response(r$path),'after as-of')
+  response <- complete_response_fixture(r$path); response$coverage[[1]]$field_outcomes[[1]]$outcome <- 'correction_proposed';write_json(response,file)
+  expect_error(function()validate_run_response(r$path),'matching proposal')
+})
+test('selected-project pilot freezes its scope and accepts only unchanged scoped inputs',function() {
+  r <- run_fixture(); created <- create_country_run(r$root,current_state(r$root),'FI','audit','test-pilot-run','test','synthetic',c('P033','P035'))
+  stopifnot(created$project_count==2,created$packet_count==1,verify_run(created$path)$scope=='selected_project_pilot')
+  t <- load_state(current_state(r$root),schema); assert_run_still_current(created$path,t,schema,r$root)
+  t$capacity_master$reported_capacity_mw[t$capacity_master$claim_id=='C040'] <- '999'
+  expect_error(function()assert_run_still_current(created$path,t,schema,r$root),'Country input changed')
 })
 cat('\n',passed,' tests passed.\n',sep='')
 unlink(scratch,recursive=TRUE)

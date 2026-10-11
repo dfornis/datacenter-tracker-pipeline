@@ -1,0 +1,90 @@
+{
+  "packet_projects": 5,
+  "audit_required_fields": {
+    "project": [
+      "developer",
+      "municipality",
+      "county",
+      "bidding_zone",
+      "project_status",
+      "investment_decision",
+      "decision_basis",
+      "business_model",
+      "workload"
+    ],
+    "claim": [
+      "reported_capacity_mw",
+      "reported_capacity_basis",
+      "capacity_unit",
+      "measurement_kind",
+      "capacity_qualifier",
+      "capacity_type",
+      "capacity_status",
+      "investment_decision",
+      "decision_basis",
+      "timing_scope",
+      "operation_year_min",
+      "operation_year_max",
+      "construction_start_year",
+      "relation",
+      "baseline_scope",
+      "baseline_claim_id",
+      "baseline_comparable",
+      "site_pue",
+      "capacity_max_mw",
+      "connection_status",
+      "site_pue_kind",
+      "site_pue_qualifier",
+      "business_model",
+      "workload"
+    ]
+  },
+  "discovery_routes": [
+    "operator",
+    "planning_permit",
+    "grid",
+    "trade_press",
+    "country_discovery"
+  ],
+  "minimum_search_languages": {
+    "SE": [
+      "sv",
+      "en"
+    ],
+    "NO": [
+      "nb",
+      "en"
+    ],
+    "FI": [
+      "fi",
+      "sv",
+      "en"
+    ]
+  },
+  "evidence_priority_by_field": {
+    "connection_status": [
+      "grid",
+      "regulatory",
+      "operator_exact_connection_statement"
+    ],
+    "capacity_measure": [
+      "scoped_technical_document",
+      "scoped_operator_statement",
+      "identified_secondary_document"
+    ],
+    "construction": [
+      "observed_operator_or_contractor_execution",
+      "municipal_inspection",
+      "corroborated_reporting"
+    ],
+    "permission": [
+      "decision_document",
+      "authority_registry"
+    ],
+    "decision": [
+      "explicit_scoped_decision",
+      "observed_scoped_execution",
+      "conditional_commitment_separately"
+    ]
+  }
+}

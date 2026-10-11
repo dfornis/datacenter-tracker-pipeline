@@ -69,7 +69,7 @@ Etappvis utveckling stöds som princip av [National Grid DSO/Regen](https://dso.
 
 ### Campus, etapper och befintlig drift
 
-`parent_id` och `relation` kopplar etapper/kunder till samma ram. Inom gruppen används ett gemensamt kapacitetskuvert: största tillämpliga omfattning, inte summan av kuvert och innehåll. Ett möjligt kundöverlapp antas ingå i campuset i beräkningen; båda projekten syns. En känd tidig etapp kan bidra även om hela campuset saknar fullbyggnadsår.
+`parent_id` och `relation` kopplar etapper/kunder till samma ram. Inom gruppen används ett gemensamt kapacitetskuvert: största tillämpliga omfattning, inte summan av kuvert och innehåll. Ett möjligt kundöverlapp antas ingå i campuset i beräkningen; båda projekten syns. En känd tidig etapp kan bidra även om hela campuset saknar fullbyggnadsår eller eget MW-tal. I det senare fallet redovisas den kända etappens bidrag på campuset, medan källuppgiften om hela campusets effekt förblir tom.
 
 Verkligt separata, additiva utbyggnader ska vara separata uppgifter med `independent` eller `incremental_to`. Om två etapper kan adderas inom en ram behöver deras gemensamma omfattning beläggas; modellen antar inte detta från två namn.
 

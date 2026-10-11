@@ -194,13 +194,20 @@ calculate <- function(x) {
       }
       if (owner %in% members && ledger$share[owner]==0) ledger$reason[owner]<-'contains_modelled_phase'
       children<-setdiff(active,owner);ledger$reason[children]<-paste0('included_in:',group)
-      a<-unique(unlist(lapply(ledger$assumptions[members],ids)));ledger$assumptions[owner]<-paste(a,collapse=';')
+      a<-unique(unlist(lapply(ledger$assumptions[members],ids)))
+      if(!any(is.finite(c(ledger$gross_mw_low[owner],ledger$gross_mw_high[owner])))) a<-c(a,'only_contained_capacity_known')
+      ledger$assumptions[owner]<-paste(a,collapse=';')
     }
     all_rows[[length(all_rows)+1]]<-ledger
     for (i in seq_len(nrow(p))) {
       pr<-p[i,];lr<-ledger[ledger$project_id==pr$project_id,,drop=FALSE]
-      live<-any(lr$share>0);has_load<-any(is.finite(lr$gross_mw_high)|is.finite(lr$gross_mw_low))
-      category<-if(pr$record_type=='candidate')'candidate' else if(pr$status %in% c('Cancelled','Dormant'))tolower(pr$status) else if(pr$status=='Operational')'operational' else if(!has_load)'unquantified' else 'pipeline'
+      live<-any(lr$share>0 | lr$reason=='contains_modelled_phase')
+      # The physical owner also represents quantified contained phases, even
+      # when the owner's own headline MW is missing. Otherwise the known phase
+      # is assigned to an owner that is then replaced by NA in zone totals.
+      scope<-ledger[ledger$project_id==pr$project_id | ledger$group_id %in% lr$claim_id,,drop=FALSE]
+      has_load<-any(is.finite(scope$gross_mw_high)|is.finite(scope$gross_mw_low))
+      category<-if(pr$status %in% c('Cancelled','Dormant'))tolower(pr$status) else if(pr$status=='Operational')'operational' else if(pr$record_type=='candidate')'candidate' else if(!has_load)'unquantified' else 'pipeline'
       missing_load<-!has_load && !pr$status %in% c('Cancelled','Dormant','Operational')
       project_sum<-function(key) if(missing_load || anyNA(lr[[key]]))NA_real_ else sum(lr[[key]])
       overview[[length(overview)+1]]<-data.frame(scenario=scenario$id,project_id=pr$project_id,country=pr$country,
@@ -217,13 +224,14 @@ calculate <- function(x) {
     d<-project_scenarios[project_scenarios$scenario==scenario$id & project_scenarios$bidding_zone==zone,,drop=FALSE]
     sum_known<-function(key) if(!nrow(d)||all(is.na(d[[key]]))||any(is.na(d[[key]]) & d$capacity_known))NA_real_ else sum(d[[key]],na.rm=TRUE)
     active<-!d$indicator %in% c('cancelled','dormant')
+    partial<-any(ledger$scenario==scenario$id & ledger$project_id %in% d$project_id & grepl('only_contained_capacity_known',ledger$assumptions,fixed=TRUE))
     zone_rows[[length(zone_rows)+1]]<-data.frame(scenario=scenario$id,bidding_zone=zone,projects=nrow(d),
-      participating_projects=sum(d$participates),candidate_projects=sum(d$indicator=='candidate'),
+      participating_projects=sum(d$participates),candidate_projects=sum(p$record_type[match(d$project_id,p$project_id)]=='candidate'),
       operating_projects=sum(d$indicator=='operational'),cancelled_or_dormant=sum(!active),
       projects_without_mw=sum(active & !d$capacity_known),
       mw_low=sum_known('mw_low'),mw_high=sum_known('mw_high'),
       annual_twh_low=sum_known('annual_twh_low'),annual_twh_high=sum_known('annual_twh_high'),
-      scope=if(!nrow(d))'no_inventory' else if(sum(active & !d$capacity_known)||anyNA(d$mw_high))'quantified_subset' else 'modelled_inventory',stringsAsFactors=FALSE)
+      scope=if(!nrow(d))'no_inventory' else if(partial||sum(active & !d$capacity_known)||anyNA(d$mw_high))'quantified_subset' else 'modelled_inventory',stringsAsFactors=FALSE)
   }
   # Coverage is a product requirement, not a claim that unknown MW has become zero.
   expected<-nrow(p)*length(cfg$scenarios)

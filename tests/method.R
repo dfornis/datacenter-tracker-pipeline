@@ -117,6 +117,15 @@ test('tenant/campus ambiguity retains one envelope and both project indicators',
   r<-row(result,'C004');stopifnot(r$counted_mw_low==600,r$counted_mw_high==900,row(result,'C014')$counted_mw_high==0)
   stopifnot(project(result,'P003')$participates,project(result,'P010')$participates)
 })
+test('a known contained phase reaches the zone total when campus headline MW is missing',function() {
+  t<-edit(x,'C004',mw='');r<-calculate(t)
+  owner<-project(r,'P003');child<-project(r,'P010')
+  stopifnot(owner$capacity_known,owner$participates,owner$mw_low==23,owner$mw_high==34.5,child$mw_high==0)
+  t$capacity<-t$capacity[t$capacity$claim_id %in% c('C004','C014'),]
+  t$projects<-t$projects[t$projects$project_id %in% c('P003','P010'),];r<-calculate(t)
+  d<-r$scenarios[r$scenarios$scenario=='potential' & r$scenarios$bidding_zone=='SE3',]
+  stopifnot(d$mw_low==23,d$mw_high==34.5,d$projects==2,d$scope=='quantified_subset')
+})
 test('contained phases cannot make dated planning exceed the undated envelope',function() {
   for(id in unique(result$ledger$group_id)) {
     cap<-row(result,id)$counted_mw_high
@@ -129,6 +138,9 @@ test('contained phases cannot make dated planning exceed the undated envelope',f
 test('cancelled and operating rows stay visible without becoming new capacity',function() {
   stopifnot(all(result$project_scenarios$mw_high[result$project_scenarios$project_id=='P006']==0))
   stopifnot(project(result,'P006')$indicator=='cancelled',project(result,'P025')$indicator=='operational',row(result,'C044')$counted_mw_high==0)
+  t<-x;t$projects$status[t$projects$project_id=='P090']<-'Cancelled';r<-calculate(t)
+  d<-r$scenarios[r$scenarios$scenario=='potential' & r$scenarios$bidding_zone=='SE-unassigned',]
+  stopifnot(project(r,'P090')$indicator=='cancelled',d$cancelled_or_dormant==1,d$candidate_projects==1,d$projects_without_mw==0)
 })
 test('backup/reactor power and wrong-site claims remain visible without fabricated load',function() {
   for(id in c('C011','C022','C042'))stopifnot(row(result,id)$counted_mw_high==0,is.na(row(result,id)$gross_mw_high))

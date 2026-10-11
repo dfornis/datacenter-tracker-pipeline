@@ -99,11 +99,15 @@ capacity_path <- master_path("capacity_master.csv", "capacity.csv")
 assumptions_path <- master_path("assumptions.csv", "assumptions.csv")
 sources_path <- master_path("sources_master.csv", "sources_master.csv")
 municipality_locations_path <- master_path("municipality_locations.csv", "municipality_locations.csv")
+geography_config_path <- master_path("geography_config.csv", "geography_config.csv")
+admin_units_path <- master_path("admin_units.csv", "admin_units.csv")
 
 projects <- read_csv(projects_path, show_col_types = FALSE)
 capacity <- read_csv(capacity_path, show_col_types = FALSE)
 assumptions <- read_csv(assumptions_path, show_col_types = FALSE)
 municipality_locations <- read_csv(municipality_locations_path, show_col_types = FALSE)
+geography_config <- read_csv(geography_config_path, show_col_types = FALSE)
+admin_units <- read_csv(admin_units_path, show_col_types = FALSE)
 sources <- if (file.exists(sources_path)) {
   read_csv(sources_path, show_col_types = FALSE)
 } else {
@@ -117,9 +121,108 @@ sources <- if (file.exists(sources_path)) {
 }
 
 # Basic validation
+required_geography_config_cols <- c(
+  "country", "country_name", "bidding_zone", "zone_name", "active", "geojson_file"
+)
+
+required_admin_unit_cols <- c(
+  "country", "municipality_code", "municipality_name",
+  "region_code", "region_name", "valid_from", "source_authority"
+)
+
+missing_geography_config_cols <- setdiff(
+  required_geography_config_cols,
+  names(geography_config)
+)
+
+if (length(missing_geography_config_cols) > 0) {
+  stop("Missing columns in ", geography_config_path, ": ",
+       paste(missing_geography_config_cols, collapse = ", "))
+}
+
+missing_admin_unit_cols <- setdiff(
+  required_admin_unit_cols,
+  names(admin_units)
+)
+
+if (length(missing_admin_unit_cols) > 0) {
+  stop("Missing columns in ", admin_units_path, ": ",
+       paste(missing_admin_unit_cols, collapse = ", "))
+}
+
+geography_config <- geography_config %>%
+  mutate(
+    active = as.logical(active),
+    country = str_to_upper(country),
+    bidding_zone = str_to_upper(bidding_zone)
+  )
+
+active_geography_config <- geography_config %>%
+  filter(active)
+
+admin_units <- admin_units %>%
+  mutate(
+    country = str_to_upper(country),
+    municipality_name = str_squish(municipality_name),
+    region_name = str_squish(region_name)
+  )
+
+if (nrow(active_geography_config) == 0) {
+  stop("No active bidding zones configured in ", geography_config_path)
+}
+
+duplicated_zones <- active_geography_config %>%
+  count(bidding_zone) %>%
+  filter(n > 1) %>%
+  pull(bidding_zone)
+
+if (length(duplicated_zones) > 0) {
+  stop("Duplicate active bidding_zone values in ", geography_config_path, ": ",
+       paste(duplicated_zones, collapse = ", "))
+}
+
+allowed_countries <- sort(unique(active_geography_config$country))
+allowed_bidding_zones <- active_geography_config$bidding_zone
+country_by_zone <- setNames(active_geography_config$country, active_geography_config$bidding_zone)
+
+derive_country_from_zone <- function(bidding_zone) {
+  unname(country_by_zone[str_to_upper(bidding_zone)])
+}
+
+if (!"country" %in% names(projects)) {
+  projects <- projects %>%
+    mutate(country = derive_country_from_zone(bidding_zone), .after = project_id)
+} else {
+  projects <- projects %>%
+    mutate(
+      country = if_else(
+        is.na(country) | country == "",
+        derive_country_from_zone(bidding_zone),
+        str_to_upper(country)
+      )
+    )
+}
+
+if (!"country" %in% names(capacity)) {
+  capacity <- capacity %>%
+    left_join(projects %>% select(project_id, country), by = "project_id") %>%
+    relocate(country, .after = project_id)
+} else {
+  capacity <- capacity %>%
+    mutate(country = if_else(is.na(country) | country == "", NA_character_, str_to_upper(country)))
+}
+
+if (!"country" %in% names(municipality_locations)) {
+  municipality_locations <- municipality_locations %>%
+    mutate(country = "SE", .before = municipality)
+} else {
+  municipality_locations <- municipality_locations %>%
+    mutate(country = str_to_upper(country))
+}
+
 required_project_cols <- c(
   "project_id", "project_name", "developer",
-  "bidding_zone", "county", "municipality",
+  "country", "bidding_zone", "county", "municipality",
   "type", "project_status", "investment_decision", "notes"
 )
 
@@ -131,7 +234,7 @@ if (length(missing_project_cols) > 0) {
 }
 
 required_capacity_cols <- c(
-  "claim_id", "project_id", "capacity_type",
+  "claim_id", "project_id", "country", "capacity_type",
   "capacity_status", "investment_decision",
   "reported_capacity_mw", "reported_capacity_basis", "interpreted_it_load_mw",
   "start_year", "construction_start_year", "scenario_tag"
@@ -145,7 +248,7 @@ if (length(missing_capacity_cols) > 0) {
 }
 
 required_municipality_location_cols <- c(
-  "municipality", "latitude", "longitude", "coordinate_note"
+  "country", "municipality", "latitude", "longitude", "coordinate_note"
 )
 
 missing_municipality_location_cols <- setdiff(
@@ -165,8 +268,6 @@ allowed_status <- c(
 )
 
 public_excluded_statuses <- c("Operational", "Dormant", "Cancelled")
-
-allowed_bidding_zones <- c("SE1", "SE2", "SE3", "SE4")
 
 allowed_investment_decision <- c("yes", "no", "unclear", "not_applicable")
 
@@ -194,9 +295,78 @@ bad_project_zones <- projects %>%
 
 if (length(bad_project_zones) > 0) {
   stop(
-    "Project rows must use exactly one bidding_zone value from SE1, SE2, SE3, SE4. ",
+    "Project rows must use exactly one bidding_zone value from ",
+    geography_config_path, ". ",
     "Invalid project_id values: ",
     paste(bad_project_zones, collapse = ", ")
+  )
+}
+
+bad_project_countries <- projects %>%
+  filter(is.na(country) | !(country %in% allowed_countries)) %>%
+  pull(project_id)
+
+if (length(bad_project_countries) > 0) {
+  stop(
+    "Project rows must use a country from ",
+    geography_config_path, ". Invalid project_id values: ",
+    paste(bad_project_countries, collapse = ", ")
+  )
+}
+
+bad_project_country_zone <- projects %>%
+  mutate(configured_country = derive_country_from_zone(bidding_zone)) %>%
+  filter(is.na(configured_country) | country != configured_country) %>%
+  pull(project_id)
+
+if (length(bad_project_country_zone) > 0) {
+  stop(
+    "Project country must match bidding_zone in ",
+    geography_config_path, ". Invalid project_id values: ",
+    paste(bad_project_country_zone, collapse = ", ")
+  )
+}
+
+project_admin_units <- projects %>%
+  mutate(
+    municipality_admin_name = str_squish(str_remove(municipality, "\\s*\\([^)]*\\)\\s*$"))
+  )
+
+bad_project_municipalities <- project_admin_units %>%
+  anti_join(
+    admin_units %>% distinct(country, municipality_name),
+    by = c("country", "municipality_admin_name" = "municipality_name")
+  ) %>%
+  mutate(label = paste0(project_id, " (", country, ": ", municipality, ")")) %>%
+  pull(label)
+
+if (length(bad_project_municipalities) > 0) {
+  stop(
+    "Project municipality must match an official municipality in ",
+    admin_units_path,
+    ". Locality suffixes in parentheses are allowed. Invalid project rows: ",
+    paste(bad_project_municipalities, collapse = ", ")
+  )
+}
+
+bad_project_regions <- project_admin_units %>%
+  anti_join(
+    admin_units %>% distinct(country, municipality_name, region_name),
+    by = c(
+      "country",
+      "municipality_admin_name" = "municipality_name",
+      "county" = "region_name"
+    )
+  ) %>%
+  mutate(label = paste0(project_id, " (", country, ": ", municipality, " / ", county, ")")) %>%
+  pull(label)
+
+if (length(bad_project_regions) > 0) {
+  stop(
+    "Project county/region must match the official region for the municipality in ",
+    admin_units_path,
+    ". Invalid project rows: ",
+    paste(bad_project_regions, collapse = ", ")
   )
 }
 
@@ -236,6 +406,41 @@ missing_project_ids <- setdiff(capacity$project_id, projects$project_id)
 if (length(missing_project_ids) > 0) {
   stop(capacity_path, " contains project_id values not found in ", projects_path, ": ",
        paste(missing_project_ids, collapse = ", "))
+}
+
+capacity <- capacity %>%
+  left_join(
+    projects %>% select(project_id, project_country = country),
+    by = "project_id"
+  ) %>%
+  mutate(country = coalesce(country, project_country)) %>%
+  select(-project_country)
+
+bad_capacity_countries <- capacity %>%
+  filter(is.na(country) | !(country %in% allowed_countries)) %>%
+  pull(claim_id)
+
+if (length(bad_capacity_countries) > 0) {
+  stop(
+    "Capacity rows must use a country from ",
+    geography_config_path, ". Invalid claim_id values: ",
+    paste(bad_capacity_countries, collapse = ", ")
+  )
+}
+
+bad_capacity_project_country <- capacity %>%
+  left_join(
+    projects %>% select(project_id, project_country = country),
+    by = "project_id"
+  ) %>%
+  filter(country != project_country) %>%
+  pull(claim_id)
+
+if (length(bad_capacity_project_country) > 0) {
+  stop(
+    "Capacity country must match the linked project country. Invalid claim_id values: ",
+    paste(bad_capacity_project_country, collapse = ", ")
+  )
 }
 
 normalize_type_tags <- function(value) {
@@ -589,7 +794,7 @@ scenario_counted_rows <- scenario_direct_candidates %>%
   ) %>%
   select(
     scenario_id, scenario_label, scenario_order, year, panel,
-    project_id, entry_id, project_name, developer, bidding_zone,
+    project_id, entry_id, project_name, developer, country, bidding_zone,
     type, status, project_status, project_investment_decision,
     phase, capacity_type, capacity_status, investment_decision,
     start_year, construction_start_year,
@@ -599,7 +804,7 @@ scenario_counted_rows <- scenario_direct_candidates %>%
     interpreted_grid_load_mw, scenario_mw,
     pue, load_factor, estimated_twh, notes
   ) %>%
-  arrange(scenario_order, bidding_zone, project_id)
+  arrange(scenario_order, country, bidding_zone, project_id)
 
 scenario_tags <- scenario_candidates %>%
   arrange(scenario_order) %>%
@@ -611,7 +816,7 @@ capacity <- capacity %>%
   left_join(scenario_tags, by = "claim_id") %>%
   mutate(scenario_tag = coalesce(scenario_tag, "")) %>%
   select(
-    claim_id, project_id, project_name, phase, capacity_type,
+    claim_id, project_id, country, project_name, phase, capacity_type,
     capacity_status, investment_decision, reported_capacity_mw,
     reported_capacity_basis, interpreted_it_load_mw,
     derived_interpreted_it_load_mw, manual_interpreted_it_load_mw,
@@ -622,8 +827,8 @@ capacity <- capacity %>%
     last_updated
   )
 
-scenario_zone <- scenario_counted_rows %>%
-  group_by(scenario_id, scenario_label, scenario_order, year, bidding_zone, panel) %>%
+scenario_zone_totals <- scenario_counted_rows %>%
+  group_by(scenario_id, scenario_label, scenario_order, year, country, bidding_zone, panel) %>%
   summarise(
     grid_side_mw = sum(scenario_grid_side_mw, na.rm = TRUE),
     mw = grid_side_mw,
@@ -632,20 +837,23 @@ scenario_zone <- scenario_counted_rows %>%
     estimated_twh = sum(scenario_estimated_twh_year, na.rm = TRUE),
     n_projects = n_distinct(project_id),
     .groups = "drop"
+  )
+
+scenario_zone <- scenario_definitions %>%
+  tidyr::crossing(active_geography_config %>% select(country, bidding_zone)) %>%
+  left_join(
+    scenario_zone_totals,
+    by = c("scenario_id", "scenario_label", "scenario_order", "year", "panel", "country", "bidding_zone")
   ) %>%
-  complete(
-    nesting(scenario_id, scenario_label, scenario_order, year, panel),
-    bidding_zone = c("SE1", "SE2", "SE3", "SE4"),
-    fill = list(
-      grid_side_mw = 0,
-      mw = 0,
-      interpreted_it_load_mw = 0,
-      reported_capacity_mw = 0,
-      estimated_twh = 0,
-      n_projects = 0
-    )
+  mutate(
+    grid_side_mw = coalesce(grid_side_mw, 0),
+    mw = coalesce(mw, 0),
+    interpreted_it_load_mw = coalesce(interpreted_it_load_mw, 0),
+    reported_capacity_mw = coalesce(reported_capacity_mw, 0),
+    estimated_twh = coalesce(estimated_twh, 0),
+    n_projects = coalesce(n_projects, 0L)
   ) %>%
-  arrange(scenario_order, bidding_zone)
+  arrange(scenario_order, country, bidding_zone)
 
 projects <- projects %>%
   left_join(project_updates, by = "project_id") %>%
@@ -656,9 +864,10 @@ public_projects <- projects %>%
   filter(!project_status %in% public_excluded_statuses)
 
 missing_project_locations <- public_projects %>%
-  anti_join(municipality_locations, by = "municipality") %>%
-  distinct(municipality) %>%
-  pull(municipality)
+  anti_join(municipality_locations, by = c("country", "municipality")) %>%
+  distinct(country, municipality) %>%
+  mutate(label = paste(country, municipality, sep = ": ")) %>%
+  pull(label)
 
 if (length(missing_project_locations) > 0) {
   stop(
@@ -672,7 +881,7 @@ public_capacity <- capacity %>%
   filter(!capacity_status %in% public_excluded_statuses)
 
 public_projects <- public_projects %>%
-  left_join(municipality_locations, by = "municipality")
+  left_join(municipality_locations, by = c("country", "municipality"))
 
 public_capacity <- public_capacity %>%
   left_join(
@@ -682,72 +891,62 @@ public_capacity <- public_capacity %>%
     suffix = c("", "_project")
   )
 
-# Optional display table for frontend
-project_display <- public_projects %>%
-  left_join(
-    public_capacity %>%
-      filter(capacity_type != "permit_backup_power") %>%
-      group_by(project_id) %>%
-      summarise(
-        max_reported_capacity_mw = ifelse(
-          all(is.na(reported_capacity_mw)),
-          NA_real_,
-          max(reported_capacity_mw, na.rm = TRUE)
-        ),
-        max_interpreted_it_load_mw = ifelse(
-          all(is.na(interpreted_it_load_mw)),
-          NA_real_,
-          max(interpreted_it_load_mw, na.rm = TRUE)
-        ),
-        max_estimated_grid_side_mw = ifelse(
-          all(is.na(estimated_grid_side_mw)),
-          NA_real_,
-          max(estimated_grid_side_mw, na.rm = TRUE)
-        ),
-        max_estimated_twh_year = ifelse(
-          all(is.na(estimated_twh_year)),
-          NA_real_,
-          max(estimated_twh_year, na.rm = TRUE)
-        ),
-        capacity_types = paste(sort(unique(na.omit(capacity_type))), collapse = "; "),
-        .groups = "drop"
-      ),
-    by = "project_id"
-  )
-
 # Export JSON
 write_json(public_projects, file.path(json_dir, "projects.json"), pretty = TRUE, auto_unbox = TRUE, na = "null")
 write_json(public_capacity, file.path(json_dir, "capacity.json"), pretty = TRUE, auto_unbox = TRUE, na = "null")
-write_json(assumptions, file.path(json_dir, "assumptions.json"), pretty = TRUE, auto_unbox = TRUE, na = "null")
-write_json(project_display, file.path(json_dir, "project_display.json"), pretty = TRUE, auto_unbox = TRUE, na = "null")
 write_json(scenario_zone, file.path(json_dir, "scenario_zone.json"), pretty = TRUE, auto_unbox = TRUE, na = "null")
-write_csv(scenario_zone, file.path(json_dir, "scenario_zone.csv"), na = "")
 
 message("Built JSON files in ", json_dir)
 
 # Geo polygons
-base_url <- "https://raw.githubusercontent.com/EnergieID/entsoe-py/master/entsoe/geo/geojson"
-zones <- c("SE_1", "SE_2", "SE_3", "SE_4")
+resolve_geojson_file <- function(path) {
+  resolve_path(path, repo_root)
+}
+
+read_configured_zone_geojson <- function(zone_row) {
+  zone_path <- resolve_geojson_file(zone_row$geojson_file)
+
+  if (!file.exists(zone_path)) {
+    stop("Configured GeoJSON file does not exist for ", zone_row$bidding_zone, ": ", zone_path)
+  }
+
+  zone_sf <- st_read(zone_path, quiet = TRUE)
+
+  if ("bidding_zone" %in% names(zone_sf)) {
+    zone_sf <- zone_sf %>%
+      filter(bidding_zone == zone_row$bidding_zone)
+  }
+
+  if (nrow(zone_sf) == 0) {
+    stop("No GeoJSON features found for bidding_zone ", zone_row$bidding_zone, " in ", zone_path)
+  }
+
+  zone_sf %>%
+    mutate(
+      country = zone_row$country,
+      country_name = zone_row$country_name,
+      bidding_zone = zone_row$bidding_zone,
+      zone_name = zone_row$zone_name
+    )
+}
 
 tryCatch(
   {
-    se_zones <- map_dfr(zones, function(z) {
-      url <- sprintf("%s/%s.geojson", base_url, z)
-      st_read(url, quiet = TRUE) %>%
-        mutate(
-          bidding_zone = gsub("_", "", z)
-        )
-    })
+    zone_features <- active_geography_config %>%
+      split(seq_len(nrow(.))) %>%
+      map(read_configured_zone_geojson)
+
+    bidding_zones <- bind_rows(zone_features)
 
     st_write(
-      se_zones,
+      bidding_zones,
       file.path(json_dir, "bidding_zones.geojson"),
       delete_dsn = TRUE,
       quiet = TRUE
     )
   },
   error = function(e) {
-    message("Could not refresh bidding zone GeoJSON: ", conditionMessage(e))
+    message("Could not assemble bidding zone GeoJSON: ", conditionMessage(e))
     fallback_geojson <- file.path(repo_root, "assets", "data", "bidding_zones.geojson")
     target_geojson <- file.path(json_dir, "bidding_zones.geojson")
 

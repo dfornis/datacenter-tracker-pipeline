@@ -1,6 +1,6 @@
 # Data centre tracker schema
 
-This document defines the working data model for the Swedish data centre tracker.
+This archived document defines an older working data model for the data centre tracker. The current schema in `docs/schema.md` is authoritative.
 
 ## Master files
 
@@ -11,14 +11,15 @@ One row per project or site.
 | column | meaning |
 | --- | --- |
 | `project_id` | Stable project identifier, for example `P001`. Do not reuse deleted IDs. |
+| `country` | Country code from the configured geography list. |
 | `project_name` | Short public-facing project/site name. |
 | `developer` | Company or organisations publicly associated with the project. Use `;` for multiple names. |
-| `bidding_zone` | Swedish electricity bidding zone: `SE1`, `SE2`, `SE3`, or `SE4`. |
-| `county` | Swedish county. |
+| `bidding_zone` | Electricity bidding zone from the configured geography list. |
+| `county` | County, region, fylke, maakunta, or closest public regional administrative label. |
 | `municipality` | Municipality, with locality in parentheses if helpful. |
 | `type` | Project type tags, separated by `;`, for example `hyperscale; AI`. |
 | `project_status` | Lifecycle status for the project/site. See `docs/status_rules.md`. |
-| `investment_decision` | Whether the project/site has a public committed-build signal: `yes`, `no`, `unclear`, or `not_applicable`. |
+| `investment_decision` | Whether a real investment decision for the project/site is public or strongly implied: `yes`, `no`, `unclear`, or `not_applicable`. |
 | `construction_start_years` | Publicly stated construction start year or years. Use `;` for multiple values. Leave blank if not public. |
 | `expected_operational_years` | Publicly stated operation year or years. Use `;` for multiple values. Leave blank if not public. |
 | `max_reported_capacity_mw` | Highest public capacity claim for the project/site, preserving the source concept in notes. |
@@ -36,7 +37,7 @@ One row per capacity claim, phase, or scenario-relevant capacity item.
 | `phase` | Phase name or description. |
 | `capacity_type` | Capacity interpretation category. See below. |
 | `capacity_status` | Lifecycle status for this specific capacity claim or phase. See `docs/status_rules.md`. |
-| `investment_decision` | Whether this specific capacity claim or phase has a public committed-build signal. |
+| `investment_decision` | Whether this specific capacity claim or phase has a public or strongly implied investment decision. |
 | `reported_capacity_mw` | Capacity number as reported or implied by the source. |
 | `interpreted_it_load_mw` | Tracker interpretation of IT load. Leave blank when the source does not support IT load. |
 | `start_year` | Year the capacity is expected to become operational or relevant. Leave blank if unknown. |

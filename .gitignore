@@ -1,0 +1,13 @@
+.DS_Store
+**/.DS_Store
+.Rhistory
+.RData
+.Rproj.user/
+.locks/
+.staging/
+.tmp-current-*
+renv/library/
+renv/staging/
+renv/cache/
+tests/tmp/
+data/runs/*/scratch/

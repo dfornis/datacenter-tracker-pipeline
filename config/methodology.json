@@ -1,0 +1,63 @@
+{
+  "method_version": "2.0.0",
+  "as_of_date": "2026-10-11",
+  "baseline_date": "2026-10-11",
+  "measure": "incremental_capacity_after_baseline",
+  "countries": [
+    "SE",
+    "NO",
+    "FI"
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "low_2030",
+      "label": "Committed by 2030",
+      "year": 2030,
+      "require_decision": true
+    },
+    {
+      "scenario_id": "stated_2030",
+      "label": "Stated by 2030",
+      "year": 2030,
+      "require_decision": false
+    },
+    {
+      "scenario_id": "stated_2035",
+      "label": "Stated by 2035",
+      "year": 2035,
+      "require_decision": false
+    },
+    {
+      "scenario_id": "pipeline_potential",
+      "label": "Undated pipeline potential",
+      "year": null,
+      "require_decision": false
+    }
+  ],
+  "eligible_decision_bases": [
+    "explicit_decision",
+    "execution_evidence"
+  ],
+  "scenario_excluded_statuses": [
+    "Operational",
+    "Cancelled",
+    "Dormant"
+  ],
+  "non_load_bases": [
+    "backup_generation",
+    "reactor",
+    "rack_density"
+  ],
+  "ambiguous_basis_policy": "separate_envelope",
+  "unknown_baseline_policy": "report_unquantified_increment",
+  "overlap_policy": "explicit_relations_only",
+  "source_review_policy": "legacy_evidence_visible_with_quality_flags",
+  "annual_energy_label": "conditional mature annual equivalent; not a target-year forecast",
+  "geometry_required_crs": "WGS84",
+  "admin_reference_year": 2026,
+  "energy_assumptions": {
+    "pue_id": "PUE_SENSITIVITY",
+    "load_factor_id": "LF_NAMEPLATE_SENSITIVITY"
+  },
+  "sensitivity_interpretation": "Illustrative parameter cases; not probability bounds, not calibrated Nordic forecasts. No central estimate."
+}

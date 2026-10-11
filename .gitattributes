@@ -1,0 +1,2 @@
+# Preserve the generated upstream bootstrap script without cosmetic rewrites.
+renv/activate.R -whitespace

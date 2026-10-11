@@ -1,0 +1,8 @@
+Package: datacenterTrackerPipeline
+Type: Project
+Title: Evidence and Capacity Accounting for Nordic Data Centres
+Version: 2.0.0
+Description: A validated, reproducible file-based evidence and scenario pipeline.
+Encoding: UTF-8
+Depends: R (>= 4.6.0)
+Imports: jsonlite, digest

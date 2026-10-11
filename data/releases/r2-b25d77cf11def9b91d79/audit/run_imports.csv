@@ -1,2 +1,0 @@
-"run_id","review_id","response_sha256","review_manifest_sha256","imported_at","input_release","parent_release"
-"2026-10-11-se-pilot","review-6027dea2d3e9c118e0c2","6bed809f0c839258237349797e08c9562207d3bc12953408c1de68ac4497790e","e75f72b6b002d956fa3e0940c84207f077540fc1f970084ae996b6c3b2ec27fd","2026-10-11T18:49:12Z","r2-17001d510284899995ed","r2-17001d510284899995ed"

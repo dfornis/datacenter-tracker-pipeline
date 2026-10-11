@@ -10,6 +10,5 @@ renv/library/
 renv/staging/
 renv/cache/
 tests/tmp/
-data/runs/*/scratch/
 renv/sandbox/
-data/runs/.staging/
+assets/datacenters.json

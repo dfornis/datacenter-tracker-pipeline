@@ -17,13 +17,9 @@ jobs:
         run: Rscript -e 'renv::restore(prompt = FALSE, strict = TRUE, transactional = TRUE, retry = FALSE)'
       - name: Check environment
         run: Rscript -e 'stopifnot(renv::status()$synchronized)'
-      - name: Check generated schema documentation
-        run: Rscript scripts/render_schema_doc.R --check
-      - name: Run regression and complete-export checks
-        run: Rscript tests/run_tests.R
-      - name: Validate selected data release
-        if: ${{ hashFiles('data/current/manifest.json') != '' }}
-        run: Rscript scripts/validate_data.R
-      - name: Build selected release without publishing
-        if: ${{ hashFiles('data/current/manifest.json') != '' }}
-        run: Rscript scripts/build_datacenter_data.R --output-dir=/tmp/datacenter-ci-export
+      - name: Check method and full project representation
+        run: Rscript tests/method.R
+      - name: Check all inputs and map areas
+        run: Rscript scripts/pipeline.R check
+      - name: Build one complete preview
+        run: Rscript scripts/pipeline.R build --output=/tmp/datacenters-preview.json

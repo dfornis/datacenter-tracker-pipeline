@@ -4,11 +4,11 @@ No general licence grant for this repository has been selected by its owner. Pub
 
 ## Administrative references
 
-Cached reference responses identify Statistics Sweden (SCB), Statistics Finland and Statistics Norway (SSB) in `config/admin_sources.json` and `data/reference/admin/2026/raw/source-manifest.json`. The cache preserves retrieval provenance; it does not replace the authorities' applicable reuse terms. SSB response metadata contains published official contact information; this is incidental to the downloaded public response, not tracker data.
+Historical reference responses from Statistics Sweden (SCB), Statistics Finland and Statistics Norway (SSB), with retrieval provenance, remain in Git commit `9779acc`. They are not active calculation inputs in version 3. Their reuse terms remain those of the respective authorities.
 
 ## Geography
 
-The acquisition source, revision and licence of the inherited GeoJSON collection were not documented in the baseline. Active copies are hash-registered with `unverified_legacy` provenance. The wider collection is isolated under `data/vendor/legacy-zones/`; old parallel inputs are archived. Redistribution rights and geographic precision remain unresolved, explicitly surfaced in generated quality metadata.
+The acquisition source, revision and licence of the inherited GeoJSON collection were not documented in the baseline. Seven active files under `data/reference/bidding-zones/` cover ten areas. Their hashes and inherited provenance are included in the generated object. The unused wider collection is retained in Git history. Redistribution rights and geographic precision remain unresolved; no licence grant is inferred.
 
 ## renv bootstrap
 

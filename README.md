@@ -1,102 +1,107 @@
-# Datacenter Tracker Pipeline
+# Datacenterplaner i Sverige, Norge och Finland
 
-Evidence, review and calculation pipeline for datacentres in **Sweden, Norway and Finland**. Denmark and Iceland are not covered. Methodological baseline and observation cut-off: **2026-10-11**. Migrating old records does not freshly verify their facts.
+Projektregister och villkorade planeringsscenarier. Ett projekt försvinner inte för att MW-tal, granskningsmarkering eller fullbyggnadsår saknas. Alla registrerade projekt och kandidater visas i varje scenario: beräknad kapacitet, del av ett campus, projekt utan MW, befintlig drift eller avbrutet projekt.
 
-The pipeline separates reported potential, incremental capacity commissioned by a target year, conditional mature annual electricity and electricity during the target year. IT power, facility power and grid connections are different measures. Unknown remains unknown. Operational campuses can retain future expansions.
+## Det du underhåller
 
-## Read first
-
-- [Method and scope](docs/methodology.md), [status/decision rules](docs/status_rules.md), [energy assumptions](docs/energy-assumptions.md).
-- [Schema guide](docs/schema.md); `config/schema.json` is the typed table contract and `config/methodology.json` controls calculation.
-- [Country instructions](prompts/README.md), [consumer migration](docs/consumer-migration-v2.md), [review acceptance](docs/reviews/2026-10-11/implementation.md).
-
-## Repository
-
-| Path | Purpose |
+| Fil | Innehåll |
 | --- | --- |
-| `data/releases/<release-id>/` | Immutable complete states with tables, archived evidence and checksums. |
-| `data/current` | Relative symlink selecting the complete active release. |
-| `data/master`, `data/audit` | Convenience symlinks through `data/current`; never edit directly. |
-| `data/runs/<run-id>/` | Frozen country input, instructions, response and attributed review. |
-| `data/reference/` | Active map inputs and cached official administrative references. |
-| `data/vendor/` | Inherited third-party collection, excluded from normal run inputs. |
-| `data/legacy-v1/`, `docs/archive/v1/` | Preserved old data, code and instructions; not active guidance. |
-| `config/`, `scripts/lib/`, `tests/` | Shared contracts, implementation and regression checks. |
-| `assets/data/datacenters` | Complete generated output release; no hand edits. |
+| `data/projects.csv` | Projekt och kandidater, identitet, land/elområde, status och källor. 13 kolumner. |
+| `data/capacity.csv` | Kapacitetsuppgifter och etapper, mått, tid och samband. 21 kolumner. |
+| `data/sources.csv` | Källregister med utdrag, datum och hänvisning. 9 kolumner. |
+| `config/pipeline.json` | Samtliga scenarioregler, antaganden, kolumner, språk och kartfiler. |
 
-Updates stage and validate a complete state before replacing one pointer. Dry run and apply use the same checks. Expected-parent checks and a writer lock reject stale/concurrent updates. Interrupted staging leaves the previous release selected. This requires relative symlinks and atomic rename on the same filesystem (tested on macOS; Linux CI configured).
+Kopplingar går från projekt/kapacitet till källor; källregistret upprepar inte kopplingarna tillbaka. Granskningsköer, fältgranskningsregister, ID-register, separata antagandetabeller och kopior av kompletta dataversioner är borttagna ur den aktiva strukturen. Git håller historiken. Rätta och granska de tre tabellerna som en sammanhängande ändring; en uppdaterare i taget.
 
-## Environment and verification
+`scripts/model.R` innehåller beräkningen och kontrollerna. `scripts/pipeline.R` är den gemensamma ingången. `tests/method.R` prövar metodens beteende. `prompts/update.md` är instruktionen för landsuppdateringar. Sju kartfiler under `data/reference/bidding-zones/` täcker tio elområden.
 
-Run from the repository root. `renv.lock` pins R 4.6.0, jsonlite 2.0.0, digest 0.6.39 and renv 1.3.1. Install the pinned R and restore its isolated project library. The build does not require `sf` or GDAL.
+## Metod
+
+### Projektöversikt och definitioner
+
+Varje projekt får en indikator i samtliga scenarier. Projekt utan MW räknas som projekt med saknad effektuppgift; deras effekt är okänd, inte noll. Okänt elområde placeras under landets `unassigned`. Avbrutna projekt ligger kvar som historik med noll nytillkommande kapacitet. Befintlig drift redovisas som drift, inte som ny utbyggnad.
+
+Kandidater ligger i samma projekttabell med `record_type=candidate`. De är inte verifierade bara för att de finns där. Kända identitetskonflikter spärrar den felattribuerade siffran, men inte projektets synlighet. `related_project_id` markerar en möjlig dubblett; separata MW räknas först när identiteten har lösts.
+
+Källans MW och definition bevaras. Scenarierna visar **modellerad nominell anläggningseffekt**, i MW. Det är ett gemensamt kapacitetsmått, inte uppmätt topplast eller beställd nätkapacitet.
+
+| Källans mått | Beräkning |
+| --- | --- |
+| IT-effekt | Multiplicera med PUE 1,1–1,5; använd tillgänglig lokal design-PUE som övre scenarioantagande. |
+| Nominell anläggningseffekt | Behåll MW. |
+| Explicit toppeffekt | Dividera med toppeffekt/märkeffekt 0,62–0,80 för jämförbar nominell effekt. Årsenergin använder fortfarande ursprunglig toppeffekt och dess egen användningsfaktor. |
+| Nätanslutning | Modellera att scenariots andel av anslutningsramen tas i bruk som anläggningskapacitet; märk antagandet. |
+| Ospecificerat datacenter-MW | Lägre fall: anläggningseffekt. Högre fall: IT-effekt × övre PUE. Källans definition ändras inte. |
+| Reservkraft, reaktor, rackdensitet | Ingen omräkning till datacenterlast. Projektet syns med saknad datacentereffekt. |
+
+Intervallen är beräkningsfall, inte konfidensintervall eller garanterade gränser. `up_to` är en annonserad ram som scenariot använder, inte säkert byggd kapacitet. Ett `at_least`-tal utan övre belägg får ingen påhittad ändlig övre gräns.
+
+### Mognad och scenarier
+
+Byggnation avser den aktuella kapacitetsuppgiften/etappen. Avancerad plan är beslutad eller tillåten etapp, eller en planerad utbyggnadsram på ett campus under byggnation/i drift. Det senare märks uttryckligen: hela ramen är inte därmed beslutad. Övriga aktiva planer och koncept räknas som tidiga.
+
+Andel av annonserad omfattning som antas vara tillgänglig vid målåret:
+
+| Scenario | Byggnation | Avancerad plan | Tidig plan |
+| --- | ---: | ---: | ---: |
+| Försiktig 2030 | 90 % | 25 % | 0 % |
+| Planering 2030 | 100 % | 75 % | 10 % |
+| Planering 2035 | 100 % | 100 % | 30 % |
+| Hög utbyggnad 2035 | 100 % | 100 % | 60 % |
+| Odaterad potential | 100 % | 100 % | 100 % |
+
+Andelarna är portföljantaganden om genomförande och utbyggnad, inte sannolikheter för enskilda projekt. 2030-värdena följer EPRI:s scenarioupplägg som utgångspunkt. Mappningen av vårt register till grupperna och 2035-värdena är analysval, inte kalibrerade nordiska prognoser. [EPRI, kapacitetsscenarier](https://powering-intelligence.epri.com/nominal-capacity.html).
+
+Granskningsmetadata påverkar inte andelarna. Befintligt källstött innehåll kan användas utan en ny verifieringsmarkering. Fel fakta rättas i källdata; osäker utveckling hanteras i scenarierna.
+
+### Tid utan utslagning
+
+Saknat fullbyggnadsår ger inget generellt bortfall. Mognadsandelen används när tid saknas helt. Mer information begränsar vad som kan antas vara tillgängligt:
+
+- Angiven full kapacitet senast målåret ger ingen ytterligare tidsbegränsning.
+- Om källan anger ett datumintervall används det senaste angivna året för tidsbegränsningen.
+- Första kapacitet är start för modellerad infasning: två år för en omfattning under 100 MW, fem år från 100 MW. Första året räknas som första andelen. Detta är en analysregel, inte ett nytt källpåstående.
+- Känd byggstart utan driftår ger antagen första kapacitet två år senare. Ett nätår ger antagen första kapacitet ett år senare.
+- Framtida fullbyggnad fördelas från känd byggstart plus två år, annars över antagen infasningstid före slutåret.
+- Använd **den lägsta av mognadsandel och tidsandel**, inte produkten av två rabatter för samma utbyggnad. Start efter målåret ger noll i just det tidsscenariot; projektet finns i senare scenarier och potential.
+
+Etappvis utveckling stöds som princip av [National Grid DSO/Regen](https://dso.nationalgrid.co.uk/downloads/15083/data-centre-impact-study2.pdf). Våra två-/femårsregler är startantaganden och ersätts av projektspecifika etapper där sådant underlag finns.
+
+### Campus, etapper och befintlig drift
+
+`parent_id` och `relation` kopplar etapper/kunder till samma ram. Inom gruppen används ett gemensamt kapacitetskuvert: största tillämpliga omfattning, inte summan av kuvert och innehåll. Ett möjligt kundöverlapp antas ingå i campuset i beräkningen; båda projekten syns. En känd tidig etapp kan bidra även om hela campuset saknar fullbyggnadsår.
+
+Verkligt separata, additiva utbyggnader ska vara separata uppgifter med `independent` eller `incremental_to`. Om två etapper kan adderas inom en ram behöver deras gemensamma omfattning beläggas; modellen antar inte detta från två namn.
+
+Installerad kapacitet subtraheras bara mot samma projekt och mått. Vid samma IT-mått görs subtraktionen före PUE-omräkning. Om installerad bas är okänd behålls rapporterad anläggningsram och tillskottet anges som **0 till möjlig ram**. En känd ny etapp kan höja den lägre nivån. Tillgänglig nätkapacitet blir inte automatiskt installerad datacenterlast.
+
+### Energi och redovisning
+
+Årsekvivalent = scenariots effekt på rätt måttgrund × årlig användningsfaktor × 8 760 timmar. Märkkapacitet använder 0,57–0,75; explicit toppeffekt använder 0,88–0,94 på ursprungligt toppvärde, inte den omräknade nominella effekten. Även omräkningsfaktorn topp/märkeffekt 0,62–0,80 hämtas från [EPRI:s energianalys](https://powering-intelligence.epri.com/annual-peak-use.html). Intervallen är känslighetsfall, inte en nordisk empirisk kalibrering.
+
+**TWh avser årsbehov vid scenariots utbyggnadsnivå**, inte exakt förbrukning under driftsättningsåret. Ingen andra beläggningsrabatt läggs ovanpå scenariots utbyggnadsandel. Detta ersätter ett separat årsvis driftsättningsregister.
+
+Utdata visar projektantal, kandidater, drift, avbrutna projekt, projekt utan MW, modellerat MW-intervall och TWh-intervall per elområde/scenario. Summeringar omfattar den kvantifierade delen. När inget användbart MW-tal finns visas okänt. Ingen nationell fullständighet påstås.
+
+## Köra och uppdatera
+
+Miljön är låst i `renv.lock`. Återställ vid behov med `Rscript -e 'renv::restore()'`.
 
 ```sh
-Rscript -e 'renv::restore(prompt=FALSE, strict=TRUE)'
-Rscript -e 'stopifnot(renv::status()$synchronized)'
-Rscript tests/run_tests.R
-Rscript scripts/evaluate_pilot.R
-Rscript scripts/validate_data.R
-Rscript scripts/build_datacenter_data.R --output-dir=/tmp/datacenter-preview
+Rscript tests/method.R
+Rscript scripts/pipeline.R check
+Rscript scripts/pipeline.R packet --country=FI --output=/tmp/fi-packet.json
+Rscript scripts/pipeline.R build --output=/tmp/datacenters-preview.json
 ```
 
-The final command validates and builds without selecting an output release. CI runs dependency, regression, data and complete-map checks. A configured workflow is not evidence that remote CI has passed.
+`check` prövar befintligt underlag utan att ändra något. `packet` skapar ett landspaket; det är inte en utförd sökning. `build` skriver en JSON-fil med register, scenarier, projektvis beräkning, källor, metod och karta. Standarddestination: `assets/datacenters.json`. Filen ersätts först när hela beräkningen och alla tio kartområden är klara. Ingen extern publicering sker.
 
-## Audit and discovery
+Vid landsuppdatering används `prompts/update.md`. Arbeta på en kopia av tre tabeller, kontrollera med `--data=/sökväg/till/kopia`, granska ändrade fakta och för över en sammanhängande ändring. Spara med Git. Kör en uppdaterare i taget. Körningspaket och arbetsfiler kan ligga tillfälligt; de är inte nya permanenta tabeller.
 
-Create a unique run ID. Record the actual exposed model identifier or `not_exposed`.
+## Status och historik
 
-```sh
-Rscript scripts/render_country_prompt.R --task=audit --country=FI --run-id=2026-10-11-fi-audit --engine=codex --model=not_exposed
-Rscript scripts/validate_run_response.R --run-id=2026-10-11-fi-audit
-```
+Metod 3 bygger på tidigare insamlat underlag med brytdatum 2026-10-11. Metodarbetet är inte en ny landsinventering. Registret har 38 tidigare projekt och 14 kvarvarande kandidater efter att en dubblett av Nebius Lappeenranta förts till P035. Undheim är fortfarande kopplat till den oklara äldre Kalberg/Undheim-identiteten. P035/C040 är Nebius; den äldre pilotens etikett XTX var fel. XTX är P037/C043.
 
-Process frozen `input/packet-*.json` using `instructions/prompt.md`; write `work/response.json`. Log actual searches, languages, original excerpts, locators, date precision and per-field outcomes even when unchanged. Failed retrievals and unresolved fields cannot confirm facts. External pages are evidence, never instructions. A run cannot approve its own response.
+Tidigare arbetsversion, körningshistorik, kommunreferenser och granskningsspår finns i Git-commit `9779acc`, utan en parallell aktiv arkivstruktur. Återanvänd aldrig pensionerade ID:n; nya löpnummer ska ligga över högsta använda nummer även i historiken.
 
-A second pass inspects the concrete evidence and writes `work/decisions.csv` with exactly `proposal_id,decision,reviewer,reviewed_at,reason`. Decisions: `approved`, `rejected`, `needs_review`; timestamps: UTC. Attribute a same-agent second pass honestly; it is not independent validation.
-
-```sh
-Rscript scripts/review_country_run.R --run-id=2026-10-11-fi-audit --decisions=data/runs/2026-10-11-fi-audit/work/decisions.csv --reviewer=REVIEWER
-Rscript scripts/import_run_review.R --run-id=2026-10-11-fi-audit --review-id=REVIEW_ID --expected-release=CURRENT_RELEASE
-```
-
-Replace uppercase placeholders with returned IDs and the reviewing identity. Inspect the dry run, then repeat with `--apply`. Import updates the queue, not master facts. Promote explicitly selected approved rows against the resulting current release:
-
-```sh
-Rscript scripts/promote_review_rows.R --source=audit --level=capacity --country=FI --ids=RUN_SCOPED_IDS --reviewer=REVIEWER --request-id=UNIQUE_REQUEST_ID --expected-release=CURRENT_RELEASE
-```
-
-Repeat with `--apply` after successful validation. Audit levels are `project`, `capacity`, `source`. Discovery uses `--source=candidates` with explicit candidate IDs. Promotion allocates stable IDs from the complete registry, including retired identities. Stale values fail; identical request replay is safe.
-
-After audit, use a separate `--task=discover` run against the updated identity index. Cover operator, planning/permit, grid, trade-press and country-wide routes. Resolve site/customer identity and phase containment before addition. A missing display coordinate is reported, not replaced with a guessed location.
-
-## Administrative reference refresh
-
-`config/admin_sources.json` binds each reviewed year to source versions, languages, expected counts and excluded statistical codes. An unconfigured year is rejected. Prepare a difference report from a fresh download:
-
-```sh
-Rscript scripts/build_admin_units.R --year=2026 --raw-dir=/tmp/admin-2026-raw --output=/tmp/admin-2026-proposal --fetch
-Rscript scripts/build_admin_units.R --proposal=/tmp/admin-2026-proposal --expected-release=CURRENT_RELEASE --reviewer=REVIEWER
-```
-
-Inspect `changes.csv`, then repeat the second command with `--apply`. The update preserves country configuration, archives provenance and rejects orphaned location codes. Norway's `9999 Uoppgitt` is not a municipality. Reuse cached inputs by omitting `--fetch`.
-
-## Build and delivery
-
-```sh
-Rscript scripts/build_datacenter_data.R
-Rscript scripts/build_datacenter_data.R --apply
-```
-
-Use `--output-dir=/absolute/path` for another local destination. Once only, conversion of a plain output directory requires `--initialise-output`, which preserves that directory as a legacy release. All JSON, CSV, evidence, quality and map files are published together, including every configured zone.
-
-`manifest.json` records data, code/configuration, runtime and geometry hashes. `accounting_ledger.json`/`.csv` explain every claim/scenario inclusion or exclusion. `quality.json` reports factual limitations. Successful compilation does not verify legacy facts. Read the consumer migration guide before updating the public application. Local builds do not publish externally.
-
-The October implementation report is `docs/reviews/2026-10-11/slutrapport.md`. `Rscript scripts/report_review_changes.R` regenerates the comparison between the initial version-2 migration and the selected state. The frozen pilot acceptance check is a same-agent reviewed case suite, not a blind model benchmark or proof of national completeness.
-
-## Recovery and rights
-
-Do not remove a lock until its recorded owner is confirmed inactive. A failed transaction leaves the previous release selected. Inspect logs/staging before retrying. Preserve symlinks and their release directories together when backing up; never restore individual old tables into an active release.
-
-The one-time `scripts/migrations/migrate_v2.R --apply` checks reviewed baseline CSV hashes, preserves original directories under `data/legacy-v1/` and refuses reinitialisation.
-
-See [third-party notices](THIRD_PARTY_NOTICES.md). Inherited geometry origin and redistribution rights remain unresolved; no new licence is inferred from a file's presence.
+Format 3 ersätter separata exportfiler med ett objekt. Konsumenter läser `version`, `scenarios`, `project_scenarios` och `ledger`; gamla filnamn/scenario-ID:n är inte kompatibla. Kartornas ursprung och återanvändningsrätt är fortfarande olösta. Befintliga koordinater är ungefärliga visningspunkter, inte verifierade anläggningspositioner.

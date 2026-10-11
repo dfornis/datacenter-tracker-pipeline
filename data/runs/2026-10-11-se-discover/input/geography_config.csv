@@ -1,5 +1,0 @@
-"country","country_name","bidding_zone","zone_name","active","geojson_file"
-"SE","Sweden","SE1","Sweden bidding zone 1","TRUE","data/reference/bidding-zones/SE.geojson"
-"SE","Sweden","SE2","Sweden bidding zone 2","TRUE","data/reference/bidding-zones/SE.geojson"
-"SE","Sweden","SE3","Sweden bidding zone 3","TRUE","data/reference/bidding-zones/SE.geojson"
-"SE","Sweden","SE4","Sweden bidding zone 4","TRUE","data/reference/bidding-zones/SE.geojson"

@@ -1,91 +1,91 @@
 # Datacenterplaner i Sverige, Norge och Finland
 
-Projektregister och villkorade planeringsscenarier. Ett projekt försvinner inte för att MW-tal, granskningsmarkering eller fullbyggnadsår saknas. Alla registrerade projekt och kandidater visas i varje scenario: beräknad kapacitet, del av ett campus, projekt utan MW, befintlig drift eller avbrutet projekt.
+Projektregister med villkorade scenarier. Alla projekt och kandidater finns i varje scenarios översikt, också när effekt eller datum saknas. Okänd effekt är okänd, inte noll. Resultat och begränsningar redovisas i chatten.
 
 ## Det du underhåller
 
 | Fil | Innehåll |
 | --- | --- |
-| `data/projects.csv` | Projekt och kandidater, identitet, land/elområde, status och källor. 13 kolumner. |
-| `data/capacity.csv` | Kapacitetsuppgifter och etapper, mått, tid och samband. 21 kolumner. |
-| `data/sources.csv` | Källregister med utdrag, datum och hänvisning. 9 kolumner. |
-| `config/pipeline.json` | Samtliga scenarioregler, antaganden, kolumner, språk och kartfiler. |
+| `data/projects.csv` | Projekt, kandidater, identitet, land/elområde och status. 13 kolumner. |
+| `data/capacity.csv` | Källornas kapacitetsuppgifter, mått, datum och samband. 21 kolumner. |
+| `data/sources.csv` | Källor, korta utdrag, datum och hänvisningar. 9 kolumner. |
+| `config/pipeline.json` | Scenarier, beräkningsantaganden och deras källor/tillämpningsgränser. |
 
-Kopplingar går från projekt/kapacitet till källor; källregistret upprepar inte kopplingarna tillbaka. Granskningsköer, fältgranskningsregister, ID-register, separata antagandetabeller och kopior av kompletta dataversioner är borttagna ur den aktiva strukturen. Git håller historiken. Rätta och granska de tre tabellerna som en sammanhängande ändring; en uppdaterare i taget.
+Tre tabeller, sammanlagt 43 kolumner. Inga separata granskningsregister eller lokala arkivkopior. Git håller historiken. Uppdatera tabellerna som en sammanhängande ändring, med en uppdaterare i taget.
 
-`scripts/model.R` innehåller beräkningen och kontrollerna. `scripts/pipeline.R` är den gemensamma ingången. `tests/method.R` prövar metodens beteende. `prompts/update.md` är instruktionen för landsuppdateringar. Sju kartfiler under `data/reference/bidding-zones/` täcker tio elområden.
+`scripts/model.R` räknar och kontrollerar; `scripts/pipeline.R` är ingången. `tests/method.R` testar beteendet med syntetiska projekt. `prompts/update.md` styr landsuppdateringen. Sju kartfiler täcker tio elområden.
 
 ## Metod
 
-### Projektöversikt och definitioner
+### Kapacitet, infasning och energi
 
-Varje projekt får en indikator i samtliga scenarier. Projekt utan MW räknas som projekt med saknad effektuppgift; deras effekt är okänd, inte noll. Okänt elområde placeras under landets `unassigned`. Avbrutna projekt ligger kvar som historik med noll nytillkommande kapacitet. Befintlig drift redovisas som drift, inte som ny utbyggnad.
+Redovisa tre saker tillsammans:
 
-Kandidater ligger i samma projekttabell med `record_type=candidate`. De är inte verifierade bara för att de finns där. Kända identitetskonflikter spärrar den felattribuerade siffran, men inte projektets synlighet. `related_project_id` markerar en möjlig dubblett; separata MW räknas först när identiteten har lösts.
+1. **Nameplate / annonserad kapacitetsram, MW** (`nameplate_mw_low/high`): hela den kända, odaterade ramen för tillkommande anläggningskapacitet, efter hantering av överlapp och befintlig drift. Samma inventering visas bredvid varje scenario; den är ingen extra scenariofamilj.
+2. **Infasad kapacitet vid målåret, MW** (`mw_low/high`): den del av ramen som scenariots urval och tidsantaganden tar i bruk. Detta är kapacitet inklusive kylning och övrig hjälplast, inte faktisk eller uppmätt topplast.
+3. **Årsenergi vid denna utbyggnadsnivå, TWh** (`annual_twh_low/high`): infasad kapacitet gånger årlig användningsfaktor och 8 760 timmar. En årsekvivalent, inte exakt förbrukning under driftsättningsåret.
 
-Källans MW och definition bevaras. Scenarierna visar **modellerad nominell anläggningseffekt**, i MW. Det är ett gemensamt kapacitetsmått, inte uppmätt topplast eller beställd nätkapacitet.
+Källans MW, definition, datum och status bevaras separat. [EPRI:s måttdefinitioner](https://powering-intelligence.epri.com/understanding-metrics.html) skiljer IT-kapacitet, total anläggningskapacitet, aktiv kapacitet och faktisk topp. Dessa är inte utbytbara.
 
-| Källans mått | Beräkning |
+| Källmått | Tillämpning i modellen |
 | --- | --- |
-| IT-effekt | Multiplicera med PUE 1,1–1,5; använd tillgänglig lokal design-PUE som övre scenarioantagande. |
-| Nominell anläggningseffekt | Behåll MW. |
-| Explicit toppeffekt | Dividera med toppeffekt/märkeffekt 0,62–0,80 för jämförbar nominell effekt. Årsenergin använder fortfarande ursprunglig toppeffekt och dess egen användningsfaktor. |
-| Nätanslutning | Modellera att scenariots andel av anslutningsramen tas i bruk som anläggningskapacitet; märk antagandet. |
-| Ospecificerat datacenter-MW | Lägre fall: anläggningseffekt. Högre fall: IT-effekt × övre PUE. Källans definition ändras inte. |
-| Reservkraft, reaktor, rackdensitet | Ingen omräkning till datacenterlast. Projektet syns med saknad datacentereffekt. |
+| IT-effekt | Omräkning till anläggningssidan med PUE 1,1–1,5 som känslighetsfall. Lokal design-PUE ersätter det övre fallet. |
+| Anläggningskapacitet | Behåll angivet MW-tal. |
+| Nätanslutning | Behåll ramen och märk antagandet att den används till datacenter. En ansökan är inte en beviljad anslutning eller faktisk last. |
+| Ospecificerat datacenter-MW | Behåll talet som anläggningsram, enligt ursprungsregistrets konvention. Märk definitionen som antagen; ingen extra PUE-uppräkning. |
+| Explicit toppeffekt | Bevara toppvärdet. För kapacitetsjämförelsen används ett uttryckligt känslighetsfall: topp / 0,80 till topp / 0,62. Årsenergi beräknas direkt från ursprunglig topp. |
+| Reservkraft, generation, rackdensitet | Behåll observationen utan automatisk omräkning till datacenterlast. En publicerad, motiverad skattning av datacenterlast kan registreras som egen kapacitetsuppgift med källa. |
 
-Intervallen är beräkningsfall, inte konfidensintervall eller garanterade gränser. `up_to` är en annonserad ram som scenariot använder, inte säkert byggd kapacitet. Ett `at_least`-tal utan övre belägg får ingen påhittad ändlig övre gräns.
+PUE-fallen och energi-/toppfaktorerna kommer från [EPRI:s energianalys, 2026](https://powering-intelligence.epri.com/annual-peak-use.html). PUE 1,5 är inte ett absolut tak. Att invertera toppfaktorn är vår tillämpning av källans observerade samband, inte en uppgift om projektets verkliga nameplate. Intervallen är känslighetsfall, inte konfidensintervall. `at_least` utan belagd övre gräns behåller okänd övre effekt; `up_to` är en annonserad ram.
 
-### Mognad och scenarier
+### Befintliga scenarier
 
-Byggnation avser den aktuella kapacitetsuppgiften/etappen. Avancerad plan är beslutad eller tillåten etapp, eller en planerad utbyggnadsram på ett campus under byggnation/i drift. Det senare märks uttryckligen: hela ramen är inte därmed beslutad. Övriga aktiva planer och koncept räknas som tidiga.
+| Scenario | ID | Urval |
+| --- | --- | --- |
+| Low 2030 | `low_2030` | Beslutad kapacitetsuppgift med tidsankare; infasas till 2030. |
+| Stated 2030 | `stated_2030` | Kapacitetsuppgift med tidsankare; infasas till 2030. |
+| Stated 2035 | `stated_2035` | Samma urval; infasas till 2035. |
+| High 2035 | `high_2035` | Alla aktiva kapacitetsuppgifter, även odaterade; tidsosäkerhet visas som intervall. |
 
-Andel av annonserad omfattning som antas vara tillgänglig vid målåret:
+Namnen, ID:na och urvalen kommer från projektets tidigare metod (`bb15b4e`). En källa till byggstart, första drift, full kapacitet eller nätår kan vara tidsankare. Fullbyggnadsår är inte ett krav. Infasningen ersätter det tidigare antagandet att hela campuset var tillgängligt vid första bygg-/driftår. Kända datum efter målåret respekteras även i High; hela ramen ligger fortfarande i nameplate-indikatorn.
 
-| Scenario | Byggnation | Avancerad plan | Tidig plan |
-| --- | ---: | ---: | ---: |
-| Försiktig 2030 | 90 % | 25 % | 0 % |
-| Planering 2030 | 100 % | 75 % | 10 % |
-| Planering 2035 | 100 % | 100 % | 30 % |
-| Hög utbyggnad 2035 | 100 % | 100 % | 60 % |
-| Odaterad potential | 100 % | 100 % | 100 % |
+[National Grid DSO/Regen, november 2025, s. 28–30](https://dso.nationalgrid.co.uk/downloads/15083/data-centre-impact-study2.pdf) använder projektinventering, planerings-/anslutningsläge och tidsuppgifter i scenarier. Rapporten stöder arbetssättet, inte våra exakta scenarioetiketter eller urval. Urvalen är villkorade definitioner, inte sannolikhetsprognoser. EPRI:s amerikanska mognadsprocent för 2030 används inte som generella projektrabatter eller extrapoleras till 2035. Tillstånd eller byggnation av en etapp gör inte hela campuset beslutat.
 
-Andelarna är portföljantaganden om genomförande och utbyggnad, inte sannolikheter för enskilda projekt. 2030-värdena följer EPRI:s scenarioupplägg som utgångspunkt. Mappningen av vårt register till grupperna och 2035-värdena är analysval, inte kalibrerade nordiska prognoser. [EPRI, kapacitetsscenarier](https://powering-intelligence.epri.com/nominal-capacity.html).
+### Generell infasning
 
-Granskningsmetadata påverkar inte andelarna. Befintligt källstött innehåll kan användas utan en ny verifieringsmarkering. Fel fakta rättas i källdata; osäker utveckling hanteras i scenarierna.
+**Standard: 20, 40, 60, 80 och 100 procent från första driftåret.** Detta är samma operativa infasningsantagande som EPRI använder. Det införs oberoende av projektstorlek; den tidigare 100 MW-gränsen tas bort. National Grid/Regen beskriver flerårig utbyggnad och variation mellan anläggningar (s. 27). Fem år är alltså en belagd modellstandard, inte en nordisk observation eller en garanti för varje projekt.
 
-### Tid utan utslagning
+| Tillgängligt underlag | Automatisk behandling |
+| --- | --- |
+| Första driftår | Femårsinfasning från detta år. Ett datumintervall ger ett tidigt och ett sent förlopp. |
+| Enbart byggstart | Första drift antas 2–3 år senare, därefter samma femårsinfasning. |
+| Full kapacitet uttryckligen daterad för samma omfattning | Hela omfattningen är tillgänglig då. Innan dess fördelas standardrampen bakåt från slutåret, begränsad av känd byggstart. Bakåtfördelningen är en modellberäkning. |
+| Enbart nätår | Tidigast möjlig start. Lägre utbyggnadsfall är 0; övre följer standardrampen från tidigaste nätår, med byggtidsbegränsning om byggstart finns. Ingen påhittad extra ettårsfördröjning. |
+| Inget användbart år | Inget startår uppfinns. High visar 0–100 % tidsosäkerhet; hela nameplate-ramen finns kvar bredvid samtliga scenarier. |
 
-Saknat fullbyggnadsår ger inget generellt bortfall. Mognadsandelen används när tid saknas helt. Mer information begränsar vad som kan antas vara tillgängligt:
+Byggtiden 2–3 år är en uttrycklig tillämpning av [IEA, Energy and AI, 2025](https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai), som beskriver att datacenter kan bli operativa inom 2–3 år. Den avser inte all föregående tillstånds- eller nätprocess och garanterar inte att förseningar uteblir. Alla antagna datum stannar i beräkningen, aldrig i källfälten.
 
-- Angiven full kapacitet senast målåret ger ingen ytterligare tidsbegränsning.
-- Om källan anger ett datumintervall används det senaste angivna året för tidsbegränsningen.
-- Första kapacitet är start för modellerad infasning: två år för en omfattning under 100 MW, fem år från 100 MW. Första året räknas som första andelen. Detta är en analysregel, inte ett nytt källpåstående.
-- Känd byggstart utan driftår ger antagen första kapacitet två år senare. Ett nätår ger antagen första kapacitet ett år senare.
-- Framtida fullbyggnad fördelas från känd byggstart plus två år, annars över antagen infasningstid före slutåret.
-- Använd **den lägsta av mognadsandel och tidsandel**, inte produkten av två rabatter för samma utbyggnad. Start efter målåret ger noll i just det tidsscenariot; projektet finns i senare scenarier och potential.
+Mer precist källunderlag används med samma regler för alla projekt. En uttryckligen fullt driftsatt etapp får ingen andra femårsinfasning. Saknas sådan precision används standarden. Landsuppdateraren tolkar omfattning och datum; användaren behöver inte lägga in undantag. Ett campus kan ha en känd första etapp och en större odaterad ram samtidigt.
 
-Etappvis utveckling stöds som princip av [National Grid DSO/Regen](https://dso.nationalgrid.co.uk/downloads/15083/data-centre-impact-study2.pdf). Våra två-/femårsregler är startantaganden och ersätts av projektspecifika etapper där sådant underlag finns.
+### Överlapp och befintlig drift
 
-### Campus, etapper och befintlig drift
+`parent_id/relation` samlar campus, ingående etapper och kunder i en fysisk ram. Inom en sådan grupp används största tillämpliga omfattning, inte summan av campus och innehåll. Separata additiva utbyggnader har `independent` eller `incremental_to`; modellen antar inte att två namn är additiva. Om summan av etapper är dokumenterad registreras också den gemensamma omfattningen i samma kapacitetstabell.
 
-`parent_id` och `relation` kopplar etapper/kunder till samma ram. Inom gruppen används ett gemensamt kapacitetskuvert: största tillämpliga omfattning, inte summan av kuvert och innehåll. Ett möjligt kundöverlapp antas ingå i campuset i beräkningen; båda projekten syns. En känd tidig etapp kan bidra även om hela campuset saknar fullbyggnadsår eller eget MW-tal. I det senare fallet redovisas den kända etappens bidrag på campuset, medan källuppgiften om hela campusets effekt förblir tom.
+En känd etapp kan bidra även om campusets eget MW-tal eller fullbyggnadsår saknas. Vid osäkert kundöverlapp antas tills vidare inneslutning; båda projekt syns och antagandet märks. `related_project_id` håller en möjlig dubblett synlig utan ett extra MW-bidrag innan identiteten lösts.
 
-Verkligt separata, additiva utbyggnader ska vara separata uppgifter med `independent` eller `incremental_to`. Om två etapper kan adderas inom en ram behöver deras gemensamma omfattning beläggas; modellen antar inte detta från två namn.
+Befintlig drift är inte ny utbyggnad. En jämförbar känd bas subtraheras före PUE-omräkning. Okänd bas ger 0 till möjlig ram för tillskottet; kända nya etapper kan höja den lägre nivån. Detta är bokföringsgränser utifrån tillgängliga fakta, inte skattade sannolikheter. Avbrutna projekt kvarstår som historik. Felattribuerade siffror och reservkraft får inte bli datacenterlast, men projektet behålls.
 
-Installerad kapacitet subtraheras bara mot samma projekt och mått. Vid samma IT-mått görs subtraktionen före PUE-omräkning. Om installerad bas är okänd behålls rapporterad anläggningsram och tillskottet anges som **0 till möjlig ram**. En känd ny etapp kan höja den lägre nivån. Tillgänglig nätkapacitet blir inte automatiskt installerad datacenterlast.
+### Energi, tolkning och täckning
 
-### Energi och redovisning
+Årlig användningsfaktor är 0,57–0,75 relativt nameplate, eller 0,88–0,94 relativt explicit topp. Faktorerna bygger på EPRI:s lilla amerikanska anläggningsurval; de är känslighetsfall för denna inventering, inte universella AI- eller nordiska lastfaktorer. Infasning tillämpas en gång. Ingen extra beläggnings-/mognadsrabatt läggs ovanpå den. Ingen timprofil, samtidighetsprognos eller nätanslutningsgaranti räknas fram här.
 
-Årsekvivalent = scenariots effekt på rätt måttgrund × årlig användningsfaktor × 8 760 timmar. Märkkapacitet använder 0,57–0,75; explicit toppeffekt använder 0,88–0,94 på ursprungligt toppvärde, inte den omräknade nominella effekten. Även omräkningsfaktorn topp/märkeffekt 0,62–0,80 hämtas från [EPRI:s energianalys](https://powering-intelligence.epri.com/annual-peak-use.html). Intervallen är känslighetsfall, inte en nordisk empirisk kalibrering.
+Summeringar visar den kvantifierade delen och antal projekt utan användbart MW. Okänt elområde ligger i landets `unassigned`. Projekt utan MW är inte nollförbrukare. Alla registrerade projekt får en indikator i varje scenario, men detta bevisar inte fullständig marknadstäckning.
 
-**TWh avser årsbehov vid scenariots utbyggnadsnivå**, inte exakt förbrukning under driftsättningsåret. Ingen andra beläggningsrabatt läggs ovanpå scenariots utbyggnadsandel. Detta ersätter ett separat årsvis driftsättningsregister.
-
-Utdata visar projektantal, kandidater, drift, avbrutna projekt, projekt utan MW, modellerat MW-intervall och TWh-intervall per elområde/scenario. Summeringar omfattar den kvantifierade delen. När inget användbart MW-tal finns visas okänt. Ingen nationell fullständighet påstås.
+Kontrollen och landspaketet lyfter också källutdrag med MW/GW som ännu saknar en motsvarande användbar kapacitetsobservation på samma projekt. Det fångar källor som annars bara blivit liggande på en kandidat. Det är ett sökstöd för automatisk uppföljning, inte en garanti för att alla tal i en källa är korrekt tolkade. Det blockerar inte befintliga beräkningar eller tar bort projekt. Uppdateraren följer upp dessa träffar och samtliga projekt utan MW, enligt `prompts/update.md`.
 
 ## Köra och uppdatera
 
-Miljön är låst i `renv.lock`. Återställ vid behov med `Rscript -e 'renv::restore()'`.
+Miljön är låst i `renv.lock`; återställ vid behov med `Rscript -e 'renv::restore()'`.
 
 ```sh
 Rscript tests/method.R
@@ -94,14 +94,12 @@ Rscript scripts/pipeline.R packet --country=FI --output=/tmp/fi-packet.json
 Rscript scripts/pipeline.R build --output=/tmp/datacenters-preview.json
 ```
 
-`check` prövar befintligt underlag utan att ändra något. `packet` skapar ett landspaket; det är inte en utförd sökning. `build` skriver en JSON-fil med register, scenarier, projektvis beräkning, källor, metod och karta. Standarddestination: `assets/datacenters.json`. Filen ersätts först när hela beräkningen och alla tio kartområden är klara. Ingen extern publicering sker.
+`check` ändrar ingenting. `packet` förbereder ett landspaket och är inte en utförd sökning. `build` skriver en JSON med register, metod, projekt/scenarioberäkningar, täckning och karta. Standarddestination är `assets/datacenters.json`; först en komplett, validerad fil ersätter tidigare resultat. Ingen extern publicering sker.
 
-Vid landsuppdatering används `prompts/update.md`. Arbeta på en kopia av tre tabeller, kontrollera med `--data=/sökväg/till/kopia`, granska ändrade fakta och för över en sammanhängande ändring. Spara med Git. Kör en uppdaterare i taget. Körningspaket och arbetsfiler kan ligga tillfälligt; de är inte nya permanenta tabeller.
+Landsuppdateringar använder `prompts/update.md`. Arbeta på en tillfällig kopia av de tre tabellerna och kontrollera med `--data=/sökväg/till/kopia`. Granska och för över en sammanhängande ändring. Inga nya permanenta kontrolltabeller behövs.
 
 ## Status och historik
 
-Metod 3 bygger på tidigare insamlat underlag med brytdatum 2026-10-11. Metodarbetet är inte en ny landsinventering. Registret har 38 tidigare projekt och 14 kvarvarande kandidater efter att en dubblett av Nebius Lappeenranta förts till P035. Undheim är fortfarande kopplat till den oklara äldre Kalberg/Undheim-identiteten. P035/C040 är Nebius; den äldre pilotens etikett XTX var fel. XTX är P037/C043.
+Metod 3.1 är en metodkorrigering inför landsuppdatering; den är inte en ny inventering. De 52 projektposterna, 46 kapacitetsuppgifterna och 130 källorna har inte uppdaterats genom denna metodändring. Kända luckor i källextraktionen återstår inför nästa landskörning.
 
-Tidigare arbetsversion, körningshistorik, kommunreferenser och granskningsspår finns i Git-commit `9779acc`, utan en parallell aktiv arkivstruktur. Återanvänd aldrig pensionerade ID:n; nya löpnummer ska ligga över högsta använda nummer även i historiken.
-
-Format 3 ersätter separata exportfiler med ett objekt. Konsumenter läser `version`, `scenarios`, `project_scenarios` och `ledger`; gamla filnamn/scenario-ID:n är inte kompatibla. Kartornas ursprung och återanvändningsrätt är fortfarande olösta. Befintliga koordinater är ungefärliga visningspunkter, inte verifierade anläggningspositioner.
+Tidigare underlag och körningshistorik finns i Git, bland annat `9779acc`. Behåll stabila ID:n; nya löpnummer ska ligga över högsta använda nummer även i historiken. Utdataformat 3.1 återställer ursprungliga scenario-ID:n och skiljer nameplate från infasad kapacitet. Det saknar en femte potential-scenariofamilj. Kartornas ursprung/återanvändningsrätt är olösta och koordinaterna är ungefärliga visningspunkter.

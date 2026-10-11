@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "as_of": "2026-10-11",
   "purpose": "Public-project inventory and conditional planning scenarios; no automatic exclusion for missing review metadata or full commissioning dates.",
   "tables": {
@@ -129,53 +129,27 @@
   "scenarios": [
     {
       "id": "low_2030",
-      "label": "Försiktig 2030",
+      "label": "Low",
       "year": 2030,
-      "share": {
-        "construction": 0.9,
-        "advanced": 0.25,
-        "early": 0
-      }
+      "selection": "decided_dated"
     },
     {
-      "id": "planning_2030",
-      "label": "Planering 2030",
+      "id": "stated_2030",
+      "label": "Stated",
       "year": 2030,
-      "share": {
-        "construction": 1,
-        "advanced": 0.75,
-        "early": 0.1
-      }
+      "selection": "dated"
     },
     {
-      "id": "planning_2035",
-      "label": "Planering 2035",
+      "id": "stated_2035",
+      "label": "Stated",
       "year": 2035,
-      "share": {
-        "construction": 1,
-        "advanced": 1,
-        "early": 0.3
-      }
+      "selection": "dated"
     },
     {
       "id": "high_2035",
-      "label": "Hög utbyggnad 2035",
+      "label": "High",
       "year": 2035,
-      "share": {
-        "construction": 1,
-        "advanced": 1,
-        "early": 0.6
-      }
-    },
-    {
-      "id": "potential",
-      "label": "Odaterad potential",
-      "year": null,
-      "share": {
-        "construction": 1,
-        "advanced": 1,
-        "early": 1
-      }
+      "selection": "all"
     }
   ],
   "assumptions": {
@@ -192,25 +166,68 @@
       0.94
     ],
     "first_to_full_years": 5,
-    "construction_to_first_years": 2,
-    "unknown_mw": "Model the headline as facility MW in the lower case and IT MW times upper PUE in the upper case; retain source basis unspecified.",
+    "construction_to_first_years": [
+      2,
+      3
+    ],
+    "unknown_mw": "Retain unspecified DC headline MW as the facility-side capacity proxy used in the original register. Flag the assumption; do not silently inflate it with PUE.",
     "grid_mw": "Connection envelope only. Scenario equivalent assumes the allocated share is deployed as facility capacity; not measured demand.",
     "unknown_baseline": "Gross site envelope is retained; additional capacity range is 0 to gross unless comparable installed baseline is known.",
     "overlap": "Use one physical envelope; possible containment is assumed containment for aggregation, with the tenant retained in the project indicator.",
-    "interpretation": "Scenario shares combine delivery and deployment by target year; not per-project probabilities. Timing caps are applied with min(), not multiplied as a second completion discount. Energy is an annual equivalent at scenario deployment, not metered target-year consumption.",
-    "sources": {
-      "maturity_2030": "https://powering-intelligence.epri.com/nominal-capacity.html",
-      "energy": "https://powering-intelligence.epri.com/annual-peak-use.html",
-      "phasing": "https://dso.nationalgrid.co.uk/downloads/15083/data-centre-impact-study2.pdf"
-    },
-    "calibration": "2030 maturity shares follow EPRI as a starting scenario assumption. 2035 shares, PUE bracket and phasing defaults are analyst choices, not calibrated Nordic probabilities.",
-    "small_scope_years": 2,
-    "campus_threshold_mw": 100,
+    "interpretation": "The original Low/Stated/High project selections are retained. Selected capacity is phased once; no generic maturity percentages. nameplate_mw is the undated incremental pipeline envelope, mw is the phased capacity by target year, and annual_twh is an annual equivalent at that deployment. None is measured demand.",
     "peak_to_nameplate_fraction": [
       0.62,
       0.8
     ],
-    "electrical_output": "Modelled facility nameplate-equivalent MW. Explicit peak MW is divided by peak/nameplate factor 0.62–0.80 for capacity comparison; annual energy still uses the original peak with its peak-relative annual factor."
+    "electrical_output": "Facility-side nameplate capacity proxy, including cooling and auxiliary loads. Explicit peak claims use the declared inverse empirical peak/nameplate sensitivity; source MW and basis are retained. Phased MW is deployed capacity, not actual peak. Energy uses the original peak denominator when supplied.",
+    "unknown_timing": "An eligible undated claim has a 0–100% deployment interval, not an invented first year. Its entire nameplate envelope remains visible. Low and Stated use dated claims; High also includes undated claims.",
+    "grid_timing": "Grid availability is an earliest possible start, not commissioning. Lower deployment is zero; upper uses the same ramp from the earliest grid year, constrained by construction when known. No extra one-year delay.",
+    "full_capacity_timing": "An explicit full-capacity year anchors completion of this capacity scope. Before that date, backcast the default ramp; construction timing constrains its start. This backcast is a model adaptation, not a sourced commissioning date.",
+    "scenario_selection": "Names, IDs and decision/date selection are inherited from bb15b4e. First capacity or construction can anchor phasing; full-capacity dates are not mandatory. Selection is a conditional scenario definition, not a calibrated probability. No EPRI US completion percentages are transplanted to Nordic 2035.",
+    "evidence": {
+      "phasing": {
+        "url": "https://powering-intelligence.epri.com/annual-peak-use.html",
+        "locator": "Annual and Peak Electricity Use; updated 2026-02-24; operational-capacity ramp paragraph",
+        "use": "Five years: 20%, 40%, 60%, 80%, 100% from first operation. Applies to all capacity sizes when the source has not dated full deployment.",
+        "limitation": "An EPRI modelling assumption informed by US aggregate observations, not a measured Nordic or project-specific ramp."
+      },
+      "phasing_crosscheck": {
+        "url": "https://dso.nationalgrid.co.uk/downloads/15083/data-centre-impact-study2.pdf",
+        "locator": "November 2025, pp. 27–30, delivery timeframes and DFES modelling methodology",
+        "use": "Supports phased project-pipeline modelling and source-specific schedules where available.",
+        "limitation": "UK interviews show variation, including shorter ramps. They do not establish a universal 100 MW breakpoint."
+      },
+      "construction": {
+        "url": "https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai",
+        "locator": "Energy and AI (2025), The outlook for energy demand from data centres",
+        "use": "Use 2–3 years from stated construction start to first operation when no operation date is supplied.",
+        "limitation": "Adaptation of IEA typical 2–3-year development time to an annual construction-start anchor. Excludes prior permitting/grid lead time; not a deadline or guarantee."
+      },
+      "pue": {
+        "url": "https://powering-intelligence.epri.com/annual-peak-use.html",
+        "locator": "PUE paragraph; updated 2026-02-24",
+        "use": "1.1 and 1.5 are technology sensitivity cases; a documented local design PUE replaces the upper case.",
+        "limitation": "The source discusses hyperscale around 1.1 and older enterprise 1.5 or higher. This is not an exhaustive range or Nordic confidence interval; design PUE is not measured annual PUE."
+      },
+      "annual_use": {
+        "url": "https://powering-intelligence.epri.com/annual-peak-use.html",
+        "locator": "Facility load-shape analysis and Figure 3; updated 2026-02-24",
+        "use": "Annual/nameplate 0.57–0.75; annual/realized-peak 0.88–0.94; peak/nameplate 0.62–0.80. Multiply deployment only once.",
+        "limitation": "Small anonymous US sample, not a universal AI utilization factor. Inverting peak/nameplate to infer capacity is our explicit sensitivity application, not an observed project nameplate."
+      },
+      "metrics": {
+        "url": "https://powering-intelligence.epri.com/understanding-metrics.html",
+        "locator": "Understanding Metrics; updated 2026-02-21",
+        "use": "Separate nominal IT, facility nameplate/service capacity, active capacity and realized peak.",
+        "limitation": "Preserve uncertain source definitions. Unspecified headline-as-facility is the inherited reporting convention, not proof of its physical basis."
+      },
+      "pipeline_selection": {
+        "url": "https://dso.nationalgrid.co.uk/downloads/15083/data-centre-impact-study2.pdf",
+        "locator": "November 2025, pp. 28–30, baseline/pipeline research and scenario treatment",
+        "use": "Use a project inventory, planning/connection evidence and explicit scenario selection. Reconcile overlapping project and connection records.",
+        "limitation": "Supports the approach, not our exact Low/Stated/High definitions. These remain the project’s existing conditional selections, not externally estimated probabilities."
+      }
+    }
   },
   "migration": {
     "source_commit": "9779acc",
@@ -294,7 +311,7 @@
     ]
   },
   "field_notes": {
-    "first_year / last_year": "Earliest/latest year of the event specified by timing; never insert an analyst-assumed date here. The timing cap uses the latest supplied year in an interval.",
+    "first_year / last_year": "Earliest/latest year of the event specified by timing; never insert an assumed model date. Both endpoints enter timing sensitivity.",
     "mw / mw_max": "Reported MW; mw_max only for an explicit range. Unit is electrical MW except backup/generation/density, which are not load inputs.",
     "pue": "Optional local design upper PUE used as a model assumption, not claimed measured annual performance.",
     "source_ids": "Semicolon-separated IDs from sources.csv; the same source can support several rows.",

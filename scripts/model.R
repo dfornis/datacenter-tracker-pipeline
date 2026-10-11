@@ -82,7 +82,8 @@ validate_inputs <- function(x) {
   require_true(nzchar(p$latitude)==nzchar(p$longitude),'Both display coordinates are required together')
   require_true(!anyDuplicated(vapply(cfg$scenarios,function(v)v$id,character(1))),'Duplicate scenario')
   for (scenario in cfg$scenarios) {
-    w<-unlist(scenario$share);require_true(all(c('construction','advanced','early') %in% names(w)) && all(is.finite(w)&w>=0&w<=1),'Invalid scenario shares')
+    require_true(scenario$selection %in% c('decided_dated','dated','all'),'Invalid scenario selection')
+    require_true(is.finite(scenario$year) && scenario$year==floor(scenario$year),'Invalid scenario year')
   }
   for (field in c('pue','nameplate_annual_fraction','peak_annual_fraction','peak_to_nameplate_fraction')) {
     v<-unlist(cfg$assumptions[[field]]);require_true(length(v)==2 && all(is.finite(v)) && v[1]<=v[2] && v[1]>=0,'Invalid assumption range')
@@ -90,34 +91,39 @@ validate_inputs <- function(x) {
   require_true(unlist(cfg$assumptions$pue)>=1,'PUE must be at least one')
   require_true(all(unlist(cfg$assumptions$nameplate_annual_fraction)<=1) && all(unlist(cfg$assumptions$peak_annual_fraction)<=1),'Annual use fraction exceeds one')
   require_true(all(unlist(cfg$assumptions$peak_to_nameplate_fraction)>0 & unlist(cfg$assumptions$peak_to_nameplate_fraction)<=1),'Invalid peak/nameplate conversion')
-  for (key in c('first_to_full_years','small_scope_years','campus_threshold_mw','construction_to_first_years')) require_true(is.finite(cfg$assumptions[[key]]) && cfg$assumptions[[key]]>0,paste('Invalid assumption',key))
+  require_true(is.finite(cfg$assumptions$first_to_full_years) && cfg$assumptions$first_to_full_years>0,'Invalid ramp duration')
+  lag<-unlist(cfg$assumptions$construction_to_first_years)
+  require_true(length(lag)==2 && all(is.finite(lag)) && lag[1]>0 && lag[2]>=lag[1],'Invalid construction lag')
   invisible(TRUE)
 }
-stage_of <- function(row,project=NULL) {
-  if (row$status=='Under construction') 'construction'
-  else if (row$decision=='yes' || row$status=='Permitted') 'advanced'
-  else if (!is.null(project) && row$status=='Planned' && project$status %in% c('Under construction','Operational')) 'advanced'
-  else 'early'
-}
-timing_cap <- function(row,year,cfg) {
-  if (is.null(year)) return(1)
+timing_share <- function(row,year,cfg) {
   first<-number(row$first_year);last<-number(row$last_year);built<-number(row$construction_year)
-  if (!is.finite(last) && is.finite(first)) last<-first
-  if (row$timing %in% c('first_capacity','grid_availability') && is.finite(last)) first<-last
-  years<-if(is.finite(number(row$mw)) && number(row$mw)<cfg$assumptions$campus_threshold_mw) cfg$assumptions$small_scope_years else cfg$assumptions$first_to_full_years
-  if (row$timing=='full_capacity' && is.finite(last)) {
-    if (year>=last) return(1)
-    start<-if(is.finite(built)) min(last,built+cfg$assumptions$construction_to_first_years) else last-years+1
-    return(max(0,min(1,(year-start+1)/(last-start+1))))
+  if (!is.finite(last)) last<-first
+  if (!is.finite(first)) first<-last
+  years<-cfg$assumptions$first_to_full_years
+  lag<-unlist(cfg$assumptions$construction_to_first_years)
+  ramp<-function(start) max(0,min(1,(year-start+1)/years))
+  answer<-function(v,rule,dated=TRUE) list(share=v,rule=rule,dated=dated)
+  if (row$timing=='full_capacity' && is.finite(first)) {
+    backcast<-function(end,delay) {
+      if (year>=end) return(1)
+      start<-end-years+1
+      if (is.finite(built)) start<-min(end,max(start,built+delay))
+      max(0,min(1,(year-start+1)/(end-start+1)))
+    }
+    return(answer(c(backcast(last,lag[2]),backcast(first,lag[1])),'full_capacity_anchor_with_modelled_backcast'))
   }
+  if (row$timing=='first_capacity' && is.finite(first))
+    return(answer(c(ramp(last),ramp(first)),'EPRI_five_year_ramp'))
   if (row$timing=='grid_availability' && is.finite(first)) {
-    # Availability constrains a possible start; it is not a statement of full deployment.
-    first<-first+1
-  } else if (!(row$timing=='first_capacity' && is.finite(first))) {
-    first<-if(is.finite(built)) built+cfg$assumptions$construction_to_first_years else NA_real_
+    start<-if(is.finite(built))max(first,built+lag[1]) else first
+    return(answer(c(0,ramp(start)),'grid_year_is_only_earliest_start'))
   }
-  if (!is.finite(first)) return(1) # Maturity share already accounts for undated delivery.
-  max(0,min(1,(year-first+1)/years))
+  if (is.finite(built)) return(answer(c(ramp(built+lag[2]),ramp(built+lag[1])),'IEA_construction_lag_and_EPRI_ramp'))
+  answer(c(0,1),'undated_deployment_0_to_1',FALSE)
+}
+scenario_selected <- function(row,scenario,timing) {
+  switch(scenario$selection,all=TRUE,dated=timing$dated,decided_dated=timing$dated && row$decision=='yes')
 }
 electrical_range <- function(row,cfg,net=FALSE,claims=NULL,normalize_peak=TRUE) {
   if (row$basis %in% c('backup','generation','density') || row$issue=='identity_conflict' || !nzchar(row$mw)) return(c(NA_real_,NA_real_))
@@ -130,7 +136,6 @@ electrical_range <- function(row,cfg,net=FALSE,claims=NULL,normalize_peak=TRUE) 
   pue<-unlist(cfg$assumptions$pue)
   if (nzchar(row$pue)) pue<-c(min(pue[1],number(row$pue)),number(row$pue))
   if (startsWith(row$basis,'it_')) {v<-v*pue[1];top<-top*pue[2]}
-  if (row$basis=='unspecified') top<-top*pue[2]
   if (normalize_peak && grepl('_peak$',row$basis)) {
     factors<-unlist(cfg$assumptions$peak_to_nameplate_fraction)
     v<-v/factors[2];top<-top/factors[1]
@@ -148,20 +153,23 @@ calculate <- function(x) {
   all_rows<-list();overview<-list();zone_rows<-list()
   for (scenario in cfg$scenarios) {
     rows<-lapply(seq_len(nrow(c)),function(i) {
-      r<-c[i,];pr<-p[match(r$project_id,p$project_id),];stage<-stage_of(r,pr)
+      r<-c[i,];pr<-p[match(r$project_id,p$project_id),]
       group<-c$claim_id[top_claim(c,i)]
       gross<-electrical_range(r,cfg);net<-electrical_range(r,cfg,TRUE,c)
-      share<-min(scenario$share[[stage]],timing_cap(r,scenario$year,cfg))
-      reason<-'modelled';assumptions<-character()
-      if(stage!=stage_of(r)) assumptions<-c(assumptions,'site_maturity_only_not_full_phase_commitment')
-      if (r$status %in% c('Operational','Cancelled','Dormant')) {reason<-tolower(r$status);share<-0}
-      if (pr$status %in% c('Cancelled','Dormant')) {reason<-tolower(pr$status);share<-0}
-      if (r$issue=='identity_conflict') {reason<-'identity_conflict';share<-0}
-      if (nzchar(pr$related_project_id)) {reason<-'related_identity';share<-0}
-      if (r$basis %in% c('backup','generation','density')) {reason<-'no_datacenter_load';share<-0}
-      if (!nzchar(r$mw)) {reason<-'capacity_unknown';share<-0}
-      if (reason=='modelled' && share==0) reason<-'outside_scenario'
-      if (r$timing!='full_capacity' || !nzchar(r$last_year)) assumptions<-c(assumptions,'maturity_or_phasing_assumption')
+      timing<-timing_share(r,scenario$year,cfg)
+      selected<-scenario_selected(r,scenario,timing)
+      share<-if(selected)timing$share else c(0,0)
+      reason<-'modelled';assumptions<-timing$rule
+      if (r$status %in% c('Operational','Cancelled','Dormant')) reason<-tolower(r$status)
+      if (pr$status %in% c('Cancelled','Dormant')) reason<-tolower(pr$status)
+      if (r$issue=='identity_conflict') reason<-'identity_conflict'
+      if (nzchar(pr$related_project_id)) reason<-'related_identity'
+      if (r$basis %in% c('backup','generation','density')) reason<-'no_datacenter_load'
+      if (!nzchar(r$mw)) reason<-'capacity_unknown'
+      nameplate<-if(reason=='modelled')net else c(0,0)
+      if (reason!='modelled') share<-c(0,0)
+      if (reason=='modelled' && !selected) reason<-'outside_scenario_selection'
+      if (reason=='modelled' && share[2]==0) reason<-'after_target_year'
       if (r$basis %in% c('unspecified','it_unspecified','facility_unspecified')) assumptions<-c(assumptions,'capacity_definition_assumed')
       if (r$basis=='grid') assumptions<-c(assumptions,'connection_deployment_assumed')
       if (startsWith(r$basis,'it_')) assumptions<-c(assumptions,'PUE_conversion')
@@ -169,39 +177,46 @@ calculate <- function(x) {
       if (r$baseline_scope=='existing_unknown') assumptions<-c(assumptions,'increment_unknown_0_to_site_envelope')
       if (r$relation=='possibly_included_in') assumptions<-c(assumptions,'overlap_assumed_contained')
       if (nzchar(pr$related_project_id)) assumptions<-c(assumptions,'related_identity_unresolved')
-      value<-if (share>0) net*share else c(0,0)
+      # A zero deployment is known even when an at-least claim has no upper MW.
+      value<-ifelse(share>0,net*share,0)
       lf<-unlist(cfg$assumptions[[if(grepl('_peak$',r$basis))'peak_annual_fraction' else 'nameplate_annual_fraction']])
-      energy_power<-if(share>0)electrical_range(r,cfg,TRUE,c,normalize_peak=FALSE)*share else c(0,0)
+      energy_power<-ifelse(share>0,electrical_range(r,cfg,TRUE,c,normalize_peak=FALSE)*share,0)
       energy<-energy_power*lf*8760/1e6
       data.frame(scenario=scenario$id,project_id=r$project_id,claim_id=r$claim_id,group_id=group,
-        stage=stage,share=share,reason=reason,assumptions=paste(assumptions,collapse=';'),
+        share_low=share[1],share_high=share[2],reason=reason,assumptions=paste(assumptions,collapse=';'),
         source_basis=r$basis,reported_mw=number(r$mw),gross_mw_low=gross[1],gross_mw_high=gross[2],
+        nameplate_mw_low=nameplate[1],nameplate_mw_high=nameplate[2],
         direct_mw_low=value[1],direct_mw_high=value[2],direct_twh_low=energy[1],direct_twh_high=energy[2],
         counted_mw_low=0,counted_mw_high=0,annual_twh_low=0,annual_twh_high=0,stringsAsFactors=FALSE)
     })
     ledger<-if(length(rows))do.call(rbind,rows) else as.data.frame(c(
-      setNames(rep(list(character()),8),c('scenario','project_id','claim_id','group_id','stage','reason','assumptions','source_basis')),
-      setNames(rep(list(numeric()),12),c('share','reported_mw','gross_mw_low','gross_mw_high','direct_mw_low','direct_mw_high','direct_twh_low','direct_twh_high','counted_mw_low','counted_mw_high','annual_twh_low','annual_twh_high'))),stringsAsFactors=FALSE)
+      setNames(rep(list(character()),7),c('scenario','project_id','claim_id','group_id','reason','assumptions','source_basis')),
+      setNames(rep(list(numeric()),15),c('share_low','share_high','reported_mw','gross_mw_low','gross_mw_high','nameplate_mw_low','nameplate_mw_high','direct_mw_low','direct_mw_high','direct_twh_low','direct_twh_high','counted_mw_low','counted_mw_high','annual_twh_low','annual_twh_high'))),stringsAsFactors=FALSE)
     # One electrical envelope per containment tree. A tenant never removes its campus.
     # Explicit independent/incremental rows remain separate; contained alternatives use max.
     if (nrow(ledger)) for (group in unique(ledger$group_id)) {
       members<-which(ledger$group_id==group);owner<-match(group,ledger$claim_id)
-      active<-members[ledger$share[members]>0]
+      for(key in c('nameplate_mw_low','nameplate_mw_high')) {
+        v<-ledger[[key]][members]
+        ledger[[key]][members]<-0
+        ledger[[key]][owner]<-if(anyNA(v) && grepl('high$',key))NA_real_ else maximum_known(v)
+      }
+      a<-unique(unlist(lapply(ledger$assumptions[members],ids)))
+      if(!any(is.finite(c(ledger$gross_mw_low[owner],ledger$gross_mw_high[owner])))) a<-c(a,'only_contained_capacity_known')
+      ledger$assumptions[owner]<-paste(a,collapse=';')
+      active<-members[ledger$share_high[members]>0]
       if (!length(active)) next
       for (pair in list(c('direct_mw_low','counted_mw_low'),c('direct_mw_high','counted_mw_high'),c('direct_twh_low','annual_twh_low'),c('direct_twh_high','annual_twh_high'))) {
         v<-ledger[[pair[1]]][active]
         ledger[[pair[2]]][owner]<-if(anyNA(v) && grepl('high$',pair[2]))NA_real_ else maximum_known(v)
       }
-      if (owner %in% members && ledger$share[owner]==0) ledger$reason[owner]<-'contains_modelled_phase'
+      if (ledger$share_high[owner]==0) ledger$reason[owner]<-'contains_modelled_phase'
       children<-setdiff(active,owner);ledger$reason[children]<-paste0('included_in:',group)
-      a<-unique(unlist(lapply(ledger$assumptions[members],ids)))
-      if(!any(is.finite(c(ledger$gross_mw_low[owner],ledger$gross_mw_high[owner])))) a<-c(a,'only_contained_capacity_known')
-      ledger$assumptions[owner]<-paste(a,collapse=';')
     }
     all_rows[[length(all_rows)+1]]<-ledger
     for (i in seq_len(nrow(p))) {
       pr<-p[i,];lr<-ledger[ledger$project_id==pr$project_id,,drop=FALSE]
-      live<-any(lr$share>0 | lr$reason=='contains_modelled_phase')
+      live<-any(lr$share_high>0 | lr$reason=='contains_modelled_phase')
       # The physical owner also represents quantified contained phases, even
       # when the owner's own headline MW is missing. Otherwise the known phase
       # is assigned to an owner that is then replaced by NA in zone totals.
@@ -213,6 +228,7 @@ calculate <- function(x) {
       overview[[length(overview)+1]]<-data.frame(scenario=scenario$id,project_id=pr$project_id,country=pr$country,
         bidding_zone=if(nzchar(pr$bidding_zone))pr$bidding_zone else paste0(pr$country,'-unassigned'),
         indicator=category,capacity_known=has_load,participates=live,related_project_id=pr$related_project_id,
+        nameplate_mw_low=project_sum('nameplate_mw_low'),nameplate_mw_high=project_sum('nameplate_mw_high'),
         mw_low=project_sum('counted_mw_low'),mw_high=project_sum('counted_mw_high'),
         annual_twh_low=project_sum('annual_twh_low'),annual_twh_high=project_sum('annual_twh_high'),
         note=if(nzchar(pr$related_project_id))'Related identity retained; not a separate quantified addition.' else if(!nrow(lr))'No capacity claim; project remains visible.' else paste(unique(lr$reason),collapse=';'),stringsAsFactors=FALSE)
@@ -229,6 +245,7 @@ calculate <- function(x) {
       participating_projects=sum(d$participates),candidate_projects=sum(p$record_type[match(d$project_id,p$project_id)]=='candidate'),
       operating_projects=sum(d$indicator=='operational'),cancelled_or_dormant=sum(!active),
       projects_without_mw=sum(active & !d$capacity_known),
+      nameplate_mw_low=sum_known('nameplate_mw_low'),nameplate_mw_high=sum_known('nameplate_mw_high'),
       mw_low=sum_known('mw_low'),mw_high=sum_known('mw_high'),
       annual_twh_low=sum_known('annual_twh_low'),annual_twh_high=sum_known('annual_twh_high'),
       scope=if(!nrow(d))'no_inventory' else if(partial||sum(active & !d$capacity_known)||anyNA(d$mw_high))'quantified_subset' else 'modelled_inventory',stringsAsFactors=FALSE)
@@ -264,6 +281,24 @@ assemble_map <- function(cfg,root='.') {
   }
   list(type='FeatureCollection',features=features)
 }
+capacity_followups <- function(x) {
+  # Discovery aid, not a gate on calculation and not proof that all facts were extracted.
+  # It catches MW-bearing sources retained on a project without a corresponding claim.
+  findings<-list()
+  for(i in seq_len(nrow(x$projects))) {
+    p<-x$projects[i,]
+    if(p$status %in% c('Cancelled','Dormant')) next
+    c<-x$capacity[x$capacity$project_id==p$project_id,,drop=FALSE]
+    linked<-unique(c(ids(p$source_ids),unlist(lapply(c$source_ids,ids))))
+    s<-x$sources[x$sources$source_id %in% linked,,drop=FALSE]
+    text<-paste(s$title,s$excerpt)
+    power<-s$source_id[grepl('[0-9][0-9.,[:space:]]*([MG]W(e|th)?|(mega|giga)wat{1,2}[[:alpha:]]*)\\b',text,ignore.case=TRUE,perl=TRUE)]
+    represented<-unique(unlist(lapply(c$source_ids[nzchar(c$mw) & c$issue!='identity_conflict'],ids)))
+    missing<-setdiff(power,represented)
+    if(length(missing)) findings[[length(findings)+1]]<-list(project_id=p$project_id,source_ids=as.list(missing))
+  }
+  findings
+}
 build_result <- function(root='.',data_dir=file.path(root,'data')) {
   before<-input_hashes(root,data_dir);x<-read_inputs(root,data_dir);result<-calculate(x);map<-assemble_map(x$config,root)
   if(!identical(before,input_hashes(root,data_dir)))stop('Inputs changed during build; retry after edits finish')
@@ -272,7 +307,9 @@ build_result <- function(root='.',data_dir=file.path(root,'data')) {
     projects=x$projects,capacity=x$capacity,sources=x$sources,
     scenarios=result$scenarios,project_scenarios=result$project_scenarios,ledger=result$ledger,
     coverage=list(projects=nrow(x$projects),claims=nrow(x$capacity),sources=nrow(x$sources),
-      scenario_rows=nrow(result$project_scenarios),every_project_represented=TRUE),bidding_zones=map)
+      scenario_rows=nrow(result$project_scenarios),every_project_represented=TRUE,
+      projects_without_mw=as.list(unique(result$project_scenarios$project_id[!result$project_scenarios$capacity_known & !result$project_scenarios$indicator %in% c('cancelled','dormant','operational')])),
+      capacity_sources_to_reconcile=capacity_followups(x)),bidding_zones=map)
 }
 atomic_output <- function(result,path) {
   dir.create(dirname(path),recursive=TRUE,showWarnings=FALSE)

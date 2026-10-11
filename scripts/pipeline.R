@@ -28,6 +28,7 @@ if(command=='check') {
     instructions=readLines('prompts/update.md',warn=FALSE),
     projects=x$projects[x$projects$project_id %in% selected,],capacity=x$capacity[x$capacity$project_id %in% selected,],
     sources=x$sources[x$sources$source_id %in% source_ids,],
+    capacity_sources_to_reconcile=Filter(function(f)f$project_id %in% selected,capacity_followups(x)),
     identity_index=x$projects[,c('project_id','country','project_name','developer','municipality','related_project_id')])
   atomic_output(packet,path);cat('Prepared ',path,'\n',sep='')
 } else stop('Commands: check, build, packet')

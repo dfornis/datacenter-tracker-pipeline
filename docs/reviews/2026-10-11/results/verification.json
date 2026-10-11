@@ -1,0 +1,17 @@
+{
+  "verified_at": "2026-10-11T19:14:12Z",
+  "data_release": "r2-3d9e67d28a526e73db93",
+  "build_id": "build-836140a052ff533229aa",
+  "reproducible_build": true,
+  "regression_tests_passed": 40,
+  "pilot_acceptance_cases_passed": 15,
+  "frozen_runs_verified": ["2026-10-11-fi-audit", "2026-10-11-fi-discover", "2026-10-11-fi-pilot", "2026-10-11-no-audit", "2026-10-11-no-discover", "2026-10-11-no-pilot", "2026-10-11-se-audit", "2026-10-11-se-discover", "2026-10-11-se-pilot"],
+  "schema_documentation": "Rscript scripts/render_schema_doc.R --check passed",
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+  },
+  "remote_ci": "configured_not_run",
+  "external_publication": false
+}

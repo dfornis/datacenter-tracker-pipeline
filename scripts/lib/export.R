@@ -76,6 +76,8 @@ build_export <- function(root,state,output,apply=FALSE,initialise=FALSE,failpoin
   write_table(calculated$ledger,file.path(stage,'accounting_ledger.csv'))
   write_json(tables$sources_master,file.path(stage,'sources.json'))
   write_json(tables$field_reviews,file.path(stage,'field_reviews.json'))
+  open_conflicts <- tables$source_conflicts[tables$source_conflicts$review_state %in% c('pending','needs_review'),,drop=FALSE]
+  write_json(open_conflicts,file.path(stage,'source_conflicts.json'))
   write_json(cast_table(tables$assumptions,schema$tables$assumptions),file.path(stage,'assumptions.json'))
   write_json(geometry$geojson,file.path(stage,'bidding_zones.geojson'))
   unresolved <- calculated$ledger[!calculated$ledger$counted,,drop=FALSE]
@@ -83,7 +85,10 @@ build_export <- function(root,state,output,apply=FALSE,initialise=FALSE,failpoin
     countries=unlist(method$countries),active_projects=nrow(p),active_claims=nrow(tables$capacity_master),
     verified_sources=sum(tables$sources_master$review_state=='verified'),total_sources=nrow(tables$sources_master),
     source_access_min=min(tables$sources_master$access_date),source_access_max=max(tables$sources_master$access_date),
-    verified_fields=nrow(tables$field_reviews),exclusion_counts=as.data.frame(table(unresolved$scenario_id,unresolved$reason)),
+    verified_fields=nrow(tables$field_reviews),open_source_conflicts=open_conflicts,
+    pending_project_candidates=sum(tables$new_project_candidates$review_state %in% c('pending','needs_review')),
+    pending_capacity_candidates=sum(tables$new_capacity_claim_candidates$review_state %in% c('pending','needs_review')),
+    exclusion_counts=as.data.frame(table(unresolved$scenario_id,unresolved$reason)),
     geometry_provenance=geometry$provenance,energy_interpretation=method$annual_energy_label,
     sensitivity_interpretation=method$sensitivity_interpretation),file.path(stage,'quality.json'))
   # Code/config and external map inputs must remain unchanged throughout a build.

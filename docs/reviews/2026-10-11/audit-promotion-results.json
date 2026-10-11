@@ -1,0 +1,1198 @@
+{
+  "2026-10-11-se-audit": {
+    "review": {
+      "review_id": "review-f023fa3288cbdde59c25",
+      "replay": true
+    },
+    "import_dry": {
+      "applied": false,
+      "replay": true,
+      "release_id": "r2-07cd4082682653d510df",
+      "details": {
+        "run_id": "2026-10-11-se-audit",
+        "review_id": "review-f023fa3288cbdde59c25"
+      }
+    },
+    "import_applied": {
+      "applied": false,
+      "replay": true,
+      "release_id": "r2-07cd4082682653d510df",
+      "details": {
+        "run_id": "2026-10-11-se-audit",
+        "review_id": "review-f023fa3288cbdde59c25"
+      }
+    },
+    "promotions": {
+      "project": {
+        "dry": {
+          "applied": false,
+          "replay": true,
+          "release_id": "r2-07cd4082682653d510df",
+          "details": {
+            "request_id": "2026-10-11-se-audit-project",
+            "original_applied_at": "2026-10-11T19:02:28Z"
+          }
+        },
+        "applied": {
+          "applied": false,
+          "replay": true,
+          "release_id": "r2-07cd4082682653d510df",
+          "details": {
+            "request_id": "2026-10-11-se-audit-project",
+            "original_applied_at": "2026-10-11T19:02:28Z"
+          }
+        }
+      },
+      "capacity": {
+        "dry": {
+          "applied": false,
+          "replay": false,
+          "release_id": "r2-8376f19894eaa0b4985b",
+          "parent_release": "r2-07cd4082682653d510df",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-se-audit-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-se-audit--PR001": "S101",
+                "2026-10-11-se-audit--PR002": "S101",
+                "2026-10-11-se-audit--PR003": "S101",
+                "2026-10-11-se-audit--PR004": "S101",
+                "2026-10-11-se-audit--PR005": "S101",
+                "2026-10-11-se-audit--PR006": "S101",
+                "2026-10-11-se-audit--PR007": "S102",
+                "2026-10-11-se-audit--PR008": "S102",
+                "2026-10-11-se-audit--PR013": "S103",
+                "2026-10-11-se-audit--PR014": "S103",
+                "2026-10-11-se-audit--PR015": "S103",
+                "2026-10-11-se-audit--PR016": "S103",
+                "2026-10-11-se-audit--PR017": "S104",
+                "2026-10-11-se-audit--PR018": "S104",
+                "2026-10-11-se-audit--PR019": "S104",
+                "2026-10-11-se-audit--PR020": "S104",
+                "2026-10-11-se-audit--PR023": "S105",
+                "2026-10-11-se-audit--PR024": "S105",
+                "2026-10-11-se-audit--PR025": "S105",
+                "2026-10-11-se-audit--PR026": "S105",
+                "2026-10-11-se-audit--PR027": "S106",
+                "2026-10-11-se-audit--PR028": "S106",
+                "2026-10-11-se-audit--PR029": "S106",
+                "2026-10-11-se-audit--PR030": "S106",
+                "2026-10-11-se-audit--PR031": "S107",
+                "2026-10-11-se-audit--PR032": "S107",
+                "2026-10-11-se-audit--PR033": "S107",
+                "2026-10-11-se-audit--PR034": "S107",
+                "2026-10-11-se-audit--PR035": "S108",
+                "2026-10-11-se-audit--PR036": "S108",
+                "2026-10-11-se-audit--PR037": "S108",
+                "2026-10-11-se-audit--PR038": "S109",
+                "2026-10-11-se-audit--PR039": "S109",
+                "2026-10-11-se-audit--PR040": "S109",
+                "2026-10-11-se-audit--PR041": "S109",
+                "2026-10-11-se-audit--PR042": "S110",
+                "2026-10-11-se-audit--PR043": "S111",
+                "2026-10-11-se-audit--PR044": "S111",
+                "2026-10-11-se-audit--PR045": "S112",
+                "2026-10-11-se-audit--PR046": "S112",
+                "2026-10-11-se-audit--PR047": "S112",
+                "2026-10-11-se-audit--PR048": "S112",
+                "2026-10-11-se-audit--PR049": "S113",
+                "2026-10-11-se-audit--PR050": "S113"
+              }
+            }
+          }
+        },
+        "applied": {
+          "applied": true,
+          "replay": false,
+          "release_id": "r2-d019aec759fbdbbbc838",
+          "parent_release": "r2-07cd4082682653d510df",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-se-audit-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-se-audit--PR001": "S101",
+                "2026-10-11-se-audit--PR002": "S101",
+                "2026-10-11-se-audit--PR003": "S101",
+                "2026-10-11-se-audit--PR004": "S101",
+                "2026-10-11-se-audit--PR005": "S101",
+                "2026-10-11-se-audit--PR006": "S101",
+                "2026-10-11-se-audit--PR007": "S102",
+                "2026-10-11-se-audit--PR008": "S102",
+                "2026-10-11-se-audit--PR013": "S103",
+                "2026-10-11-se-audit--PR014": "S103",
+                "2026-10-11-se-audit--PR015": "S103",
+                "2026-10-11-se-audit--PR016": "S103",
+                "2026-10-11-se-audit--PR017": "S104",
+                "2026-10-11-se-audit--PR018": "S104",
+                "2026-10-11-se-audit--PR019": "S104",
+                "2026-10-11-se-audit--PR020": "S104",
+                "2026-10-11-se-audit--PR023": "S105",
+                "2026-10-11-se-audit--PR024": "S105",
+                "2026-10-11-se-audit--PR025": "S105",
+                "2026-10-11-se-audit--PR026": "S105",
+                "2026-10-11-se-audit--PR027": "S106",
+                "2026-10-11-se-audit--PR028": "S106",
+                "2026-10-11-se-audit--PR029": "S106",
+                "2026-10-11-se-audit--PR030": "S106",
+                "2026-10-11-se-audit--PR031": "S107",
+                "2026-10-11-se-audit--PR032": "S107",
+                "2026-10-11-se-audit--PR033": "S107",
+                "2026-10-11-se-audit--PR034": "S107",
+                "2026-10-11-se-audit--PR035": "S108",
+                "2026-10-11-se-audit--PR036": "S108",
+                "2026-10-11-se-audit--PR037": "S108",
+                "2026-10-11-se-audit--PR038": "S109",
+                "2026-10-11-se-audit--PR039": "S109",
+                "2026-10-11-se-audit--PR040": "S109",
+                "2026-10-11-se-audit--PR041": "S109",
+                "2026-10-11-se-audit--PR042": "S110",
+                "2026-10-11-se-audit--PR043": "S111",
+                "2026-10-11-se-audit--PR044": "S111",
+                "2026-10-11-se-audit--PR045": "S112",
+                "2026-10-11-se-audit--PR046": "S112",
+                "2026-10-11-se-audit--PR047": "S112",
+                "2026-10-11-se-audit--PR048": "S112",
+                "2026-10-11-se-audit--PR049": "S113",
+                "2026-10-11-se-audit--PR050": "S113"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "2026-10-11-no-audit": {
+    "review": {
+      "review_id": "review-54bc1c8c891a474842e0",
+      "replay": false,
+      "approved": 36,
+      "rejected": 0,
+      "unselected": 0
+    },
+    "import_dry": {
+      "applied": false,
+      "replay": false,
+      "release_id": "r2-fa3e44f3ee612f2f78b9",
+      "parent_release": "r2-d019aec759fbdbbbc838",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-no-audit",
+        "review_id": "review-54bc1c8c891a474842e0",
+        "imported": [
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR013",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR014",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR015",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR016",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR017",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR018",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR019",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR020",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR021",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR022",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR023",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR024",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR025",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR026",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR027",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR028",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR029",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR030",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR031",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR032",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR033",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR034",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR035",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR036",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "import_applied": {
+      "applied": true,
+      "replay": false,
+      "release_id": "r2-fa3e44f3ee612f2f78b9",
+      "parent_release": "r2-d019aec759fbdbbbc838",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-no-audit",
+        "review_id": "review-54bc1c8c891a474842e0",
+        "imported": [
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR013",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR014",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR015",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR016",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR017",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR018",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR019",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR020",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR021",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR022",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR023",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR024",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR025",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR026",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR027",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR028",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR029",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR030",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR031",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR032",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR033",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR034",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR035",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-audit--PR036",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "promotions": {
+      "capacity": {
+        "dry": {
+          "applied": false,
+          "replay": false,
+          "release_id": "r2-d9b3c707648b4b6cd8b5",
+          "parent_release": "r2-fa3e44f3ee612f2f78b9",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-no-audit-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-no-audit--PR001": "S114",
+                "2026-10-11-no-audit--PR002": "S114",
+                "2026-10-11-no-audit--PR003": "S114",
+                "2026-10-11-no-audit--PR004": "S114",
+                "2026-10-11-no-audit--PR005": "S114",
+                "2026-10-11-no-audit--PR006": "S114",
+                "2026-10-11-no-audit--PR007": "S114",
+                "2026-10-11-no-audit--PR008": "S114",
+                "2026-10-11-no-audit--PR009": "S114",
+                "2026-10-11-no-audit--PR010": "S115",
+                "2026-10-11-no-audit--PR011": "S115",
+                "2026-10-11-no-audit--PR012": "S115",
+                "2026-10-11-no-audit--PR013": "S115",
+                "2026-10-11-no-audit--PR014": "S115",
+                "2026-10-11-no-audit--PR015": "S115",
+                "2026-10-11-no-audit--PR016": "S115",
+                "2026-10-11-no-audit--PR017": "S115",
+                "2026-10-11-no-audit--PR018": "S115",
+                "2026-10-11-no-audit--PR019": "S115",
+                "2026-10-11-no-audit--PR020": "S116",
+                "2026-10-11-no-audit--PR021": "S116",
+                "2026-10-11-no-audit--PR022": "S116",
+                "2026-10-11-no-audit--PR023": "S116",
+                "2026-10-11-no-audit--PR024": "S116",
+                "2026-10-11-no-audit--PR025": "S116",
+                "2026-10-11-no-audit--PR026": "S116",
+                "2026-10-11-no-audit--PR027": "S116",
+                "2026-10-11-no-audit--PR028": "S116",
+                "2026-10-11-no-audit--PR029": "S116",
+                "2026-10-11-no-audit--PR030": "S117",
+                "2026-10-11-no-audit--PR031": "S117",
+                "2026-10-11-no-audit--PR032": "S118",
+                "2026-10-11-no-audit--PR033": "S118",
+                "2026-10-11-no-audit--PR034": "S118",
+                "2026-10-11-no-audit--PR035": "S118",
+                "2026-10-11-no-audit--PR036": "S118"
+              }
+            }
+          }
+        },
+        "applied": {
+          "applied": true,
+          "replay": false,
+          "release_id": "r2-d9b3c707648b4b6cd8b5",
+          "parent_release": "r2-fa3e44f3ee612f2f78b9",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-no-audit-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-no-audit--PR001": "S114",
+                "2026-10-11-no-audit--PR002": "S114",
+                "2026-10-11-no-audit--PR003": "S114",
+                "2026-10-11-no-audit--PR004": "S114",
+                "2026-10-11-no-audit--PR005": "S114",
+                "2026-10-11-no-audit--PR006": "S114",
+                "2026-10-11-no-audit--PR007": "S114",
+                "2026-10-11-no-audit--PR008": "S114",
+                "2026-10-11-no-audit--PR009": "S114",
+                "2026-10-11-no-audit--PR010": "S115",
+                "2026-10-11-no-audit--PR011": "S115",
+                "2026-10-11-no-audit--PR012": "S115",
+                "2026-10-11-no-audit--PR013": "S115",
+                "2026-10-11-no-audit--PR014": "S115",
+                "2026-10-11-no-audit--PR015": "S115",
+                "2026-10-11-no-audit--PR016": "S115",
+                "2026-10-11-no-audit--PR017": "S115",
+                "2026-10-11-no-audit--PR018": "S115",
+                "2026-10-11-no-audit--PR019": "S115",
+                "2026-10-11-no-audit--PR020": "S116",
+                "2026-10-11-no-audit--PR021": "S116",
+                "2026-10-11-no-audit--PR022": "S116",
+                "2026-10-11-no-audit--PR023": "S116",
+                "2026-10-11-no-audit--PR024": "S116",
+                "2026-10-11-no-audit--PR025": "S116",
+                "2026-10-11-no-audit--PR026": "S116",
+                "2026-10-11-no-audit--PR027": "S116",
+                "2026-10-11-no-audit--PR028": "S116",
+                "2026-10-11-no-audit--PR029": "S116",
+                "2026-10-11-no-audit--PR030": "S117",
+                "2026-10-11-no-audit--PR031": "S117",
+                "2026-10-11-no-audit--PR032": "S118",
+                "2026-10-11-no-audit--PR033": "S118",
+                "2026-10-11-no-audit--PR034": "S118",
+                "2026-10-11-no-audit--PR035": "S118",
+                "2026-10-11-no-audit--PR036": "S118"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "2026-10-11-fi-audit": {
+    "review": {
+      "review_id": "review-6334e71e12489394a01e",
+      "replay": false,
+      "approved": 31,
+      "rejected": 0,
+      "unselected": 0
+    },
+    "import_dry": {
+      "applied": false,
+      "replay": false,
+      "release_id": "r2-6c5bee2f44d2e82e9cfd",
+      "parent_release": "r2-d9b3c707648b4b6cd8b5",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-fi-audit",
+        "review_id": "review-6334e71e12489394a01e",
+        "imported": [
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR013",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR014",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR015",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR016",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR017",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR018",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR019",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR020",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR021",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR022",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR023",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR024",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR025",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR026",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR027",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR028",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR029",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR030",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR031",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "import_applied": {
+      "applied": true,
+      "replay": false,
+      "release_id": "r2-7d2ff718b6f521d95193",
+      "parent_release": "r2-d9b3c707648b4b6cd8b5",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-fi-audit",
+        "review_id": "review-6334e71e12489394a01e",
+        "imported": [
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR013",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR014",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR015",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR016",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR017",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR018",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR019",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-audit--PR020",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR021",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR022",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR023",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR024",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR025",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR026",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR027",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR028",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR029",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR030",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-audit--PR031",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "promotions": {
+      "project": {
+        "dry": {
+          "applied": false,
+          "replay": false,
+          "release_id": "r2-a88b221ce7c8225c5577",
+          "parent_release": "r2-7d2ff718b6f521d95193",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-fi-audit-project",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-fi-audit--PR001": "S119",
+                "2026-10-11-fi-audit--PR002": "S119",
+                "2026-10-11-fi-audit--PR003": "S120",
+                "2026-10-11-fi-audit--PR004": "S120",
+                "2026-10-11-fi-audit--PR005": "S121",
+                "2026-10-11-fi-audit--PR006": "S121",
+                "2026-10-11-fi-audit--PR017": "S122",
+                "2026-10-11-fi-audit--PR018": "S122",
+                "2026-10-11-fi-audit--PR019": "S122",
+                "2026-10-11-fi-audit--PR020": "S122"
+              }
+            }
+          }
+        },
+        "applied": {
+          "applied": true,
+          "replay": false,
+          "release_id": "r2-c0c550f8fe92fc699924",
+          "parent_release": "r2-7d2ff718b6f521d95193",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-fi-audit-project",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-fi-audit--PR001": "S119",
+                "2026-10-11-fi-audit--PR002": "S119",
+                "2026-10-11-fi-audit--PR003": "S120",
+                "2026-10-11-fi-audit--PR004": "S120",
+                "2026-10-11-fi-audit--PR005": "S121",
+                "2026-10-11-fi-audit--PR006": "S121",
+                "2026-10-11-fi-audit--PR017": "S122",
+                "2026-10-11-fi-audit--PR018": "S122",
+                "2026-10-11-fi-audit--PR019": "S122",
+                "2026-10-11-fi-audit--PR020": "S122"
+              }
+            }
+          }
+        }
+      },
+      "capacity": {
+        "dry": {
+          "applied": false,
+          "replay": false,
+          "release_id": "r2-5f643bc141c5c771947b",
+          "parent_release": "r2-c0c550f8fe92fc699924",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-fi-audit-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-fi-audit--PR007": "S123",
+                "2026-10-11-fi-audit--PR008": "S123",
+                "2026-10-11-fi-audit--PR009": "S123",
+                "2026-10-11-fi-audit--PR010": "S124",
+                "2026-10-11-fi-audit--PR011": "S124",
+                "2026-10-11-fi-audit--PR012": "S124",
+                "2026-10-11-fi-audit--PR013": "S125",
+                "2026-10-11-fi-audit--PR014": "S125",
+                "2026-10-11-fi-audit--PR015": "S125",
+                "2026-10-11-fi-audit--PR016": ["S125", "S126"],
+                "2026-10-11-fi-audit--PR021": "S127",
+                "2026-10-11-fi-audit--PR022": "S127",
+                "2026-10-11-fi-audit--PR023": "S127",
+                "2026-10-11-fi-audit--PR024": "S127",
+                "2026-10-11-fi-audit--PR025": "S127",
+                "2026-10-11-fi-audit--PR026": "S127",
+                "2026-10-11-fi-audit--PR027": "S127",
+                "2026-10-11-fi-audit--PR028": "S127",
+                "2026-10-11-fi-audit--PR029": "S128",
+                "2026-10-11-fi-audit--PR030": "S125",
+                "2026-10-11-fi-audit--PR031": "S125"
+              }
+            }
+          }
+        },
+        "applied": {
+          "applied": true,
+          "replay": false,
+          "release_id": "r2-a074a9597da9276eab3a",
+          "parent_release": "r2-c0c550f8fe92fc699924",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-fi-audit-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-fi-audit--PR007": "S123",
+                "2026-10-11-fi-audit--PR008": "S123",
+                "2026-10-11-fi-audit--PR009": "S123",
+                "2026-10-11-fi-audit--PR010": "S124",
+                "2026-10-11-fi-audit--PR011": "S124",
+                "2026-10-11-fi-audit--PR012": "S124",
+                "2026-10-11-fi-audit--PR013": "S125",
+                "2026-10-11-fi-audit--PR014": "S125",
+                "2026-10-11-fi-audit--PR015": "S125",
+                "2026-10-11-fi-audit--PR016": ["S125", "S126"],
+                "2026-10-11-fi-audit--PR021": "S127",
+                "2026-10-11-fi-audit--PR022": "S127",
+                "2026-10-11-fi-audit--PR023": "S127",
+                "2026-10-11-fi-audit--PR024": "S127",
+                "2026-10-11-fi-audit--PR025": "S127",
+                "2026-10-11-fi-audit--PR026": "S127",
+                "2026-10-11-fi-audit--PR027": "S127",
+                "2026-10-11-fi-audit--PR028": "S127",
+                "2026-10-11-fi-audit--PR029": "S128",
+                "2026-10-11-fi-audit--PR030": "S125",
+                "2026-10-11-fi-audit--PR031": "S125"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

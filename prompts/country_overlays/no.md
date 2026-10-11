@@ -26,6 +26,8 @@ These terms are leads, not classification rules. Generic words for capacity, con
 Select sources by the field being checked. Operator releases, public decisions and grid records have different authority:
 
 - Statnett for transmission-grid connection process and national grid context: https://www.statnett.no/nettkapasitet-til-produksjon-og-forbruk/hvordan-fa-okt-nettkapasitet/
+- Statnett connection statistics distinguish reservations, queues and connected capacity; do not sum categories blindly: https://www.statnett.no/nettkapasitet-til-produksjon-og-forbruk/foresporsler-og-reservasjon-i-nettet/
+- Elhub consumption is a separate, industry-code-based observation with coverage limitations, not a project nameplate register: https://elhub.no/data-og-innsikt/stromforbruk-i-datasentre
 - NVE/RME for grid-connection obligations, large customers, licensing, and regulatory material: https://www.nve.no/
 - DSB for electrical safety and emergency-preparedness material where relevant: https://www.dsb.no/
 - Municipal records using `kommune`, `reguleringsplan`, `byggesak`, `planutvalg`, `formannskap`, `kommunestyre`

@@ -1,0 +1,223 @@
+{
+  "note": "Times record review checkpoints after actual retrieval, not exact request timestamps. This is a same-agent source review, not independent validation.",
+  "sources": [
+    {
+      "country": "se",
+      "scope_id": "P002",
+      "url": "https://bam.brookfield.com/generation/pdf/document-file.pdf?path=/press-releases/brookfield-advance-ai-infrastructure-sweden-through-sek-95-billion-investment",
+      "pattern": "capacity from 300MW to 750MW. 10-15",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "se",
+      "scope_id": "P006",
+      "url": "https://ecodatacenter.tech/hubfs/Annual%20Report%202025_EcoDC%20Holding%20AB_ENG.pdf",
+      "pattern": "a decision was made not to",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "se",
+      "scope_id": "P005",
+      "url": "https://www.sec.gov/Archives/edgar/data/1652958/000168316826002865/edgemode_i10k-123125.htm",
+      "pattern": "The Company is seeking rescission of",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "se",
+      "scope_id": "P009",
+      "url": "https://www.conapto.com/datacenters/sthlm-5-north/",
+      "pattern": "40 MW power feed with 28",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "se",
+      "scope_id": "P009",
+      "url": "https://news.cision.com/se/conapto-holding-ab/r/delarsrapport-q2-2026,c4388598",
+      "pattern": "hela kapaciteten om 28 MW är",
+      "language": "sv",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "se",
+      "scope_id": "P012",
+      "url": "https://www.conapto.com/sv/conapto-utokar-stockholm-4-syd-med-8-mw/",
+      "pattern": "ytterligare 8 MW från energibolaget Ellevio",
+      "language": "sv",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "se",
+      "scope_id": "P013",
+      "url": "https://www.scandinaviandc.com/data-center",
+      "pattern": "Site power 10 MW",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "se",
+      "scope_id": "P014",
+      "url": "https://www.mynewsdesk.com/se/globalconnect/pressreleases/globalconnect-bygger-ut-datacenter-i-stockholm-oekar-kapaciteten-och-vaermer-2400-hushaall-med-spillvaerme-3409302",
+      "pattern": "en kapacitetsökning om 1,2 megawatt",
+      "language": "sv",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "no",
+      "scope_id": "P018",
+      "url": "https://greenmountain.no/data-center/osl-enebakk/",
+      "pattern": "line-of-sight capacity of 94 MW.",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "no",
+      "scope_id": "P019",
+      "url": "https://greenmountain.no/data-center/tel-rjukan/",
+      "pattern": "Maximum IT capacity: 50 MW",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "no",
+      "scope_id": "P020",
+      "url": "https://greenmountain.no/data-center/svg-rennesoy/",
+      "pattern": "Maximum IT capacity: 25 MW",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "no",
+      "scope_id": "P022",
+      "url": "https://bulkinfrastructure.com/newsroom/bulk-data-centers-unveils-plan-for-data-center-expansion-following-unprecedented-demand",
+      "pattern": "The new facility will offer 42MW",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "no",
+      "scope_id": "P022",
+      "url": "https://bulkinfrastructure.com/data-centers/locations/n01/p3",
+      "pattern": "Massive scalability across 3km² and up",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "fi",
+      "scope_id": "P026",
+      "url": "https://news.microsoft.com/source/emea/2026/04/microsoft-kaynnistaa-paakaupunkiseudun-datakeskusalueen-toisen-vaiheen-rakentamisen/?lang=fi",
+      "pattern": "Microsoft on vahvistanut Espooseen, Kirkkonummelle ja",
+      "language": "fi",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "fi",
+      "scope_id": "P031",
+      "url": "https://dayonedc.com/news/dayone-announces-flagship-hyperscale-data-center-project-in-lahti-finland",
+      "pattern": "first building of 50MW IT load.",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "fi",
+      "scope_id": "P032",
+      "url": "https://www.atnorth.com/nordic-data-centers/finland-data-centers/helsinki-metro-site-02/",
+      "pattern": "40 MW Campus power capacity",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "fi",
+      "scope_id": "P036",
+      "url": "https://www.verne.co/news/news-verne-begins-construction-of-the-first-70-mw-on-its-data-center-campus-in-m%C3%A4nts%C3%A4l%C3%A4",
+      "pattern": "Verne today marked the start of",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "fi",
+      "scope_id": "P030",
+      "url": "https://www.ymparisto.fi/fi/osallistu-ja-vaikuta/ymparistovaikutusten-arviointi/kouvolan-datakeskus-hyperco-data-systems-oy-kouvola",
+      "pattern": "Hyperco Fin Holdco 1 Oy:n rakenteilla",
+      "language": "fi",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "fi",
+      "scope_id": "P030",
+      "url": "https://www.yit.fi/en/projects/data-center-kouvola",
+      "pattern": "We are building a new data",
+      "language": "en",
+      "action": "find_and_read_primary_source",
+      "checked_at_utc": "2026-10-11T19:01:12Z",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    },
+    {
+      "country": "fi",
+      "scope_id": "C037",
+      "url": "https://www.sttinfo.fi/tiedote/72002286/skanska-rakentaa-atnorthille-datakeskuksen-laajennuksen-espooseen?lang=fi&publisherId=69819623",
+      "action": "open_and_read_primary_source",
+      "checked_at_utc": "2026-10-11 19:02:23 UTC",
+      "reviewer": "codex-second-pass",
+      "independent_review": false
+    }
+  ]
+}

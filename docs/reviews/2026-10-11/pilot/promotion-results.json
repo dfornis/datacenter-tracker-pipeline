@@ -1,0 +1,971 @@
+{
+  "2026-10-11-se-pilot": {
+    "review": {
+      "review_id": "review-6027dea2d3e9c118e0c2",
+      "replay": false,
+      "approved": 20,
+      "rejected": 0,
+      "unselected": 0
+    },
+    "import_dry": {
+      "applied": false,
+      "replay": false,
+      "release_id": "r2-df57a6023fb7a088227e",
+      "parent_release": "r2-17001d510284899995ed",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-se-pilot",
+        "review_id": "review-6027dea2d3e9c118e0c2",
+        "imported": [
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR013",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR014",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR015",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR016",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR017",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR018",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR019",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR020",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "import_applied": {
+      "applied": true,
+      "replay": false,
+      "release_id": "r2-df57a6023fb7a088227e",
+      "parent_release": "r2-17001d510284899995ed",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-se-pilot",
+        "review_id": "review-6027dea2d3e9c118e0c2",
+        "imported": [
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR013",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR014",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR015",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR016",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR017",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR018",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-se-pilot--PR019",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-se-pilot--PR020",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "promotions": {
+      "project": {
+        "dry": {
+          "applied": false,
+          "replay": false,
+          "release_id": "r2-64d2b618d32348143253",
+          "parent_release": "r2-df57a6023fb7a088227e",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-se-pilot-project",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-se-pilot--PR004": "S084",
+                "2026-10-11-se-pilot--PR005": "S084",
+                "2026-10-11-se-pilot--PR006": "S084",
+                "2026-10-11-se-pilot--PR007": "S084",
+                "2026-10-11-se-pilot--PR015": "S085",
+                "2026-10-11-se-pilot--PR016": "S085",
+                "2026-10-11-se-pilot--PR017": "S085",
+                "2026-10-11-se-pilot--PR018": "S085",
+                "2026-10-11-se-pilot--PR019": "S085"
+              }
+            }
+          }
+        },
+        "applied": {
+          "applied": true,
+          "replay": false,
+          "release_id": "r2-b25d77cf11def9b91d79",
+          "parent_release": "r2-df57a6023fb7a088227e",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-se-pilot-project",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-se-pilot--PR004": "S084",
+                "2026-10-11-se-pilot--PR005": "S084",
+                "2026-10-11-se-pilot--PR006": "S084",
+                "2026-10-11-se-pilot--PR007": "S084",
+                "2026-10-11-se-pilot--PR015": "S085",
+                "2026-10-11-se-pilot--PR016": "S085",
+                "2026-10-11-se-pilot--PR017": "S085",
+                "2026-10-11-se-pilot--PR018": "S085",
+                "2026-10-11-se-pilot--PR019": "S085"
+              }
+            }
+          }
+        }
+      },
+      "capacity": {
+        "dry": {
+          "applied": false,
+          "replay": false,
+          "release_id": "r2-cc4441f7a706ef1b7985",
+          "parent_release": "r2-b25d77cf11def9b91d79",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-se-pilot-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-se-pilot--PR001": "S086",
+                "2026-10-11-se-pilot--PR002": "S086",
+                "2026-10-11-se-pilot--PR003": "S086",
+                "2026-10-11-se-pilot--PR008": "S087",
+                "2026-10-11-se-pilot--PR009": "S087",
+                "2026-10-11-se-pilot--PR010": "S087",
+                "2026-10-11-se-pilot--PR011": "S087",
+                "2026-10-11-se-pilot--PR012": "S087",
+                "2026-10-11-se-pilot--PR013": "S087",
+                "2026-10-11-se-pilot--PR014": "S087",
+                "2026-10-11-se-pilot--PR020": "S087"
+              }
+            }
+          }
+        },
+        "applied": {
+          "applied": true,
+          "replay": false,
+          "release_id": "r2-cc4441f7a706ef1b7985",
+          "parent_release": "r2-b25d77cf11def9b91d79",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-se-pilot-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-se-pilot--PR001": "S086",
+                "2026-10-11-se-pilot--PR002": "S086",
+                "2026-10-11-se-pilot--PR003": "S086",
+                "2026-10-11-se-pilot--PR008": "S087",
+                "2026-10-11-se-pilot--PR009": "S087",
+                "2026-10-11-se-pilot--PR010": "S087",
+                "2026-10-11-se-pilot--PR011": "S087",
+                "2026-10-11-se-pilot--PR012": "S087",
+                "2026-10-11-se-pilot--PR013": "S087",
+                "2026-10-11-se-pilot--PR014": "S087",
+                "2026-10-11-se-pilot--PR020": "S087"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "2026-10-11-no-pilot": {
+    "review": {
+      "review_id": "review-b925216968cb3c20e255",
+      "replay": false,
+      "approved": 19,
+      "rejected": 0,
+      "unselected": 0
+    },
+    "import_dry": {
+      "applied": false,
+      "replay": false,
+      "release_id": "r2-4cc3d2a29caf6ac28dba",
+      "parent_release": "r2-cc4441f7a706ef1b7985",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-no-pilot",
+        "review_id": "review-b925216968cb3c20e255",
+        "imported": [
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR013",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR014",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR015",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR016",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR017",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR018",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR019",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "import_applied": {
+      "applied": true,
+      "replay": false,
+      "release_id": "r2-4cc3d2a29caf6ac28dba",
+      "parent_release": "r2-cc4441f7a706ef1b7985",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-no-pilot",
+        "review_id": "review-b925216968cb3c20e255",
+        "imported": [
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR013",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR014",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR015",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR016",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR017",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR018",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-no-pilot--PR019",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "promotions": {
+      "capacity": {
+        "dry": {
+          "applied": false,
+          "replay": false,
+          "release_id": "r2-6513a04561a8e7f5fc45",
+          "parent_release": "r2-4cc3d2a29caf6ac28dba",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-no-pilot-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-no-pilot--PR001": "S088",
+                "2026-10-11-no-pilot--PR002": "S089",
+                "2026-10-11-no-pilot--PR003": "S090",
+                "2026-10-11-no-pilot--PR004": "S090",
+                "2026-10-11-no-pilot--PR005": "S091",
+                "2026-10-11-no-pilot--PR006": "S091",
+                "2026-10-11-no-pilot--PR007": ["S091", "S092"],
+                "2026-10-11-no-pilot--PR008": ["S091", "S092"],
+                "2026-10-11-no-pilot--PR009": ["S091", "S092"],
+                "2026-10-11-no-pilot--PR010": "S093",
+                "2026-10-11-no-pilot--PR011": ["S088", "S089", "S093"],
+                "2026-10-11-no-pilot--PR012": "S094",
+                "2026-10-11-no-pilot--PR013": "S094",
+                "2026-10-11-no-pilot--PR014": "S094",
+                "2026-10-11-no-pilot--PR015": "S095",
+                "2026-10-11-no-pilot--PR016": "S095",
+                "2026-10-11-no-pilot--PR017": "S095",
+                "2026-10-11-no-pilot--PR018": "S095",
+                "2026-10-11-no-pilot--PR019": "S095"
+              }
+            }
+          }
+        },
+        "applied": {
+          "applied": true,
+          "replay": false,
+          "release_id": "r2-f2760f80d98370c8a535",
+          "parent_release": "r2-4cc3d2a29caf6ac28dba",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-no-pilot-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-no-pilot--PR001": "S088",
+                "2026-10-11-no-pilot--PR002": "S089",
+                "2026-10-11-no-pilot--PR003": "S090",
+                "2026-10-11-no-pilot--PR004": "S090",
+                "2026-10-11-no-pilot--PR005": "S091",
+                "2026-10-11-no-pilot--PR006": "S091",
+                "2026-10-11-no-pilot--PR007": ["S091", "S092"],
+                "2026-10-11-no-pilot--PR008": ["S091", "S092"],
+                "2026-10-11-no-pilot--PR009": ["S091", "S092"],
+                "2026-10-11-no-pilot--PR010": "S093",
+                "2026-10-11-no-pilot--PR011": ["S088", "S089", "S093"],
+                "2026-10-11-no-pilot--PR012": "S094",
+                "2026-10-11-no-pilot--PR013": "S094",
+                "2026-10-11-no-pilot--PR014": "S094",
+                "2026-10-11-no-pilot--PR015": "S095",
+                "2026-10-11-no-pilot--PR016": "S095",
+                "2026-10-11-no-pilot--PR017": "S095",
+                "2026-10-11-no-pilot--PR018": "S095",
+                "2026-10-11-no-pilot--PR019": "S095"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "2026-10-11-fi-pilot": {
+    "review": {
+      "review_id": "review-d3c317bcc8988be8dd48",
+      "replay": false,
+      "approved": 13,
+      "rejected": 0,
+      "unselected": 0
+    },
+    "import_dry": {
+      "applied": false,
+      "replay": false,
+      "release_id": "r2-743d1af3dae1557798da",
+      "parent_release": "r2-f2760f80d98370c8a535",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-fi-pilot",
+        "review_id": "review-d3c317bcc8988be8dd48",
+        "imported": [
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-pilot--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-pilot--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR013",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "import_applied": {
+      "applied": true,
+      "replay": false,
+      "release_id": "r2-ee82c85371490f4510fc",
+      "parent_release": "r2-f2760f80d98370c8a535",
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+      },
+      "details": {
+        "run_id": "2026-10-11-fi-pilot",
+        "review_id": "review-d3c317bcc8988be8dd48",
+        "imported": [
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR001",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR002",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR003",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR004",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR005",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR006",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-pilot--PR007",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_project_updates",
+            "id": "2026-10-11-fi-pilot--PR008",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR009",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR010",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR011",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR012",
+            "review_state": "approved"
+          },
+          {
+            "table": "suggested_capacity_updates",
+            "id": "2026-10-11-fi-pilot--PR013",
+            "review_state": "approved"
+          }
+        ]
+      }
+    },
+    "promotions": {
+      "project": {
+        "dry": {
+          "applied": false,
+          "replay": false,
+          "release_id": "r2-e19df38695daf129b23f",
+          "parent_release": "r2-ee82c85371490f4510fc",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-fi-pilot-project",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-fi-pilot--PR007": "S096",
+                "2026-10-11-fi-pilot--PR008": "S096"
+              }
+            }
+          }
+        },
+        "applied": {
+          "applied": true,
+          "replay": false,
+          "release_id": "r2-e19df38695daf129b23f",
+          "parent_release": "r2-ee82c85371490f4510fc",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-fi-pilot-project",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-fi-pilot--PR007": "S096",
+                "2026-10-11-fi-pilot--PR008": "S096"
+              }
+            }
+          }
+        }
+      },
+      "capacity": {
+        "dry": {
+          "applied": false,
+          "replay": false,
+          "release_id": "r2-fc0a5410efeed67ccf76",
+          "parent_release": "r2-e19df38695daf129b23f",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-fi-pilot-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-fi-pilot--PR001": "S097",
+                "2026-10-11-fi-pilot--PR002": "S097",
+                "2026-10-11-fi-pilot--PR003": "S097",
+                "2026-10-11-fi-pilot--PR004": "S097",
+                "2026-10-11-fi-pilot--PR005": "S097",
+                "2026-10-11-fi-pilot--PR006": "S097",
+                "2026-10-11-fi-pilot--PR009": "S098",
+                "2026-10-11-fi-pilot--PR010": "S098",
+                "2026-10-11-fi-pilot--PR011": "S098",
+                "2026-10-11-fi-pilot--PR012": "S097",
+                "2026-10-11-fi-pilot--PR013": "S098"
+              }
+            }
+          }
+        },
+        "applied": {
+          "applied": true,
+          "replay": false,
+          "release_id": "r2-7f9486d6fc7ee1536aa0",
+          "parent_release": "r2-e19df38695daf129b23f",
+          "validation": {
+            "valid": true,
+            "errors": [],
+            "warnings": ["Missing approximate display location P017", "Missing approximate display location P018", "Missing approximate display location P019", "Missing approximate display location P020", "Missing approximate display location P021", "70 source links await field-level verification"]
+          },
+          "details": {
+            "request_id": "2026-10-11-fi-pilot-capacity",
+            "assigned": {
+              "projects": [],
+              "claims": [],
+              "sources": {
+                "2026-10-11-fi-pilot--PR001": "S097",
+                "2026-10-11-fi-pilot--PR002": "S097",
+                "2026-10-11-fi-pilot--PR003": "S097",
+                "2026-10-11-fi-pilot--PR004": "S097",
+                "2026-10-11-fi-pilot--PR005": "S097",
+                "2026-10-11-fi-pilot--PR006": "S097",
+                "2026-10-11-fi-pilot--PR009": "S098",
+                "2026-10-11-fi-pilot--PR010": "S098",
+                "2026-10-11-fi-pilot--PR011": "S098",
+                "2026-10-11-fi-pilot--PR012": "S097",
+                "2026-10-11-fi-pilot--PR013": "S098"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

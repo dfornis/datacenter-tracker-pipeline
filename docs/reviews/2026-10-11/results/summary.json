@@ -1,0 +1,87 @@
+{
+  "baseline_release": "r2-e6b6b27245af3290f523",
+  "current_release": "r2-3d9e67d28a526e73db93",
+  "comparison": "Same version-2 method applied to both states; differences reflect reviewed factual changes. The original v1 figures are methodologically non-comparable and preserved in utvardering.md.",
+  "changed_fields": 313,
+  "changed_ledger_rows": 46,
+  "runs": {
+    "2026-10-11-se-pilot": {
+      "proposals": 20,
+      "evidence_items": 5,
+      "coverage_rows": 7,
+      "field_outcomes": {
+        "confirmed": 8,
+        "correction_proposed": 12,
+        "unknown": 108
+      }
+    },
+    "2026-10-11-no-pilot": {
+      "proposals": 19,
+      "evidence_items": 8,
+      "coverage_rows": 6,
+      "field_outcomes": {
+        "confirmed": 7,
+        "correction_proposed": 12,
+        "unknown": 97
+      }
+    },
+    "2026-10-11-fi-pilot": {
+      "proposals": 13,
+      "evidence_items": 3,
+      "coverage_rows": 4,
+      "field_outcomes": {
+        "confirmed": 4,
+        "correction_proposed": 9,
+        "unknown": 55
+      }
+    },
+    "2026-10-11-se-audit": {
+      "proposals": 50,
+      "evidence_items": 19,
+      "coverage_rows": 37,
+      "field_outcomes": {
+        "confirmed": 26,
+        "correction_proposed": 28,
+        "unknown": 609
+      }
+    },
+    "2026-10-11-no-audit": {
+      "proposals": 36,
+      "evidence_items": 13,
+      "coverage_rows": 20,
+      "field_outcomes": {
+        "confirmed": 19,
+        "correction_proposed": 29,
+        "unknown": 297
+      }
+    },
+    "2026-10-11-fi-audit": {
+      "proposals": 31,
+      "evidence_items": 14,
+      "coverage_rows": 27,
+      "field_outcomes": {
+        "confirmed": 14,
+        "correction_proposed": 22,
+        "unknown": 402
+      }
+    },
+    "2026-10-11-se-discover": {
+      "proposals": 3,
+      "evidence_items": 3,
+      "coverage_rows": 5,
+      "field_outcomes": []
+    },
+    "2026-10-11-no-discover": {
+      "proposals": 4,
+      "evidence_items": 4,
+      "coverage_rows": 5,
+      "field_outcomes": []
+    },
+    "2026-10-11-fi-discover": {
+      "proposals": 8,
+      "evidence_items": 10,
+      "coverage_rows": 5,
+      "field_outcomes": []
+    }
+  }
+}

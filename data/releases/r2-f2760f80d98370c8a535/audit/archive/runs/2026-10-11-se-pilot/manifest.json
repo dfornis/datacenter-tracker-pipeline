@@ -1,0 +1,11 @@
+{
+  "review_id": "review-6027dea2d3e9c118e0c2",
+  "response_sha256": "6bed809f0c839258237349797e08c9562207d3bc12953408c1de68ac4497790e",
+  "decisions_sha256": "a53f6687b9abea2e3d08452d2ddf6c83b12f6c358b5e5a7e5050cbe7f58533ac",
+  "run_manifest_sha256": "0f80e660bb9289914b3848c92c391619f37cd1951c99ee52bbfce0e4fef4d943",
+  "reviewer": "codex-second-pass",
+  "files": {
+    "decisions.csv": "a53f6687b9abea2e3d08452d2ddf6c83b12f6c358b5e5a7e5050cbe7f58533ac",
+    "response.json": "6bed809f0c839258237349797e08c9562207d3bc12953408c1de68ac4497790e"
+  }
+}

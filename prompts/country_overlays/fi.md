@@ -35,6 +35,7 @@ Select sources by the field being checked. Operator releases, public decisions a
 - Fingrid Finnish connection material for `liittyminen kantaverkkoon`: https://www.fingrid.fi/kantaverkko/liitynta-kantaverkkoon/
 - Energiavirasto, the Finnish Energy Authority, for regulatory and licensing context: https://www.energiavirasto.fi/
 - Municipal records using `kunta`, `kaupunki`, `kaavoitus`, `asemakaava`, `rakennuslupa`, `ympäristölupa`
+- Environmental assessment project pages and underlying decisions: https://www.ymparisto.fi/fi/osallistu-ja-vaikuta/ymparistovaikutusten-arviointi . Check the legal project company and physical site, particularly adjacent developments by related companies. Consult current Lupa- ja valvontavirasto decisions for 2026 status.
 
 Use Data Center Dynamics as shared trade press. Also search Finnish business and regional outlets when primary sources are not enough, but treat them as secondary unless they cite public documents or named officials.
 

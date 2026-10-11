@@ -58,6 +58,10 @@ account_scenario <- function(tables, method, scenario) {
     eligible[selected] <<- FALSE; reason[selected] <<- why
   }
   exclude(nzchar(c$superseded_by_claim_id),'superseded')
+  conflicts <- tables$source_conflicts
+  identity_conflicts <- conflicts$claim_id[conflicts$review_state %in% c('pending','needs_review') &
+    conflicts$field %in% c('project_id','physical_site_id','claim_identity')]
+  exclude(c$claim_id %in% identity_conflicts,'unresolved_source_identity')
   exclude(c$capacity_unit != 'MW_electric' | c$reported_capacity_basis %in% unlist(method$non_load_bases),'not_datacenter_electric_load')
   exclude(c$capacity_status %in% unlist(method$scenario_excluded_statuses), 'phase_status_excluded')
   exclude(c$baseline_scope == 'existing_unknown','installed_baseline_unknown')
@@ -131,8 +135,8 @@ account_scenario <- function(tables, method, scenario) {
         model_facility_high[i] <- net_measure(tables,i,'facility_total','high') * end_fraction[i]
       }
       pue_kind[i] <- 'same_scope_facility_observation'
-    } else if (!is.na(it[i])) {
-      kind <- 'nameplate_capacity'
+    } else if (!is.na(it[i]) && measure_kind(tables,i,'it_load') %in% c('nameplate_capacity','peak_demand')) {
+      kind <- measure_kind(tables,i,'it_load')
       it_high <- net_measure(tables,i,'it_load','high') * end_fraction[i]
       if (nzchar(c$site_pue[i])) {
         # A design upper bound is not automatically an exact peak conversion or measured annual PUE.
@@ -149,7 +153,7 @@ account_scenario <- function(tables, method, scenario) {
       }
     }
     if (is.na(model_facility_low[i])) {
-      energy_status[i] <- if (c$reported_capacity_basis[i] == 'grid_connection') 'connection_is_not_facility_demand' else if (c$reported_capacity_basis[i] == 'unspecified_headline') 'basis_unknown' else 'PUE_assumption_missing'
+      energy_status[i] <- if (c$reported_capacity_basis[i] == 'grid_connection') 'connection_is_not_facility_demand' else if (c$reported_capacity_basis[i] == 'unspecified_headline') 'basis_unknown' else if (!is.na(it[i]) && !measure_kind(tables,i,'it_load') %in% c('nameplate_capacity','peak_demand')) 'measurement_kind_not_convertible' else 'PUE_assumption_missing'
     } else if (is.null(lf_assumption)) energy_status[i] <- 'load_factor_assumption_missing' else if (kind != lf_assumption$denominator_kind) energy_status[i] <- 'load_factor_denominator_mismatch' else {
       lf_id[i] <- lf_assumption$id; energy_status[i] <- 'conditional_mature_annual_equivalent'
       energy_low[i] <- model_facility_low[i] * lf_assumption$low * 8760 / 1e6
@@ -182,7 +186,7 @@ account_all <- function(tables,method) {
   for (scenario in method$scenarios) for (i in seq_len(nrow(g))) {
     all <- ledger[ledger$scenario_id==scenario$scenario_id & ledger$bidding_zone==g$bidding_zone[i],,drop=FALSE]
     counted <- all[all$counted,,drop=FALSE]
-    uncertain <- all$reason %in% c('unresolved_overlap','installed_baseline_unknown','past_target_requires_status_refresh')
+    uncertain <- all$reason %in% c('unresolved_overlap','unresolved_source_identity','installed_baseline_unknown','past_target_requires_status_refresh')
     sum_or_na <- function(field) if (nrow(counted)==0) 0 else if (all(is.na(counted[[field]]))) NA_real_ else sum(counted[[field]],na.rm=TRUE)
     known <- sum(!is.na(counted$modelled_facility_equivalent_mw_low))
     energy_known <- sum(!is.na(counted$conditional_mature_annual_twh_low))
@@ -196,12 +200,12 @@ account_all <- function(tables,method) {
       # These are separate, non-additive measures. No total sums IT MW and facility MW.
       known_it_load_mw=sum_or_na('it_load_mw'),known_facility_power_mw=sum_or_na('facility_power_mw'),known_grid_connection_mw=sum_or_na('grid_connection_mw'),
       modelled_facility_equivalent_mw_low=sum_or_na('modelled_facility_equivalent_mw_low'),modelled_facility_equivalent_mw_high=sum_or_na('modelled_facility_equivalent_mw_high'),
-      capacity_estimate_complete=known==nrow(counted) && !any(uncertain),
+      capacity_estimate_complete=known==nrow(counted) && !any(uncertain) && !any(all$reason %in% c('scoped_commitment_not_verified','scoped_capacity_not_verified')),
       conditional_mature_annual_twh_low=sum_or_na('conditional_mature_annual_twh_low'),conditional_mature_annual_twh_high=sum_or_na('conditional_mature_annual_twh_high'),
-      annual_equivalent_complete=energy_known==nrow(counted) && !any(uncertain),
+      annual_equivalent_complete=energy_known==nrow(counted) && !any(uncertain) && !any(all$reason %in% c('scoped_commitment_not_verified','scoped_capacity_not_verified')),
       target_year_energy_twh_low=if (is.null(scenario$year)) NA_real_ else sum_or_na('target_year_energy_twh_low'),
       target_year_energy_twh_high=if (is.null(scenario$year)) NA_real_ else sum_or_na('target_year_energy_twh_high'),
-      target_year_energy_complete=!is.null(scenario$year) && target_known==nrow(counted) && !any(uncertain),
+      target_year_energy_complete=!is.null(scenario$year) && target_known==nrow(counted) && !any(uncertain) && !any(all$reason %in% c('scoped_commitment_not_verified','scoped_capacity_not_verified')),
       quality_flagged_claims=sum(nzchar(counted$quality_flags)),stringsAsFactors=FALSE)
   }
   list(ledger=ledger,scenario_zone=do.call(rbind,rows))

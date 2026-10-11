@@ -1,0 +1,104 @@
+{
+  "build_id": "build-836140a052ff533229aa",
+  "schema_version": "2.0.0",
+  "method_version": "2.0.0",
+  "as_of_date": "2026-10-11",
+  "baseline_date": "2026-10-11",
+  "inputs": {
+    "data_release": "r2-3d9e67d28a526e73db93",
+    "data_manifest_sha256": "486bc85e5b18f18d9cdbcba4ecf6921f98eaca8cac85b0c56db557016faa9425",
+    "code_and_config": {
+      "config/admin_sources.json": "78a41429ef5e6fbf7a5e3b76f7cdaa1a443da5aa4b9d9bd533d41823f595ec92",
+      "config/geography_sources.json": "23a4e5d4176f8d457b2f9f67176ef5a4683dd35d00caa788abd325315e4f43e7",
+      "config/methodology.json": "7400fd1a65d5475669469964716b9d31a0999f167508f160cf79036590b676a6",
+      "config/run_response.schema.json": "9f8d86e055140d28c8b1d680bd8d95cbd5fa1731ba172b74b49584aa2c2606b3",
+      "config/run_workflow.json": "d4e5fcf2d78d66aed166539de1a87d0d47b0b565f85e992a4368845dd642914b",
+      "config/schema.json": "9a21e19e7b6a965561448ea1145ff9c250df66c7afdcae1fa5cdf2ca344f043c",
+      "renv.lock": "586d924b5a8a195a4efbf8d9ba0659b1fe6ab4a8e16a964677ad7b2149a9b0fb",
+      "scripts/build_admin_units.R": "d7243813cd04baf9d408e174526f6086183b2b8a667aa73ceebbf3705a4902de",
+      "scripts/build_datacenter_data.R": "b8dfda6a5a72ac77000bed203c83e8b5a4cf3c4b29875f0439331019e9845846",
+      "scripts/evaluate_pilot.R": "54a7daf888b04d6909a69019bff3fa2e7ec23492aee5514a72cf5bf3ce965a60",
+      "scripts/import_run_review.R": "800e9ba4e6560fb6a656487b4f4da82f4ec6b26de803b3ca3da389a2fce89a84",
+      "scripts/lib/accounting.R": "3216b1ba6f02894ef0875d0d574b0793242049f524dc7cec0235e38888135fa0",
+      "scripts/lib/admin.R": "6d8d9ce028d2a62bfa90bf61c278945d3fda84182c7a4b64fa344fb59129d8ce",
+      "scripts/lib/common.R": "e3c2de770b5dafcabc63683c4310112217ddee947b637399fd2db79ac6d3e279",
+      "scripts/lib/export.R": "fbf900b3fef7ee6f23059bcab9e381b143821539538a942d2b035cb99830918e",
+      "scripts/lib/geometry.R": "b0b13e6a2d49b2cf5b00d4dad4e84e02a3e2c08aefe98a4c66360d522fef91fb",
+      "scripts/lib/migration_v2.R": "57824bf9810e48c19516e3277021f96769ea4fef021ab00257eb00a2e9496745",
+      "scripts/lib/promotion.R": "7dbeb85aad5c44da1413933733776eb098e94c5e365e87b53905e0765c5ad559",
+      "scripts/lib/releases.R": "3636f66c92894fe38163e72849a647045c9f900eff262be88496511f4f942bc2",
+      "scripts/lib/run_review.R": "dc4893240136c0f6b11efd855ed0dde81de9b073fc6b4964ba38ef2a7e2c23e4",
+      "scripts/lib/runs.R": "e196b1eb529b096477f9d130a54f74e3fc41fe2bbe9cac6119c2134791307ccc",
+      "scripts/lib/runtime.R": "7a94a8b6ec181e16a4ad8f517b79a3e0386e3bd3fb170e9e010a947bb7f5309b",
+      "scripts/lib/validation.R": "85a34ba427b9f9223b1d9f61325f37fd38950ec6179b07bafbf411a93323f917",
+      "scripts/migrations/migrate_v2.R": "cd54445e4eedaede0ec885afb72b5c44bdcfe91985122cde3b7d75f0d162b205",
+      "scripts/promote_review_rows.R": "789fff6dad1735160a0b3cd86dade362c5a64202d57abaa4b198ea1b88772618",
+      "scripts/render_country_prompt.R": "846615ffdb4d340e23cd7406d33e298d2eee176ce906cc6b66a19d8e9d210fbf",
+      "scripts/render_schema_doc.R": "d9ce94e7a8845821dc856fc9a2e72d2b14ae597235e1ebc309357ff6ac2eb36f",
+      "scripts/report_review_changes.R": "7b2613d8dbeb3f4d6b2c1aea8db8cbe3162e3b6014ccf8359784e506e590147f",
+      "scripts/review_country_run.R": "7f181acc4cfd9ac48ff9dc6e48df62fded847ac1f1107fb77d9ef0c710cf9072",
+      "scripts/validate_data.R": "c637bee1170aed2bffdb2738f84142aaa9ce2f00392c398da9c8f5c6915fb60e",
+      "scripts/validate_run_response.R": "e0c9c8a5095bef1a5ff033d83f97f3b4fa964b519795c0997df9ea90afff8354"
+    },
+    "geometry": {
+      "data/reference/bidding-zones/SE.geojson": "cb29a383083e75ff6d39c647d2b32476d0921ed2263842069fe6fff9843f0e9c",
+      "data/reference/bidding-zones/FI.geojson": "fa19894d49e3f91fbcdb40830ced5c32bea70659d6c9d07e1b4e0adbb0da80dd",
+      "data/reference/bidding-zones/NO-NO1.geojson": "755d1da0229ae48b9740e0b73a87d4d7bb81714de1194a470f58b149603178a4",
+      "data/reference/bidding-zones/NO-NO2.geojson": "f2d963b609715180dc052caef679e86bc20c2965bb4594da8d642d2cc2bcf5b1",
+      "data/reference/bidding-zones/NO-NO3.geojson": "0eb5194cba3ea1b86e14eb3a68fb87aaeb5cd41ca1fe410ac7615c627153e9db",
+      "data/reference/bidding-zones/NO-NO4.geojson": "b1e1fe7ea30a24b6c4261e0dbf9b1a6d0769158c2cd45314bd46b19047493488",
+      "data/reference/bidding-zones/NO-NO5.geojson": "f60e46d9677c64fddfb3e939f26290a66183764d043e2cfcc2903281402d42fb"
+    },
+    "runtime": {
+      "R": "4.6.0",
+      "jsonlite": "2.0.0",
+      "digest": "0.6.39"
+    }
+  },
+  "output_hashes": {
+    "accounting_ledger.csv": "d9f8634652977e718e68ba3cb33a9e991a8e87faf9ff7a97da2fe8138a39db25",
+    "accounting_ledger.json": "5bd41fdf9224c184e6a206072d9ad0f079f6bdcd4b39e012295df7537a258bbb",
+    "assumptions.json": "d3abf2daef34e24afe79c80a58c5ba3f24c964289cc91cc3d7fc14e5bc684602",
+    "bidding_zones.geojson": "8a4c76f7e36aeff90e6a317c82cb4ae94a96cda49442e58741a206153e89d9f9",
+    "capacity_observations.json": "bd43b028ced284e1eb358eeb833d1efb6a5e421f53f453c64e911ce01b035ece",
+    "capacity.json": "ec281e57e8ebd0cf0c28e283b3fa869b186e4d432ecaa0e6a2da82aa0d205c01",
+    "field_reviews.json": "b91bbd859cd80520e0578286ac310bd39972b1abdd2a09e5235ee1825a9c2768",
+    "projects.json": "7b1ebb7bbb0ccab6f16bbb60ca38b2eba57473cda1d198c1a619d987d1b5ed73",
+    "quality.json": "c33db234fa324a447831e053b758ffaac113719bbb8ca78530612ea559585c6b",
+    "scenario_zone.json": "77a675d19794347b36fa12f94cec8a97d759d54ca79eee186ebb8c95eab64e1e",
+    "source_conflicts.json": "466967cf399d5af4f9e2fd910c08f2b5f1ceeca6daaf9f1abb91667812c0291c",
+    "sources.json": "b7437d6a5960ff46cc98c04401d4f3a066c19388f209c1f60639d2cce9a34e62"
+  },
+  "semantics": {
+    "scenarios": [
+      {
+        "scenario_id": "low_2030",
+        "label": "Committed by 2030",
+        "year": 2030,
+        "require_decision": true
+      },
+      {
+        "scenario_id": "stated_2030",
+        "label": "Stated by 2030",
+        "year": 2030,
+        "require_decision": false
+      },
+      {
+        "scenario_id": "stated_2035",
+        "label": "Stated by 2035",
+        "year": 2035,
+        "require_decision": false
+      },
+      {
+        "scenario_id": "pipeline_potential",
+        "label": "Undated pipeline potential",
+        "year": null,
+        "require_decision": false
+      }
+    ],
+    "measure": "incremental_capacity_after_baseline",
+    "energy": "conditional mature annual equivalent; not a target-year forecast",
+    "separate_measures": "IT, facility and grid columns are non-additive views; unknown is null",
+    "missing": "Partial totals are labelled with completeness flags; excluded claims remain in the ledger"
+  }
+}

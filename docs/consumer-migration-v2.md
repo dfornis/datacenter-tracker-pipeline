@@ -18,4 +18,6 @@ Use `scenario_zone.json` with its completeness flags and the accounting ledger. 
 
 Missing coordinates should give a list entry without a map marker. Municipality points do not establish the site, network connection or bidding zone. Geometry provenance limitations are in `quality.json`.
 
+Read `source_conflicts.json` and the pending-candidate counts in `quality.json`. A claim with an unresolved site/source identity is excluded even if its historical numeric value is retained. `capacity_estimate_complete` and energy completeness are false for committed subsets with missing critical evidence, including empty subsets. Fifteen discovery candidates are held outside the master inventory in this release.
+
 Method migration can reduce totals without any cancellation. Attribute changes separately to source/identity repair, basis correction, timing rules, baseline subtraction, overlap treatment, scenario definitions, energy assumptions and new factual evidence. The original comparison remains in the October review. A percentage change between old inferred IT totals and new explicitly separated measures is not meaningful.

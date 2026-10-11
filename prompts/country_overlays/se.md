@@ -26,6 +26,7 @@ These terms are leads, not classification rules. Generic words for capacity, con
 Select sources by the field being checked. Operator releases, public decisions and grid records have different authority:
 
 - Svenska kraftnät for transmission-grid context and large-connection material: https://www.svk.se/
+- Current application queue: https://www.svk.se/aktorsportalen/anslut-till-transmissionsnatet/information-om-pagaende-anslutningsarenden/ . Application MW is not allocated power, installed datacenter capacity or forecast consumption.
 - Energimarknadsinspektionen for energy-market and network-regulation material: https://ei.se/
 - Mark- och miljödomstolar, municipal planning records, building permits, environmental permits, and consultation documents
 - Municipal and regional records using `kommun`, `kommunstyrelse`, `byggnadsnämnd`, `detaljplan`, and `samråd`

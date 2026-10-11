@@ -1,0 +1,82 @@
+[
+  {
+    "country": "SE",
+    "scope_id": "P003",
+    "url": "https://ecodatacenter.tech/data-center/ecodatacenter2",
+    "pattern": "Total available power",
+    "language": "en",
+    "searched_at": "2026-10-11T18:43:24Z"
+  },
+  {
+    "country": "SE",
+    "scope_id": "P010",
+    "url": "https://www.fi.se/sv/vara-register/prospektregistret/GetFile?format=application/pdf&id=26-2502&name=26-2502.pdf",
+    "pattern": "23 MW",
+    "language": "en",
+    "searched_at": "2026-10-11T18:43:24Z"
+  },
+  {
+    "country": "SE",
+    "scope_id": "P015",
+    "url": "https://blog.google/intl/sv-se/foretagsnyheter/google-tar-spadtaget-for-sitt-forsta-datacenter-i-sverige/",
+    "pattern": "HORNDAL",
+    "language": "sv",
+    "searched_at": "2026-10-11T18:43:24Z"
+  },
+  {
+    "country": "NO",
+    "scope_id": "P017",
+    "url": "https://greenmountain.no/data-center/osl-hamar/",
+    "pattern": "Maximum IT Capacity",
+    "language": "en",
+    "searched_at": "2026-10-11T18:43:58Z"
+  },
+  {
+    "country": "NO",
+    "scope_id": "P017",
+    "url": "https://greenmountain.no/data-centers/build-to-suit/",
+    "pattern": "first building",
+    "language": "en",
+    "searched_at": "2026-10-11T18:43:58Z"
+  },
+  {
+    "country": "NO",
+    "scope_id": "P021",
+    "url": "https://www.lefdalmine.com/news/lefdal-mine-datacenter-expand-power-capacity-with-60-mw",
+    "pattern": "80 MW",
+    "language": "en",
+    "searched_at": "2026-10-11T18:43:58Z"
+  },
+  {
+    "country": "NO",
+    "scope_id": "P021",
+    "url": "https://www.lefdalmine.com/data-center/power",
+    "pattern": "expandable",
+    "language": "en",
+    "searched_at": "2026-10-11T18:43:58Z"
+  },
+  {
+    "country": "FI",
+    "scope_id": "P033",
+    "url": "https://www.atnorth.com/nordic-data-centers/finland-data-centers/myllykoski-mega-site/",
+    "pattern": "Campus power capacity",
+    "language": "en",
+    "searched_at": "2026-10-11T18:44:39Z"
+  },
+  {
+    "country": "FI",
+    "scope_id": "P033",
+    "url": "https://www.yitgroup.com/fi/news-repository/sijoittajauutiset/yit-ja-atnorth-sopimukseen-datakeskuksen-rakentamisesta-kouvolaan--arvo-yitlle-noin-300-miljoonaa-euroa",
+    "pattern": "ovat sopineet",
+    "language": "fi",
+    "searched_at": "2026-10-11T18:44:39Z"
+  },
+  {
+    "country": "FI",
+    "scope_id": "P035",
+    "url": "https://nebius.com/newsroom/nebius-to-construct-310-mw-ai-factory-in-finland",
+    "pattern": "first capacity",
+    "language": "en",
+    "searched_at": "2026-10-11T18:44:39Z"
+  }
+]

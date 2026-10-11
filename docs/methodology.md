@@ -36,4 +36,6 @@ Each country run freezes its input release, rules, geography and prompt. Record 
 
 Pending proposals cannot change master data. Approved proposals must match their recorded current value and their frozen input release. Dry run and apply stage the same complete state and use the same validation. Changes to sources, claims, projects and review history form one transaction. A successful apply publishes one immutable release by replacing a single pointer. Failed validation or interrupted staging leaves the previous release selected.
 
+An unresolved claim-level source conflict about `project_id`, `physical_site_id` or `claim_identity` blocks that claim from every scenario. Its number remains in the historical inventory, but cannot be attributed to the current site until the conflict is resolved through a reviewed transaction. A construction announcement for a neighbouring site cannot validate another site's capacity.
+
 Builds resolve the selected release once, validate it, and assemble every configured geography before publishing any output. A release manifest records input hashes, schema, method and code. Missing map data is a build failure. Approximate municipal display coordinates do not assert the physical site or determine its bidding zone.

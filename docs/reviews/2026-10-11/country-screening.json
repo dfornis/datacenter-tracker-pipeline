@@ -1,0 +1,192 @@
+[
+  {
+    "project_id": "P001",
+    "assessment": "Gigawatt envelope remains conditional. September press leads describe separate buildings and permit stages; primary full-site MW timing has not been verified.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P002",
+    "assessment": "Brookfield specifies a 10–15 year construction process, not a dated full-capacity commissioning window. The electrical denominator of 300/750 MW is not explicit.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P003",
+    "assessment": "Pilot separates available power from load. Company documents differ between 240/246/250 MW; retain the old observation as unverified rather than merging scopes. Tenant containment remains unresolved.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P004",
+    "assessment": "Current site page reports 300 MW site power; H1 2028 is an opening target, not proof of full-campus operation.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P005",
+    "assessment": "Issuer filing describes litigation seeking rescission of the SAPL transaction associated with Marviken rights. The old phase delivery years cannot be treated as a refreshed execution schedule.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P006",
+    "assessment": "Annual report explicitly records the decision to discontinue the Östersund development in September 2025. It is separate from Borlänge despite reuse of the EcoDataCenter 2 name.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P007",
+    "assessment": "The October 2025 MoU remains a feasibility initiative. Reactor output is not datacentre demand; no fresh scoped electrical-load or execution evidence obtained.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P008",
+    "assessment": "January 2026 operator announcement describes a 30 MW metro site with a Q4 2027 opening target. Full commissioning scope and denominator remain unverified.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P009",
+    "assessment": "Current operator site separates 28 MW IT from 40 MW power feed. Q2 2026 report dates delivery of the whole 28 MW to July 2027. Old 14 MW phase should remain contained, never added to 28.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P010",
+    "assessment": "Pilot confirmed a 23 MW headline and same Borlänge location. IT denominator and numeric containment remain unresolved.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P011",
+    "assessment": "Retrieved February 2025 announcement gives 18 MW and H2 2026 target. Fresh evidence that all 18 MW is operational was not obtained.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P012",
+    "assessment": "Q2 2026 company report says expansion is completed. The original 8 MW announcement is additional power from Ellevio, not measured installed IT load.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P013",
+    "assessment": "Current operator page labels 10 MW as site power; the legacy 10 MW IT label is unsupported by that page. Installed first-phase 6 MW and timing still need scoped evidence.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P014",
+    "assessment": "Operator October 2025 announcement supports an additional 1.2 MW in 2026 but does not specify IT versus facility denominator. No current completion confirmation obtained.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P015",
+    "assessment": "Pilot verified June 2026 construction start. September location page targets completion in 2028, with no site electrical MW. Thermal backup permit remains excluded.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P016",
+    "assessment": "Targeted search and location-page retrieval did not produce usable new scoped power/commissioning evidence. 240 MW grid capacity must not become installed demand.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P017",
+    "assessment": "Pilot verified 90 MW installed IT and 150 MW IT option. 2023 denotes first-building handover. Increment 60 MW is undated and conditional.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P018",
+    "assessment": "Current operator page distinguishes 75 MW IT from 94 MW line-of-sight envelope and describes smaller completed buildings. Legacy 93 MW fully operational in 2024 is not supported.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P019",
+    "assessment": "Operator labels 50 MW maximum IT capacity/potential, not installed load. 2014 is site opening; current comparable installed baseline remains unknown.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P020",
+    "assessment": "Operator labels 25 MW maximum IT capacity. This is not proof that all 25 MW was commissioned in 2013; comparable installed baseline is unknown.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P021",
+    "assessment": "Pilot distinguishes 80 MW available supply from an expandable 200 MW grid envelope. Do not subtract available supply as installed baseline.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P022",
+    "assessment": "Primary 2024 announcement labels 42 MW IT, but conflicting target dates and an unnamed 2026 expansion do not establish the current DCM102 state. Campus page now markets up to 1 GW, with unknown installed baseline.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P023",
+    "assessment": "Kalberg and Undheim are distinct sites. Operator describes active construction at Undheim (80 IT/100 total MW, completion 2028) while Kalberg awaits area planning. Existing combined identity must be split before adding capacity.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P024",
+    "assessment": "No fresh primary reversal of the cancelled Vagle development was retrieved. Retain cancellation as unverified historical state; do not infer cancellation from absence of news.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P025",
+    "assessment": "Municipal March 2026 source confirms Borealis operates in Kajaani, but not the 10 MW full-campus commissioning. September Otanmäki land reservation is a separate discovery lead.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P026",
+    "assessment": "Microsoft explicitly decided the second phase; construction completion around 2026/27 precedes commissioning. Full-site permit 200 MW is not a phase commitment or opening date.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P027",
+    "assessment": "Microsoft explicitly decided the second phase; full-site permit 150 MW needs reconciliation with 144 MW register leads using original documents. No forced replacement from secondary register.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P028",
+    "assessment": "Microsoft explicitly decided the second phase; the 220 MW YVA peak is not evidence that the whole campus is committed or commissioned in 2027.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P029",
+    "assessment": "Google September announcement covers Hamina expansion and three other Finnish sites. No Hamina-specific electrical MW was established; PPA/battery sizes are not datacentre load.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P030",
+    "assessment": "Critical identity conflict: YVA 100 MW IT/130 MW electrical describes Hyperco Data Systems development west of the under-construction Hyperco Fin HoldCo 1 site. Quarantine C042 and its alternate observation from totals.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P031",
+    "assessment": "DayOne primary announcement explicitly distinguishes 50 MW IT first building and 128 MW IT total potential. 2027 opening does not date full 128 MW.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P032",
+    "assessment": "Operator still advertises 40 MW; Skanska announces expansion begun April 2026, future gross total 45 MW in Q3 2027. Different date/scope: cannot subtract 40 as a verified installed baseline.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P033",
+    "assessment": "Pilot separates 430 MW envelope and design PUE. YIT August 2026 announces another scoped facility; first-capacity and whole-campus dates remain unresolved.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P034",
+    "assessment": "Nebius March 2026 announcement states expansion up to 75 MW completed earlier in 2026. Denominator still not explicit. New substation leads require separate scope checks.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P035",
+    "assessment": "Pilot preserves first customer capacity in 2027. Full 310 MW commissioning date remains unknown.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P036",
+    "assessment": "June 2026 Verne announcement confirms construction of the first 70 MW. Old 2025 construction start is stale; this release does not reconfirm operation of all 70 MW in 2027.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P037",
+    "assessment": "Targeted search did not retrieve fresh operator confirmation of first-building completion. Do not infer operation from a passed 2026 target or municipal generic wording.",
+    "status": "selective_field_review"
+  },
+  {
+    "project_id": "P038",
+    "assessment": "CSC March and September 2026 updates support ongoing construction and 2027 production readiness. No source-backed datacentre MW was obtained.",
+    "status": "selective_field_review"
+  }
+]

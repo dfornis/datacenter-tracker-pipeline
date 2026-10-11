@@ -1,0 +1,112 @@
+[
+  {
+    "country": "SE",
+    "scope_id": "P003",
+    "language": "sv",
+    "query": "EcoDataCenter Borlänge 600 MW Mistral 2026 byggstart",
+    "searched_at": "2026-10-11T18:36:08Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "SE",
+    "scope_id": "P010",
+    "language": "sv",
+    "query": "Mistral EcoDataCenter Borlänge 23 MW 2026",
+    "searched_at": "2026-10-11T18:36:08Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "SE",
+    "scope_id": "P015",
+    "language": "sv",
+    "query": "site.blog.google Horndal datacenter 2026 byggstart",
+    "searched_at": "2026-10-11T18:36:08Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "SE",
+    "scope_id": "SE",
+    "language": "en",
+    "query": "site.datacenters.google Horndal construction September 2026",
+    "searched_at": "2026-10-11T18:36:08Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "NO",
+    "scope_id": "P017",
+    "language": "nb",
+    "query": "site.greenmountain.no Hamar tre bygg 90 MW opsjon 150",
+    "searched_at": "2026-10-11T18:36:20Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "NO",
+    "scope_id": "P021",
+    "language": "nb",
+    "query": "site.lefdalmine.com Lefdal 80 200 MW reservasjon strøm",
+    "searched_at": "2026-10-11T18:36:20Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "NO",
+    "scope_id": "NO",
+    "language": "en",
+    "query": "site.lefdalmine.com 80 MW 200 MW available power",
+    "searched_at": "2026-10-11T18:36:20Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "FI",
+    "scope_id": "P033",
+    "language": "fi",
+    "query": "site.yitgroup.com atNorth Myllykoski rakentaminen 2026 2027 430",
+    "searched_at": "2026-10-11T18:36:44Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "FI",
+    "scope_id": "P035",
+    "language": "en",
+    "query": "site.nebius.com Lappeenranta 310 MW first capacity 2027",
+    "searched_at": "2026-10-11T18:36:44Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "FI",
+    "scope_id": "FI",
+    "language": "sv",
+    "query": "Lappeenranta Nebius datacenter 310 megawatt 2027",
+    "searched_at": "2026-10-11T18:36:44Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  },
+  {
+    "country": "FI",
+    "scope_id": "FI",
+    "language": "fi",
+    "query": "Myllykoski atNorth FIN04 430 käyttöönotto 2027",
+    "searched_at": "2026-10-11T18:36:44Z",
+    "engine": "web.run",
+    "action": "search",
+    "route": "operator"
+  }
+]

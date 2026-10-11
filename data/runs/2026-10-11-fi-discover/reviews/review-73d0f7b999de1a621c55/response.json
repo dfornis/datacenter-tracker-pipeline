@@ -1,0 +1,631 @@
+{
+  "run_id": "2026-10-11-fi-discover",
+  "searches": [
+    {
+      "search_id": "FI-Q001",
+      "scope_id": "operator",
+      "language": "en",
+      "query": "Finland new data center 2026 Salo Google Microsoft Vaasa",
+      "searched_at": "2026-10-11T19:03:44Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "operator",
+      "result_urls": [],
+      "outcome": "Bounded results reviewed jointly; see scoped candidate evidence and limitations.",
+      "limitations": "Batched search; no exhaustive or per-query attribution claim."
+    },
+    {
+      "search_id": "FI-Q002",
+      "scope_id": "planning_permit",
+      "language": "fi",
+      "query": "uusi datakeskus 2026 ympäristövaikutusten arviointi kaavoitus",
+      "searched_at": "2026-10-11T19:03:44Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "planning_permit",
+      "result_urls": [],
+      "outcome": "Bounded results reviewed jointly; see scoped candidate evidence and limitations.",
+      "limitations": "Batched search; no exhaustive or per-query attribution claim."
+    },
+    {
+      "search_id": "FI-Q003",
+      "scope_id": "grid",
+      "language": "fi",
+      "query": "site.fingrid.fi 2026 datakeskus liittymissopimus",
+      "searched_at": "2026-10-11T19:04:02Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "grid",
+      "result_urls": [],
+      "outcome": "Bounded results reviewed jointly; see scoped candidate evidence and limitations.",
+      "limitations": "Batched search; no exhaustive or per-query attribution claim."
+    },
+    {
+      "search_id": "FI-Q004",
+      "scope_id": "trade_press",
+      "language": "sv",
+      "query": "nya datacenter Finland oktober 2026 Salo Google",
+      "searched_at": "2026-10-11T19:04:02Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "trade_press",
+      "result_urls": [],
+      "outcome": "Bounded results reviewed jointly; see scoped candidate evidence and limitations.",
+      "limitations": "Batched search; no exhaustive or per-query attribution claim."
+    },
+    {
+      "search_id": "FI-Q005",
+      "scope_id": "country_discovery",
+      "language": "fi",
+      "query": "uusi datakeskus lokakuu 2026 Suomi investointi",
+      "searched_at": "2026-10-11T19:04:02Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "country_discovery",
+      "result_urls": [],
+      "outcome": "Bounded results reviewed jointly; see scoped candidate evidence and limitations.",
+      "limitations": "Batched search; no exhaustive or per-query attribution claim."
+    },
+    {
+      "search_id": "FI-Q006",
+      "scope_id": "planning_permit",
+      "language": "fi",
+      "query": "site.lvv.fi Tuike Finland Muhos Kajaani lokakuu 2026 keskeyttämään",
+      "searched_at": "2026-10-11T19:05:12Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "planning_permit",
+      "result_urls": [],
+      "outcome": "Bounded results reviewed jointly; see scoped candidate evidence and limitations.",
+      "limitations": "Batched search; no exhaustive or per-query attribution claim."
+    },
+    {
+      "search_id": "FI-Q007",
+      "scope_id": "operator",
+      "language": "en",
+      "query": "site.nebius.com Finland Lappeenranta 2026 560 MW",
+      "searched_at": "2026-10-11T19:05:45Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "operator",
+      "result_urls": [],
+      "outcome": "Bounded results reviewed jointly; see scoped candidate evidence and limitations.",
+      "limitations": "Batched search; no exhaustive or per-query attribution claim."
+    },
+    {
+      "search_id": "O001",
+      "scope_id": "NP001",
+      "language": "en",
+      "query": "https://www.atnorth.com/news/atnorth-to-develop-new-data-center-in-salo-finland/",
+      "searched_at": "2026-10-11T19:08:16Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "followup",
+      "result_urls": [
+        "https://www.atnorth.com/news/atnorth-to-develop-new-data-center-in-salo-finland/"
+      ],
+      "outcome": "Primary page retrieved and inspected; timestamp is the subsequent assembly checkpoint.",
+      "limitations": "Short original excerpt preserved, not a full-page content archive."
+    },
+    {
+      "search_id": "O002",
+      "scope_id": "NP002",
+      "language": "sv",
+      "query": "https://local.microsoft.com/sv/blog/vaasa-datacenter-project-updates/",
+      "searched_at": "2026-10-11T19:08:16Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "followup",
+      "result_urls": [
+        "https://local.microsoft.com/sv/blog/vaasa-datacenter-project-updates/"
+      ],
+      "outcome": "Primary page retrieved and inspected; timestamp is the subsequent assembly checkpoint.",
+      "limitations": "Short original excerpt preserved, not a full-page content archive."
+    },
+    {
+      "search_id": "O003",
+      "scope_id": "NP003",
+      "language": "en",
+      "query": "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure",
+      "searched_at": "2026-10-11T19:08:16Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "followup",
+      "result_urls": [
+        "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure"
+      ],
+      "outcome": "Primary page retrieved and inspected; timestamp is the subsequent assembly checkpoint.",
+      "limitations": "Short original excerpt preserved, not a full-page content archive."
+    },
+    {
+      "search_id": "O004",
+      "scope_id": "NP004",
+      "language": "en",
+      "query": "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure",
+      "searched_at": "2026-10-11T19:08:16Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "followup",
+      "result_urls": [
+        "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure"
+      ],
+      "outcome": "Primary page retrieved and inspected; timestamp is the subsequent assembly checkpoint.",
+      "limitations": "Short original excerpt preserved, not a full-page content archive."
+    },
+    {
+      "search_id": "O005",
+      "scope_id": "NP005",
+      "language": "en",
+      "query": "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure",
+      "searched_at": "2026-10-11T19:08:16Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "followup",
+      "result_urls": [
+        "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure"
+      ],
+      "outcome": "Primary page retrieved and inspected; timestamp is the subsequent assembly checkpoint.",
+      "limitations": "Short original excerpt preserved, not a full-page content archive."
+    },
+    {
+      "search_id": "O006",
+      "scope_id": "NP006",
+      "language": "fi",
+      "query": "https://www.ymparisto.fi/fi/osallistu-ja-vaikuta/ymparistovaikutusten-arviointi/kouvolan-datakeskus-hyperco-data-systems-oy-kouvola",
+      "searched_at": "2026-10-11T19:08:16Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "followup",
+      "result_urls": [
+        "https://www.ymparisto.fi/fi/osallistu-ja-vaikuta/ymparistovaikutusten-arviointi/kouvolan-datakeskus-hyperco-data-systems-oy-kouvola"
+      ],
+      "outcome": "Primary page retrieved and inspected; timestamp is the subsequent assembly checkpoint.",
+      "limitations": "Short original excerpt preserved, not a full-page content archive."
+    },
+    {
+      "search_id": "O007",
+      "scope_id": "NP007",
+      "language": "fi",
+      "query": "https://kajaani.cloudnc.fi/fi-FI/Viranhaltijat/Kaupungingeodeetti/Teollisuustonttien_nro_20522412_ja_3_Mas%2858581%29",
+      "searched_at": "2026-10-11T19:08:16Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "followup",
+      "result_urls": [
+        "https://kajaani.cloudnc.fi/fi-FI/Viranhaltijat/Kaupungingeodeetti/Teollisuustonttien_nro_20522412_ja_3_Mas%2858581%29"
+      ],
+      "outcome": "Primary page retrieved and inspected; timestamp is the subsequent assembly checkpoint.",
+      "limitations": "Short original excerpt preserved, not a full-page content archive."
+    },
+    {
+      "search_id": "O008",
+      "scope_id": "NP008",
+      "language": "en",
+      "query": "https://nebius.com/newsroom/nebius-to-construct-310-mw-ai-factory-in-finland",
+      "searched_at": "2026-10-11T19:08:16Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "followup",
+      "result_urls": [
+        "https://nebius.com/newsroom/nebius-to-construct-310-mw-ai-factory-in-finland"
+      ],
+      "outcome": "Primary page retrieved and inspected; timestamp is the subsequent assembly checkpoint.",
+      "limitations": "Short original excerpt preserved, not a full-page content archive."
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E001",
+      "project_id": "NP001",
+      "claim_id": "",
+      "url": "https://www.atnorth.com/news/atnorth-to-develop-new-data-center-in-salo-finland/",
+      "title": "atNorth FIN05 Salo — primary source",
+      "source_type": "company",
+      "publication_date": "2026-10-05",
+      "access_date": "2026-10-11",
+      "original_language": "en",
+      "original_excerpt": "Power for the first phase, planned at 75 MW, is secured",
+      "translation": "",
+      "locator": "FIN05 site-size/power paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://www.atnorth.com/news/atnorth-to-develop-new-data-center-in-salo-finland/",
+      "supports_fields": [
+        "project_name",
+        "developer",
+        "municipality",
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "Distinct from FIN01/02/04. First-phase 75 MW power and wider path to 230 MW are not automatically IT or installed load. No full commissioning year approved."
+    },
+    {
+      "evidence_id": "E002",
+      "project_id": "NP002",
+      "claim_id": "",
+      "url": "https://local.microsoft.com/sv/blog/vaasa-datacenter-project-updates/",
+      "title": "Microsoft GigaVaasa — primary source",
+      "source_type": "company",
+      "publication_date": "2026-08-12",
+      "access_date": "2026-10-11",
+      "original_language": "sv",
+      "original_excerpt": "Vi är för närvarande i färd med att ansöka om bygglov hos Mustasaari kommun och staden Vasa.",
+      "translation": "",
+      "locator": "Project update 12 August 2026",
+      "retrieval_status": "accessible",
+      "independence_group": "https://local.microsoft.com/sv/blog/vaasa-datacenter-project-updates/",
+      "supports_fields": [
+        "project_name",
+        "developer",
+        "municipality",
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "New site straddles municipalities; resolve project/site geographic representation. July site preparation is separate from full datacenter construction. No MW or operational year approved."
+    },
+    {
+      "evidence_id": "E003",
+      "project_id": "NP003",
+      "claim_id": "",
+      "url": "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure",
+      "title": "Google Kajaani — primary source",
+      "source_type": "company",
+      "publication_date": "2026-09-09",
+      "access_date": "2026-10-11",
+      "original_language": "en",
+      "original_excerpt": "in Hamina, Kajaani, Muhos and Vaala.",
+      "translation": "",
+      "locator": "Opening investment paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure",
+      "supports_fields": [
+        "project_name",
+        "developer",
+        "municipality",
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "New Google site, distinct from CSC/Borealis in Kajaani. 94 MW battery is not data-center load. LVV 6 October calls for significant site preparation to stop pending EIA; not a cancellation. No capacity approved."
+    },
+    {
+      "evidence_id": "E003B",
+      "project_id": "NP003",
+      "claim_id": "",
+      "url": "https://www.sttinfo.fi/tiedote/72390663/lupa-ja-valvontavirasto-kehottaa-tuike-finland-oyta-keskeyttamaan-muhoksen-ja-kajaanin-datakeskushankkeiden-valmistelutoimet?publisherId=69821631",
+      "title": "LVV preparation restriction, 6 October 2026",
+      "source_type": "permit",
+      "publication_date": "2026-10-06",
+      "access_date": "2026-10-11",
+      "original_language": "fi",
+      "original_excerpt": "keskeyttää välittömästi ja viimeistään 23.10.2026 mennessä Muhokseen ja Kajaaniin suunnitellun palvelinkeskushankkeen",
+      "translation": "",
+      "locator": "Opening paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://www.sttinfo.fi/tiedote/72390663/lupa-ja-valvontavirasto-kehottaa-tuike-finland-oyta-keskeyttamaan-muhoksen-ja-kajaanin-datakeskushankkeiden-valmistelutoimet?publisherId=69821631",
+      "supports_fields": [
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "Restriction concerns significant preparatory works pending EIA, not a statement of project cancellation."
+    },
+    {
+      "evidence_id": "E004",
+      "project_id": "NP004",
+      "claim_id": "",
+      "url": "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure",
+      "title": "Google Muhos — primary source",
+      "source_type": "company",
+      "publication_date": "2026-09-09",
+      "access_date": "2026-10-11",
+      "original_language": "en",
+      "original_excerpt": "in Hamina, Kajaani, Muhos and Vaala.",
+      "translation": "",
+      "locator": "Opening investment paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure",
+      "supports_fields": [
+        "project_name",
+        "developer",
+        "municipality",
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "New site. LVV 6 October calls for significant site preparation to stop pending EIA; not a cancellation. Investment period 2027–2028 is not full commissioning. No capacity approved."
+    },
+    {
+      "evidence_id": "E004B",
+      "project_id": "NP004",
+      "claim_id": "",
+      "url": "https://www.sttinfo.fi/tiedote/72390663/lupa-ja-valvontavirasto-kehottaa-tuike-finland-oyta-keskeyttamaan-muhoksen-ja-kajaanin-datakeskushankkeiden-valmistelutoimet?publisherId=69821631",
+      "title": "LVV preparation restriction, 6 October 2026",
+      "source_type": "permit",
+      "publication_date": "2026-10-06",
+      "access_date": "2026-10-11",
+      "original_language": "fi",
+      "original_excerpt": "keskeyttää välittömästi ja viimeistään 23.10.2026 mennessä Muhokseen ja Kajaaniin suunnitellun palvelinkeskushankkeen",
+      "translation": "",
+      "locator": "Opening paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://www.sttinfo.fi/tiedote/72390663/lupa-ja-valvontavirasto-kehottaa-tuike-finland-oyta-keskeyttamaan-muhoksen-ja-kajaanin-datakeskushankkeiden-valmistelutoimet?publisherId=69821631",
+      "supports_fields": [
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "Restriction concerns significant preparatory works pending EIA, not a statement of project cancellation."
+    },
+    {
+      "evidence_id": "E005",
+      "project_id": "NP005",
+      "claim_id": "",
+      "url": "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure",
+      "title": "Google Vaala — primary source",
+      "source_type": "company",
+      "publication_date": "2026-09-09",
+      "access_date": "2026-10-11",
+      "original_language": "en",
+      "original_excerpt": "in Hamina, Kajaani, Muhos and Vaala.",
+      "translation": "",
+      "locator": "Opening investment paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://www.googlecloudpresscorner.com/2026-09-09-Google-Deepens-Commitment-to-Finland-with-Two-Year-EUR13-Billion-investment-in-AI-Infrastructure",
+      "supports_fields": [
+        "project_name",
+        "developer",
+        "municipality",
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "New site. Do not extrapolate the Kajaani/Muhos preparation restriction to Vaala. Portfolio investment and energy procurement are not site MW."
+    },
+    {
+      "evidence_id": "E006",
+      "project_id": "NP006",
+      "claim_id": "",
+      "url": "https://www.ymparisto.fi/fi/osallistu-ja-vaikuta/ymparistovaikutusten-arviointi/kouvolan-datakeskus-hyperco-data-systems-oy-kouvola",
+      "title": "Hyperco Data Systems Hiivuri west — primary source",
+      "source_type": "permit",
+      "publication_date": "",
+      "access_date": "2026-10-11",
+      "original_language": "fi",
+      "original_excerpt": "Hyperco Fin Holdco 1 Oy:n rakenteilla olevan datakeskuksen länsipuolelle.",
+      "translation": "",
+      "locator": "Opening site-description paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://www.ymparisto.fi/fi/osallistu-ja-vaikuta/ymparistovaikutusten-arviointi/kouvolan-datakeskus-hyperco-data-systems-oy-kouvola",
+      "supports_fields": [
+        "project_name",
+        "developer",
+        "municipality",
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "IDENTITY HOLD: neighbouring development, distinct from P030/Blackhawk. First resolve C042's incorrect 100 MW IT and 130 MW electrical attribution. No duplicate 100 MW added."
+    },
+    {
+      "evidence_id": "E007",
+      "project_id": "NP007",
+      "claim_id": "",
+      "url": "https://kajaani.cloudnc.fi/fi-FI/Viranhaltijat/Kaupungingeodeetti/Teollisuustonttien_nro_20522412_ja_3_Mas%2858581%29",
+      "title": "Borealis Otanmäki — primary source",
+      "source_type": "municipal",
+      "publication_date": "2026-09-21",
+      "access_date": "2026-10-11",
+      "original_language": "fi",
+      "original_excerpt": "Varaus on voimassa 31.12.2026 saakka.",
+      "translation": "",
+      "locator": "Decision, after reserved plot list",
+      "retrieval_status": "accessible",
+      "independence_group": "https://kajaani.cloudnc.fi/fi-FI/Viranhaltijat/Kaupungingeodeetti/Teollisuustonttien_nro_20522412_ja_3_Mas%2858581%29",
+      "supports_fields": [
+        "project_name",
+        "developer",
+        "municipality",
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "New planning reservation in Otanmäki; distinguish from P025 existing Renforsin Ranta campus. Land reservation alone does not establish a financed datacenter or capacity."
+    },
+    {
+      "evidence_id": "E008",
+      "project_id": "NP008",
+      "claim_id": "",
+      "url": "https://nebius.com/newsroom/nebius-to-construct-310-mw-ai-factory-in-finland",
+      "title": "Nebius Lappeenranta — primary source",
+      "source_type": "company",
+      "publication_date": "2026-03-31",
+      "access_date": "2026-10-11",
+      "original_language": "en",
+      "original_excerpt": "Lappeenranta with capacity of up to 310 MW.",
+      "translation": "",
+      "locator": "Opening announcement paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://nebius.com/newsroom/nebius-to-construct-310-mw-ai-factory-in-finland",
+      "supports_fields": [
+        "project_name",
+        "developer",
+        "municipality",
+        "notes"
+      ],
+      "confidence": "medium",
+      "limitations": "Distinct from P034 Mäntsälä and P035 XTX Kajaani, despite repeated 310 MW number. 2027 concerns first capacity. Denominator, installed baseline and full envelope date need scoped review."
+    }
+  ],
+  "coverage": [
+    {
+      "entity_type": "discovery_route",
+      "entity_id": "operator",
+      "result": "candidates_found",
+      "field_outcomes": [],
+      "search_ids": [
+        "FI-Q001",
+        "FI-Q007"
+      ],
+      "notes": "Route searched. Leads were reconciled jointly against frozen country/global identities. Grid queues are not installed datacenter capacity; no exhaustive register matching claimed."
+    },
+    {
+      "entity_type": "discovery_route",
+      "entity_id": "planning_permit",
+      "result": "candidates_found",
+      "field_outcomes": [],
+      "search_ids": [
+        "FI-Q002",
+        "FI-Q006"
+      ],
+      "notes": "Route searched. Leads were reconciled jointly against frozen country/global identities. Grid queues are not installed datacenter capacity; no exhaustive register matching claimed."
+    },
+    {
+      "entity_type": "discovery_route",
+      "entity_id": "grid",
+      "result": "unresolved",
+      "field_outcomes": [],
+      "search_ids": [
+        "FI-Q003"
+      ],
+      "notes": "Route searched. Leads were reconciled jointly against frozen country/global identities. Grid queues are not installed datacenter capacity; no exhaustive register matching claimed."
+    },
+    {
+      "entity_type": "discovery_route",
+      "entity_id": "trade_press",
+      "result": "candidates_found",
+      "field_outcomes": [],
+      "search_ids": [
+        "FI-Q004"
+      ],
+      "notes": "Route searched. Leads were reconciled jointly against frozen country/global identities. Grid queues are not installed datacenter capacity; no exhaustive register matching claimed."
+    },
+    {
+      "entity_type": "discovery_route",
+      "entity_id": "country_discovery",
+      "result": "candidates_found",
+      "field_outcomes": [],
+      "search_ids": [
+        "FI-Q005"
+      ],
+      "notes": "Route searched. Leads were reconciled jointly against frozen country/global identities. Grid queues are not installed datacenter capacity; no exhaustive register matching claimed."
+    }
+  ],
+  "proposals": [
+    {
+      "proposal_id": "NP001",
+      "table": "new_project_candidates",
+      "values": {
+        "project_name": "atNorth FIN05 Salo",
+        "developer": "atNorth",
+        "municipality": "Salo"
+      },
+      "evidence_ids": [
+        "E001"
+      ],
+      "rationale": "Distinct from FIN01/02/04. First-phase 75 MW power and wider path to 230 MW are not automatically IT or installed load. No full commissioning year approved.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "NP002",
+      "table": "new_project_candidates",
+      "values": {
+        "project_name": "Microsoft GigaVaasa",
+        "developer": "Microsoft",
+        "municipality": "Vaasa / Mustasaari"
+      },
+      "evidence_ids": [
+        "E002"
+      ],
+      "rationale": "New site straddles municipalities; resolve project/site geographic representation. July site preparation is separate from full datacenter construction. No MW or operational year approved.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "NP003",
+      "table": "new_project_candidates",
+      "values": {
+        "project_name": "Google Kajaani",
+        "developer": "Google / Tuike Finland Oy",
+        "municipality": "Kajaani"
+      },
+      "evidence_ids": [
+        "E003",
+        "E003B"
+      ],
+      "rationale": "New Google site, distinct from CSC/Borealis in Kajaani. 94 MW battery is not data-center load. LVV 6 October calls for significant site preparation to stop pending EIA; not a cancellation. No capacity approved.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "NP004",
+      "table": "new_project_candidates",
+      "values": {
+        "project_name": "Google Muhos",
+        "developer": "Google / Tuike Finland Oy",
+        "municipality": "Muhos"
+      },
+      "evidence_ids": [
+        "E004",
+        "E004B"
+      ],
+      "rationale": "New site. LVV 6 October calls for significant site preparation to stop pending EIA; not a cancellation. Investment period 2027–2028 is not full commissioning. No capacity approved.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "NP005",
+      "table": "new_project_candidates",
+      "values": {
+        "project_name": "Google Vaala",
+        "developer": "Google / Tuike Finland Oy",
+        "municipality": "Vaala"
+      },
+      "evidence_ids": [
+        "E005"
+      ],
+      "rationale": "New site. Do not extrapolate the Kajaani/Muhos preparation restriction to Vaala. Portfolio investment and energy procurement are not site MW.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "NP006",
+      "table": "new_project_candidates",
+      "values": {
+        "project_name": "Hyperco Data Systems Hiivuri west",
+        "developer": "Hyperco Data Systems Oy",
+        "municipality": "Kouvola"
+      },
+      "evidence_ids": [
+        "E006"
+      ],
+      "rationale": "IDENTITY HOLD: neighbouring development, distinct from P030/Blackhawk. First resolve C042's incorrect 100 MW IT and 130 MW electrical attribution. No duplicate 100 MW added.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "NP007",
+      "table": "new_project_candidates",
+      "values": {
+        "project_name": "Borealis Otanmäki",
+        "developer": "Borealis Data Center ehf.",
+        "municipality": "Kajaani"
+      },
+      "evidence_ids": [
+        "E007"
+      ],
+      "rationale": "New planning reservation in Otanmäki; distinguish from P025 existing Renforsin Ranta campus. Land reservation alone does not establish a financed datacenter or capacity.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "NP008",
+      "table": "new_project_candidates",
+      "values": {
+        "project_name": "Nebius Lappeenranta",
+        "developer": "Nebius",
+        "municipality": "Lappeenranta"
+      },
+      "evidence_ids": [
+        "E008"
+      ],
+      "rationale": "Distinct from P034 Mäntsälä and P035 XTX Kajaani, despite repeated 310 MW number. 2027 concerns first capacity. Denominator, installed baseline and full envelope date need scoped review.",
+      "review_kind": "interpretation"
+    }
+  ],
+  "conflicts": [],
+  "summary": "Bounded multilingual discovery after the existing-project audit. All candidates are held for scoped identity/geography/phase review; none is an approved master addition.",
+  "limitations": [
+    "Not an exhaustive national census or full registry crawl.",
+    "Queries ran in mixed batches; per-query result attribution is unavailable. Source opens below are separately registered.",
+    "Some preparatory queries preceded creation of this frozen run; duplicate screening uses its updated global identity index.",
+    "Same-agent review is not independent validation.",
+    "Additional unverified leads include Nscale Harjavalta, ScandiDC II/III and other municipal planning cases; these are not quantified."
+  ]
+}

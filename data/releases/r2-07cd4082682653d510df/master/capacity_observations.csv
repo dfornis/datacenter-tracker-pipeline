@@ -1,0 +1,2 @@
+"observation_id","claim_id","basis","value","unit","qualifier","source_ids","review_state","notes","measurement_kind","value_max"
+"OBS001","C042","facility_total","130","MW_electric","approximate","S078","legacy_unverified","Same VE1 option as the 100 MW IT claim. Alternate measurement, never an additive phase; original source must be rechecked.","nameplate_capacity",""

@@ -1,0 +1,399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:datacenter-tracker:run-response:2.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "searches",
+    "evidence",
+    "coverage",
+    "proposals",
+    "conflicts",
+    "summary",
+    "limitations"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "searches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "search_id",
+          "action",
+          "query",
+          "language",
+          "engine",
+          "searched_at",
+          "route",
+          "scope_id",
+          "result_urls",
+          "outcome",
+          "limitations"
+        ],
+        "properties": {
+          "search_id": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "search",
+              "open"
+            ]
+          },
+          "query": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "engine": {
+            "type": "string"
+          },
+          "searched_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "route": {
+            "type": "string",
+            "enum": [
+              "operator",
+              "planning_permit",
+              "grid",
+              "trade_press",
+              "country_discovery",
+              "followup"
+            ]
+          },
+          "scope_id": {
+            "type": "string"
+          },
+          "result_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "limitations": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidence_id",
+          "project_id",
+          "claim_id",
+          "url",
+          "title",
+          "source_type",
+          "publication_date",
+          "access_date",
+          "original_language",
+          "original_excerpt",
+          "translation",
+          "locator",
+          "retrieval_status",
+          "independence_group",
+          "supports_fields",
+          "confidence",
+          "limitations"
+        ],
+        "properties": {
+          "evidence_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string"
+          },
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "company",
+              "municipal",
+              "permit",
+              "grid",
+              "media",
+              "registry",
+              "research",
+              "other"
+            ]
+          },
+          "publication_date": {
+            "type": "string"
+          },
+          "access_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "original_language": {
+            "type": "string"
+          },
+          "original_excerpt": {
+            "type": "string"
+          },
+          "translation": {
+            "type": "string"
+          },
+          "locator": {
+            "type": "string"
+          },
+          "retrieval_status": {
+            "type": "string",
+            "enum": [
+              "accessible",
+              "snippet_only",
+              "inaccessible"
+            ]
+          },
+          "independence_group": {
+            "type": "string"
+          },
+          "supports_fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              "unclear"
+            ]
+          },
+          "limitations": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entity_type",
+          "entity_id",
+          "result",
+          "field_outcomes",
+          "search_ids",
+          "notes"
+        ],
+        "properties": {
+          "entity_type": {
+            "type": "string",
+            "enum": [
+              "project",
+              "claim",
+              "discovery_route"
+            ]
+          },
+          "entity_id": {
+            "type": "string"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "reviewed",
+              "unresolved",
+              "no_candidate_found",
+              "candidates_found"
+            ]
+          },
+          "field_outcomes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "field",
+                "outcome",
+                "evidence_ids",
+                "search_ids",
+                "review_kind",
+                "notes"
+              ],
+              "properties": {
+                "field": {
+                  "type": "string"
+                },
+                "outcome": {
+                  "type": "string",
+                  "enum": [
+                    "confirmed",
+                    "correction_proposed",
+                    "unknown",
+                    "conflict",
+                    "not_applicable"
+                  ]
+                },
+                "evidence_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "search_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "review_kind": {
+                  "type": "string",
+                  "enum": [
+                    "source",
+                    "interpretation"
+                  ]
+                },
+                "notes": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "search_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proposal_id",
+          "table",
+          "values",
+          "evidence_ids",
+          "rationale",
+          "review_kind"
+        ],
+        "properties": {
+          "proposal_id": {
+            "type": "string"
+          },
+          "table": {
+            "type": "string",
+            "enum": [
+              "suggested_project_updates",
+              "suggested_capacity_updates",
+              "suggested_source_updates",
+              "new_project_candidates",
+              "new_capacity_claim_candidates"
+            ]
+          },
+          "values": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "review_kind": {
+            "type": "string",
+            "enum": [
+              "source",
+              "interpretation"
+            ]
+          }
+        }
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "conflict_id",
+          "project_id",
+          "claim_id",
+          "field",
+          "evidence_ids",
+          "description",
+          "resolution"
+        ],
+        "properties": {
+          "conflict_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "claim_id": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "resolution": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

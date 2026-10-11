@@ -1,0 +1,2 @@
+"country","country_name","active","canonical_name_language","search_languages","municipality_field","municipality_term_local","municipality_term_en","region_field","region_term_local","region_term_en","source_authority","source_url","valid_from"
+"NO","Norway","TRUE","nb","nb; nn; en","municipality","kommune","municipality","county","fylke","county","Statistics Norway (SSB)","https://data.ssb.no/api/klass/v1/correspondencetables/2800","2026-01-01"

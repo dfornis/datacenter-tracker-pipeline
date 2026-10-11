@@ -1,0 +1,2410 @@
+{
+  "schema_version": "2.0.0",
+  "tables": {
+    "projects_master": {
+      "path": "master/projects_master.csv",
+      "key": [
+        "project_id"
+      ],
+      "columns": {
+        "project_id": {
+          "type": "string",
+          "required": true,
+          "pattern": "^P[0-9]{3,}$"
+        },
+        "country": {
+          "type": "string",
+          "required": true
+        },
+        "project_name": {
+          "type": "string",
+          "required": true
+        },
+        "developer": {
+          "type": "string",
+          "required": true
+        },
+        "bidding_zone": {
+          "type": "string",
+          "required": true
+        },
+        "county": {
+          "type": "string",
+          "required": true
+        },
+        "municipality": {
+          "type": "string",
+          "required": true
+        },
+        "type": {
+          "type": "tags",
+          "required": false,
+          "enum": "type_tags"
+        },
+        "project_status": {
+          "type": "enum",
+          "required": true,
+          "enum": "lifecycle"
+        },
+        "investment_decision": {
+          "type": "enum",
+          "required": true,
+          "enum": "decision"
+        },
+        "construction_start_years": {
+          "type": "string",
+          "required": false
+        },
+        "expected_operational_years": {
+          "type": "string",
+          "required": false
+        },
+        "max_reported_capacity_mw": {
+          "type": "number",
+          "required": false,
+          "min": 0
+        },
+        "notes": {
+          "type": "string",
+          "required": false
+        },
+        "physical_site_id": {
+          "type": "string",
+          "required": true
+        },
+        "municipality_code": {
+          "type": "string",
+          "required": true
+        },
+        "region_code": {
+          "type": "string",
+          "required": true
+        },
+        "business_model": {
+          "type": "enum",
+          "required": true,
+          "enum": "business_model"
+        },
+        "workload": {
+          "type": "enum",
+          "required": true,
+          "enum": "workload"
+        },
+        "decision_basis": {
+          "type": "enum",
+          "required": true,
+          "enum": "decision_basis"
+        },
+        "aliases": {
+          "type": "string",
+          "required": false
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "source_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        }
+      }
+    },
+    "capacity_master": {
+      "path": "master/capacity_master.csv",
+      "key": [
+        "claim_id"
+      ],
+      "columns": {
+        "claim_id": {
+          "type": "string",
+          "required": true,
+          "pattern": "^C[0-9]{3,}$"
+        },
+        "project_id": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "required": true
+        },
+        "project_name": {
+          "type": "string",
+          "required": true
+        },
+        "phase": {
+          "type": "string",
+          "required": true
+        },
+        "capacity_type": {
+          "type": "enum",
+          "required": true,
+          "enum": "capacity_type"
+        },
+        "capacity_status": {
+          "type": "enum",
+          "required": true,
+          "enum": "lifecycle"
+        },
+        "investment_decision": {
+          "type": "enum",
+          "required": true,
+          "enum": "decision"
+        },
+        "reported_capacity_mw": {
+          "type": "number",
+          "required": true,
+          "min": 0
+        },
+        "reported_capacity_basis": {
+          "type": "enum",
+          "required": true,
+          "enum": "capacity_basis"
+        },
+        "interpreted_it_load_mw": {
+          "type": "number",
+          "required": false,
+          "min": 0
+        },
+        "start_year": {
+          "type": "year",
+          "required": false
+        },
+        "construction_start_year": {
+          "type": "year",
+          "required": false
+        },
+        "scenario_tag": {
+          "type": "string",
+          "required": false
+        },
+        "type": {
+          "type": "tags",
+          "required": false,
+          "enum": "type_tags"
+        },
+        "notes": {
+          "type": "string",
+          "required": false
+        },
+        "physical_site_id": {
+          "type": "string",
+          "required": true
+        },
+        "phase_id": {
+          "type": "string",
+          "required": true
+        },
+        "accounting_group_id": {
+          "type": "string",
+          "required": true
+        },
+        "capacity_unit": {
+          "type": "choice",
+          "required": true,
+          "values": [
+            "MW_electric",
+            "MW_thermal",
+            "MW_per_rack"
+          ]
+        },
+        "capacity_qualifier": {
+          "type": "enum",
+          "required": true,
+          "enum": "capacity_qualifier"
+        },
+        "capacity_max_mw": {
+          "type": "number",
+          "required": false,
+          "min": 0
+        },
+        "business_model": {
+          "type": "enum",
+          "required": true,
+          "enum": "business_model"
+        },
+        "workload": {
+          "type": "enum",
+          "required": true,
+          "enum": "workload"
+        },
+        "decision_basis": {
+          "type": "enum",
+          "required": true,
+          "enum": "decision_basis"
+        },
+        "timing_scope": {
+          "type": "enum",
+          "required": true,
+          "enum": "timing_scope"
+        },
+        "operation_year_min": {
+          "type": "year",
+          "required": false
+        },
+        "operation_year_max": {
+          "type": "year",
+          "required": false
+        },
+        "construction_observed_date": {
+          "type": "date",
+          "required": false
+        },
+        "connection_status": {
+          "type": "enum",
+          "required": true,
+          "enum": "connection_status"
+        },
+        "relation": {
+          "type": "enum",
+          "required": true,
+          "enum": "relationship"
+        },
+        "parent_claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "baseline_claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "baseline_comparable": {
+          "type": "boolean",
+          "required": true
+        },
+        "superseded_by_claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "source_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        },
+        "source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "timing_source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "decision_source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "site_pue": {
+          "type": "number",
+          "required": false,
+          "min": 1,
+          "max": 3
+        },
+        "site_pue_kind": {
+          "type": "choice",
+          "required": false,
+          "values": [
+            "design",
+            "measured"
+          ]
+        },
+        "pue_source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "overlap_source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "interpretation_notes": {
+          "type": "string",
+          "required": false
+        },
+        "baseline_scope": {
+          "type": "choice",
+          "values": [
+            "new_capacity",
+            "existing_known",
+            "existing_unknown"
+          ],
+          "required": true
+        },
+        "measurement_kind": {
+          "type": "enum",
+          "enum": "measurement_kind",
+          "required": true
+        },
+        "site_pue_qualifier": {
+          "type": "choice",
+          "values": [
+            "exact",
+            "up_to",
+            "approximate",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "sources_master": {
+      "path": "master/sources_master.csv",
+      "key": [
+        "source_id"
+      ],
+      "columns": {
+        "source_id": {
+          "type": "string",
+          "required": true,
+          "pattern": "^S[0-9]{3,}$"
+        },
+        "project_id": {
+          "type": "string",
+          "required": false
+        },
+        "claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "source_type": {
+          "type": "enum",
+          "required": true,
+          "enum": "source_type"
+        },
+        "source_url": {
+          "type": "url",
+          "required": true
+        },
+        "source_title": {
+          "type": "string",
+          "required": true
+        },
+        "source_date": {
+          "type": "date",
+          "required": false
+        },
+        "access_date": {
+          "type": "date",
+          "required": true
+        },
+        "evidence_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "supports_fields": {
+          "type": "string",
+          "required": false
+        },
+        "confidence": {
+          "type": "enum",
+          "required": true,
+          "enum": "confidence"
+        },
+        "notes": {
+          "type": "string",
+          "required": false
+        },
+        "source_date_raw": {
+          "type": "string",
+          "required": false
+        },
+        "source_date_precision": {
+          "type": "enum",
+          "required": true,
+          "enum": "date_precision"
+        },
+        "evidence_kind": {
+          "type": "enum",
+          "required": true,
+          "enum": "evidence_kind"
+        },
+        "original_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "original_language": {
+          "type": "string",
+          "required": false
+        },
+        "translation": {
+          "type": "string",
+          "required": false
+        },
+        "locator": {
+          "type": "string",
+          "required": false
+        },
+        "content_sha256": {
+          "type": "string",
+          "required": false
+        },
+        "independence_group": {
+          "type": "string",
+          "required": true
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "source_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        }
+      }
+    },
+    "assumptions": {
+      "path": "master/assumptions.csv",
+      "key": [
+        "assumption_id"
+      ],
+      "columns": {
+        "assumption_id": {
+          "type": "string",
+          "required": true
+        },
+        "assumption_type": {
+          "type": "string",
+          "required": false
+        },
+        "value": {
+          "type": "number",
+          "required": false
+        },
+        "unit": {
+          "type": "string",
+          "required": false
+        },
+        "description": {
+          "type": "string",
+          "required": false
+        },
+        "source": {
+          "type": "string",
+          "required": false
+        },
+        "low": {
+          "type": "number",
+          "required": false
+        },
+        "high": {
+          "type": "number",
+          "required": false
+        },
+        "source_url": {
+          "type": "url",
+          "required": false
+        },
+        "source_locator": {
+          "type": "string",
+          "required": false
+        },
+        "denominator": {
+          "type": "string",
+          "required": true
+        },
+        "parameter_status": {
+          "type": "choice",
+          "required": true,
+          "values": [
+            "observed_reference",
+            "illustrative_sensitivity",
+            "design_assumption",
+            "not_calibrated"
+          ]
+        },
+        "population": {
+          "type": "string",
+          "required": true
+        },
+        "version": {
+          "type": "string",
+          "required": true
+        },
+        "valid_from": {
+          "type": "date",
+          "required": true
+        },
+        "denominator_kind": {
+          "type": "choice",
+          "values": [
+            "annual_IT_energy",
+            "nameplate_capacity",
+            "peak_demand",
+            "incremental_capacity",
+            "unknown"
+          ],
+          "required": true
+        }
+      }
+    },
+    "admin_units": {
+      "path": "master/admin_units.csv",
+      "key": [
+        "country",
+        "municipality_code"
+      ],
+      "columns": {
+        "country": {
+          "type": "string",
+          "required": true
+        },
+        "country_name": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_code": {
+          "type": "string",
+          "required": true
+        },
+        "municipality_name": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_name_local": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_name_en": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_name_sv": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_name_fi": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_name_nb": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_name_nn": {
+          "type": "string",
+          "required": false
+        },
+        "region_code": {
+          "type": "string",
+          "required": false
+        },
+        "region_name": {
+          "type": "string",
+          "required": false
+        },
+        "region_name_local": {
+          "type": "string",
+          "required": false
+        },
+        "region_name_en": {
+          "type": "string",
+          "required": false
+        },
+        "region_name_sv": {
+          "type": "string",
+          "required": false
+        },
+        "region_name_fi": {
+          "type": "string",
+          "required": false
+        },
+        "region_name_nb": {
+          "type": "string",
+          "required": false
+        },
+        "region_name_nn": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_term_local": {
+          "type": "string",
+          "required": false
+        },
+        "region_term_local": {
+          "type": "string",
+          "required": false
+        },
+        "valid_from": {
+          "type": "date",
+          "required": true
+        },
+        "source_authority": {
+          "type": "string",
+          "required": false
+        },
+        "source_url": {
+          "type": "string",
+          "required": false
+        },
+        "source_version": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "country_config": {
+      "path": "master/country_config.csv",
+      "key": [
+        "country"
+      ],
+      "columns": {
+        "country": {
+          "type": "string",
+          "required": true
+        },
+        "country_name": {
+          "type": "string",
+          "required": false
+        },
+        "active": {
+          "type": "boolean",
+          "required": true
+        },
+        "canonical_name_language": {
+          "type": "string",
+          "required": false
+        },
+        "search_languages": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_field": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_term_local": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_term_en": {
+          "type": "string",
+          "required": false
+        },
+        "region_field": {
+          "type": "string",
+          "required": false
+        },
+        "region_term_local": {
+          "type": "string",
+          "required": false
+        },
+        "region_term_en": {
+          "type": "string",
+          "required": false
+        },
+        "source_authority": {
+          "type": "string",
+          "required": false
+        },
+        "source_url": {
+          "type": "string",
+          "required": false
+        },
+        "valid_from": {
+          "type": "date",
+          "required": true
+        }
+      }
+    },
+    "geography_config": {
+      "path": "master/geography_config.csv",
+      "key": [
+        "bidding_zone"
+      ],
+      "columns": {
+        "country": {
+          "type": "string",
+          "required": false
+        },
+        "country_name": {
+          "type": "string",
+          "required": false
+        },
+        "bidding_zone": {
+          "type": "string",
+          "required": true
+        },
+        "zone_name": {
+          "type": "string",
+          "required": false
+        },
+        "active": {
+          "type": "boolean",
+          "required": true
+        },
+        "geojson_file": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "municipality_locations": {
+      "path": "master/municipality_locations.csv",
+      "key": [
+        "country",
+        "municipality"
+      ],
+      "columns": {
+        "country": {
+          "type": "string",
+          "required": true
+        },
+        "municipality": {
+          "type": "string",
+          "required": true
+        },
+        "latitude": {
+          "type": "number",
+          "required": true,
+          "min": -90,
+          "max": 90
+        },
+        "longitude": {
+          "type": "number",
+          "required": true,
+          "min": -180,
+          "max": 180
+        },
+        "coordinate_note": {
+          "type": "string",
+          "required": false
+        },
+        "source_url": {
+          "type": "url",
+          "required": false
+        },
+        "accuracy": {
+          "type": "choice",
+          "required": true,
+          "values": [
+            "municipality_seat",
+            "locality",
+            "site",
+            "legacy_approximate"
+          ]
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "source_state"
+        }
+      }
+    },
+    "suggested_project_updates": {
+      "path": "audit/suggested_project_updates.csv",
+      "key": [
+        "audit_id"
+      ],
+      "columns": {
+        "audit_id": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        },
+        "project_id": {
+          "type": "string",
+          "required": false
+        },
+        "project_name": {
+          "type": "string",
+          "required": false
+        },
+        "field": {
+          "type": "string",
+          "required": false
+        },
+        "current_value": {
+          "type": "string",
+          "required": false
+        },
+        "suggested_value": {
+          "type": "string",
+          "required": false
+        },
+        "source_url": {
+          "type": "string",
+          "required": false
+        },
+        "source_title": {
+          "type": "string",
+          "required": false
+        },
+        "source_date": {
+          "type": "string"
+        },
+        "access_date": {
+          "type": "date",
+          "required": false
+        },
+        "evidence_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "confidence": {
+          "type": "enum",
+          "required": true,
+          "enum": "confidence"
+        },
+        "rationale": {
+          "type": "string",
+          "required": false
+        },
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "review_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        },
+        "resolution": {
+          "type": "string",
+          "required": false
+        },
+        "evidence_source_id": {
+          "type": "string",
+          "required": false
+        },
+        "source_type": {
+          "type": "enum",
+          "required": false,
+          "enum": "source_type"
+        },
+        "original_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "original_language": {
+          "type": "string",
+          "required": false
+        },
+        "translation": {
+          "type": "string",
+          "required": false
+        },
+        "locator": {
+          "type": "string",
+          "required": false
+        },
+        "evidence_kind": {
+          "type": "enum",
+          "required": false,
+          "enum": "evidence_kind"
+        },
+        "supports_fields": {
+          "type": "string",
+          "required": false
+        },
+        "change_kind": {
+          "type": "choice",
+          "values": [
+            "correction",
+            "confirmation"
+          ]
+        },
+        "review_kind": {
+          "type": "choice",
+          "values": [
+            "source",
+            "interpretation"
+          ]
+        },
+        "additional_evidence": {
+          "type": "string"
+        },
+        "independence_group": {
+          "type": "string"
+        }
+      }
+    },
+    "suggested_capacity_updates": {
+      "path": "audit/suggested_capacity_updates.csv",
+      "key": [
+        "audit_id"
+      ],
+      "columns": {
+        "audit_id": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        },
+        "claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "project_id": {
+          "type": "string",
+          "required": false
+        },
+        "project_name": {
+          "type": "string",
+          "required": false
+        },
+        "phase": {
+          "type": "string",
+          "required": false
+        },
+        "field": {
+          "type": "string",
+          "required": false
+        },
+        "current_value": {
+          "type": "string",
+          "required": false
+        },
+        "suggested_value": {
+          "type": "string",
+          "required": false
+        },
+        "source_url": {
+          "type": "string",
+          "required": false
+        },
+        "source_title": {
+          "type": "string",
+          "required": false
+        },
+        "source_date": {
+          "type": "string"
+        },
+        "access_date": {
+          "type": "date",
+          "required": false
+        },
+        "evidence_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "confidence": {
+          "type": "enum",
+          "required": true,
+          "enum": "confidence"
+        },
+        "rationale": {
+          "type": "string",
+          "required": false
+        },
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "review_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        },
+        "resolution": {
+          "type": "string",
+          "required": false
+        },
+        "evidence_source_id": {
+          "type": "string",
+          "required": false
+        },
+        "source_type": {
+          "type": "enum",
+          "required": false,
+          "enum": "source_type"
+        },
+        "original_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "original_language": {
+          "type": "string",
+          "required": false
+        },
+        "translation": {
+          "type": "string",
+          "required": false
+        },
+        "locator": {
+          "type": "string",
+          "required": false
+        },
+        "evidence_kind": {
+          "type": "enum",
+          "required": false,
+          "enum": "evidence_kind"
+        },
+        "supports_fields": {
+          "type": "string",
+          "required": false
+        },
+        "change_kind": {
+          "type": "choice",
+          "values": [
+            "correction",
+            "confirmation"
+          ]
+        },
+        "review_kind": {
+          "type": "choice",
+          "values": [
+            "source",
+            "interpretation"
+          ]
+        },
+        "additional_evidence": {
+          "type": "string"
+        },
+        "independence_group": {
+          "type": "string"
+        }
+      }
+    },
+    "suggested_source_updates": {
+      "path": "audit/suggested_source_updates.csv",
+      "key": [
+        "audit_id"
+      ],
+      "columns": {
+        "audit_id": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        },
+        "source_id": {
+          "type": "string",
+          "required": false
+        },
+        "project_id": {
+          "type": "string",
+          "required": false
+        },
+        "claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "project_name": {
+          "type": "string",
+          "required": false
+        },
+        "field": {
+          "type": "string",
+          "required": false
+        },
+        "current_value": {
+          "type": "string",
+          "required": false
+        },
+        "suggested_value": {
+          "type": "string",
+          "required": false
+        },
+        "source_url": {
+          "type": "string",
+          "required": false
+        },
+        "source_title": {
+          "type": "string",
+          "required": false
+        },
+        "source_date": {
+          "type": "string"
+        },
+        "access_date": {
+          "type": "date",
+          "required": false
+        },
+        "evidence_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "confidence": {
+          "type": "enum",
+          "required": true,
+          "enum": "confidence"
+        },
+        "rationale": {
+          "type": "string",
+          "required": false
+        },
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "review_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        },
+        "resolution": {
+          "type": "string",
+          "required": false
+        },
+        "evidence_source_id": {
+          "type": "string",
+          "required": false
+        },
+        "source_type": {
+          "type": "enum",
+          "required": false,
+          "enum": "source_type"
+        },
+        "original_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "original_language": {
+          "type": "string",
+          "required": false
+        },
+        "translation": {
+          "type": "string",
+          "required": false
+        },
+        "locator": {
+          "type": "string",
+          "required": false
+        },
+        "evidence_kind": {
+          "type": "enum",
+          "required": false,
+          "enum": "evidence_kind"
+        },
+        "supports_fields": {
+          "type": "string",
+          "required": false
+        },
+        "change_kind": {
+          "type": "choice",
+          "values": [
+            "correction",
+            "confirmation"
+          ]
+        },
+        "review_kind": {
+          "type": "choice",
+          "values": [
+            "source",
+            "interpretation"
+          ]
+        },
+        "additional_evidence": {
+          "type": "string"
+        },
+        "independence_group": {
+          "type": "string"
+        }
+      }
+    },
+    "new_project_candidates": {
+      "path": "audit/new_project_candidates.csv",
+      "key": [
+        "project_candidate_id"
+      ],
+      "columns": {
+        "project_candidate_id": {
+          "type": "string",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        },
+        "developer": {
+          "type": "string",
+          "required": false
+        },
+        "project_name": {
+          "type": "string",
+          "required": false
+        },
+        "bidding_zone": {
+          "type": "string",
+          "required": false
+        },
+        "county": {
+          "type": "string",
+          "required": false
+        },
+        "municipality": {
+          "type": "string",
+          "required": false
+        },
+        "type": {
+          "type": "string",
+          "required": false
+        },
+        "project_status": {
+          "type": "string",
+          "required": false
+        },
+        "investment_decision": {
+          "type": "string",
+          "required": false
+        },
+        "construction_start_years": {
+          "type": "string",
+          "required": false
+        },
+        "expected_operational_years": {
+          "type": "string",
+          "required": false
+        },
+        "max_reported_capacity_mw": {
+          "type": "string",
+          "required": false
+        },
+        "source_url": {
+          "type": "string",
+          "required": false
+        },
+        "source_title": {
+          "type": "string",
+          "required": false
+        },
+        "source_date": {
+          "type": "string"
+        },
+        "access_date": {
+          "type": "date",
+          "required": false
+        },
+        "evidence_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "confidence": {
+          "type": "enum",
+          "required": true,
+          "enum": "confidence"
+        },
+        "notes": {
+          "type": "string",
+          "required": false
+        },
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "review_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        },
+        "resolution": {
+          "type": "string",
+          "required": false
+        },
+        "physical_site_id": {
+          "type": "string",
+          "required": false
+        },
+        "municipality_code": {
+          "type": "string",
+          "required": false
+        },
+        "region_code": {
+          "type": "string",
+          "required": false
+        },
+        "business_model": {
+          "type": "enum",
+          "required": false,
+          "enum": "business_model"
+        },
+        "workload": {
+          "type": "enum",
+          "required": false,
+          "enum": "workload"
+        },
+        "decision_basis": {
+          "type": "enum",
+          "required": false,
+          "enum": "decision_basis"
+        },
+        "aliases": {
+          "type": "string",
+          "required": false
+        },
+        "source_type": {
+          "type": "enum",
+          "required": false,
+          "enum": "source_type"
+        },
+        "original_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "original_language": {
+          "type": "string",
+          "required": false
+        },
+        "translation": {
+          "type": "string",
+          "required": false
+        },
+        "locator": {
+          "type": "string",
+          "required": false
+        },
+        "evidence_kind": {
+          "type": "enum",
+          "required": false,
+          "enum": "evidence_kind"
+        },
+        "supports_fields": {
+          "type": "string",
+          "required": false
+        },
+        "review_kind": {
+          "type": "choice",
+          "values": [
+            "source",
+            "interpretation"
+          ]
+        },
+        "additional_evidence": {
+          "type": "string"
+        },
+        "independence_group": {
+          "type": "string"
+        }
+      }
+    },
+    "new_capacity_claim_candidates": {
+      "path": "audit/new_capacity_claim_candidates.csv",
+      "key": [
+        "capacity_candidate_id"
+      ],
+      "columns": {
+        "capacity_candidate_id": {
+          "type": "string",
+          "required": true
+        },
+        "project_candidate_id": {
+          "type": "string",
+          "required": false
+        },
+        "project_id": {
+          "type": "string",
+          "required": false
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        },
+        "project_name": {
+          "type": "string",
+          "required": false
+        },
+        "phase": {
+          "type": "string",
+          "required": false
+        },
+        "capacity_type": {
+          "type": "string",
+          "required": false
+        },
+        "capacity_status": {
+          "type": "string",
+          "required": false
+        },
+        "investment_decision": {
+          "type": "string",
+          "required": false
+        },
+        "reported_capacity_mw": {
+          "type": "string",
+          "required": false
+        },
+        "reported_capacity_basis": {
+          "type": "string",
+          "required": false
+        },
+        "interpreted_it_load_mw": {
+          "type": "string",
+          "required": false
+        },
+        "start_year": {
+          "type": "string",
+          "required": false
+        },
+        "construction_start_year": {
+          "type": "string",
+          "required": false
+        },
+        "scenario_tag": {
+          "type": "string",
+          "required": false
+        },
+        "type": {
+          "type": "string",
+          "required": false
+        },
+        "source_url": {
+          "type": "string",
+          "required": false
+        },
+        "source_title": {
+          "type": "string",
+          "required": false
+        },
+        "source_date": {
+          "type": "string"
+        },
+        "access_date": {
+          "type": "date",
+          "required": false
+        },
+        "evidence_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "confidence": {
+          "type": "enum",
+          "required": true,
+          "enum": "confidence"
+        },
+        "notes": {
+          "type": "string",
+          "required": false
+        },
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "review_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        },
+        "resolution": {
+          "type": "string",
+          "required": false
+        },
+        "physical_site_id": {
+          "type": "string",
+          "required": false
+        },
+        "phase_id": {
+          "type": "string",
+          "required": false
+        },
+        "accounting_group_id": {
+          "type": "string",
+          "required": false
+        },
+        "capacity_unit": {
+          "type": "choice",
+          "required": false,
+          "values": [
+            "MW_electric",
+            "MW_thermal",
+            "MW_per_rack"
+          ]
+        },
+        "capacity_qualifier": {
+          "type": "enum",
+          "required": false,
+          "enum": "capacity_qualifier"
+        },
+        "capacity_max_mw": {
+          "type": "number",
+          "required": false,
+          "min": 0
+        },
+        "business_model": {
+          "type": "enum",
+          "required": false,
+          "enum": "business_model"
+        },
+        "workload": {
+          "type": "enum",
+          "required": false,
+          "enum": "workload"
+        },
+        "decision_basis": {
+          "type": "enum",
+          "required": false,
+          "enum": "decision_basis"
+        },
+        "timing_scope": {
+          "type": "enum",
+          "required": false,
+          "enum": "timing_scope"
+        },
+        "operation_year_min": {
+          "type": "year",
+          "required": false
+        },
+        "operation_year_max": {
+          "type": "year",
+          "required": false
+        },
+        "construction_observed_date": {
+          "type": "date",
+          "required": false
+        },
+        "connection_status": {
+          "type": "enum",
+          "required": false,
+          "enum": "connection_status"
+        },
+        "relation": {
+          "type": "enum",
+          "required": false,
+          "enum": "relationship"
+        },
+        "parent_claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "baseline_claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "baseline_comparable": {
+          "type": "boolean",
+          "required": false
+        },
+        "superseded_by_claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "timing_source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "decision_source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "site_pue": {
+          "type": "number",
+          "required": false,
+          "min": 1,
+          "max": 3
+        },
+        "site_pue_kind": {
+          "type": "choice",
+          "required": false,
+          "values": [
+            "design",
+            "measured"
+          ]
+        },
+        "pue_source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "overlap_source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "interpretation_notes": {
+          "type": "string",
+          "required": false
+        },
+        "source_type": {
+          "type": "enum",
+          "required": false,
+          "enum": "source_type"
+        },
+        "original_excerpt": {
+          "type": "string",
+          "required": false
+        },
+        "original_language": {
+          "type": "string",
+          "required": false
+        },
+        "translation": {
+          "type": "string",
+          "required": false
+        },
+        "locator": {
+          "type": "string",
+          "required": false
+        },
+        "evidence_kind": {
+          "type": "enum",
+          "required": false,
+          "enum": "evidence_kind"
+        },
+        "supports_fields": {
+          "type": "string",
+          "required": false
+        },
+        "baseline_scope": {
+          "type": "choice",
+          "values": [
+            "new_capacity",
+            "existing_known",
+            "existing_unknown"
+          ],
+          "required": false
+        },
+        "measurement_kind": {
+          "type": "enum",
+          "enum": "measurement_kind",
+          "required": false
+        },
+        "site_pue_qualifier": {
+          "type": "choice",
+          "values": [
+            "exact",
+            "up_to",
+            "approximate",
+            "unknown"
+          ]
+        },
+        "review_kind": {
+          "type": "choice",
+          "values": [
+            "source",
+            "interpretation"
+          ]
+        },
+        "additional_evidence": {
+          "type": "string"
+        },
+        "independence_group": {
+          "type": "string"
+        }
+      }
+    },
+    "source_conflicts": {
+      "path": "audit/source_conflicts.csv",
+      "key": [
+        "conflict_id"
+      ],
+      "columns": {
+        "project_id": {
+          "type": "string",
+          "required": false
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        },
+        "claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "project_name": {
+          "type": "string",
+          "required": false
+        },
+        "field": {
+          "type": "string",
+          "required": false
+        },
+        "current_value": {
+          "type": "string",
+          "required": false
+        },
+        "source_url_1": {
+          "type": "string",
+          "required": false
+        },
+        "source_title_1": {
+          "type": "string",
+          "required": false
+        },
+        "source_date_1": {
+          "type": "string",
+          "required": false
+        },
+        "value_supported_1": {
+          "type": "string",
+          "required": false
+        },
+        "source_url_2": {
+          "type": "string",
+          "required": false
+        },
+        "source_title_2": {
+          "type": "string",
+          "required": false
+        },
+        "source_date_2": {
+          "type": "string",
+          "required": false
+        },
+        "value_supported_2": {
+          "type": "string",
+          "required": false
+        },
+        "access_date": {
+          "type": "date",
+          "required": false
+        },
+        "conflict_summary": {
+          "type": "string",
+          "required": false
+        },
+        "recommended_resolution": {
+          "type": "string",
+          "required": false
+        },
+        "confidence": {
+          "type": "enum",
+          "required": true,
+          "enum": "confidence"
+        },
+        "conflict_id": {
+          "type": "string",
+          "required": true
+        },
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "review_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        },
+        "resolution": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "dead_links": {
+      "path": "audit/dead_links.csv",
+      "key": [
+        "link_issue_id"
+      ],
+      "columns": {
+        "source_id": {
+          "type": "string",
+          "required": false
+        },
+        "country": {
+          "type": "string",
+          "required": false
+        },
+        "project_id": {
+          "type": "string",
+          "required": false
+        },
+        "claim_id": {
+          "type": "string",
+          "required": false
+        },
+        "project_name": {
+          "type": "string",
+          "required": false
+        },
+        "source_url": {
+          "type": "string",
+          "required": false
+        },
+        "source_title": {
+          "type": "string",
+          "required": false
+        },
+        "error_type": {
+          "type": "string",
+          "required": false
+        },
+        "access_date": {
+          "type": "date",
+          "required": false
+        },
+        "notes": {
+          "type": "string",
+          "required": false
+        },
+        "link_issue_id": {
+          "type": "string",
+          "required": true
+        },
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "review_state"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "required": false
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": false
+        },
+        "resolution": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "identity_registry": {
+      "path": "master/identity_registry.csv",
+      "key": [
+        "entity_type",
+        "entity_id"
+      ],
+      "columns": {
+        "entity_type": {
+          "type": "choice",
+          "required": true,
+          "values": [
+            "project",
+            "claim",
+            "source",
+            "phase",
+            "site",
+            "observation"
+          ]
+        },
+        "entity_id": {
+          "type": "string",
+          "required": true
+        },
+        "state": {
+          "type": "choice",
+          "required": true,
+          "values": [
+            "active",
+            "retired",
+            "reserved"
+          ]
+        },
+        "created_in": {
+          "type": "string",
+          "required": true
+        },
+        "retired_in": {
+          "type": "string",
+          "required": false
+        },
+        "notes": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "deployment_schedule": {
+      "path": "master/deployment_schedule.csv",
+      "key": [
+        "claim_id",
+        "year"
+      ],
+      "columns": {
+        "claim_id": {
+          "type": "string",
+          "required": true
+        },
+        "year": {
+          "type": "year",
+          "required": true
+        },
+        "year_end_fraction": {
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 1
+        },
+        "average_year_fraction": {
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 1
+        },
+        "basis": {
+          "type": "choice",
+          "required": true,
+          "values": [
+            "source",
+            "model_assumption"
+          ]
+        },
+        "source_ids": {
+          "type": "ids",
+          "required": false
+        },
+        "assumption_id": {
+          "type": "string",
+          "required": false
+        },
+        "review_state": {
+          "type": "enum",
+          "required": true,
+          "enum": "source_state"
+        },
+        "notes": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "promotion_history": {
+      "path": "audit/promotion_history.csv",
+      "key": [
+        "request_id"
+      ],
+      "columns": {
+        "request_id": {
+          "type": "string",
+          "required": true
+        },
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "source": {
+          "type": "string",
+          "required": true
+        },
+        "selected_ids": {
+          "type": "string",
+          "required": true
+        },
+        "reviewer": {
+          "type": "string",
+          "required": true
+        },
+        "applied_at": {
+          "type": "datetime",
+          "required": true
+        },
+        "parent_release": {
+          "type": "string",
+          "required": true
+        },
+        "request_digest": {
+          "type": "string",
+          "required": true
+        }
+      }
+    },
+    "capacity_observations": {
+      "path": "master/capacity_observations.csv",
+      "key": [
+        "observation_id"
+      ],
+      "columns": {
+        "observation_id": {
+          "type": "string",
+          "required": true,
+          "pattern": "^OBS[0-9]{3,}$"
+        },
+        "claim_id": {
+          "type": "string",
+          "required": true
+        },
+        "basis": {
+          "type": "enum",
+          "enum": "capacity_basis",
+          "required": true
+        },
+        "value": {
+          "type": "number",
+          "min": 0,
+          "required": true
+        },
+        "unit": {
+          "type": "choice",
+          "values": [
+            "MW_electric",
+            "MW_thermal",
+            "MW_per_rack"
+          ],
+          "required": true
+        },
+        "qualifier": {
+          "type": "enum",
+          "enum": "capacity_qualifier",
+          "required": true
+        },
+        "source_ids": {
+          "type": "ids",
+          "required": true
+        },
+        "review_state": {
+          "type": "enum",
+          "enum": "source_state",
+          "required": true
+        },
+        "notes": {
+          "type": "string"
+        },
+        "measurement_kind": {
+          "type": "enum",
+          "enum": "measurement_kind",
+          "required": true
+        },
+        "value_max": {
+          "type": "number",
+          "min": 0
+        }
+      }
+    },
+    "field_reviews": {
+      "path": "master/field_reviews.csv",
+      "key": [
+        "entity_type",
+        "entity_id",
+        "field"
+      ],
+      "columns": {
+        "entity_type": {
+          "type": "choice",
+          "values": [
+            "project",
+            "claim",
+            "source"
+          ],
+          "required": true
+        },
+        "entity_id": {
+          "type": "string",
+          "required": true
+        },
+        "field": {
+          "type": "string",
+          "required": true
+        },
+        "value_sha256": {
+          "type": "string",
+          "required": true
+        },
+        "source_ids": {
+          "type": "ids",
+          "required": true
+        },
+        "review_kind": {
+          "type": "choice",
+          "values": [
+            "source",
+            "interpretation"
+          ],
+          "required": true
+        },
+        "reviewer": {
+          "type": "string",
+          "required": true
+        },
+        "reviewed_at": {
+          "type": "datetime",
+          "required": true
+        },
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "run_imports": {
+      "path": "audit/run_imports.csv",
+      "key": [
+        "run_id"
+      ],
+      "columns": {
+        "run_id": {
+          "type": "string",
+          "required": true
+        },
+        "review_id": {
+          "type": "string",
+          "required": true
+        },
+        "response_sha256": {
+          "type": "string",
+          "required": true
+        },
+        "review_manifest_sha256": {
+          "type": "string",
+          "required": true
+        },
+        "imported_at": {
+          "type": "datetime",
+          "required": true
+        },
+        "input_release": {
+          "type": "string",
+          "required": true
+        },
+        "parent_release": {
+          "type": "string",
+          "required": true
+        }
+      }
+    }
+  },
+  "enums": {
+    "lifecycle": [
+      "Concept study",
+      "Planned",
+      "Permitted",
+      "Under construction",
+      "Operational",
+      "Dormant",
+      "Cancelled",
+      "Unclear"
+    ],
+    "decision": [
+      "yes",
+      "no",
+      "unclear",
+      "not_applicable"
+    ],
+    "decision_basis": [
+      "explicit_decision",
+      "execution_evidence",
+      "conditional_commitment",
+      "no_public_evidence",
+      "explicit_nondecision",
+      "not_applicable",
+      "legacy_unverified"
+    ],
+    "review_state": [
+      "pending",
+      "approved",
+      "rejected",
+      "applied",
+      "already_applied",
+      "superseded",
+      "needs_review"
+    ],
+    "confidence": [
+      "high",
+      "medium",
+      "low",
+      "unclear"
+    ],
+    "capacity_basis": [
+      "it_load",
+      "facility_total",
+      "grid_connection",
+      "unspecified_headline",
+      "backup_generation",
+      "reactor",
+      "rack_density"
+    ],
+    "capacity_type": [
+      "facility_capacity",
+      "initial_phase_capacity",
+      "incremental_expansion",
+      "cumulative_site_capacity",
+      "full_campus_potential",
+      "reactor_capacity",
+      "permit_backup_power",
+      "unknown"
+    ],
+    "business_model": [
+      "hyperscale",
+      "colocation",
+      "enterprise",
+      "public_research",
+      "unknown"
+    ],
+    "workload": [
+      "ai_training",
+      "ai_inference",
+      "ai_unspecified",
+      "hpc",
+      "cloud",
+      "mixed",
+      "research",
+      "unknown"
+    ],
+    "timing_scope": [
+      "full_capacity",
+      "first_capacity",
+      "grid_availability",
+      "unknown"
+    ],
+    "date_precision": [
+      "day",
+      "month",
+      "year",
+      "unknown"
+    ],
+    "evidence_kind": [
+      "verbatim",
+      "summary",
+      "translation",
+      "unavailable"
+    ],
+    "source_type": [
+      "company",
+      "municipal",
+      "permit",
+      "grid",
+      "media",
+      "registry",
+      "research",
+      "other"
+    ],
+    "source_state": [
+      "legacy_unverified",
+      "verified",
+      "needs_review"
+    ],
+    "connection_status": [
+      "unknown",
+      "requested",
+      "queued",
+      "reserved",
+      "contracted",
+      "available_reported",
+      "energised"
+    ],
+    "capacity_qualifier": [
+      "exact",
+      "approximate",
+      "up_to",
+      "at_least",
+      "range",
+      "unknown"
+    ],
+    "relationship": [
+      "independent",
+      "included_in",
+      "incremental_to",
+      "possibly_included_in"
+    ],
+    "type_tags": [
+      "hyperscale",
+      "AI",
+      "HPC",
+      "cloud",
+      "colocation",
+      "enterprise",
+      "research",
+      "SMR-linked",
+      "public research",
+      "build-to-suit",
+      "edge"
+    ],
+    "measurement_kind": [
+      "nameplate_capacity",
+      "peak_demand",
+      "available_power",
+      "contracted_power",
+      "requested_power",
+      "normal_operating_range",
+      "unspecified_capacity",
+      "thermal_input"
+    ]
+  },
+  "verification_fields": {
+    "project": [
+      "developer",
+      "municipality",
+      "county",
+      "bidding_zone",
+      "project_status",
+      "investment_decision",
+      "decision_basis",
+      "business_model",
+      "workload"
+    ],
+    "claim": [
+      "reported_capacity_mw",
+      "reported_capacity_basis",
+      "capacity_unit",
+      "measurement_kind",
+      "capacity_qualifier",
+      "capacity_type",
+      "capacity_status",
+      "investment_decision",
+      "decision_basis",
+      "timing_scope",
+      "operation_year_min",
+      "operation_year_max",
+      "construction_start_year",
+      "relation",
+      "baseline_scope",
+      "baseline_claim_id",
+      "baseline_comparable",
+      "site_pue",
+      "capacity_max_mw",
+      "connection_status",
+      "site_pue_kind",
+      "site_pue_qualifier",
+      "business_model",
+      "workload"
+    ]
+  }
+}

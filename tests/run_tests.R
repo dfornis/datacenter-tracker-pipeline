@@ -418,5 +418,49 @@ test('selected-project pilot freezes its scope and accepts only unchanged scoped
   t$capacity_master$reported_capacity_mw[t$capacity_master$claim_id=='C040'] <- '999'
   expect_error(function()assert_run_still_current(created$path,t,schema,r$root),'Country input changed')
 })
+test('unresolved source identity blocks a wrongly attributed claim in every scenario',function() {
+  t <- tables
+  t$source_conflicts <- rbind(t$source_conflicts,row_frame(list(conflict_id='TEST-IDENTITY',run_id='test',review_state='needs_review',country='FI',project_id='P030',claim_id='C042',field='project_id',conflict_summary='Evidence describes the neighbouring site.'),names(t$source_conflicts)))
+  result <- account_all(t,read_json(file.path(root,'config/methodology.json')))
+  rows <- result$ledger[result$ledger$claim_id=='C042',,drop=FALSE]
+  stopifnot(nrow(rows)==4,all(!rows$counted),all(rows$reason=='unresolved_source_identity'),all(is.na(rows$facility_power_mw)))
+  t$source_conflicts$review_state[t$source_conflicts$conflict_id=='TEST-IDENTITY'] <- 'superseded'
+  cleared <- account_all(t,read_json(file.path(root,'config/methodology.json')))$ledger
+  stopifnot(!any(cleared$reason[cleared$claim_id=='C042']=='unresolved_source_identity'))
+})
+test('reviewed timing changes refresh the legacy year alias in dry run and apply',function() {
+  for (year in c('2029','')) {
+    f <- fixture(function(t) {
+      t <- approve_fixture(t); template <- t$suggested_capacity_updates[t$suggested_capacity_updates$audit_id=='TEST-AC001',,drop=FALSE]
+      for(field in c('operation_year_min','operation_year_max')) {
+        r <- template; r$audit_id <- paste0('TEST-',field); r$field <- field
+        r$current_value <- t$capacity_master[[field]][t$capacity_master$claim_id=='C040']; r$suggested_value <- year
+        r$supports_fields <- field; r$original_excerpt <- 'Synthetic timing revision for the scoped claim.'
+        t$suggested_capacity_updates <- rbind(t$suggested_capacity_updates,r)
+      }; t
+    })
+    ids <- paste0('TEST-',c('operation_year_min','operation_year_max')); parent <- basename(current_state(f))
+    before <- current_state(f)
+    promote_rows(f,'audit','capacity',ids,'FI','test-reviewer','test-timing',parent,FALSE)
+    stopifnot(current_state(f)==before)
+    promote_rows(f,'audit','capacity',ids,'FI','test-reviewer','test-timing',parent,TRUE)
+    t <- load_state(current_state(f),schema); stopifnot(t$capacity_master$start_year[t$capacity_master$claim_id=='C040']==year)
+  }
+})
+test('an empty committed subset with evidence gaps is not a complete zero estimate',function() {
+  z <- account_all(tables,read_json(file.path(root,'config/methodology.json')))$scenario_zone
+  z <- z[z$scenario_id=='low_2030' & z$evidence_gap_claims>0,,drop=FALSE]
+  stopifnot(nrow(z)>0,all(!z$capacity_estimate_complete),all(!z$annual_equivalent_complete),all(!z$target_year_energy_complete))
+})
+test('IT peak and unspecified IT measures cannot inherit a nameplate load factor',function() {
+  t <- tables; i <- match('C040',t$capacity_master$claim_id); t$capacity_master$reported_capacity_basis[i] <- 'it_load'
+  for(kind in c('peak_demand','available_power','unspecified_capacity')) {
+    t$capacity_master$measurement_kind[i] <- kind
+    l <- account_all(t,read_json(file.path(root,'config/methodology.json')))$ledger
+    r <- l[l$claim_id=='C040' & l$scenario_id=='pipeline_potential',,drop=FALSE]
+    stopifnot(r$counted,is.na(r$conditional_mature_annual_twh_low),is.na(r$conditional_mature_annual_twh_high))
+    stopifnot(r$energy_status==if(kind=='peak_demand')'load_factor_denominator_mismatch' else 'measurement_kind_not_convertible')
+  }
+})
 cat('\n',passed,' tests passed.\n',sep='')
 unlink(scratch,recursive=TRUE)

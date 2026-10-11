@@ -34,6 +34,7 @@ Run from the repository root. `renv.lock` pins R 4.6.0, jsonlite 2.0.0, digest 0
 Rscript -e 'renv::restore(prompt=FALSE, strict=TRUE)'
 Rscript -e 'stopifnot(renv::status()$synchronized)'
 Rscript tests/run_tests.R
+Rscript scripts/evaluate_pilot.R
 Rscript scripts/validate_data.R
 Rscript scripts/build_datacenter_data.R --output-dir=/tmp/datacenter-preview
 ```
@@ -89,6 +90,8 @@ Rscript scripts/build_datacenter_data.R --apply
 Use `--output-dir=/absolute/path` for another local destination. Once only, conversion of a plain output directory requires `--initialise-output`, which preserves that directory as a legacy release. All JSON, CSV, evidence, quality and map files are published together, including every configured zone.
 
 `manifest.json` records data, code/configuration, runtime and geometry hashes. `accounting_ledger.json`/`.csv` explain every claim/scenario inclusion or exclusion. `quality.json` reports factual limitations. Successful compilation does not verify legacy facts. Read the consumer migration guide before updating the public application. Local builds do not publish externally.
+
+The October implementation report is `docs/reviews/2026-10-11/slutrapport.md`. `Rscript scripts/report_review_changes.R` regenerates the comparison between the initial version-2 migration and the selected state. The frozen pilot acceptance check is a same-agent reviewed case suite, not a blind model benchmark or proof of national completeness.
 
 ## Recovery and rights
 

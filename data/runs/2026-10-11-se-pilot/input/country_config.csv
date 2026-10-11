@@ -1,0 +1,2 @@
+"country","country_name","active","canonical_name_language","search_languages","municipality_field","municipality_term_local","municipality_term_en","region_field","region_term_local","region_term_en","source_authority","source_url","valid_from"
+"SE","Sweden","TRUE","sv","sv; en","municipality","kommun","municipality","county","län","county","Statistics Sweden (SCB)","https://www.scb.se/en/finding-statistics/regional-statistics/regional-divisions/counties-and-municipalities/counties-and-municipalities-in-numerical-order/","2026-01-01"

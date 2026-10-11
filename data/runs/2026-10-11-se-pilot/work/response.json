@@ -1,0 +1,1938 @@
+{
+  "run_id": "2026-10-11-se-pilot",
+  "searches": [
+    {
+      "scope_id": "P003",
+      "language": "sv",
+      "query": "EcoDataCenter Borlänge 600 MW Mistral 2026 byggstart",
+      "searched_at": "2026-10-11T18:36:08Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "operator",
+      "search_id": "Q001",
+      "result_urls": [],
+      "outcome": "Submitted in the country batch. Mixed results led to the primary sources recorded in the evidence registry; per-query ranking and attribution were not exposed.",
+      "limitations": "Bounded pilot, not exhaustive country discovery. Search language does not guarantee same-language results. Returned URLs are not attributed to an individual query within this batch."
+    },
+    {
+      "scope_id": "P010",
+      "language": "sv",
+      "query": "Mistral EcoDataCenter Borlänge 23 MW 2026",
+      "searched_at": "2026-10-11T18:36:08Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "operator",
+      "search_id": "Q002",
+      "result_urls": [],
+      "outcome": "Submitted in the country batch. Mixed results led to the primary sources recorded in the evidence registry; per-query ranking and attribution were not exposed.",
+      "limitations": "Bounded pilot, not exhaustive country discovery. Search language does not guarantee same-language results. Returned URLs are not attributed to an individual query within this batch."
+    },
+    {
+      "scope_id": "P015",
+      "language": "sv",
+      "query": "site.blog.google Horndal datacenter 2026 byggstart",
+      "searched_at": "2026-10-11T18:36:08Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "operator",
+      "search_id": "Q003",
+      "result_urls": [],
+      "outcome": "Submitted in the country batch. Mixed results led to the primary sources recorded in the evidence registry; per-query ranking and attribution were not exposed.",
+      "limitations": "Bounded pilot, not exhaustive country discovery. Search language does not guarantee same-language results. Returned URLs are not attributed to an individual query within this batch."
+    },
+    {
+      "scope_id": "SE",
+      "language": "en",
+      "query": "site.datacenters.google Horndal construction September 2026",
+      "searched_at": "2026-10-11T18:36:08Z",
+      "engine": "web.run",
+      "action": "search",
+      "route": "operator",
+      "search_id": "Q004",
+      "result_urls": [],
+      "outcome": "Submitted in the country batch. Mixed results led to the primary sources recorded in the evidence registry; per-query ranking and attribution were not exposed.",
+      "limitations": "Bounded pilot, not exhaustive country discovery. Search language does not guarantee same-language results. Returned URLs are not attributed to an individual query within this batch."
+    },
+    {
+      "search_id": "Q005",
+      "scope_id": "P003",
+      "language": "en",
+      "query": "https://ecodatacenter.tech/data-center/ecodatacenter2",
+      "searched_at": "2026-10-11T18:43:24Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "operator",
+      "result_urls": [
+        "https://ecodatacenter.tech/data-center/ecodatacenter2"
+      ],
+      "outcome": "Second-pass source retrieval; searched within page for Total available power",
+      "limitations": "Same-agent source check, not independent review."
+    },
+    {
+      "search_id": "Q006",
+      "scope_id": "P010",
+      "language": "en",
+      "query": "https://www.fi.se/sv/vara-register/prospektregistret/GetFile?format=application/pdf&id=26-2502&name=26-2502.pdf",
+      "searched_at": "2026-10-11T18:43:24Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "operator",
+      "result_urls": [
+        "https://www.fi.se/sv/vara-register/prospektregistret/GetFile?format=application/pdf&id=26-2502&name=26-2502.pdf"
+      ],
+      "outcome": "Second-pass source retrieval; searched within page for 23 MW",
+      "limitations": "Same-agent source check, not independent review."
+    },
+    {
+      "search_id": "Q007",
+      "scope_id": "P015",
+      "language": "sv",
+      "query": "https://blog.google/intl/sv-se/foretagsnyheter/google-tar-spadtaget-for-sitt-forsta-datacenter-i-sverige/",
+      "searched_at": "2026-10-11T18:43:24Z",
+      "engine": "web.run",
+      "action": "open",
+      "route": "operator",
+      "result_urls": [
+        "https://blog.google/intl/sv-se/foretagsnyheter/google-tar-spadtaget-for-sitt-forsta-datacenter-i-sverige/"
+      ],
+      "outcome": "Second-pass source retrieval; searched within page for HORNDAL",
+      "limitations": "Same-agent source check, not independent review."
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E001",
+      "project_id": "P003",
+      "claim_id": "C004",
+      "url": "https://ecodatacenter.tech/data-center/ecodatacenter2",
+      "title": "EcoDataCenter 2",
+      "source_type": "company",
+      "publication_date": "",
+      "access_date": "2026-10-11",
+      "original_language": "en",
+      "original_excerpt": "Total available power\nup to 600 MW",
+      "translation": "",
+      "locator": "Site fact box: Total available power",
+      "retrieval_status": "accessible",
+      "independence_group": "https://ecodatacenter.tech/data-center/ecodatacenter2",
+      "supports_fields": [
+        "reported_capacity_mw",
+        "measurement_kind",
+        "capacity_qualifier"
+      ],
+      "confidence": "high",
+      "limitations": "Operator available-power envelope; no full-build commissioning date or IT denominator is stated."
+    },
+    {
+      "evidence_id": "E002",
+      "project_id": "P003",
+      "claim_id": "",
+      "url": "https://ecodatacenter.tech/data-center/ecodatacenter2",
+      "title": "EcoDataCenter 2",
+      "source_type": "company",
+      "publication_date": "",
+      "access_date": "2026-10-11",
+      "original_language": "en",
+      "original_excerpt": "Construction began in September 2025",
+      "translation": "",
+      "locator": "Paragraph below site introduction",
+      "retrieval_status": "accessible",
+      "independence_group": "https://ecodatacenter.tech/data-center/ecodatacenter2",
+      "supports_fields": [
+        "project_status",
+        "investment_decision",
+        "decision_basis",
+        "construction_start_years"
+      ],
+      "confidence": "high",
+      "limitations": "Execution applies to the campus development, not evidence of full 600 MW build-out."
+    },
+    {
+      "evidence_id": "E003",
+      "project_id": "P010",
+      "claim_id": "C014",
+      "url": "https://www.fi.se/sv/vara-register/prospektregistret/GetFile?format=application/pdf&id=26-2502&name=26-2502.pdf",
+      "title": "EcoDC Holding AB prospectus, approved 13 March 2026",
+      "source_type": "company",
+      "publication_date": "2026-03-13",
+      "access_date": "2026-10-11",
+      "original_language": "en",
+      "original_excerpt": "23 MW of cutting-edge AI infrastructure\nat the Borlänge campus. Set to become operational in 2027",
+      "translation": "",
+      "locator": "Printed page 24, Mistral paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://www.fi.se/sv/vara-register/prospektregistret/GetFile?format=application/pdf&id=26-2502&name=26-2502.pdf",
+      "supports_fields": [
+        "reported_capacity_mw",
+        "reported_capacity_basis",
+        "measurement_kind",
+        "interpreted_it_load_mw",
+        "operation_year_min",
+        "operation_year_max",
+        "relation",
+        "notes"
+      ],
+      "confidence": "high",
+      "limitations": "Issuer disclosure hosted by the regulator; regulator approval is not factual endorsement. MW denominator is not explicitly IT or facility demand."
+    },
+    {
+      "evidence_id": "E004",
+      "project_id": "P015",
+      "claim_id": "",
+      "url": "https://blog.google/intl/sv-se/foretagsnyheter/google-tar-spadtaget-for-sitt-forsta-datacenter-i-sverige/",
+      "title": "Google tar spadtaget för sitt första datacenter i Sverige",
+      "source_type": "company",
+      "publication_date": "2026-06-02",
+      "access_date": "2026-10-11",
+      "original_language": "sv",
+      "original_excerpt": "HORNDAL, 2 juni. Idag inleder Google bygget av sitt första svenska datacenter.",
+      "translation": "",
+      "locator": "Opening paragraph",
+      "retrieval_status": "accessible",
+      "independence_group": "https://blog.google/intl/sv-se/foretagsnyheter/google-tar-spadtaget-for-sitt-forsta-datacenter-i-sverige/",
+      "supports_fields": [
+        "project_status",
+        "investment_decision",
+        "decision_basis",
+        "construction_start_years",
+        "notes"
+      ],
+      "confidence": "high",
+      "limitations": "Site construction evidence does not establish electrical load or installation of all permitted backup generation."
+    },
+    {
+      "evidence_id": "E005",
+      "project_id": "P015",
+      "claim_id": "C022",
+      "url": "https://horndal.se/wp-content/uploads/2020/03/Bilaga-B-Milj%C3%B6konsekvensbeskrivning.pdf",
+      "title": "Bilaga B, miljökonsekvensbeskrivning",
+      "source_type": "permit",
+      "publication_date": "",
+      "access_date": "2026-10-11",
+      "original_language": "sv",
+      "original_excerpt": "installerad tillförd effekt på 1 500 MWth.",
+      "translation": "",
+      "locator": "Search index: section 7.16.1; direct PDF open failed",
+      "retrieval_status": "snippet_only",
+      "independence_group": "https://horndal.se/wp-content/uploads/2020/03/Bilaga-B-Milj%C3%B6konsekvensbeskrivning.pdf",
+      "supports_fields": [
+        "capacity_unit",
+        "reported_capacity_basis"
+      ],
+      "confidence": "low",
+      "limitations": "Search-index fragment only. The migrated thermal-unit rule is retained, but no fresh permit verification is claimed."
+    }
+  ],
+  "coverage": [
+    {
+      "entity_type": "project",
+      "entity_id": "P003",
+      "result": "unresolved",
+      "field_outcomes": [
+        {
+          "field": "developer",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "municipality",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "county",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "bidding_zone",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "project_status",
+          "outcome": "confirmed",
+          "evidence_ids": [
+            "E002"
+          ],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Operator states campus construction began in September 2025; do not copy this decision to the full power envelope."
+        },
+        {
+          "field": "investment_decision",
+          "outcome": "confirmed",
+          "evidence_ids": [
+            "E002"
+          ],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Operator states campus construction began in September 2025; do not copy this decision to the full power envelope."
+        },
+        {
+          "field": "decision_basis",
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E002"
+          ],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Operator states campus construction began in September 2025; do not copy this decision to the full power envelope."
+        },
+        {
+          "field": "business_model",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "workload",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "construction_start_years",
+          "search_ids": [
+            "Q001"
+          ],
+          "outcome": "confirmed",
+          "evidence_ids": [
+            "E002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Operator states campus construction began in September 2025; do not copy this decision to the full power envelope."
+        }
+      ],
+      "search_ids": [
+        "Q001"
+      ],
+      "notes": "Bounded critical-field pilot; full-record factual verification is not claimed."
+    },
+    {
+      "entity_type": "project",
+      "entity_id": "P010",
+      "result": "unresolved",
+      "field_outcomes": [
+        {
+          "field": "developer",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "municipality",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "county",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "bidding_zone",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "project_status",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "investment_decision",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "decision_basis",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "business_model",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "workload",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        }
+      ],
+      "search_ids": [
+        "Q002"
+      ],
+      "notes": "Bounded critical-field pilot; full-record factual verification is not claimed."
+    },
+    {
+      "entity_type": "project",
+      "entity_id": "P015",
+      "result": "unresolved",
+      "field_outcomes": [
+        {
+          "field": "developer",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "municipality",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "county",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "bidding_zone",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "project_status",
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E004"
+          ],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Google explicitly announced construction start on 2 June 2026. This updates the project; 1,500 MWth of permitted backup input remains outside electrical-load totals."
+        },
+        {
+          "field": "investment_decision",
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E004"
+          ],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Google explicitly announced construction start on 2 June 2026. This updates the project; 1,500 MWth of permitted backup input remains outside electrical-load totals."
+        },
+        {
+          "field": "decision_basis",
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E004"
+          ],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Google explicitly announced construction start on 2 June 2026. This updates the project; 1,500 MWth of permitted backup input remains outside electrical-load totals."
+        },
+        {
+          "field": "business_model",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "workload",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "construction_start_years",
+          "search_ids": [
+            "Q003"
+          ],
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E004"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Google explicitly announced construction start on 2 June 2026. This updates the project; 1,500 MWth of permitted backup input remains outside electrical-load totals."
+        },
+        {
+          "field": "notes",
+          "search_ids": [
+            "Q003"
+          ],
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E004"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Replace stale interpretation notes while preserving original records in release history."
+        }
+      ],
+      "search_ids": [
+        "Q003"
+      ],
+      "notes": "Bounded critical-field pilot; full-record factual verification is not claimed."
+    },
+    {
+      "entity_type": "claim",
+      "entity_id": "C004",
+      "result": "unresolved",
+      "field_outcomes": [
+        {
+          "field": "reported_capacity_mw",
+          "outcome": "confirmed",
+          "evidence_ids": [
+            "E001"
+          ],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "source",
+          "notes": "Confirms the operator envelope; it is not a commissioned IT-load forecast."
+        },
+        {
+          "field": "reported_capacity_basis",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_unit",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "measurement_kind",
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E001"
+          ],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "The operator labels the measure total available power, not installed IT capacity."
+        },
+        {
+          "field": "capacity_qualifier",
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E001"
+          ],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "source",
+          "notes": "Preserve the explicit upper-bound qualifier."
+        },
+        {
+          "field": "capacity_type",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_status",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "investment_decision",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "decision_basis",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "timing_scope",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "operation_year_min",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "operation_year_max",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "construction_start_year",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "relation",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_scope",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_claim_id",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_comparable",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_max_mw",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "connection_status",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue_kind",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue_qualifier",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "business_model",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "workload",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        }
+      ],
+      "search_ids": [
+        "Q001"
+      ],
+      "notes": "Bounded critical-field pilot; full-record factual verification is not claimed."
+    },
+    {
+      "entity_type": "claim",
+      "entity_id": "C008",
+      "result": "unresolved",
+      "field_outcomes": [
+        {
+          "field": "reported_capacity_mw",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "reported_capacity_basis",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_unit",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "measurement_kind",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_qualifier",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_type",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_status",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "investment_decision",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "decision_basis",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "timing_scope",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "operation_year_min",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "operation_year_max",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "construction_start_year",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "relation",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_scope",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_claim_id",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_comparable",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_max_mw",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "connection_status",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue_kind",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue_qualifier",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "business_model",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "workload",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q001"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        }
+      ],
+      "search_ids": [
+        "Q001"
+      ],
+      "notes": "Bounded critical-field pilot; full-record factual verification is not claimed."
+    },
+    {
+      "entity_type": "claim",
+      "entity_id": "C014",
+      "result": "unresolved",
+      "field_outcomes": [
+        {
+          "field": "reported_capacity_mw",
+          "outcome": "confirmed",
+          "evidence_ids": [
+            "E003"
+          ],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion."
+        },
+        {
+          "field": "reported_capacity_basis",
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E003"
+          ],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion."
+        },
+        {
+          "field": "capacity_unit",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "measurement_kind",
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E003"
+          ],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion."
+        },
+        {
+          "field": "capacity_qualifier",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_type",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_status",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "investment_decision",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "decision_basis",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "timing_scope",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "operation_year_min",
+          "outcome": "confirmed",
+          "evidence_ids": [
+            "E003"
+          ],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion."
+        },
+        {
+          "field": "operation_year_max",
+          "outcome": "confirmed",
+          "evidence_ids": [
+            "E003"
+          ],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion."
+        },
+        {
+          "field": "construction_start_year",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "relation",
+          "outcome": "confirmed",
+          "evidence_ids": [
+            "E003"
+          ],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Tenant infrastructure is at the operator campus. Numeric containment within the 600 MW power envelope is not demonstrated; keep overlap unresolved."
+        },
+        {
+          "field": "baseline_scope",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_claim_id",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_comparable",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_max_mw",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "connection_status",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue_kind",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue_qualifier",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "business_model",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "workload",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q002"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "interpreted_it_load_mw",
+          "search_ids": [
+            "Q002"
+          ],
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion."
+        },
+        {
+          "field": "notes",
+          "search_ids": [
+            "Q002"
+          ],
+          "outcome": "correction_proposed",
+          "evidence_ids": [
+            "E003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Replace stale interpretation notes while preserving original records in release history."
+        }
+      ],
+      "search_ids": [
+        "Q002"
+      ],
+      "notes": "Bounded critical-field pilot; full-record factual verification is not claimed."
+    },
+    {
+      "entity_type": "claim",
+      "entity_id": "C022",
+      "result": "unresolved",
+      "field_outcomes": [
+        {
+          "field": "reported_capacity_mw",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "reported_capacity_basis",
+          "outcome": "unknown",
+          "evidence_ids": [
+            "E005"
+          ],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Indexed environmental-document fragment says MWth, but direct retrieval failed. Retain the already documented thermal exclusion without marking this source verified."
+        },
+        {
+          "field": "capacity_unit",
+          "outcome": "unknown",
+          "evidence_ids": [
+            "E005"
+          ],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Indexed environmental-document fragment says MWth, but direct retrieval failed. Retain the already documented thermal exclusion without marking this source verified."
+        },
+        {
+          "field": "measurement_kind",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_qualifier",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_type",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_status",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "investment_decision",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "decision_basis",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "timing_scope",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "operation_year_min",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "operation_year_max",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "construction_start_year",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "relation",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_scope",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_claim_id",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "baseline_comparable",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "capacity_max_mw",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "connection_status",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue_kind",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "site_pue_qualifier",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "business_model",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        },
+        {
+          "field": "workload",
+          "outcome": "unknown",
+          "evidence_ids": [],
+          "search_ids": [
+            "Q003"
+          ],
+          "review_kind": "interpretation",
+          "notes": "Outside the critical pilot finding or not established by the retrieved scoped evidence; legacy value remains unverified."
+        }
+      ],
+      "search_ids": [
+        "Q003"
+      ],
+      "notes": "Bounded critical-field pilot; full-record factual verification is not claimed."
+    }
+  ],
+  "proposals": [
+    {
+      "proposal_id": "PR001",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C004",
+        "field": "reported_capacity_mw",
+        "current_value": "600",
+        "suggested_value": "600"
+      },
+      "evidence_ids": [
+        "E001"
+      ],
+      "rationale": "Confirms the operator envelope; it is not a commissioned IT-load forecast.",
+      "review_kind": "source"
+    },
+    {
+      "proposal_id": "PR002",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C004",
+        "field": "measurement_kind",
+        "current_value": "unspecified_capacity",
+        "suggested_value": "available_power"
+      },
+      "evidence_ids": [
+        "E001"
+      ],
+      "rationale": "The operator labels the measure total available power, not installed IT capacity.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR003",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C004",
+        "field": "capacity_qualifier",
+        "current_value": "approximate",
+        "suggested_value": "up_to"
+      },
+      "evidence_ids": [
+        "E001"
+      ],
+      "rationale": "Preserve the explicit upper-bound qualifier.",
+      "review_kind": "source"
+    },
+    {
+      "proposal_id": "PR004",
+      "table": "suggested_project_updates",
+      "values": {
+        "project_id": "P003",
+        "field": "project_status",
+        "current_value": "Under construction",
+        "suggested_value": "Under construction"
+      },
+      "evidence_ids": [
+        "E002"
+      ],
+      "rationale": "Operator states campus construction began in September 2025; do not copy this decision to the full power envelope.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR005",
+      "table": "suggested_project_updates",
+      "values": {
+        "project_id": "P003",
+        "field": "investment_decision",
+        "current_value": "yes",
+        "suggested_value": "yes"
+      },
+      "evidence_ids": [
+        "E002"
+      ],
+      "rationale": "Operator states campus construction began in September 2025; do not copy this decision to the full power envelope.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR006",
+      "table": "suggested_project_updates",
+      "values": {
+        "project_id": "P003",
+        "field": "decision_basis",
+        "current_value": "legacy_unverified",
+        "suggested_value": "execution_evidence"
+      },
+      "evidence_ids": [
+        "E002"
+      ],
+      "rationale": "Operator states campus construction began in September 2025; do not copy this decision to the full power envelope.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR007",
+      "table": "suggested_project_updates",
+      "values": {
+        "project_id": "P003",
+        "field": "construction_start_years",
+        "current_value": "2025",
+        "suggested_value": "2025"
+      },
+      "evidence_ids": [
+        "E002"
+      ],
+      "rationale": "Operator states campus construction began in September 2025; do not copy this decision to the full power envelope.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR008",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C014",
+        "field": "reported_capacity_mw",
+        "current_value": "23",
+        "suggested_value": "23"
+      },
+      "evidence_ids": [
+        "E003"
+      ],
+      "rationale": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR009",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C014",
+        "field": "reported_capacity_basis",
+        "current_value": "it_load",
+        "suggested_value": "unspecified_headline"
+      },
+      "evidence_ids": [
+        "E003"
+      ],
+      "rationale": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR010",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C014",
+        "field": "measurement_kind",
+        "current_value": "nameplate_capacity",
+        "suggested_value": "unspecified_capacity"
+      },
+      "evidence_ids": [
+        "E003"
+      ],
+      "rationale": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR011",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C014",
+        "field": "interpreted_it_load_mw",
+        "current_value": "23",
+        "suggested_value": ""
+      },
+      "evidence_ids": [
+        "E003"
+      ],
+      "rationale": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR012",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C014",
+        "field": "operation_year_min",
+        "current_value": "2027",
+        "suggested_value": "2027"
+      },
+      "evidence_ids": [
+        "E003"
+      ],
+      "rationale": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR013",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C014",
+        "field": "operation_year_max",
+        "current_value": "2027",
+        "suggested_value": "2027"
+      },
+      "evidence_ids": [
+        "E003"
+      ],
+      "rationale": "Issuer states 23 MW at the Borlänge campus and 2027 operation; it does not define 23 MW as IT load. Preserve headline basis without automatic energy conversion.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR014",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C014",
+        "field": "relation",
+        "current_value": "possibly_included_in",
+        "suggested_value": "possibly_included_in"
+      },
+      "evidence_ids": [
+        "E003"
+      ],
+      "rationale": "Tenant infrastructure is at the operator campus. Numeric containment within the 600 MW power envelope is not demonstrated; keep overlap unresolved.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR015",
+      "table": "suggested_project_updates",
+      "values": {
+        "project_id": "P015",
+        "field": "project_status",
+        "current_value": "Permitted",
+        "suggested_value": "Under construction"
+      },
+      "evidence_ids": [
+        "E004"
+      ],
+      "rationale": "Google explicitly announced construction start on 2 June 2026. This updates the project; 1,500 MWth of permitted backup input remains outside electrical-load totals.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR016",
+      "table": "suggested_project_updates",
+      "values": {
+        "project_id": "P015",
+        "field": "investment_decision",
+        "current_value": "no",
+        "suggested_value": "yes"
+      },
+      "evidence_ids": [
+        "E004"
+      ],
+      "rationale": "Google explicitly announced construction start on 2 June 2026. This updates the project; 1,500 MWth of permitted backup input remains outside electrical-load totals.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR017",
+      "table": "suggested_project_updates",
+      "values": {
+        "project_id": "P015",
+        "field": "decision_basis",
+        "current_value": "legacy_unverified",
+        "suggested_value": "execution_evidence"
+      },
+      "evidence_ids": [
+        "E004"
+      ],
+      "rationale": "Google explicitly announced construction start on 2 June 2026. This updates the project; 1,500 MWth of permitted backup input remains outside electrical-load totals.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR018",
+      "table": "suggested_project_updates",
+      "values": {
+        "project_id": "P015",
+        "field": "construction_start_years",
+        "current_value": "",
+        "suggested_value": "2026"
+      },
+      "evidence_ids": [
+        "E004"
+      ],
+      "rationale": "Google explicitly announced construction start on 2 June 2026. This updates the project; 1,500 MWth of permitted backup input remains outside electrical-load totals.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR019",
+      "table": "suggested_project_updates",
+      "values": {
+        "project_id": "P015",
+        "field": "notes",
+        "current_value": "Google Horndal/Avesta permitted project. Environmental permit and building permit exist, and preparatory groundworks have been reported, but Google still says no formal business decision to build has been taken. The 2021 permit concerns up to 1,500 MW installed backup-power capacity; no public IT/grid-load estimate has been identified.",
+        "suggested_value": "Google announced site construction start on 2 June 2026. This does not establish a datacentre MW load or execution of the entire permitted backup-power envelope."
+      },
+      "evidence_ids": [
+        "E004"
+      ],
+      "rationale": "Replace stale interpretation notes while preserving original records in release history.",
+      "review_kind": "interpretation"
+    },
+    {
+      "proposal_id": "PR020",
+      "table": "suggested_capacity_updates",
+      "values": {
+        "claim_id": "C014",
+        "field": "notes",
+        "current_value": "Partnership to build an AI-focused data centre at the Borlänge campus. The facility is expected to open in 2027 with an estimated compute capacity of around 23 MW.",
+        "suggested_value": "Issuer prospectus reports 23 MW of AI infrastructure at the Borlänge campus, with operation targeted in 2027. It does not explicitly define an IT-load denominator. Numeric containment within EcoDataCenter’s wider power envelope remains unresolved."
+      },
+      "evidence_ids": [
+        "E003"
+      ],
+      "rationale": "Replace stale interpretation notes while preserving original records in release history.",
+      "review_kind": "interpretation"
+    }
+  ],
+  "conflicts": [],
+  "summary": "Selected-project methodological pilot with current primary-source checks; not a complete country refresh.",
+  "limitations": [
+    "One agent extracted the findings; a separately recorded second pass by that same agent is not independent validation.",
+    "Coverage records every required field; unknown outcomes deliberately do not imply that the legacy value was verified.",
+    "No calibration of Nordic energy demand or project realisation probability was performed."
+  ]
+}

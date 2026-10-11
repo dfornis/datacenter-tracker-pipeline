@@ -1,0 +1,85 @@
+{
+  "pilot_release": "r2-7f9486d6fc7ee1536aa0",
+  "passed": 15,
+  "cases": [
+    {
+      "case": "FI-source-identity",
+      "description": "Incorrect legacy FI source IDs stay retired and replacement links remain scoped.",
+      "passed": true
+    },
+    {
+      "case": "Mistral-basis",
+      "description": "23 MW is not upgraded to IT load without an explicit denominator.",
+      "passed": true
+    },
+    {
+      "case": "Mistral-overlap",
+      "description": "Unresolved customer/campus overlap blocks their combined potential.",
+      "passed": true
+    },
+    {
+      "case": "Google-thermal",
+      "description": "468 MW thermal backup power never enters electric-load scenarios.",
+      "passed": true
+    },
+    {
+      "case": "Hamar-operational-basis",
+      "description": "90 MW baseline is source-reported IT capacity.",
+      "passed": true
+    },
+    {
+      "case": "Hamar-first-capacity",
+      "description": "2023 is first-capacity timing, not proof all 90 MW opened then.",
+      "passed": true
+    },
+    {
+      "case": "Hamar-expansion",
+      "description": "An operational campus retains an undated 60 MW IT increment.",
+      "passed": true
+    },
+    {
+      "case": "Hamar-undated",
+      "description": "150 MW expansion ceiling does not acquire a full commissioning year.",
+      "passed": true
+    },
+    {
+      "case": "Lefdal-grid",
+      "description": "Available connection remains distinct from installed IT.",
+      "passed": true
+    },
+    {
+      "case": "Lefdal-baseline",
+      "description": "200 MW potential cannot subtract an 80 MW available connection as installed capacity.",
+      "passed": true
+    },
+    {
+      "case": "FIN04-basis",
+      "description": "430 MW headline is not converted with a PUE assumption.",
+      "passed": true
+    },
+    {
+      "case": "FIN04-PUE",
+      "description": "The 1.2 PUE limit is explicitly design and up-to.",
+      "passed": true
+    },
+    {
+      "case": "XTX-timing",
+      "description": "2027 first capacity does not date the full 310 MW campus.",
+      "passed": true
+    },
+    {
+      "case": "No-target-energy",
+      "description": "No target-year electricity is invented without a deployment schedule.",
+      "passed": true
+    },
+    {
+      "case": "Exact-evidence",
+      "description": "Verified sources retain original excerpts, languages, locators and attribution.",
+      "passed": true
+    }
+  ],
+  "interpretation": "Same-agent reviewed real-source acceptance suite. Not blind, independent, representative or a model accuracy/recall estimate. Model identifier was not exposed. Failed source retrievals remain unknown.",
+  "countries": 3,
+  "projects": 7,
+  "claims": 10
+}

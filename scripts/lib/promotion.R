@@ -167,6 +167,13 @@ promote_rows <- function(root, source, level, ids, country, reviewer, request_id
         i <- match(updates[[key]][j],tables[[target_name]][[key]])
         tables[[target_name]][[updates$field[j]]][i] <- updates$suggested_value[j]
       }
+      if (level == 'capacity') {
+        # start_year is a compatibility alias, never a separate timing fact.
+        changed <- updates$claim_id[updates$field == 'operation_year_min']
+        alias_rows <- tables$capacity_master$claim_id %in% changed
+        tables$capacity_master$start_year[alias_rows] <- tables$capacity_master$operation_year_min[alias_rows]
+        tables$field_reviews <- tables$field_reviews[!(tables$field_reviews$entity_type=='claim' & tables$field_reviews$entity_id %in% changed & tables$field_reviews$field=='start_year'),,drop=FALSE]
+      }
       for (j in seq_len(nrow(updates))) {
         r <- updates[j,,drop=FALSE]; i <- match(r[[key]],tables[[target_name]][[key]])
         if (level == 'source') {

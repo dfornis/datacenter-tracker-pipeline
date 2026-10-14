@@ -1,5 +1,5 @@
 {
-  "version": "3.1.0",
+  "version": "3.2.0",
   "as_of": "2026-10-11",
   "purpose": "Public-project inventory and conditional planning scenarios; no automatic exclusion for missing review metadata or full commissioning dates.",
   "tables": {
@@ -360,7 +360,7 @@
       2,
       3
     ],
-    "unknown_mw": "Retain unspecified DC headline MW as the facility-side capacity proxy used in the original register. Flag the assumption; do not silently inflate it with PUE.",
+    "unknown_mw": "Unspecified datacenter MW (basis=unspecified) is an envelope between two readings: the facility/grid-side figure (MW x 1, lower) and nominal IT capacity (MW x upper PUE, upper; EPRI 2026 pp.10-11: nominal IT capacity is what is typically reported in public announcements). Reclassify from source wording when possible; the public tracker uses the lower, facility reading.",
     "grid_mw": "Connection envelope only. Scenario equivalent assumes the allocated share is deployed as facility capacity; not measured demand.",
     "unknown_baseline": "Gross site envelope is retained; additional capacity range is 0 to gross unless comparable installed baseline is known.",
     "overlap": "Use one physical envelope; possible containment is assumed containment for aggregation, with the tenant retained in the project indicator.",
@@ -416,6 +416,80 @@
         "locator": "November 2025, pp. 28–30, baseline/pipeline research and scenario treatment",
         "use": "Use a project inventory, planning/connection evidence and explicit scenario selection. Reconcile overlapping project and connection records.",
         "limitation": "Supports the approach, not our exact Low/Stated/High definitions. These remain the project’s existing conditional selections, not externally estimated probabilities."
+      }
+    },
+    "annual_use_by_type": "Load factor relative to nameplate depends on facility type (EPRI 2026 p.15: 75% hyperscale facility, 57% co-location average). type_assumptions gives one value per type category; nameplate_annual_fraction is only used when type is unknown."
+  },
+  "type_assumptions": {
+    "purpose": "One table for the research model and the public tracker. Category is derived from projects.type with the published tracker mapping (hyperscale/AI/HPC/colocation/research tags).",
+    "origin": "PUE and load factors are the values published on the tracker page (data/master/assumptions.csv at e3b85cc). Peak-relative factors from EPRI 2026 p.15.",
+    "model_use": "Model: annual energy = phased capacity x type load factor (relative to nameplate) x 8760, or x type peak load factor for explicit peak claims. Projects without type keep the generic ranges in assumptions.nameplate_annual_fraction / peak_annual_fraction. PUE in the model remains the 1.1-1.5 sensitivity (assumptions.pue); the tracker uses the type PUE as its point value.",
+    "categories": {
+      "Hyperscale": {
+        "pue": 1.2,
+        "load_factor": 0.75,
+        "peak_load_factor": [
+          0.94,
+          0.94
+        ],
+        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with large hyperscale facilities potentially as low as 1.1. Shehabi et al. 2024 supports low hyperscale PUE assumptions.",
+        "load_factor_source": "EPRI 2026; observed large hyperscale facility annual load factor of 75% relative to nameplate capacity. Shehabi et al. 2024 used only as supporting evidence on high relative hyperscale server operational time.",
+        "peak_load_factor_source": "EPRI 2026 p.15: annual load factor relative to realized peak 94% for the hyperscale facility."
+      },
+      "Hyperscale_AI": {
+        "pue": 1.2,
+        "load_factor": 0.75,
+        "peak_load_factor": [
+          0.94,
+          0.94
+        ],
+        "pue_source": "EPRI 2026; large hyperscale facilities with liquid cooling may reach PUE as low as 1.1. Shehabi et al. 2024 models AI data centres separately by cooling system.",
+        "load_factor_source": "EPRI 2026; hyperscale observed annual load factor of 75% relative to nameplate capacity. Shehabi et al. 2024 distinguishes AI training and inference operational time. Regen/National Grid DSO 2025 notes AI training is relatively flat while inference is peakier.",
+        "peak_load_factor_source": "EPRI 2026 p.15: annual load factor relative to realized peak 94% for the hyperscale facility."
+      },
+      "AI_HPC": {
+        "pue": 1.25,
+        "load_factor": 0.8,
+        "peak_load_factor": [
+          0.88,
+          0.94
+        ],
+        "pue_source": "Shehabi et al. 2024; AI data centres modelled separately for air and liquid cooling. EPRI 2026 supports lower PUE for newer large facilities.",
+        "load_factor_source": "Shehabi et al. 2024; AI training server operational time assumed at 80%, varied between 75-85%. EPRI 2026 provides facility-level support that hyperscale load factors can be high but below nameplate.",
+        "peak_load_factor_source": "No type-specific observation; EPRI 2026 p.15 range across hyperscale (94%) and co-location (88%)."
+      },
+      "Colocation_AI": {
+        "pue": 1.35,
+        "load_factor": 0.6,
+        "peak_load_factor": [
+          0.88,
+          0.88
+        ],
+        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with older/smaller facilities higher. Shehabi et al. 2024 supports colocation PUE below roughly 1.4 in recent years.",
+        "load_factor_source": "EPRI 2026; smaller multi-tenant co-location facilities averaged 57% annual load factor relative to nameplate. Regen/National Grid DSO 2025 notes colocation load is relatively consistent due to tenant diversity, while AI workloads may increase variability.",
+        "peak_load_factor_source": "EPRI 2026 p.15: annual load factor relative to realized peak 88% on average for co-location facilities."
+      },
+      "Colocation": {
+        "pue": 1.35,
+        "load_factor": 0.57,
+        "peak_load_factor": [
+          0.88,
+          0.88
+        ],
+        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with older/smaller facilities higher. Shehabi et al. 2024 supports colocation PUE below roughly 1.4 in recent years.",
+        "load_factor_source": "EPRI 2026; smaller multi-tenant co-location facilities averaged 57% annual load factor relative to nameplate capacity. Regen/National Grid DSO 2025 supports relatively consistent colocation load due to flat storage/cloud use cases and tenant diversity.",
+        "peak_load_factor_source": "EPRI 2026 p.15: annual load factor relative to realized peak 88% on average for co-location facilities."
+      },
+      "Research_SMR": {
+        "pue": 1.25,
+        "load_factor": 0.8,
+        "peak_load_factor": [
+          0.88,
+          0.94
+        ],
+        "pue_source": "Placeholder aligned with AI/HPC-oriented facilities. Concept entries are not translated into grid-side load unless IT load is specified.",
+        "load_factor_source": "Placeholder aligned with AI/HPC-oriented facilities. Concept entries are not translated into annual electricity use unless IT/grid-side load is specified.",
+        "peak_load_factor_source": "No type-specific observation; EPRI 2026 p.15 range across hyperscale (94%) and co-location (88%)."
       }
     }
   },
@@ -551,45 +625,6 @@
       "Cancelled"
     ],
     "unspecified_headline_as": "facility",
-    "unspecified_headline_note": "facility = headline MW is used as grid-side capacity and IT load = MW/PUE (published tracker convention). it = headline MW is nominal IT capacity and grid-side = MW*PUE (EPRI 2026, pp. 10-11: nominal IT capacity is what is typically reported in public announcements).",
-    "assumptions": {
-      "Hyperscale": {
-        "pue": 1.2,
-        "load_factor": 0.75,
-        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with large hyperscale facilities potentially as low as 1.1. Shehabi et al. 2024 supports low hyperscale PUE assumptions.",
-        "load_factor_source": "EPRI 2026; observed large hyperscale facility annual load factor of 75% relative to nameplate capacity. Shehabi et al. 2024 used only as supporting evidence on high relative hyperscale server operational time."
-      },
-      "Hyperscale_AI": {
-        "pue": 1.2,
-        "load_factor": 0.75,
-        "pue_source": "EPRI 2026; large hyperscale facilities with liquid cooling may reach PUE as low as 1.1. Shehabi et al. 2024 models AI data centres separately by cooling system.",
-        "load_factor_source": "EPRI 2026; hyperscale observed annual load factor of 75% relative to nameplate capacity. Shehabi et al. 2024 distinguishes AI training and inference operational time. Regen/National Grid DSO 2025 notes AI training is relatively flat while inference is peakier."
-      },
-      "AI_HPC": {
-        "pue": 1.25,
-        "load_factor": 0.8,
-        "pue_source": "Shehabi et al. 2024; AI data centres modelled separately for air and liquid cooling. EPRI 2026 supports lower PUE for newer large facilities.",
-        "load_factor_source": "Shehabi et al. 2024; AI training server operational time assumed at 80%, varied between 75-85%. EPRI 2026 provides facility-level support that hyperscale load factors can be high but below nameplate."
-      },
-      "Colocation_AI": {
-        "pue": 1.35,
-        "load_factor": 0.6,
-        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with older/smaller facilities higher. Shehabi et al. 2024 supports colocation PUE below roughly 1.4 in recent years.",
-        "load_factor_source": "EPRI 2026; smaller multi-tenant co-location facilities averaged 57% annual load factor relative to nameplate. Regen/National Grid DSO 2025 notes colocation load is relatively consistent due to tenant diversity, while AI workloads may increase variability."
-      },
-      "Colocation": {
-        "pue": 1.35,
-        "load_factor": 0.57,
-        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with older/smaller facilities higher. Shehabi et al. 2024 supports colocation PUE below roughly 1.4 in recent years.",
-        "load_factor_source": "EPRI 2026; smaller multi-tenant co-location facilities averaged 57% annual load factor relative to nameplate capacity. Regen/National Grid DSO 2025 supports relatively consistent colocation load due to flat storage/cloud use cases and tenant diversity."
-      },
-      "Research_SMR": {
-        "pue": 1.25,
-        "load_factor": 0.8,
-        "pue_source": "Placeholder aligned with AI/HPC-oriented facilities. Concept entries are not translated into grid-side load unless IT load is specified.",
-        "load_factor_source": "Placeholder aligned with AI/HPC-oriented facilities. Concept entries are not translated into annual electricity use unless IT/grid-side load is specified."
-      }
-    },
-    "assumption_origin": "data/master/assumptions.csv at e3b85cc; identical to the table published on the tracker page."
+    "unspecified_headline_note": "facility = headline MW is used as grid-side capacity and IT load = MW/PUE (published tracker convention). it = headline MW is nominal IT capacity and grid-side = MW*PUE (EPRI 2026, pp. 10-11: nominal IT capacity is what is typically reported in public announcements)."
   }
 }

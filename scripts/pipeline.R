@@ -12,6 +12,27 @@ write_tables <- function(x,path) {
   dir.create(path,recursive=TRUE,showWarnings=FALSE)
   for(n in names(x$config$tables))write_csv_table(x[[n]],file.path(path,paste0(n,'.csv')))
 }
+run_worklist <- function(x,countries) {
+  # The concrete to-do list for a country run. Recomputed from the tables, so it shrinks as work is done.
+  p<-x$projects[x$projects$country %in% countries,,drop=FALSE];c<-x$capacity[x$capacity$project_id %in% p$project_id,,drop=FALSE]
+  s<-x$sources;excluded<-unlist(x$config$tracker$excluded_statuses)
+  load<-nzchar(c$mw) & !c$basis %in% c('backup','generation','density') & c$issue!='identity_conflict'
+  excerpt<-function(ref)lapply(ids(ref),function(id)list(source_id=id,excerpt=s$excerpt[match(id,s$source_id)],url=s$url[match(id,s$source_id)]))
+  live<-p[!p$status %in% c('Cancelled','Dormant'),,drop=FALSE]
+  public<-p[p$record_type=='existing' & !p$status %in% excluded,,drop=FALSE]
+  dated<-unique(c$project_id[nzchar(c$first_year)|nzchar(c$construction_year)])
+  missing_display<-p[!nzchar(p$type)|!nzchar(p$county)|!nzchar(p$bidding_zone)|!nzchar(p$latitude),,drop=FALSE]
+  list(
+    reclassify_unspecified=lapply(which(c$basis=='unspecified'),function(i)list(claim_id=c$claim_id[i],project_id=c$project_id[i],
+      mw=c$mw[i],phase=c$phase[i],sources=excerpt(c$source_ids[i]))),
+    projects_without_mw=as.list(setdiff(live$project_id,c$project_id[load])),
+    capacity_sources_to_reconcile=Filter(function(f)f$project_id %in% p$project_id,capacity_followups(x)),
+    public_projects_without_dates=as.list(setdiff(public$project_id[public$project_id %in% c$project_id[load]],dated)),
+    candidates_to_assess=as.list(p$project_id[p$record_type=='candidate']),
+    missing_display_fields=lapply(seq_len(nrow(missing_display)),function(i)list(project_id=missing_display$project_id[i],
+      missing=as.list(c('type','county','bidding_zone','latitude')[!nzchar(unlist(missing_display[i,c('type','county','bidding_zone','latitude')]))]))))
+}
+worklist_counts <- function(w) vapply(w,length,0L)
 make_packet <- function(root='.',data_dir=file.path(root,'data'),country='all') {
   before<-input_hashes(root,data_dir);x<-read_inputs(root,data_dir);validate_inputs(x,allow_empty=TRUE)
   countries<-country_selection(x$config,country)
@@ -24,7 +45,8 @@ make_packet <- function(root='.',data_dir=file.path(root,'data'),country='all') 
     projects=x$projects[x$projects$project_id %in% selected,,drop=FALSE],
     capacity=x$capacity[x$capacity$project_id %in% selected,,drop=FALSE],sources=x$sources,
     capacity_sources_to_reconcile=Filter(function(f)f$project_id %in% selected,capacity_followups(x)),
-    identity_index=x$projects[,c('project_id','country','project_name','developer','municipality','related_project_id','notes')])
+    identity_index=x$projects[,c('project_id','country','project_name','developer','municipality','related_project_id','notes')],
+    worklist=run_worklist(x,countries))
   if(!identical(before,input_hashes(root,data_dir)))stop('Inputs changed during preparation; retry')
   packet
 }
@@ -147,6 +169,8 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
     path<-opts$output %||% tempfile('datacenter-run-',tmpdir=Sys.getenv('TMPDIR',unset='/tmp'))
     prepare_run(path=path,country=opts$country %||% 'all',mode=opts$mode %||% 'refresh')
     cat('Prepared work directory ',path,'; read packet.json and follow prompts/update.md. No research performed.\n',sep='')
+    w<-worklist_counts(json_read(file.path(path,'packet.json'))$worklist)
+    cat('Worklist: ',paste(names(w),w,sep='=',collapse=', '),'\n',sep='')
   } else if(command=='packet') {
     path<-json_destination(opts$output %||% tempfile('datacenter-packet-',tmpdir=Sys.getenv('TMPDIR',unset='/tmp'),fileext='.json'))
     atomic_output(make_packet(data_dir=data_dir,country=opts$country %||% 'all'),path);cat('Prepared ',path,'\n',sep='')
@@ -159,7 +183,10 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
   } else {
     review<-if(file.exists(file.path(data_dir,'packet.json')))review_run(path=data_dir) else NULL
     r<-build_result('.',data_dir)
+    countries<-if(!is.null(review))unlist(review$packet$countries) else names(read_inputs()$config$countries)
+    wl<-run_worklist(read_inputs('.',data_dir),countries)
     if(command=='check')cat(jsonlite::toJSON(list(valid=TRUE,coverage=r$coverage,changes=review$changes,
+      worklist_remaining=as.list(worklist_counts(wl)),worklist=wl,
       map_zones=length(r$bidding_zones$features)),auto_unbox=TRUE,pretty=TRUE),'\n')
     else {
       path<-json_destination(opts$output %||% 'assets/datacenters.json')

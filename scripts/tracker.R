@@ -9,7 +9,7 @@
 
 tracker_point_estimate <- function(row, cfg, category) {
   tr <- cfg$tracker
-  a <- tr$assumptions[[category]]
+  a <- cfg$type_assumptions$categories[[category]]
   pue <- if (nzchar(row$pue)) number(row$pue) else a$pue
   lf <- a$load_factor
   mw <- number(row$mw)
@@ -26,16 +26,8 @@ tracker_point_estimate <- function(row, cfg, category) {
 }
 
 tracker_category <- function(type) {
-  # Same mapping as the published tracker (v1 build_datacenter_data.R).
-  tags <- tolower(trimws(unlist(strsplit(type %||% '', ';', fixed = TRUE))))
-  if (any(c('research', 'smr-linked') %in% tags)) return('Research_SMR')
-  if ('colocation' %in% tags && 'ai' %in% tags) return('Colocation_AI')
-  if ('colocation' %in% tags) return('Colocation')
-  if ('ai' %in% tags && 'hpc' %in% tags) return('AI_HPC')
-  if ('hyperscale' %in% tags && 'ai' %in% tags) return('Hyperscale_AI')
-  if ('hyperscale' %in% tags) return('Hyperscale')
-  if (any(c('ai', 'hpc') %in% tags)) return('AI_HPC')
-  'Hyperscale'
+  category <- type_category(type)
+  if (is.na(category)) 'Hyperscale' else category
 }
 
 tracker_text <- function(x) {

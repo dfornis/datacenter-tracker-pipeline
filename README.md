@@ -32,7 +32,7 @@ Källans MW, definition, datum och status bevaras separat. [EPRI:s måttdefiniti
 | IT-effekt | Omräkning till anläggningssidan med PUE 1,1–1,5 som känslighetsfall. Lokal design-PUE ersätter det övre fallet. |
 | Anläggningskapacitet | Behåll angivet MW-tal. |
 | Nätanslutning | Behåll ramen och märk antagandet att den används till datacenter. En ansökan är inte en beviljad anslutning eller faktisk last. |
-| Ospecificerat datacenter-MW | Behåll talet som anläggningsram, enligt ursprungsregistrets konvention. Märk definitionen som antagen; ingen extra PUE-uppräkning. |
+| Ospecificerat datacenter-MW | Intervall mellan två läsningar: MW×1 som anläggnings-/nätsida (nedre) och MW×PUE som nominell IT-effekt (övre). EPRI 2026, s. 10–11, anger att nominell IT-effekt typiskt är det som annonseras; nordiska källor anger ofta "power". Klassas om efter ordalydelse vid varje körning (`prompts/update.md`). Den publika trackern använder den nedre läsningen. |
 | Explicit toppeffekt | Bevara toppvärdet. För kapacitetsjämförelsen används ett uttryckligt känslighetsfall: topp / 0,80 till topp / 0,62. Årsenergi beräknas direkt från ursprunglig topp. |
 | Reservkraft, generation, rackdensitet | Behåll observationen utan automatisk omräkning till datacenterlast. En publicerad, motiverad skattning av datacenterlast kan registreras som egen kapacitetsuppgift med källa. |
 
@@ -77,7 +77,7 @@ Befintlig drift är inte ny utbyggnad. En jämförbar känd bas subtraheras för
 
 ### Energi, tolkning och täckning
 
-Årlig användningsfaktor är 0,57–0,75 relativt nameplate, eller 0,88–0,94 relativt explicit topp. Faktorerna bygger på EPRI:s lilla amerikanska anläggningsurval; de är känslighetsfall för denna inventering, inte universella AI- eller nordiska lastfaktorer. Infasning tillämpas en gång. Ingen extra beläggnings-/mognadsrabatt läggs ovanpå den. Ingen timprofil, samtidighetsprognos eller nätanslutningsgaranti räknas fram här.
+Årlig användningsfaktor beror på anläggningstyp (`config/pipeline.json` → `type_assumptions`, samma tabell som den publika trackern): hyperskala 0,75 och colocation 0,57 relativt nameplate, 0,94 respektive 0,88 relativt explicit topp ([EPRI 2026, s. 15](https://powering-intelligence.epri.com/annual-peak-use.html)). Colocation/AI 0,60 och AI/HPC 0,80 är egna bedömningar; AI/HPC-värdet vilar på LBNL:s driftstid för AI-servrar, som inte är en anläggningsfaktor, och är tabellens svagaste värde. Projekt utan typ får intervallet 0,57–0,75 (0,88–0,94 mot topp). Faktorerna bygger på ett litet amerikanskt anläggningsurval och är inte universella nordiska lastfaktorer. Infasning tillämpas en gång. Ingen extra beläggnings-/mognadsrabatt läggs ovanpå den. Ingen timprofil, samtidighetsprognos eller nätanslutningsgaranti räknas fram här.
 
 Summeringar visar den kvantifierade delen och antal projekt utan användbart MW. Okänt elområde ligger i landets `unassigned`. Projekt utan MW är inte nollförbrukare. Alla registrerade projekt får en indikator i varje scenario, men detta bevisar inte fullständig marknadstäckning.
 
@@ -85,26 +85,30 @@ Kontrollen och landspaketet lyfter också källutdrag med MW/GW som ännu saknar
 
 ## Standardiserad inventering
 
-Starta en full körning med denna fördefinierade prompt, även i en ny chatt:
+En inventering körs ett land i taget i Codex (Sverige, Norge, Finland). Startprompterna finns överst i `prompts/update.md`; klistra in den för landet i en ny session. Agenten kör `prepare`, söker, går igenom arbetslistan, kör `apply` och redovisar, men committar inte.
 
-> Kör standardinventeringen enligt prompts/update.md för alla konfigurerade länder, från ny källsökning till uppdaterat register och färdiga scenarioberäkningar. Följ upp luckor och iterera inom körningen. Redovisa hela resultatet här i chatten.
+Mellan länderna (för dig):
 
-Den tidigare processen med gemensamma audit-/discover-mallar och landsprofiler (`e3b85cc`) är nu samlad i **en körprompt och befintlig konfiguration**. Sökvägar och kontroll av utgångsläget återanvänds från `9779acc`. De gamla separata granskningsköerna återinförs inte.
+1. Läs redovisningen i chatten och körloggen i `runs/`.
+2. Granska `git diff data/` (registret) och `git diff assets/data/datacenters/scenario_zone.json` (sajtens zonsummor).
+3. Godkänn kandidater som ska bli publika genom att ändra `record_type` till `existing` i `data/projects.csv`, och kör sedan `Rscript scripts/pipeline.R tracker`.
+4. Committa. Starta nästa land i en ny session.
+5. När alla tre är klara: kopiera `assets/data/datacenters/` till sajtens `assets/data/datacenters/`.
 
 | Steg | Fast uppgift |
 | --- | --- |
-| Prepare | Skapa arbetskopior av de tre tabellerna och ett paket med instruktion, landsprofiler, utgångsdata, identitetsindex och ID-gränser. |
-| Discover | Sök brett i varje land via operatörer, plan/tillstånd, nät, branschpress och landssökning, på alla angivna språk. |
-| Audit | Följ upp varje befintligt och nytt projekt samt alla dess kapacitetsuppgifter; registrera fakta med källor. |
+| Prepare | Skapa arbetskopior av de tre tabellerna och ett paket med instruktion, landsprofil, utgångsdata, identitetsindex, ID-gränser och arbetslista. |
+| Discover | Sök brett i landet via operatörer, plan/tillstånd, nät, branschpress och landssökning, på alla angivna språk. |
+| Audit | Följ upp varje befintligt och nytt projekt och alla kapacitetsuppgifter; klassa MW efter ordalydelse; arbeta igenom arbetslistan. |
 | Reconcile/review | Stäm av projekt och MW mot resultatet, granska ändringar, gör en andra sök-/granskningspassage och följ upp bortfall. |
-| Apply/report | Inför hela ändringen, bygg resultatet och redovisa per elområde/scenario i chatten. |
+| Apply/report | Inför hela ändringen, bygg resultatet och trackerfilerna och redovisa per elområde/scenario i chatten. |
 
-Agenten genomför hela processen enligt `prompts/update.md`; användaren behöver inte fördela projekt eller starta varje delsteg. Alla länder är standard. Ett enskilt land kan väljas. `scratch` börjar med tomma arbetsregister för valda länder och stämmer senare av mot tidigare identiteter; tidigare observationer försvinner inte bara för att bredsökningen missade dem.
+Agenten genomför hela processen enligt `prompts/update.md`; användaren behöver inte fördela projekt eller starta varje delsteg. `scratch` börjar med tomma arbetsregister för valda länder och stämmer senare av mot tidigare identiteter; tidigare observationer försvinner inte bara för att bredsökningen missade dem.
 
 Miljön är låst i `renv.lock`; återställ vid behov med `Rscript -e 'renv::restore()'`. Agentens gemensamma ingång är:
 
 ```sh
-Rscript scripts/pipeline.R prepare --country=all --mode=refresh
+Rscript scripts/pipeline.R prepare --country=SE --mode=refresh
 # Efter källarbete och granskning, använd arbetskatalogen som prepare skrev ut:
 Rscript scripts/pipeline.R check --data=/sökväg/till/arbetskatalog
 Rscript tests/method.R
@@ -133,7 +137,7 @@ Sidan `/projects/datacenter-tracker/` läser fyra filer: `projects.json`, `capac
 Filerna har exakt samma fält och fältordning som tidigare och samma scenarioregler som sidans JavaScript (år = tidigaste av drift- och byggstartsår; Low kräver beslut; High tar med odaterat). Tabellens summa och kartans Σ blir därmed samma, utom när en kund ligger inom ett annat projekts campusram: kartan räknar den en gång, tabellen visar båda raderna.
 
 - **Urval:** `record_type = existing` och status som inte är Operational, Dormant eller Cancelled. Nya projekt läggs in som `candidate` och syns inte publikt förrän de ändras till `existing`. Det är granskningssteget innan något publiceras.
-- **Punktvärden:** typbaserad PUE och årlig lastfaktor från `config/pipeline.json` → `tracker.assumptions`, samma tabell som sidan redovisar. En källbelagd design-PUE på kapacitetsraden ersätter typvärdet.
+- **Punktvärden:** typbaserad PUE och årlig lastfaktor från `config/pipeline.json` → `type_assumptions`, samma tabell som sidan redovisar och som modellen använder för lastfaktorn. En källbelagd design-PUE på kapacitetsraden ersätter typvärdet.
 - **Tolkning:** IT-effekt × PUE ger nätsidan. Anläggnings-, nät- och ospecificerat MW används som nätsidans MW och IT = MW / PUE (`tracker.unspecified_headline_as = facility`). Reservkraft, reaktoreffekt och felattribuerade uppgifter blir ingen last.
 - **Krav för publicering:** publika projekt behöver `type`, elområde och koordinater; annars stoppar `apply` innan något ersätts.
 - **Text:** "data centre/center" skrivs "datacenter" i de publicerade fälten, som på sajten. Källutdragen ändras inte.
@@ -142,6 +146,6 @@ Intervall och femårsinfasning finns kvar i `assets/datacenters.json` för analy
 
 ## Status och historik
 
-Metod 3.1 är en metodkorrigering inför landsuppdatering; den är inte en ny inventering. De 52 projektposterna, 46 kapacitetsuppgifterna och 130 källorna har inte uppdaterats genom denna metodändring. Kända luckor i källextraktionen återstår inför nästa landskörning.
+Metod 3.2 (oktober 2026) lägger till intervallet för ospecificerat MW, typberoende lastfaktor och exporten till den publika trackern. Det är metodändringar inför landsuppdateringen, inte en ny inventering: de 52 projektposterna, 46 kapacitetsuppgifterna och 130 källorna är oförändrade. Kända luckor (15 ospecificerade MW-rader i Sverige, projekt utan datum eller MW) står i arbetslistan för nästa landskörning.
 
 Tidigare underlag och körningshistorik finns i Git, bland annat `9779acc`. Behåll stabila ID:n; nya löpnummer ska ligga över högsta använda nummer även i historiken. Utdataformat 3.1 återställer ursprungliga scenario-ID:n och skiljer nameplate från infasad kapacitet. Det saknar en femte potential-scenariofamilj. Kartornas ursprung/återanvändningsrätt är olösta och koordinaterna är ungefärliga visningspunkter.

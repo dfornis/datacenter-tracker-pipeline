@@ -1,5 +1,8 @@
 # Three input tables, one method configuration, one calculation path.
 `%||%` <- function(x,y) if (is.null(x) || !length(x)) y else x
+# Console output (check/packet summaries) in UTF-8 even when the agent shell has no locale set.
+if (!isTRUE(l10n_info()$`UTF-8`)) for (loc in c('C.UTF-8','en_US.UTF-8','UTF-8'))
+  if (nzchar(suppressWarnings(Sys.setlocale('LC_CTYPE',loc)))) break
 number <- function(x) suppressWarnings(as.numeric(x))
 ids <- function(x) unique(Filter(nzchar,trimws(unlist(strsplit(x %||% '', ';', fixed=TRUE)))))
 json_read <- function(path) jsonlite::fromJSON(path,simplifyVector=FALSE)
@@ -105,6 +108,12 @@ validate_inputs <- function(x,allow_empty=FALSE) {
   require_true(unlist(cfg$assumptions$pue)>=1,'PUE must be at least one')
   require_true(all(unlist(cfg$assumptions$nameplate_annual_fraction)<=1) && all(unlist(cfg$assumptions$peak_annual_fraction)<=1),'Annual use fraction exceeds one')
   require_true(all(unlist(cfg$assumptions$peak_to_nameplate_fraction)>0 & unlist(cfg$assumptions$peak_to_nameplate_fraction)<=1),'Invalid peak/nameplate conversion')
+  for (k in names(cfg$type_assumptions$categories)) {
+    a<-cfg$type_assumptions$categories[[k]];pl<-unlist(a$peak_load_factor)
+    require_true(is.finite(a$pue) && a$pue>=1 && a$pue<=3 && is.finite(a$load_factor) && a$load_factor>0 && a$load_factor<=1 &&
+      length(pl)==2 && all(pl>0 & pl<=1) && pl[1]<=pl[2],paste('Invalid type assumption:',k))
+  }
+  require_true(!nzchar(p$type) | !is.na(vapply(p$type,type_category,'')),'Unknown project type tags')
   require_true(is.finite(cfg$assumptions$first_to_full_years) && cfg$assumptions$first_to_full_years>0,'Invalid ramp duration')
   lag<-unlist(cfg$assumptions$construction_to_first_years)
   require_true(length(lag)==2 && all(is.finite(lag)) && lag[1]>0 && lag[2]>=lag[1],'Invalid construction lag')
@@ -139,6 +148,31 @@ timing_share <- function(row,year,cfg) {
 scenario_selected <- function(row,scenario,timing) {
   switch(scenario$selection,all=TRUE,dated=timing$dated,decided_dated=timing$dated && row$decision=='yes')
 }
+type_category <- function(type) {
+  # Published tracker mapping from project type tags to an assumption category.
+  tags <- tolower(trimws(unlist(strsplit(type %||% '', ';', fixed=TRUE))))
+  if (!length(tags) || all(!nzchar(tags))) return(NA_character_)
+  if (any(c('research','smr-linked') %in% tags)) return('Research_SMR')
+  if ('colocation' %in% tags && 'ai' %in% tags) return('Colocation_AI')
+  if ('colocation' %in% tags) return('Colocation')
+  if ('ai' %in% tags && 'hpc' %in% tags) return('AI_HPC')
+  if ('hyperscale' %in% tags && 'ai' %in% tags) return('Hyperscale_AI')
+  if ('hyperscale' %in% tags) return('Hyperscale')
+  if (any(c('ai','hpc') %in% tags)) return('AI_HPC')
+  'Hyperscale'
+}
+annual_fraction <- function(row,type,cfg) {
+  # Type-specific annual load factor (EPRI 2026 p.15); generic range only when type is unknown.
+  peak <- grepl('_peak$',row$basis)
+  category <- type_category(type)
+  if (is.na(category)) {
+    v <- unlist(cfg$assumptions[[if(peak)'peak_annual_fraction' else 'nameplate_annual_fraction']])
+    return(list(value=v,rule='load_factor_range_type_unknown'))
+  }
+  a <- cfg$type_assumptions$categories[[category]]
+  v <- if(peak) unlist(a$peak_load_factor) else rep(a$load_factor,2)
+  list(value=v,rule=paste0('load_factor_',category))
+}
 electrical_range <- function(row,cfg,net=FALSE,claims=NULL,normalize_peak=TRUE) {
   if (row$basis %in% c('backup','generation','density') || row$issue=='identity_conflict' || !nzchar(row$mw)) return(c(NA_real_,NA_real_))
   v<-number(row$mw);top<-if(row$qualifier=='range')number(row$mw_max) else if(row$qualifier=='at_least')NA_real_ else v
@@ -150,6 +184,8 @@ electrical_range <- function(row,cfg,net=FALSE,claims=NULL,normalize_peak=TRUE) 
   pue<-unlist(cfg$assumptions$pue)
   if (nzchar(row$pue)) pue<-c(min(pue[1],number(row$pue)),number(row$pue))
   if (startsWith(row$basis,'it_')) {v<-v*pue[1];top<-top*pue[2]}
+  # Unspecified headline: lower = facility/grid-side reading, upper = nominal IT reading x upper PUE.
+  if (row$basis=='unspecified') top<-top*pue[2]
   if (normalize_peak && grepl('_peak$',row$basis)) {
     factors<-unlist(cfg$assumptions$peak_to_nameplate_fraction)
     v<-v/factors[2];top<-top/factors[1]
@@ -185,6 +221,7 @@ calculate <- function(x) {
       if (reason=='modelled' && !selected) reason<-'outside_scenario_selection'
       if (reason=='modelled' && share[2]==0) reason<-'after_target_year'
       if (r$basis %in% c('unspecified','it_unspecified','facility_unspecified')) assumptions<-c(assumptions,'capacity_definition_assumed')
+      if (r$basis=='unspecified') assumptions<-c(assumptions,'unspecified_facility_to_IT_envelope')
       if (r$basis=='grid') assumptions<-c(assumptions,'connection_deployment_assumed')
       if (startsWith(r$basis,'it_')) assumptions<-c(assumptions,'PUE_conversion')
       if (grepl('_peak$',r$basis)) assumptions<-c(assumptions,'peak_to_nameplate_equivalent')
@@ -193,7 +230,7 @@ calculate <- function(x) {
       if (nzchar(pr$related_project_id)) assumptions<-c(assumptions,'related_identity_unresolved')
       # A zero deployment is known even when an at-least claim has no upper MW.
       value<-ifelse(share>0,net*share,0)
-      lf<-unlist(cfg$assumptions[[if(grepl('_peak$',r$basis))'peak_annual_fraction' else 'nameplate_annual_fraction']])
+      af<-annual_fraction(r,pr$type,cfg);lf<-af$value;assumptions<-c(assumptions,af$rule)
       energy_power<-ifelse(share>0,electrical_range(r,cfg,TRUE,c,normalize_peak=FALSE)*share,0)
       energy<-energy_power*lf*8760/1e6
       data.frame(scenario=scenario$id,project_id=r$project_id,claim_id=r$claim_id,group_id=group,

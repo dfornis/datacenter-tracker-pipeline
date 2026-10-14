@@ -85,8 +85,10 @@ test('unknown MW remains unknown and all projects appear in each scenario',funct
   stopifnot(all(is.na(r$project_scenarios$mw_high)),all(is.na(r$project_scenarios$nameplate_mw_high)))
   stopifnot(!any(grepl('review',unlist(x$config$tables))))
 })
-test('headline MW is preserved; only explicitly IT capacity receives PUE',function() {
-  r<-row(calculate(fixture(claim(basis='unspecified'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(100,100))
+test('unspecified headline spans facility to IT reading; explicit IT gets PUE; facility MW is kept',function() {
+  r<-row(calculate(fixture(claim(basis='unspecified'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(100,150))
+  r<-row(calculate(fixture(claim(basis='unspecified',pue='1.2'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(100,120))
+  r<-row(calculate(fixture(claim(basis='facility_nameplate'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(100,100))
   r<-row(calculate(fixture(claim(basis='it_nameplate'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(110,150))
   stopifnot(r$reported_mw==100,r$source_basis=='it_nameplate')
 })
@@ -136,11 +138,16 @@ test('lower-bound-only capacity has no invented upper value, but zero deployment
   x$capacity$first_year<-x$capacity$last_year<-'2040';r<-calculate(x)
   same(row(r)$counted_mw_high,0);stopifnot(is.na(row(r)$nameplate_mw_high))
 })
-test('energy uses the right denominator and exactly one operational ramp',function() {
+test('energy uses the type load factor, the right denominator and exactly one operational ramp',function() {
+  # Fixture projects are typed 'hyperscale': EPRI hyperscale 0.75 of nameplate, 0.94 of realised peak.
   r<-row(calculate(fixture(claim(mw=220,basis='facility_peak'))))
-  same(r$counted_mw_low,220/.8);same(r$annual_twh_low,220*.88*8760/1e6)
+  same(r$counted_mw_low,220/.8);same(r$annual_twh_low,220*.94*8760/1e6)
   r<-row(calculate(fixture(claim(timing='first_capacity',first_year=2027,last_year=2027))),sc='stated_2030')
-  same(r$annual_twh_low,100*.8*.57*8760/1e6)
+  same(c(r$annual_twh_low,r$annual_twh_high),rep(100*.8*.75*8760/1e6,2))
+  x<-fixture();x$projects$type<-'colocation';same(row(calculate(x))$annual_twh_low,100*.57*8760/1e6)
+  x$projects$type<-'';r<-row(calculate(x))
+  same(c(r$annual_twh_low,r$annual_twh_high),100*c(.57,.75)*8760/1e6)
+  stopifnot(grepl('load_factor_range_type_unknown',r$assumptions))
 })
 test('empty claims and unknown zones retain their project indicators',function() {
   x<-fixture();x$capacity<-x$capacity[FALSE,];x$projects$bidding_zone<-'';r<-calculate(x)

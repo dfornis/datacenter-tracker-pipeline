@@ -83,20 +83,47 @@ Summeringar visar den kvantifierade delen och antal projekt utan användbart MW.
 
 Kontrollen och landspaketet lyfter också källutdrag med MW/GW som ännu saknar en motsvarande användbar kapacitetsobservation på samma projekt. Det fångar källor som annars bara blivit liggande på en kandidat. Det är ett sökstöd för automatisk uppföljning, inte en garanti för att alla tal i en källa är korrekt tolkade. Det blockerar inte befintliga beräkningar eller tar bort projekt. Uppdateraren följer upp dessa träffar och samtliga projekt utan MW, enligt `prompts/update.md`.
 
-## Köra och uppdatera
+## Standardiserad inventering
 
-Miljön är låst i `renv.lock`; återställ vid behov med `Rscript -e 'renv::restore()'`.
+Starta en full körning med denna fördefinierade prompt, även i en ny chatt:
+
+> Kör standardinventeringen enligt prompts/update.md för alla konfigurerade länder, från ny källsökning till uppdaterat register och färdiga scenarioberäkningar. Följ upp luckor och iterera inom körningen. Redovisa hela resultatet här i chatten.
+
+Den tidigare processen med gemensamma audit-/discover-mallar och landsprofiler (`e3b85cc`) är nu samlad i **en körprompt och befintlig konfiguration**. Sökvägar och kontroll av utgångsläget återanvänds från `9779acc`. De gamla separata granskningsköerna återinförs inte.
+
+| Steg | Fast uppgift |
+| --- | --- |
+| Prepare | Skapa arbetskopior av de tre tabellerna och ett paket med instruktion, landsprofiler, utgångsdata, identitetsindex och ID-gränser. |
+| Discover | Sök brett i varje land via operatörer, plan/tillstånd, nät, branschpress och landssökning, på alla angivna språk. |
+| Audit | Följ upp varje befintligt och nytt projekt samt alla dess kapacitetsuppgifter; registrera fakta med källor. |
+| Reconcile/review | Stäm av projekt och MW mot resultatet, granska ändringar, gör en andra sök-/granskningspassage och följ upp bortfall. |
+| Apply/report | Inför hela ändringen, bygg resultatet och redovisa per elområde/scenario i chatten. |
+
+Agenten genomför hela processen enligt `prompts/update.md`; användaren behöver inte fördela projekt eller starta varje delsteg. Alla länder är standard. Ett enskilt land kan väljas. `scratch` börjar med tomma arbetsregister för valda länder och stämmer senare av mot tidigare identiteter; tidigare observationer försvinner inte bara för att bredsökningen missade dem.
+
+Miljön är låst i `renv.lock`; återställ vid behov med `Rscript -e 'renv::restore()'`. Agentens gemensamma ingång är:
 
 ```sh
+Rscript scripts/pipeline.R prepare --country=all --mode=refresh
+# Efter källarbete och granskning, använd arbetskatalogen som prepare skrev ut:
+Rscript scripts/pipeline.R check --data=/sökväg/till/arbetskatalog
 Rscript tests/method.R
-Rscript scripts/pipeline.R check
+Rscript scripts/pipeline.R apply --data=/sökväg/till/arbetskatalog
+```
+
+`prepare` skapar endast tre CSV-kopior och ett packet.json i en unik tillfällig katalog; det ändrar inte registret. Paketet innehåller också svenska/norska/finska sökord, måttbegrepp, källvägar och språkkrav från de tidigare landsprofilerna. Inga nya permanenta tabeller eller kolumner tillkommer. Metodens källdatum i konfigurationen är inte bevis på en ny inventering; paketet och det införda resultatets inventory_run anger körningens datum och länder.
+
+`check` validerar och visar luckor/ändringar. `apply` kontrollerar utgångsläge, bevarade ID:n och landsavgränsning, inför de tre tabellerna och bygger resultatet. Vanliga skrivfel återställer tidigare filer; ett avbrutet system under införandet behöver kontrolleras innan arbetet fortsätter. Sökningens kvalitet bedöms i promptens granskningssteg, inte genom en metadataflagga.
+
+För fristående, läsande förberedelse och beräkning finns även:
+
+```sh
 Rscript scripts/pipeline.R packet --country=FI --output=/tmp/fi-packet.json
+Rscript scripts/pipeline.R check
 Rscript scripts/pipeline.R build --output=/tmp/datacenters-preview.json
 ```
 
-`check` ändrar ingenting. `packet` förbereder ett landspaket och är inte en utförd sökning. `build` skriver en JSON med register, metod, projekt/scenarioberäkningar, täckning och karta. Standarddestination är `assets/datacenters.json`; först en komplett, validerad fil ersätter tidigare resultat. Ingen extern publicering sker.
-
-Landsuppdateringar använder `prompts/update.md`. Arbeta på en tillfällig kopia av de tre tabellerna och kontrollera med `--data=/sökväg/till/kopia`. Granska och för över en sammanhängande ändring. Inga nya permanenta kontrolltabeller behövs.
+Varken paketförberedelse, kontroller eller `build` utför webbinventering. Agenten behöver fungerande sök-/läsverktyg för den delen. En omräkning av gamla data får aldrig presenteras som en ny inventering. Standardresultatet är en JSON med register, metod, projekt/scenarier, täckning och karta. Ingen extern publicering sker.
 
 ## Status och historik
 

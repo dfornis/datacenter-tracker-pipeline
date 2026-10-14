@@ -21,13 +21,15 @@ input_hashes <- function(root='.',data_dir=file.path(root,'data')) {
   cfg<-json_read(file.path(root,'config/pipeline.json'))
   maps<-unique(vapply(cfg$zones,function(z)z$geometry,character(1)))
   paths <- c(file.path(data_dir,c('projects.csv','capacity.csv','sources.csv')),
-             file.path(root,c('config/pipeline.json','scripts/model.R','scripts/pipeline.R','renv.lock',maps)))
-  setNames(lapply(paths,file_hash),c('projects','capacity','sources','method','model','command','environment',maps))
+             file.path(root,c('config/pipeline.json','scripts/model.R','scripts/pipeline.R','renv.lock',
+                              'prompts/update.md','AGENTS.md','README.md',maps)))
+  setNames(lapply(paths,file_hash),c('projects','capacity','sources','method','model','command','environment',
+                                   'prompt','instructions','readme',maps))
 }
-validate_inputs <- function(x) {
+validate_inputs <- function(x,allow_empty=FALSE) {
   p<-x$projects;c<-x$capacity;s<-x$sources;cfg<-x$config
   require_true <- function(ok,message) if (!isTRUE(all(ok))) stop(message,call.=FALSE)
-  require_true(nrow(p)>0,'Project inventory is empty')
+  require_true(allow_empty || nrow(p)>0,'Project inventory is empty')
   for (d in list(p,c,s)) require_true(!anyDuplicated(d[[1]]) && all(nzchar(d[[1]])),'Missing/duplicate permanent ID')
   require_true(grepl('^P[0-9]{3,}$',p$project_id),'Invalid project ID')
   require_true(grepl('^C[0-9]{3,}$',c$claim_id),'Invalid claim ID')

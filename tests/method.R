@@ -1,4 +1,4 @@
-source('scripts/model.R')
+source('scripts/pipeline.R')
 count<-0
 test<-function(name,fn) {fn();count<<-count+1;cat('PASS ',name,'\n',sep='')}
 fails<-function(fn,pattern) {
@@ -145,6 +145,11 @@ test('empty claims and unknown zones retain their project indicators',function()
   x<-fixture();x$capacity<-x$capacity[FALSE,];x$projects$bidding_zone<-'';r<-calculate(x)
   stopifnot(nrow(r$project_scenarios)==8,all(r$project_scenarios$bidding_zone=='SE-unassigned'),all(is.na(r$project_scenarios$mw_high)))
 })
+test('a first inventory can start from empty tables while empty final builds still fail',function() {
+  x<-fixture();x$projects<-x$projects[FALSE,];x$capacity<-x$capacity[FALSE,];x$sources<-x$sources[FALSE,]
+  validate_inputs(x,allow_empty=TRUE)
+  fails(function()calculate(x),'Project inventory is empty')
+})
 test('phased totals stay within the pipeline envelope and grow with horizon/selection',function() {
   r<-calculate(fixture(rbind(claim(timing='first_capacity',first_year=2029,last_year=2031),
     claim('C002','P002',timing='unknown',first_year='',last_year=''))))
@@ -182,4 +187,119 @@ test('complete output is deterministic, includes all projects and leaves source 
   stopifnot(length(json_read(f)$project_scenarios)==nrow(live$projects)*4)
   stopifnot(identical(before,lapply(c('projects','capacity','sources'),function(n)file_hash(file.path('data',paste0(n,'.csv'))))))
 })
-cat(count,' meaningful method and integration checks passed.\n')
+# Exercise the real workflow against an isolated synthetic repository, never live data.
+with_workflow <- function(fn,empty=FALSE) {
+  root<-tempfile('datacenter-workflow-test-');dir.create(root)
+  on.exit(unlink(root,recursive=TRUE))
+  paths<-c('config/pipeline.json','scripts/model.R','scripts/pipeline.R','renv.lock',
+           'prompts/update.md','AGENTS.md','README.md',unique(vapply(live$config$zones,function(z)z$geometry,'')))
+  for(f in paths) {
+    target<-file.path(root,f);dir.create(dirname(target),recursive=TRUE,showWarnings=FALSE)
+    stopifnot(file.copy(f,target))
+  }
+  x<-fixture()
+  if(empty)for(n in names(x$config$tables))x[[n]]<-x[[n]][FALSE,,drop=FALSE]
+  write_tables(x,file.path(root,'data'))
+  fn(root,file.path(root,'work'))
+}
+test('empty first installation reaches applied output with quantified and unquantified projects',function() {
+  with_workflow(function(root,work) {
+    prepare_run(root,work,mode='scratch')
+    packet<-json_read(file.path(work,'packet.json'))
+    stopifnot(setequal(unlist(packet$countries),c('SE','NO','FI')),length(packet$projects)==0,
+      packet$id_above$sources==143,length(list.files(work))==4)
+    x<-fixture(claim('C048','P053',timing='unknown',first_year='',last_year=''))
+    x$projects$project_id[x$projects$project_id=='P099']<-'P054'
+    x$projects$source_ids<-x$capacity$source_ids<-'S144';x$sources$source_id<-'S144'
+    write_tables(x,work);r<-apply_run(root,work)$result
+    stopifnot(r$coverage$projects==2,r$coverage$scenario_rows==8,
+      json_read(file.path(root,'assets/datacenters.json'))$inventory_run$mode=='scratch')
+    same(project(r,'P053')$nameplate_mw_high,100)
+    same(project(r,'P053')$mw_high,100)
+    same(project(r,'P053',sc='stated_2035')$mw_high,0)
+    stopifnot(is.na(project(r,'P054')$mw_high),identical(r$input_hashes,input_hashes(root)))
+  },empty=TRUE)
+})
+test('refresh follows the same path, preserves undated capacity, and applies all three tables',function() {
+  with_workflow(function(root,work) {
+    prepare_run(root,work);x<-read_inputs(root,work)
+    x$capacity$mw<-'150';x$capacity<-rbind(x$capacity,claim('C048','P099',200,timing='unknown',first_year='',last_year=''))
+    write_tables(x,work);review<-review_run(root,work)
+    stopifnot(identical(unlist(review$changes$capacity$changed),'C001'))
+    r<-apply_run(root,work)$result
+    same(project(r,'P099')$nameplate_mw_high,200)
+    for(n in names(x$config$tables))stopifnot(identical(read_inputs(root)[[n]],x[[n]]))
+    stopifnot(!dir.exists(file.path(root,'.locks/pipeline')))
+  })
+})
+test('scratch retains the old identity context and requires reconciliation before replacing data',function() {
+  with_workflow(function(root,work) {
+    prepare_run(root,work,mode='scratch');packet<-json_read(file.path(work,'packet.json'))
+    stopifnot(nrow(read_inputs(root,work)$projects)==0,length(packet$projects)==2,length(packet$identity_index)==2)
+    x<-read_inputs(root);x$projects<-x$projects[x$projects$project_id!='P099',];write_tables(x,work)
+    fails(function()review_run(root,work),'Rows disappeared from projects')
+    write_tables(read_inputs(root),work);apply_run(root,work)
+    stopifnot(nrow(read_inputs(root)$projects)==2)
+  })
+})
+test('country packets restore local languages and source routes while retaining a global identity index',function() {
+  with_workflow(function(root,work) {
+    x<-read_inputs(root);p<-x$projects[2,];p$project_id<-'P100';p$country<-'FI';p$bidding_zone<-'FI'
+    x$projects<-rbind(x$projects,p);write_tables(x,file.path(root,'data'))
+    prepare_run(root,work,country='FI');packet<-json_read(file.path(work,'packet.json'))
+    stopifnot(length(packet$projects)==1,length(packet$identity_index)==3,
+      setequal(unlist(packet$method$countries$FI$languages),c('fi','sv','en')),
+      length(packet$method$workflow$discovery_routes)==5)
+    for(country in names(packet$method$countries)) {
+      profile<-packet$method$countries[[country]]
+      stopifnot(all(unlist(profile$languages) %in% names(profile$search_terms)),length(profile$capacity_terms)==4,
+        length(profile$source_routes)>0)
+    }
+    x<-read_inputs(root,work);x$projects$notes[1]<-'Outside-country edit';write_tables(x,work)
+    fails(function()review_run(root,work),'Changes outside selected countries')
+    write_tables(read_inputs(root),work);x<-read_inputs(root,work)
+    extra<-x$projects[1,];extra$project_id<-'P101';x$projects<-rbind(x$projects,extra);write_tables(x,work)
+    fails(function()review_run(root,work),'New project outside selected countries')
+  })
+})
+test('lost claims and reused historical IDs cannot silently replace a prepared register',function() {
+  with_workflow(function(root,work) {
+    prepare_run(root,work);x<-read_inputs(root,work);x$capacity<-x$capacity[FALSE,];write_tables(x,work)
+    fails(function()review_run(root,work),'Rows disappeared from capacity')
+    x<-read_inputs(root);x$capacity<-rbind(x$capacity,claim('C047','P099'));write_tables(x,work)
+    fails(function()review_run(root,work),'Reused historical ID')
+    x<-read_inputs(root);x$capacity$project_id<-'P099';write_tables(x,work)
+    fails(function()review_run(root,work),'Existing claim reassigned')
+  })
+})
+test('changed instructions or live data invalidate prepared work without overwriting anything',function() {
+  for(change in c('prompt','data'))with_workflow(function(root,work) {
+    prepare_run(root,work)
+    if(change=='prompt')cat('Changed instruction',file=file.path(root,'prompts/update.md'),append=TRUE)
+    else {x<-read_inputs(root);x$projects$notes[1]<-'Concurrent edit';write_tables(x,file.path(root,'data'))}
+    before<-input_hashes(root)
+    fails(function()apply_run(root,work),'Register or instructions changed')
+    stopifnot(identical(before,input_hashes(root)),!file.exists(file.path(root,'assets/datacenters.json')))
+  })
+})
+test('an installation error restores the original tables and removes its writer lock',function() {
+  with_workflow(function(root,work) {
+    prepare_run(root,work);x<-read_inputs(root,work);x$capacity$mw<-'999';write_tables(x,work)
+    before<-input_hashes(root);cat('Not a directory',file=file.path(root,'blocked'))
+    suppressWarnings(fails(function()apply_run(root,work,file.path(root,'blocked/result.json')),'Could not install'))
+    stopifnot(identical(before,input_hashes(root)),!dir.exists(file.path(root,'.locks/pipeline')))
+  })
+})
+test('the command interface executes prepare, check and apply in an isolated repository',function() {
+  with_workflow(function(root,work) {
+    previous<-getwd();setwd(root);on.exit(setwd(previous))
+    invisible(capture.output(pipeline_main(c('prepare','--country=SE',paste0('--output=',work)))))
+    invisible(capture.output(pipeline_main(c('check',paste0('--data=',work)))))
+    invisible(capture.output(pipeline_main(c('apply',paste0('--data=',work)))))
+    stopifnot(file.exists('assets/datacenters.json'))
+    fails(function()pipeline_main(c('build','--country=FI')),'Unknown option')
+    fails(function()pipeline_main(c('apply')),'apply needs')
+    fails(function()pipeline_main(c('build','--output=config/pipeline.json')),'overwrite an input')
+  })
+})
+cat(count,' meaningful method and workflow checks passed.\n')

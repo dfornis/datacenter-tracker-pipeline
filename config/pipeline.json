@@ -58,12 +58,125 @@
       "languages": [
         "sv",
         "en"
+      ],
+      "name": "Sweden",
+      "search_terms": {
+        "sv": [
+          "datacenter",
+          "datorhall",
+          "serverhall",
+          "AI-center",
+          "beräkningscenter",
+          "molnregion",
+          "bygglov",
+          "detaljplan",
+          "miljöprövning",
+          "samråd",
+          "elnätsanslutning"
+        ],
+        "en": [
+          "Sweden data center",
+          "Sweden data centre",
+          "AI campus",
+          "cloud region",
+          "grid connection",
+          "construction",
+          "expansion"
+        ]
+      },
+      "capacity_terms": {
+        "it": [
+          "IT-effekt",
+          "IT-kapacitet",
+          "kritisk IT-last",
+          "MW IT"
+        ],
+        "facility": [
+          "total effekt",
+          "anläggningseffekt",
+          "effektbehov"
+        ],
+        "grid": [
+          "anslutningseffekt",
+          "anslutningskapacitet",
+          "abonnerad effekt",
+          "tilldelad effekt",
+          "uttagsabonnemang"
+        ],
+        "backup": [
+          "reservkraft",
+          "dieselgenerator",
+          "nödgenerator"
+        ]
+      },
+      "source_routes": [
+        "Operatörernas projekt- och anläggningslistor",
+        "Kommunala detaljplaner, bygglov, samråd och markärenden; mark- och miljödomstolar",
+        "Svenska kraftnät (svk.se), berörd lokal/regional nätägare och Energimarknadsinspektionen (ei.se)",
+        "Data Center Dynamics samt svensk affärs-, energi- och lokalpress"
       ]
     },
     "NO": {
       "languages": [
         "nb",
         "en"
+      ],
+      "name": "Norway",
+      "search_terms": {
+        "nb": [
+          "datasenter",
+          "kunstig intelligens",
+          "skyregion",
+          "reguleringsplan",
+          "byggesak",
+          "konsesjon",
+          "nettilknytning",
+          "tilknytning",
+          "krafttilgang",
+          "strømnett"
+        ],
+        "en": [
+          "Norway data center",
+          "Norway data centre",
+          "AI campus",
+          "cloud region",
+          "grid connection",
+          "construction",
+          "expansion"
+        ]
+      },
+      "capacity_terms": {
+        "it": [
+          "IT-kapasitet",
+          "IT-last",
+          "kritisk last",
+          "beregningskapasitet",
+          "MW IT"
+        ],
+        "facility": [
+          "total effekt",
+          "effektbehov",
+          "kraftbehov",
+          "anleggseffekt"
+        ],
+        "grid": [
+          "tilknytningseffekt",
+          "tilknytningskapasitet",
+          "reservert kapasitet",
+          "tildelt kapasitet",
+          "uttakskunde"
+        ],
+        "backup": [
+          "reservekraft",
+          "dieselaggregat",
+          "nødstrøm"
+        ]
+      },
+      "source_routes": [
+        "Operatörernas projekt- och anläggningslistor",
+        "Kommunala reguleringsplaner, byggesaker, planutvalg och kommunestyre",
+        "Statnett (statnett.no), berörd lokal/regional nätägare, NVE/RME (nve.no); DSB (dsb.no) vid relevanta reservkraftsfrågor",
+        "Data Center Dynamics samt norsk affärs-, energi- och regionalpress"
       ]
     },
     "FI": {
@@ -71,6 +184,81 @@
         "fi",
         "sv",
         "en"
+      ],
+      "name": "Finland",
+      "search_terms": {
+        "fi": [
+          "datakeskus",
+          "konesali",
+          "tekoäly",
+          "pilvipalvelu",
+          "rakennuslupa",
+          "asemakaava",
+          "ympäristölupa",
+          "sähköliittymä",
+          "kantaverkko",
+          "liittyminen",
+          "rakenteilla",
+          "rakentaminen alkaa"
+        ],
+        "sv": [
+          "Finland datacenter",
+          "datacentral",
+          "serverhall",
+          "bygglov",
+          "detaljplan",
+          "miljötillstånd",
+          "elanslutning",
+          "anslutningseffekt",
+          "byggstart"
+        ],
+        "en": [
+          "Finland data center",
+          "Finland data centre",
+          "AI campus",
+          "cloud region",
+          "grid connection",
+          "construction",
+          "expansion"
+        ]
+      },
+      "capacity_terms": {
+        "it": [
+          "IT-kapasiteetti",
+          "IT-kuorma",
+          "kriittinen IT-kuorma",
+          "laskentakapasiteetti",
+          "IT-kapacitet",
+          "MW IT"
+        ],
+        "facility": [
+          "kokonaisteho",
+          "tehontarve",
+          "sähköteho",
+          "laitoksen teho",
+          "effektbehov"
+        ],
+        "grid": [
+          "liityntäteho",
+          "liittymisteho",
+          "liittymiskapasiteetti",
+          "sähköliittymä",
+          "kantaverkkoliityntä",
+          "anslutningseffekt",
+          "elanslutning"
+        ],
+        "backup": [
+          "varavoima",
+          "dieselgeneraattori",
+          "hätävoima",
+          "reservkraft"
+        ]
+      },
+      "source_routes": [
+        "Operatörernas projekt- och anläggningslistor",
+        "Kommunala kaavoitus-, asemakaava-, rakennuslupa- och ympäristölupa-handlingar; även svenskspråkigt material",
+        "Fingrid (fingrid.fi), berörd lokal/regional nätägare och Energiavirasto (energiavirasto.fi)",
+        "Data Center Dynamics samt finsk och svenskspråkig affärs-, energi- och regionalpress"
       ]
     }
   },
@@ -317,5 +505,36 @@
     "source_ids": "Semicolon-separated IDs from sources.csv; the same source can support several rows.",
     "baseline_id": "Same-measure installed capacity claim, only subtracted if baseline_scope=existing_known.",
     "parent_id": "An enveloping capacity claim; included_in/possibly_included_in prevent double counting."
+  },
+  "workflow": {
+    "origin": "Template plus country overlays and audit/discover/review/promote/build from e3b85cc; discovery routes and frozen inputs from 9779acc. Integrated into one prompt and the existing CLI; historical manual queues are not restored.",
+    "stages": [
+      "prepare",
+      "discover",
+      "audit",
+      "reconcile_review",
+      "apply_report"
+    ],
+    "discovery_routes": [
+      "operator",
+      "planning_permit",
+      "grid",
+      "trade_press",
+      "country_discovery"
+    ],
+    "scope": "Physical hyperscale, AI/HPC, colocation, cloud, enterprise and material edge sites, plus new phases at existing sites. Retain unquantified candidates. Exclude ordinary server rooms, unlocated GPU purchases and multi-site national investment totals as separate facilities.",
+    "evidence_priority": {
+      "capacity": "Exact scoped technical or operator statement; retain ambiguity when the measure is unspecified.",
+      "grid": "Grid operator or regulatory document; distinguish requested, reserved and contracted connection.",
+      "permission": "Authority decision or registry; an application is not a permit.",
+      "execution": "Observed operator/contractor execution or municipal inspection; commitment applies to the evidenced phase.",
+      "secondary": "Trade and local reporting may establish candidates or cited estimates; newer weak evidence does not automatically replace a stronger source."
+    },
+    "id_floor": {
+      "projects": 52,
+      "capacity": 47,
+      "sources": 143
+    },
+    "id_floor_origin": "Highest P/C/S IDs across all CSV history through 9a08c22; later records are retained and new IDs advance above the live maximum."
   }
 }

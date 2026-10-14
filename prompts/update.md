@@ -28,7 +28,7 @@ Behandla ett land i taget och slutför samtliga länder i paketets `countries`. 
 
 Sök först brett, oberoende av det gamla projektregistret. Täck alla fem befintliga sökvägar i `method.workflow.discovery_routes`: operatörer, plan/tillstånd, elnät, branschpress och bred landssökning. Använd varje konfigurerat språk, även svenska för Finland. Kombinera landstermer med etablering, AI/HPC, byggstart, nätanslutning, utbyggnad, öppning, försening och avbrott. Utvidga till berörda kommuner, nätägare och operatörernas anläggningslistor; förlita dig inte enbart på sökmotorns första träffar.
 
-Omfattningen finns i `method.workflow.scope`: fysiska datacenter och nya etapper, inklusive driftcampus med expansioner. Håll nationella investeringspaket, GPU-beställningar och enskilda små serverrum utanför separata anläggningssummor. En ofullständig men relevant observation blir `candidate` i samma projekttabell, även utan MW eller elområde.
+Omfattningen finns i `method.workflow.scope`: fysiska datacenter och nya etapper, inklusive driftcampus med expansioner. Håll nationella investeringspaket, GPU-beställningar och enskilda små serverrum utanför separata anläggningssummor. Nya projekt läggs in som `candidate` i samma projekttabell, även utan MW eller elområde. Kandidater syns inte på den publika trackern; användaren flyttar dem till `existing` efter granskning. Fyll i `county`, `type` (samma taggar som befintliga projekt, t.ex. `hyperscale; AI`, `colocation`, `AI/HPC`), kommun och ungefärliga visningskoordinater när de är kända.
 
 Håll ett kort sökspår i arbetsanteckningen: land, språk/källväg, faktisk fråga eller besökt lista och utfall. Det behövs för återupptagning och redovisning, inte som nytt permanent register. Spara faktaunderlag i befintliga sources och notes. Påstå inte att en sökning är gjord om den bara är planerad.
 
@@ -73,13 +73,14 @@ Rscript scripts/pipeline.R check --data=/sökväg/till/arbetskatalog
 Rscript scripts/pipeline.R apply --data=/sökväg/till/arbetskatalog
 ```
 
-`apply` inför de tre tabellerna och bygger assets/datacenters.json i samma steg. Det kontrollerar att utgångsläget är oförändrat, att inga tidigare ID:n försvunnit och att en landskörning håller sig till sitt land. Det bedömer inte källornas sanningshalt eller om sökningen är tillräcklig: det är steg 2–4:s uppgift. Om utgångsläget ändrats, förbered en ny arbetskopia och återför redan undersökta ändringar mot det nya läget; kringgå inte jämförelsen. Vid vanligt skrivfel återställs tidigare filer. Ingen extern publicering sker.
+`apply` inför de tre tabellerna och bygger assets/datacenters.json samt trackerfilerna i assets/data/datacenters/ i samma steg. Det kontrollerar att utgångsläget är oförändrat, att inga tidigare ID:n försvunnit och att en landskörning håller sig till sitt land. Det bedömer inte källornas sanningshalt eller om sökningen är tillräcklig: det är steg 2–4:s uppgift. Om utgångsläget ändrats, förbered en ny arbetskopia och återför redan undersökta ändringar mot det nya läget; kringgå inte jämförelsen. Vid vanligt skrivfel återställs tidigare filer. Ingen extern publicering sker.
 
 Redovisa här i chatten, inte bara i en rapportlänk:
 
 1. Genomförda länder och faktisk söktäckning, nya/ändrade projekt och viktiga rättelser.
 2. Nameplate-MW, infasad MW och årsenergi i TWh per elområde i Low 2030, Stated 2030, Stated 2035 och High 2035. Visa landets unassigned där sådana projekt finns.
 3. Antal projekt utan MW, olöst överlapp och materiella luckor. Ange när totalsumman bara omfattar den kvantifierade delen.
-4. Använda generella antaganden och väsentliga källbegränsningar, kort men begripligt. Förklara stora förändringar mot tidigare utfall när ett sådant finns.
+4. Ändringar i den publika trackern: zonsummor per scenario före och efter (`git diff assets/data/datacenters/scenario_zone.json`), samt vilka kandidater som har tillräckligt underlag för att bli `existing`.
+5. Använda generella antaganden och väsentliga källbegränsningar, kort men begripligt. Förklara stora förändringar mot tidigare utfall när ett sådant finns.
 
 Körningen är färdig först när sökning, uppföljning, införande, beräkning och redovisning är gjorda för alla valda länder. Användaren ska inte behöva punktmarkera projekt eller godkänna rutinmässiga källtolkningar. Påstå inte att hela marknaden bevisat hittats eller att en teknisk kontroll verifierat fakta.

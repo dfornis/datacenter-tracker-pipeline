@@ -20,7 +20,8 @@ claim<-function(id='C001',project='P001',mw=100,basis='facility_nameplate',...) 
 fixture<-function(claims=claim()) {
   p<-do.call(rbind,lapply(unique(c(claims$project_id,'P099')),function(id)
     fixture_row('projects',list(project_id=id,country='SE',bidding_zone='SE3',project_name=paste('Synthetic',id),
-      status='Planned',record_type=if(id=='P099')'candidate' else 'existing',source_ids='S001'))))
+      status='Planned',record_type=if(id=='P099')'candidate' else 'existing',source_ids='S001',
+      type='hyperscale',municipality='Synthetic',latitude='59.3',longitude='18.0'))))
   list(config=live$config,projects=p,capacity=claims,sources=fixture_row('sources',list(source_id='S001',
     url='https://example.org/synthetic',title='Synthetic fixture, not evidence',kind='summary')))
 }
@@ -301,5 +302,23 @@ test('the command interface executes prepare, check and apply in an isolated rep
     fails(function()pipeline_main(c('apply')),'apply needs')
     fails(function()pipeline_main(c('build','--output=config/pipeline.json')),'overwrite an input')
   })
+})
+test('tracker export keeps the exact fields the public page reads and publishes only reviewed, non-operational projects',function() {
+  t<-build_tracker('.')
+  stopifnot(identical(names(t$projects[[1]]),c('project_id','country','project_name','developer','bidding_zone','county',
+    'municipality','type','project_status','investment_decision','construction_start_years','expected_operational_years',
+    'max_reported_capacity_mw','notes','last_updated','latitude','longitude','coordinate_note')))
+  stopifnot(identical(names(t$capacity[[1]]),c('claim_id','project_id','country','project_name','phase','capacity_type',
+    'capacity_status','investment_decision','reported_capacity_mw','reported_capacity_basis','interpreted_it_load_mw',
+    'derived_interpreted_it_load_mw','manual_interpreted_it_load_mw','it_load_derivation_method',
+    'reported_capacity_basis_needs_audit','start_year','construction_start_year','scenario_tag','type','notes',
+    'assumption_category','pue','annual_load_factor','estimated_grid_side_mw','estimated_twh_year','last_updated',
+    'municipality','county','bidding_zone','latitude','longitude','coordinate_note')))
+  stopifnot(identical(names(t$scenario_zone[[1]]),c('scenario_id','scenario_label','scenario_order','year','panel','country',
+    'bidding_zone','grid_side_mw','mw','interpreted_it_load_mw','reported_capacity_mw','estimated_twh','n_projects')))
+  stopifnot(length(t$scenario_zone)==40,length(t$bidding_zones$features)==10)
+  live_p<-read_inputs()$projects
+  stopifnot(setequal(vapply(t$projects,`[[`,'','project_id'),
+    live_p$project_id[live_p$record_type=='existing' & !live_p$status %in% c('Operational','Dormant','Cancelled')]))
 })
 cat(count,' meaningful method and workflow checks passed.\n')

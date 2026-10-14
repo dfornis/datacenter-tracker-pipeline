@@ -9,4 +9,5 @@
 - Behåll stabila ID:n. Sök även kandidater och historiska namn före nya poster. Återanvänd inte gamla ID:n. Kända felattribuerade uppgifter räknas inte som verifierad kapacitet.
 - Uppdatera tabellerna som en sammanhängande ändring; en uppdaterare i taget. Granska diffen och kör Rscript tests/method.R samt Rscript scripts/pipeline.R check före leverans.
 - Redovisa resultat, ändringar, antaganden och materiella begränsningar direkt i chatten. En rapportlänk ersätter inte redovisningen.
+- assets/data/datacenters/ är den publika trackerns indata (dfornis.github.io). Ändra inte dess fältnamn eller scenarioregler; nya projekt blir `candidate` tills användaren godkänt dem.
 - Publicera, pusha eller slå inte samman utan användarens instruktion. Gamla arbetsflöden och underlag finns i Git-historiken, inte som parallella aktiva system.

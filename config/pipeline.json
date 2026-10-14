@@ -10,6 +10,8 @@
       "project_name",
       "developer",
       "municipality",
+      "county",
+      "type",
       "status",
       "record_type",
       "related_project_id",
@@ -536,5 +538,58 @@
       "sources": 143
     },
     "id_floor_origin": "Highest P/C/S IDs across all CSV history through 9a08c22; later records are retained and new IDs advance above the live maximum."
+  },
+  "tracker": {
+    "purpose": "Point-estimate export for the public tracker page (dfornis.github.io /projects/datacenter-tracker/). Same files, fields and scenario rules as the page JavaScript. Research ranges and phasing remain in model.R and assets/datacenters.json.",
+    "output_dir": "assets/data/datacenters",
+    "public_record_types": [
+      "existing"
+    ],
+    "excluded_statuses": [
+      "Operational",
+      "Dormant",
+      "Cancelled"
+    ],
+    "unspecified_headline_as": "facility",
+    "unspecified_headline_note": "facility = headline MW is used as grid-side capacity and IT load = MW/PUE (published tracker convention). it = headline MW is nominal IT capacity and grid-side = MW*PUE (EPRI 2026, pp. 10-11: nominal IT capacity is what is typically reported in public announcements).",
+    "assumptions": {
+      "Hyperscale": {
+        "pue": 1.2,
+        "load_factor": 0.75,
+        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with large hyperscale facilities potentially as low as 1.1. Shehabi et al. 2024 supports low hyperscale PUE assumptions.",
+        "load_factor_source": "EPRI 2026; observed large hyperscale facility annual load factor of 75% relative to nameplate capacity. Shehabi et al. 2024 used only as supporting evidence on high relative hyperscale server operational time."
+      },
+      "Hyperscale_AI": {
+        "pue": 1.2,
+        "load_factor": 0.75,
+        "pue_source": "EPRI 2026; large hyperscale facilities with liquid cooling may reach PUE as low as 1.1. Shehabi et al. 2024 models AI data centres separately by cooling system.",
+        "load_factor_source": "EPRI 2026; hyperscale observed annual load factor of 75% relative to nameplate capacity. Shehabi et al. 2024 distinguishes AI training and inference operational time. Regen/National Grid DSO 2025 notes AI training is relatively flat while inference is peakier."
+      },
+      "AI_HPC": {
+        "pue": 1.25,
+        "load_factor": 0.8,
+        "pue_source": "Shehabi et al. 2024; AI data centres modelled separately for air and liquid cooling. EPRI 2026 supports lower PUE for newer large facilities.",
+        "load_factor_source": "Shehabi et al. 2024; AI training server operational time assumed at 80%, varied between 75-85%. EPRI 2026 provides facility-level support that hyperscale load factors can be high but below nameplate."
+      },
+      "Colocation_AI": {
+        "pue": 1.35,
+        "load_factor": 0.6,
+        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with older/smaller facilities higher. Shehabi et al. 2024 supports colocation PUE below roughly 1.4 in recent years.",
+        "load_factor_source": "EPRI 2026; smaller multi-tenant co-location facilities averaged 57% annual load factor relative to nameplate. Regen/National Grid DSO 2025 notes colocation load is relatively consistent due to tenant diversity, while AI workloads may increase variability."
+      },
+      "Colocation": {
+        "pue": 1.35,
+        "load_factor": 0.57,
+        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with older/smaller facilities higher. Shehabi et al. 2024 supports colocation PUE below roughly 1.4 in recent years.",
+        "load_factor_source": "EPRI 2026; smaller multi-tenant co-location facilities averaged 57% annual load factor relative to nameplate capacity. Regen/National Grid DSO 2025 supports relatively consistent colocation load due to flat storage/cloud use cases and tenant diversity."
+      },
+      "Research_SMR": {
+        "pue": 1.25,
+        "load_factor": 0.8,
+        "pue_source": "Placeholder aligned with AI/HPC-oriented facilities. Concept entries are not translated into grid-side load unless IT load is specified.",
+        "load_factor_source": "Placeholder aligned with AI/HPC-oriented facilities. Concept entries are not translated into annual electricity use unless IT/grid-side load is specified."
+      }
+    },
+    "assumption_origin": "data/master/assumptions.csv at e3b85cc; identical to the table published on the tracker page."
   }
 }

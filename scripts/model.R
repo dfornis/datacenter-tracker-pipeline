@@ -9,13 +9,25 @@ read_inputs <- function(root='.',data_dir=file.path(root,'data')) {
   cfg <- json_read(file.path(root,'config/pipeline.json'))
   tables <- lapply(names(cfg$tables),function(name) {
     path <- file.path(data_dir,paste0(name,'.csv'))
+    # encoding= (not fileEncoding=) reads UTF-8 correctly under any locale, including C/POSIX.
     d <- read.csv(path,colClasses='character',na.strings=NULL,check.names=FALSE,
-                  stringsAsFactors=FALSE,fileEncoding='UTF-8',comment.char='')
+                  stringsAsFactors=FALSE,encoding='UTF-8',comment.char='')
     if (!identical(names(d),unlist(cfg$tables[[name]],use.names=FALSE)) || anyNA(d)) stop('Invalid columns/CSV: ',path)
     d
   })
   names(tables) <- names(cfg$tables)
   list(config=cfg,projects=tables$projects,capacity=tables$capacity,sources=tables$sources)
+}
+csv_field <- function(v) {
+  v <- enc2utf8(as.character(v))
+  q <- grepl('[",\r\n]',v)
+  ifelse(q,paste0('"',gsub('"','""',v,fixed=TRUE),'"'),v)
+}
+write_csv_table <- function(d,path) {
+  # Minimal quoting, LF, UTF-8: the same layout as the committed register, so diffs show real changes only.
+  lines <- c(paste(csv_field(names(d)),collapse=','),
+             if(nrow(d))do.call(paste,c(lapply(d,csv_field),sep=',')))
+  writeBin(charToRaw(enc2utf8(paste0(paste(lines,collapse='\n'),'\n'))),path)
 }
 input_hashes <- function(root='.',data_dir=file.path(root,'data')) {
   cfg<-json_read(file.path(root,'config/pipeline.json'))

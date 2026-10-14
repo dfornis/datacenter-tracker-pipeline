@@ -6,14 +6,14 @@ Projektregister med villkorade scenarier. Alla projekt och kandidater finns i va
 
 | Fil | Innehåll |
 | --- | --- |
-| `data/projects.csv` | Projekt, kandidater, identitet, land/elområde och status. 13 kolumner. |
+| `data/projects.csv` | Projekt, kandidater, identitet, land/elområde, län/region, typ och status. 15 kolumner. |
 | `data/capacity.csv` | Källornas kapacitetsuppgifter, mått, datum och samband. 21 kolumner. |
 | `data/sources.csv` | Källor, korta utdrag, datum och hänvisningar. 9 kolumner. |
 | `config/pipeline.json` | Scenarier, beräkningsantaganden och deras källor/tillämpningsgränser. |
 
-Tre tabeller, sammanlagt 43 kolumner. Inga separata granskningsregister eller lokala arkivkopior. Git håller historiken. Uppdatera tabellerna som en sammanhängande ändring, med en uppdaterare i taget.
+Tre tabeller, sammanlagt 45 kolumner. Inga separata granskningsregister eller lokala arkivkopior. Git håller historiken. Uppdatera tabellerna som en sammanhängande ändring, med en uppdaterare i taget.
 
-`scripts/model.R` räknar och kontrollerar; `scripts/pipeline.R` är ingången. `tests/method.R` testar beteendet med syntetiska projekt. `prompts/update.md` styr landsuppdateringen. Sju kartfiler täcker tio elområden.
+`scripts/model.R` räknar och kontrollerar; `scripts/tracker.R` skriver den publika trackerns filer; `scripts/pipeline.R` är ingången. `tests/method.R` testar beteendet med syntetiska projekt. `prompts/update.md` styr landsuppdateringen. Sju kartfiler täcker tio elområden.
 
 ## Metod
 
@@ -121,9 +121,24 @@ För fristående, läsande förberedelse och beräkning finns även:
 Rscript scripts/pipeline.R packet --country=FI --output=/tmp/fi-packet.json
 Rscript scripts/pipeline.R check
 Rscript scripts/pipeline.R build --output=/tmp/datacenters-preview.json
+Rscript scripts/pipeline.R tracker --output-dir=/tmp/tracker-preview
 ```
 
 Varken paketförberedelse, kontroller eller `build` utför webbinventering. Agenten behöver fungerande sök-/läsverktyg för den delen. En omräkning av gamla data får aldrig presenteras som en ny inventering. Standardresultatet är en JSON med register, metod, projekt/scenarier, täckning och karta. Ingen extern publicering sker.
+
+## Koppling till trackern (dfornis.github.io)
+
+Sidan `/projects/datacenter-tracker/` läser fyra filer: `projects.json`, `capacity.json`, `scenario_zone.json` och `bidding_zones.geojson` i `assets/data/datacenters/`. `apply` skriver dem i samma steg som registret förs in, och `Rscript scripts/pipeline.R tracker` skriver dem fristående. Kopiera mappen till sajtens `assets/data/datacenters/`; inga ändringar i sajtens kod behövs.
+
+Filerna har exakt samma fält och fältordning som tidigare och samma scenarioregler som sidans JavaScript (år = tidigaste av drift- och byggstartsår; Low kräver beslut; High tar med odaterat). Tabellens summa och kartans Σ blir därmed samma, utom när en kund ligger inom ett annat projekts campusram: kartan räknar den en gång, tabellen visar båda raderna.
+
+- **Urval:** `record_type = existing` och status som inte är Operational, Dormant eller Cancelled. Nya projekt läggs in som `candidate` och syns inte publikt förrän de ändras till `existing`. Det är granskningssteget innan något publiceras.
+- **Punktvärden:** typbaserad PUE och årlig lastfaktor från `config/pipeline.json` → `tracker.assumptions`, samma tabell som sidan redovisar. En källbelagd design-PUE på kapacitetsraden ersätter typvärdet.
+- **Tolkning:** IT-effekt × PUE ger nätsidan. Anläggnings-, nät- och ospecificerat MW används som nätsidans MW och IT = MW / PUE (`tracker.unspecified_headline_as = facility`). Reservkraft, reaktoreffekt och felattribuerade uppgifter blir ingen last.
+- **Krav för publicering:** publika projekt behöver `type`, elområde och koordinater; annars stoppar `apply` innan något ersätts.
+- **Text:** "data centre/center" skrivs "datacenter" i de publicerade fälten, som på sajten. Källutdragen ändras inte.
+
+Intervall och femårsinfasning finns kvar i `assets/datacenters.json` för analysen; den publika sidan visar punktvärden utan infasning.
 
 ## Status och historik
 

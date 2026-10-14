@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 # Shared country workflow; web research is performed by the agent using packet instructions.
 source('scripts/model.R')
+source('scripts/tracker.R')
 
 country_selection <- function(cfg,country='all') {
   if(!country %in% c('all',names(cfg$countries)))stop('Unknown country: ',country)
@@ -9,7 +10,7 @@ country_selection <- function(cfg,country='all') {
 table_files <- function(cfg) paste0(names(cfg$tables),'.csv')
 write_tables <- function(x,path) {
   dir.create(path,recursive=TRUE,showWarnings=FALSE)
-  for(n in names(x$config$tables))write.csv(x[[n]],file.path(path,paste0(n,'.csv')),row.names=FALSE,na='',fileEncoding='UTF-8')
+  for(n in names(x$config$tables))write_csv_table(x[[n]],file.path(path,paste0(n,'.csv')))
 }
 make_packet <- function(root='.',data_dir=file.path(root,'data'),country='all') {
   before<-input_hashes(root,data_dir);x<-read_inputs(root,data_dir);validate_inputs(x,allow_empty=TRUE)
@@ -92,6 +93,7 @@ apply_run <- function(root='.',path,output=file.path(root,'assets/datacenters.js
   if(!dir.create(lock,showWarnings=FALSE))stop('Another apply is active (or an interrupted apply needs inspection): ',lock)
   on.exit(unlink(lock,recursive=TRUE),add=TRUE)
   review<-review_run(root,path);r<-build_result(root,path)
+  tracker<-build_tracker(root,path) # public export must be complete before anything is replaced
   r$inventory_run<-list(date=review$packet$run_date,countries=review$packet$countries,mode=review$packet$mode)
   files<-table_files(read_inputs(root)$config)
   staged<-tempfile('datacenter-apply-');dir.create(staged);on.exit(unlink(staged,recursive=TRUE),add=TRUE)
@@ -111,7 +113,9 @@ apply_run <- function(root='.',path,output=file.path(root,'assets/datacenters.js
   replacements<-c(file.path(staged,files),file.path(staged,'result.json'))
   for(i in seq_along(destinations))install_file(replacements[i],destinations[i])
   complete<-TRUE
-  invisible(list(result=r,changes=review$changes))
+  tracker_dir<-file.path(root,read_inputs(root)$config$tracker$output_dir)
+  write_tracker(tracker,tracker_dir)
+  invisible(list(result=r,changes=review$changes,tracker=tracker_dir))
 }
 json_destination <- function(path,root='.') {
   if(!grepl('\\.json$',path))stop('Output must be a .json file')
@@ -128,10 +132,17 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
     opts[[kv[1]]]<-paste(kv[-1],collapse='=')
   }
   allowed<-list(check='data',build=c('data','output'),packet=c('data','output','country'),
-                prepare=c('output','country','mode'),apply=c('data','output'))
-  if(!command %in% names(allowed))stop('Commands: check, build, packet, prepare, apply')
+                prepare=c('output','country','mode'),apply=c('data','output'),tracker=c('data','output-dir'))
+  if(!command %in% names(allowed))stop('Commands: check, build, packet, prepare, apply, tracker')
   if(any(!names(opts) %in% allowed[[command]]))stop('Unknown option for ',command)
   data_dir<-opts$data %||% 'data'
+  if(command=='tracker') {
+    cfg<-read_inputs()$config
+    dir<-opts[['output-dir']] %||% cfg$tracker$output_dir
+    write_tracker(build_tracker('.',data_dir),dir)
+    cat('Wrote tracker files to ',dir,' (projects, capacity, scenario_zone, bidding_zones).\n',sep='')
+    return(invisible(dir))
+  }
   if(command=='prepare') {
     path<-opts$output %||% tempfile('datacenter-run-',tmpdir=Sys.getenv('TMPDIR',unset='/tmp'))
     prepare_run(path=path,country=opts$country %||% 'all',mode=opts$mode %||% 'refresh')

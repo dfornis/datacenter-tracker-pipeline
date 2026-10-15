@@ -19,7 +19,11 @@ jobs:
         run: Rscript -e 'stopifnot(renv::status()$synchronized)'
       - name: Check method and full project representation
         run: Rscript tests/method.R
-      - name: Check all inputs and map areas
-        run: Rscript scripts/pipeline.R check
       - name: Build one complete preview
         run: Rscript scripts/pipeline.R build --output=/tmp/datacenters-preview.json
+      - name: Build the shared approved website result
+        run: Rscript scripts/pipeline.R tracker
+      - name: Check inputs, map areas and persisted results
+        run: Rscript scripts/pipeline.R check
+      - name: Check website and model parity
+        run: node tests/tracker.cjs

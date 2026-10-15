@@ -36,9 +36,9 @@ input_hashes <- function(root='.',data_dir=file.path(root,'data')) {
   cfg<-json_read(file.path(root,'config/pipeline.json'))
   maps<-unique(vapply(cfg$zones,function(z)z$geometry,character(1)))
   paths <- c(file.path(data_dir,c('projects.csv','capacity.csv','sources.csv')),
-             file.path(root,c('config/pipeline.json','scripts/model.R','scripts/pipeline.R','renv.lock',
+             file.path(root,c('config/pipeline.json','scripts/model.R','scripts/tracker.R','scripts/pipeline.R','renv.lock',
                               'prompts/update.md','AGENTS.md','README.md',maps)))
-  setNames(lapply(paths,file_hash),c('projects','capacity','sources','method','model','command','environment',
+  setNames(lapply(paths,file_hash),c('projects','capacity','sources','method','model','tracker','command','environment',
                                    'prompt','instructions','readme',maps))
 }
 validate_inputs <- function(x,allow_empty=FALSE) {
@@ -110,7 +110,7 @@ validate_inputs <- function(x,allow_empty=FALSE) {
   require_true(all(unlist(cfg$assumptions$peak_to_nameplate_fraction)>0 & unlist(cfg$assumptions$peak_to_nameplate_fraction)<=1),'Invalid peak/nameplate conversion')
   for (k in names(cfg$type_assumptions$categories)) {
     a<-cfg$type_assumptions$categories[[k]];pl<-unlist(a$peak_load_factor)
-    require_true(is.finite(a$pue) && a$pue>=1 && a$pue<=3 && is.finite(a$load_factor) && a$load_factor>0 && a$load_factor<=1 &&
+    require_true(is.finite(a$load_factor) && a$load_factor>0 && a$load_factor<=1 &&
       length(pl)==2 && all(pl>0 & pl<=1) && pl[1]<=pl[2],paste('Invalid type assumption:',k))
   }
   require_true(!nzchar(p$type) | !is.na(vapply(p$type,type_category,'')),'Unknown project type tags')
@@ -149,7 +149,7 @@ scenario_selected <- function(row,scenario,timing) {
   switch(scenario$selection,all=TRUE,dated=timing$dated,decided_dated=timing$dated && row$decision=='yes')
 }
 type_category <- function(type) {
-  # Published tracker mapping from project type tags to an assumption category.
+  # Shared mapping from project type tags to an annual-use assumption category.
   tags <- tolower(trimws(unlist(strsplit(type %||% '', ';', fixed=TRUE))))
   if (!length(tags) || all(!nzchar(tags))) return(NA_character_)
   if (any(c('research','smr-linked') %in% tags)) return('Research_SMR')
@@ -198,7 +198,7 @@ top_claim <- function(claims,index) {
   index
 }
 maximum_known <- function(values) if(all(is.na(values))) NA_real_ else max(values,na.rm=TRUE)
-calculate <- function(x) {
+calculate <- function(x,approved_only=TRUE) {
   validate_inputs(x);p<-x$projects;c<-x$capacity;cfg<-x$config
   all_rows<-list();overview<-list();zone_rows<-list()
   for (scenario in cfg$scenarios) {
@@ -216,6 +216,7 @@ calculate <- function(x) {
       if (nzchar(pr$related_project_id)) reason<-'related_identity'
       if (r$basis %in% c('backup','generation','density')) reason<-'no_datacenter_load'
       if (!nzchar(r$mw)) reason<-'capacity_unknown'
+      if (approved_only && pr$record_type!='existing') reason<-'pending_approval'
       nameplate<-if(reason=='modelled')net else c(0,0)
       if (reason!='modelled') share<-c(0,0)
       if (reason=='modelled' && !selected) reason<-'outside_scenario_selection'
@@ -245,8 +246,24 @@ calculate <- function(x) {
       setNames(rep(list(numeric()),15),c('share_low','share_high','reported_mw','gross_mw_low','gross_mw_high','nameplate_mw_low','nameplate_mw_high','direct_mw_low','direct_mw_high','direct_twh_low','direct_twh_high','counted_mw_low','counted_mw_high','annual_twh_low','annual_twh_high'))),stringsAsFactors=FALSE)
     # One electrical envelope per containment tree. A tenant never removes its campus.
     # Explicit independent/incremental rows remain separate; contained alternatives use max.
+    owner_claim<-ledger$group_id
     if (nrow(ledger)) for (group in unique(ledger$group_id)) {
       members<-which(ledger$group_id==group);owner<-match(group,ledger$claim_id)
+      # A pending campus cannot own the approved contribution of its tenant/phase.
+      # Keep the original containment tree, and assign its envelope to the closest
+      # approved member. Unapproved claims remain available as source facts only.
+      if(approved_only && p$record_type[match(ledger$project_id[owner],p$project_id)]!='existing') {
+        allowed<-members[p$record_type[match(ledger$project_id[members],p$project_id)]=='existing']
+        if(!length(allowed))next
+        depth<-vapply(allowed,function(j) {
+          k<-match(ledger$claim_id[j],c$claim_id);n<-0L
+          while(c$relation[k] %in% c('included_in','possibly_included_in')) {k<-match(c$parent_id[k],c$claim_id);n<-n+1L}
+          n
+        },0L)
+        owner<-allowed[order(depth,ledger$claim_id[allowed])][1]
+      }
+      owner_claim[members]<-ledger$claim_id[owner]
+      if(approved_only)members<-members[p$record_type[match(ledger$project_id[members],p$project_id)]=='existing']
       for(key in c('nameplate_mw_low','nameplate_mw_high')) {
         v<-ledger[[key]][members]
         ledger[[key]][members]<-0
@@ -271,13 +288,16 @@ calculate <- function(x) {
       # The physical owner also represents quantified contained phases, even
       # when the owner's own headline MW is missing. Otherwise the known phase
       # is assigned to an owner that is then replaced by NA in zone totals.
-      scope<-ledger[ledger$project_id==pr$project_id | ledger$group_id %in% lr$claim_id,,drop=FALSE]
+      scope<-ledger[ledger$project_id==pr$project_id | owner_claim %in% lr$claim_id,,drop=FALSE]
+      if(approved_only && pr$record_type=='existing')
+        scope<-scope[p$record_type[match(scope$project_id,p$project_id)]=='existing',,drop=FALSE]
       has_load<-any(is.finite(scope$gross_mw_high)|is.finite(scope$gross_mw_low))
       category<-if(pr$status %in% c('Cancelled','Dormant'))tolower(pr$status) else if(pr$status=='Operational')'operational' else if(pr$record_type=='candidate')'candidate' else if(!has_load)'unquantified' else 'pipeline'
       missing_load<-!has_load && !pr$status %in% c('Cancelled','Dormant','Operational')
       project_sum<-function(key) if(missing_load || anyNA(lr[[key]]))NA_real_ else sum(lr[[key]])
       overview[[length(overview)+1]]<-data.frame(scenario=scenario$id,project_id=pr$project_id,country=pr$country,
         bidding_zone=if(nzchar(pr$bidding_zone))pr$bidding_zone else paste0(pr$country,'-unassigned'),
+        record_type=pr$record_type,included_in_result=!approved_only || pr$record_type=='existing',
         indicator=category,capacity_known=has_load,participates=live,related_project_id=pr$related_project_id,
         nameplate_mw_low=project_sum('nameplate_mw_low'),nameplate_mw_high=project_sum('nameplate_mw_high'),
         mw_low=project_sum('counted_mw_low'),mw_high=project_sum('counted_mw_high'),
@@ -288,13 +308,14 @@ calculate <- function(x) {
   project_scenarios<-do.call(rbind,overview);ledger<-do.call(rbind,all_rows)
   zone_ids<-c(vapply(cfg$zones,function(z)z$id,character(1)),paste0(names(cfg$countries),'-unassigned'))
   for (scenario in cfg$scenarios) for (zone in zone_ids) {
-    d<-project_scenarios[project_scenarios$scenario==scenario$id & project_scenarios$bidding_zone==zone,,drop=FALSE]
-    sum_known<-function(key) if(!nrow(d)||all(is.na(d[[key]]))||any(is.na(d[[key]]) & d$capacity_known))NA_real_ else sum(d[[key]],na.rm=TRUE)
-    active<-!d$indicator %in% c('cancelled','dormant')
+    all_d<-project_scenarios[project_scenarios$scenario==scenario$id & project_scenarios$bidding_zone==zone,,drop=FALSE]
+    d<-all_d[all_d$included_in_result,,drop=FALSE]
+    sum_known<-function(key) if(!nrow(d))0 else if(all(is.na(d[[key]]))||any(is.na(d[[key]]) & d$capacity_known))NA_real_ else sum(d[[key]],na.rm=TRUE)
+    active<-!d$indicator %in% c('cancelled','dormant','operational')
     partial<-any(ledger$scenario==scenario$id & ledger$project_id %in% d$project_id & grepl('only_contained_capacity_known',ledger$assumptions,fixed=TRUE))
     zone_rows[[length(zone_rows)+1]]<-data.frame(scenario=scenario$id,bidding_zone=zone,projects=nrow(d),
-      participating_projects=sum(d$participates),candidate_projects=sum(p$record_type[match(d$project_id,p$project_id)]=='candidate'),
-      operating_projects=sum(d$indicator=='operational'),cancelled_or_dormant=sum(!active),
+      pending_projects=sum(!all_d$included_in_result),participating_projects=sum(d$participates),candidate_projects=sum(p$record_type[match(d$project_id,p$project_id)]=='candidate'),
+      operating_projects=sum(d$indicator=='operational'),cancelled_or_dormant=sum(d$indicator %in% c('cancelled','dormant')),
       projects_without_mw=sum(active & !d$capacity_known),
       nameplate_mw_low=sum_known('nameplate_mw_low'),nameplate_mw_high=sum_known('nameplate_mw_high'),
       mw_low=sum_known('mw_low'),mw_high=sum_known('mw_high'),
@@ -351,10 +372,13 @@ capacity_followups <- function(x) {
   findings
 }
 build_result <- function(root='.',data_dir=file.path(root,'data')) {
-  before<-input_hashes(root,data_dir);x<-read_inputs(root,data_dir);result<-calculate(x);map<-assemble_map(x$config,root)
+  before<-input_hashes(root,data_dir);x<-read_inputs(root,data_dir);result<-calculate(x,approved_only=TRUE);map<-assemble_map(x$config,root)
   if(!identical(before,input_hashes(root,data_dir)))stop('Inputs changed during build; retry after edits finish')
   list(version=x$config$version,as_of=x$config$as_of,input_hashes=before,
-    method=list(scenarios=x$config$scenarios,assumptions=x$config$assumptions,geography_note=x$config$geography_note),
+    scope='manually_approved_projects',
+    method=list(scenarios=x$config$scenarios,assumptions=x$config$assumptions,type_assumptions=x$config$type_assumptions,geography_note=x$config$geography_note),
+    approval=list(approved_project_ids=as.list(x$projects$project_id[x$projects$record_type=='existing']),
+      pending_project_ids=as.list(x$projects$project_id[x$projects$record_type=='candidate'])),
     projects=x$projects,capacity=x$capacity,sources=x$sources,
     scenarios=result$scenarios,project_scenarios=result$project_scenarios,ledger=result$ledger,
     coverage=list(projects=nrow(x$projects),claims=nrow(x$capacity),sources=nrow(x$sources),

@@ -1,6 +1,6 @@
 # Datacenterplaner i Sverige, Norge och Finland
 
-Projektregister med villkorade scenarier. Alla projekt och kandidater finns i varje scenarios översikt, också när effekt eller datum saknas. Okänd effekt är okänd, inte noll. Resultat och begränsningar redovisas i chatten.
+Ett register och en scenariomodell för både chatten och sajten. Godkända totalsummor omfattar manuellt godkända projekt. Alla projekt, även väntande kandidater och projekt utan MW eller datum, finns kvar i indikatorerna. Kandidater redovisas separat med sin effekt innan användaren godkänner namngivna ID:n här i chatten. Okänd effekt är okänd, inte noll.
 
 ## Det du underhåller
 
@@ -13,7 +13,7 @@ Projektregister med villkorade scenarier. Alla projekt och kandidater finns i va
 
 Tre tabeller, sammanlagt 45 kolumner. Inga separata granskningsregister eller lokala arkivkopior. Git håller historiken. Uppdatera tabellerna som en sammanhängande ändring, med en uppdaterare i taget.
 
-`scripts/model.R` räknar och kontrollerar; `scripts/tracker.R` skriver den publika trackerns filer; `scripts/pipeline.R` är ingången. `tests/method.R` testar beteendet med syntetiska projekt. `prompts/update.md` styr landsuppdateringen. Sju kartfiler täcker tio elområden.
+`scripts/model.R` räknar och kontrollerar; `scripts/tracker.R` formaterar samma godkända beräkning för sajten; `scripts/pipeline.R` är ingången. `tests/method.R` testar beteendet med syntetiska projekt. `prompts/update.md` styr landsuppdateringen. Sju kartfiler täcker tio elområden.
 
 ## Metod
 
@@ -32,7 +32,7 @@ Källans MW, definition, datum och status bevaras separat. [EPRI:s måttdefiniti
 | IT-effekt | Omräkning till anläggningssidan med PUE 1,1–1,5 som känslighetsfall. Lokal design-PUE ersätter det övre fallet. |
 | Anläggningskapacitet | Behåll angivet MW-tal. |
 | Nätanslutning | Behåll ramen och märk antagandet att den används till datacenter. En ansökan är inte en beviljad anslutning eller faktisk last. |
-| Ospecificerat datacenter-MW | Intervall mellan två läsningar: MW×1 som anläggnings-/nätsida (nedre) och MW×PUE som nominell IT-effekt (övre). EPRI 2026, s. 10–11, anger att nominell IT-effekt typiskt är det som annonseras; nordiska källor anger ofta "power". Klassas om efter ordalydelse vid varje körning (`prompts/update.md`). Den publika trackern använder den nedre läsningen. |
+| Ospecificerat datacenter-MW | Intervall mellan två läsningar: MW×1 som anläggnings-/nätsida (nedre) och MW×PUE som nominell IT-effekt (övre). EPRI 2026, s. 10–11, anger att nominell IT-effekt typiskt är det som annonseras; nordiska källor anger ofta "power". Klassas om efter ordalydelse vid varje körning (`prompts/update.md`). Hela intervallet används även på sajten. |
 | Explicit toppeffekt | Bevara toppvärdet. För kapacitetsjämförelsen används ett uttryckligt känslighetsfall: topp / 0,80 till topp / 0,62. Årsenergi beräknas direkt från ursprunglig topp. |
 | Reservkraft, generation, rackdensitet | Behåll observationen utan automatisk omräkning till datacenterlast. En publicerad, motiverad skattning av datacenterlast kan registreras som egen kapacitetsuppgift med källa. |
 
@@ -67,6 +67,8 @@ Byggtiden 2–3 år är en uttrycklig tillämpning av [IEA, Energy and AI, 2025]
 
 Mer precist källunderlag används med samma regler för alla projekt. En uttryckligen fullt driftsatt etapp får ingen andra femårsinfasning. Saknas sådan precision används standarden. Landsuppdateraren tolkar omfattning och datum; användaren behöver inte lägga in undantag. Ett campus kan ha en känd första etapp och en större odaterad ram samtidigt.
 
+När campusets MW och den första etappens datum kommer från olika uppgifter ska kopplingen prövas uttryckligen. Ett belagt driftår för den första etappen på samma nya campus kan vara `first_capacity` för rampen på campusramen, med båda källorna och tillämpningen som modellantagande i notes. Det daterar starten, inte full utbyggnad, och överför inte etappens genomförandebeslut till hela ramen. Nätår, senare utbyggnader på ett driftcampus och andra platser är inte automatiskt sådana ankare. `check` och landspaketet lyfter dessa fall under `capacity_timing_to_reconcile`; de kopplar inte datum automatiskt.
+
 ### Överlapp och befintlig drift
 
 `parent_id/relation` samlar campus, ingående etapper och kunder i en fysisk ram. Inom en sådan grupp används största tillämpliga omfattning, inte summan av campus och innehåll. Separata additiva utbyggnader har `independent` eller `incremental_to`; modellen antar inte att två namn är additiva. Om summan av etapper är dokumenterad registreras också den gemensamma omfattningen i samma kapacitetstabell.
@@ -77,7 +79,7 @@ Befintlig drift är inte ny utbyggnad. En jämförbar känd bas subtraheras för
 
 ### Energi, tolkning och täckning
 
-Årlig användningsfaktor beror på anläggningstyp (`config/pipeline.json` → `type_assumptions`, samma tabell som den publika trackern): hyperskala 0,75 och colocation 0,57 relativt nameplate, 0,94 respektive 0,88 relativt explicit topp ([EPRI 2026, s. 15](https://powering-intelligence.epri.com/annual-peak-use.html)). Colocation/AI 0,60 och AI/HPC 0,80 är egna bedömningar; AI/HPC-värdet vilar på LBNL:s driftstid för AI-servrar, som inte är en anläggningsfaktor, och är tabellens svagaste värde. Projekt utan typ får intervallet 0,57–0,75 (0,88–0,94 mot topp). Faktorerna bygger på ett litet amerikanskt anläggningsurval och är inte universella nordiska lastfaktorer. Infasning tillämpas en gång. Ingen extra beläggnings-/mognadsrabatt läggs ovanpå den. Ingen timprofil, samtidighetsprognos eller nätanslutningsgaranti räknas fram här.
+Årlig användningsfaktor beror på anläggningstyp (`config/pipeline.json` → `type_assumptions`, gemensamt för samtliga resultat): hyperskala 0,75 och colocation 0,57 relativt nameplate, 0,94 respektive 0,88 relativt explicit topp ([EPRI 2026, s. 15](https://powering-intelligence.epri.com/annual-peak-use.html)). Colocation/AI 0,60 och AI/HPC 0,80 är egna bedömningar; AI/HPC-värdet vilar på LBNL:s driftstid för AI-servrar, som inte är en anläggningsfaktor, och är tabellens svagaste värde. Projekt utan typ får intervallet 0,57–0,75 (0,88–0,94 mot topp). Faktorerna bygger på ett litet amerikanskt anläggningsurval och är inte universella nordiska lastfaktorer. Infasning tillämpas en gång. Ingen extra beläggnings-/mognadsrabatt läggs ovanpå den. Ingen timprofil, samtidighetsprognos eller nätanslutningsgaranti räknas fram här.
 
 Summeringar visar den kvantifierade delen och antal projekt utan användbart MW. Okänt elområde ligger i landets `unassigned`. Projekt utan MW är inte nollförbrukare. Alla registrerade projekt får en indikator i varje scenario, men detta bevisar inte fullständig marknadstäckning.
 
@@ -91,9 +93,8 @@ Mellan länderna (för dig):
 
 1. Läs redovisningen i chatten och körloggen i `runs/`.
 2. Granska `git diff data/` (registret) och `git diff assets/data/datacenters/scenario_zone.json` (sajtens zonsummor).
-3. Godkänn kandidater som ska bli publika genom att ändra `record_type` till `existing` i `data/projects.csv`, och kör sedan `Rscript scripts/pipeline.R tracker`.
-4. Committa. Starta nästa land i en ny session.
-5. När alla tre är klara: kopiera `assets/data/datacenters/` till sajtens `assets/data/datacenters/`.
+3. Granska kandidaternas källuppgifter och MW/TWh-bidrag per scenario i chatten. Godkänn uttryckligen valda projekt-ID:n här, exempelvis ”Godkänn P039 och P055”. Agenten inför bara dessa med `approve` och uppdaterar samtliga resultat samt den lokala sajten när dess checkout finns bredvid pipelinen. Övriga förblir kandidater.
+4. Granska och committa ändringarna. Publicering görs separat på din instruktion. Starta nästa land i en ny session.
 
 | Steg | Fast uppgift |
 | --- | --- |
@@ -101,7 +102,8 @@ Mellan länderna (för dig):
 | Discover | Sök brett i landet via operatörer, plan/tillstånd, nät, branschpress och landssökning, på alla angivna språk. |
 | Audit | Följ upp varje befintligt och nytt projekt och alla kapacitetsuppgifter; klassa MW efter ordalydelse; arbeta igenom arbetslistan. |
 | Reconcile/review | Stäm av projekt och MW mot resultatet, granska ändringar, gör en andra sök-/granskningspassage och följ upp bortfall. |
-| Apply/report | Inför hela ändringen, bygg resultatet och trackerfilerna och redovisa per elområde/scenario i chatten. |
+| Apply/report | Inför källinventeringen, bygg godkända resultat och redovisa per elområde/scenario samt kandidaternas villkorade effekt i chatten. |
+| Manuellt godkännande | Användaren godkänner namngivna kandidater här i chatten; agenten ändrar bara dessa och bygger om samma beräkning för chatten och sajten. |
 
 Agenten genomför hela processen enligt `prompts/update.md`; användaren behöver inte fördela projekt eller starta varje delsteg. `scratch` börjar med tomma arbetsregister för valda länder och stämmer senare av mot tidigare identiteter; tidigare observationer försvinner inte bara för att bredsökningen missade dem.
 
@@ -113,11 +115,12 @@ Rscript scripts/pipeline.R prepare --country=SE --mode=refresh
 Rscript scripts/pipeline.R check --data=/sökväg/till/arbetskatalog
 Rscript tests/method.R
 Rscript scripts/pipeline.R apply --data=/sökväg/till/arbetskatalog
+Rscript scripts/pipeline.R check
 ```
 
 `prepare` skapar endast tre CSV-kopior och ett packet.json i en unik tillfällig katalog; det ändrar inte registret. Paketet innehåller också svenska/norska/finska sökord, måttbegrepp, källvägar och språkkrav från de tidigare landsprofilerna. Inga nya permanenta tabeller eller kolumner tillkommer. Metodens källdatum i konfigurationen är inte bevis på en ny inventering; paketet och det införda resultatets inventory_run anger körningens datum och länder.
 
-`check` validerar och visar luckor/ändringar. `apply` kontrollerar utgångsläge, bevarade ID:n och landsavgränsning, inför de tre tabellerna och bygger resultatet. Vanliga skrivfel återställer tidigare filer; ett avbrutet system under införandet behöver kontrolleras innan arbetet fortsätter. Sökningens kvalitet bedöms i promptens granskningssteg, inte genom en metadataflagga.
+`check --data=...` validerar arbetskopian och visar luckor/ändringar. Vanlig `check` kontrollerar dessutom att sparade analys- och sajtfiler motsvarar dagens register och modell, inklusive den lokala sajtkopian när den finns. Saknade eller inaktuella filer ger fel; kör `build` efter metodändringar eller vid första installationen. `apply` kontrollerar utgångsläge, bevarade ID:n, godkännandestatus och landsavgränsning och inför tabeller och resultat tillsammans. Vanliga skrivfel återställer tidigare filer; ett avbrutet system under införandet behöver kontrolleras innan arbetet fortsätter. Sökningens kvalitet bedöms i promptens granskningssteg.
 
 För fristående, läsande förberedelse och beräkning finns även:
 
@@ -130,22 +133,48 @@ Rscript scripts/pipeline.R tracker --output-dir=/tmp/tracker-preview
 
 Varken paketförberedelse, kontroller eller `build` utför webbinventering. Agenten behöver fungerande sök-/läsverktyg för den delen. En omräkning av gamla data får aldrig presenteras som en ny inventering. Standardresultatet är en JSON med register, metod, projekt/scenarier, täckning och karta. Ingen extern publicering sker.
 
+## Kandidater och manuellt godkännande
+
+`record_type=candidate` betyder att användarens godkännande väntar, oberoende av projektets byggstatus. `existing` är det befintliga interna värdet för en manuellt godkänd post; det betyder inte driftsatt. Byggstatus och kapacitetsradens genomförandebeslut är källuppgifter och ändras inte vid godkännande.
+
+Agenten skapar ett aktuellt beslutsunderlag:
+
+```sh
+Rscript scripts/pipeline.R review --country=SE --output=/tmp/se-review.json
+```
+
+Det visar per kandidat käll-MW, netto/ram, infasad kapacitet och TWh per scenario, källa och effekt på landets godkända totalsumma om just den kandidaten godkänns. Okänt MW förblir okänt. Effekter för överlappande kandidater får inte summeras mekaniskt; ett kombinerat godkännande räknas om tillsammans. Underlaget är en tillfällig körfil, inget ytterligare register.
+
+Agenten presenterar underlaget här i chatten och inväntar uttryckligt godkännande av ID:n. Först därefter kör agenten exempelvis:
+
+```sh
+Rscript scripts/pipeline.R approve --ids=P039,P055 --review=/tmp/se-review.json
+```
+
+Kommandot kontrollerar att underlaget fortfarande gäller, ändrar enbart valda kandidater till `existing` och bygger godkända analys- och sajtfiler tillsammans med samma modell. Den lokala sajtkopian ingår när den finns enligt nedan. Hela filändringen återställs vid ett normalt installationsfel. `apply` får varken godkänna nya projekt eller återkalla befintliga godkännanden. Byggstatus kan uppdateras med källstöd utan att godkännandet ändras. Kommandot kan inte verifiera en mänsklig chatt; agenten får anropa `approve` endast efter användarens uttryckliga godkännande här. Kör därefter `check` och redovisa de faktiska MW/TWh-ändringarna.
+
 ## Koppling till trackern (dfornis.github.io)
 
-Sidan `/projects/datacenter-tracker/` läser fyra filer: `projects.json`, `capacity.json`, `scenario_zone.json` och `bidding_zones.geojson` i `assets/data/datacenters/`. `apply` skriver dem i samma steg som registret förs in, och `Rscript scripts/pipeline.R tracker` skriver dem fristående. Kopiera mappen till sajtens `assets/data/datacenters/`; inga ändringar i sajtens kod behövs.
+`assets/datacenters.json` innehåller registret, godkända scenariototaler och en indikator för varje projekt. Väntande kandidater är tydligt markerade och påverkar inte de godkända totalerna. `assets/data/datacenters/results.json` är samma beräkning filtrerad till godkända projekt, källor och indikatorer för sajten.
 
-Filerna har exakt samma fält och fältordning som tidigare och samma scenarioregler som sidans JavaScript (år = tidigaste av drift- och byggstartsår; Low kräver beslut; High tar med odaterat). Tabellens summa och kartans Σ blir därmed samma, utom när en kund ligger inom ett annat projekts campusram: kartan räknar den en gång, tabellen visar båda raderna.
+`projects.json`, `capacity.json`, `scenario_zone.json` och `bidding_zones.geojson` finns kvar som formaterade vyer av samma resultat. Råkapaciteten är källans observationer, inte en separat scenarioberäkning. Inga gamla punktvärden räknas fram. Godkända projekt utan MW eller geografi behålls; okänt elområde redovisas i landets `unassigned`. Drift/vilande/avbrutna projekt behålls som indikatorer medan modellen avgör deras eventuella nya kapacitet.
 
-- **Urval:** `record_type = existing` och status som inte är Operational, Dormant eller Cancelled. Nya projekt läggs in som `candidate` och syns inte publikt förrän de ändras till `existing`. Det är granskningssteget innan något publiceras.
-- **Punktvärden:** typbaserad PUE och årlig lastfaktor från `config/pipeline.json` → `type_assumptions`, samma tabell som sidan redovisar och som modellen använder för lastfaktorn. En källbelagd design-PUE på kapacitetsraden ersätter typvärdet.
-- **Tolkning:** IT-effekt × PUE ger nätsidan. Anläggnings-, nät- och ospecificerat MW används som nätsidans MW och IT = MW / PUE (`tracker.unspecified_headline_as = facility`). Reservkraft, reaktoreffekt och felattribuerade uppgifter blir ingen last.
-- **Krav för publicering:** publika projekt behöver `type`, elområde och koordinater; annars stoppar `apply` innan något ersätts.
-- **Text:** "data centre/center" skrivs "datacenter" i de publicerade fälten, som på sajten. Källutdragen ändras inte.
+`web/datacenter-tracker.md` och `assets/js/datacenter-tracker.js` är den gemensamma visningen. Tabellen och kartan läser färdiga projekt/scenariovärden ur `results.json`. Webbläsaren får filtrera och summera dessa men räknar ingen egen PUE, infasning, scenariokvalificering eller avdubbling. Intervall visas som intervall; kartfärgen använder uttryckligen det övre värdet. Käll-MW, tillkommande kapacitetsram och infasad kapacitet hålls isär.
 
-Intervall och femårsinfasning finns kvar i `assets/datacenters.json` för analysen; den publika sidan visar punktvärden utan infasning.
+```sh
+# Bygg resultat och uppdatera även syskonkatalogen ../dfornis.github.io när den finns:
+Rscript scripts/pipeline.R tracker
+# Om sajtens checkout ligger någon annanstans, ange samma sökväg vid införande och kontroll:
+Rscript scripts/pipeline.R tracker --site=/sökväg/till/dfornis.github.io
+Rscript scripts/pipeline.R check --site=/sökväg/till/dfornis.github.io
+```
+
+`apply`, `approve`, vanlig `build` och `tracker` använder samma införande: register, analys, sajtunderlag och den lokala sajtens filer uppdateras tillsammans. Syskonkatalogen `../dfornis.github.io` hittas automatiskt. För annan plats används `--site=...` på dessa kommandon och på `check`. Saknas en lokal checkout byggs bara pipelinens filer; ingen publicering sker. Sajtens tidigare `scripts/build_datacenter_data.R` delegerar till samma ingång.
+
+Förhandsvisningar kräver egen destination: `build --data=... --output=/tmp/preview.json` eller `tracker --data=... --output-dir=/tmp/tracker-preview`. De får inte skriva över aktiva resultat eller kombineras med `--site`. Utan `--data` kan samma alternativ användas för en fristående kopia av registret. `apply --output=...` ger en extra kopia och uppdaterar fortfarande alla ordinarie resultat. Ingen av dessa åtgärder committar eller pushar något.
 
 ## Status och historik
 
-Metod 3.2 (oktober 2026) lägger till intervallet för ospecificerat MW, typberoende lastfaktor och exporten till den publika trackern. Det är metodändringar inför landsuppdateringen, inte en ny inventering: de 52 projektposterna, 46 kapacitetsuppgifterna och 130 källorna är oförändrade. Kända luckor (15 ospecificerade MW-rader i Sverige, projekt utan datum eller MW) står i arbetslistan för nästa landskörning.
+Metod 3.3 (oktober 2026) ersätter den separata äldre sajtberäkningen med den gemensamma modellen. Manuellt kandidatgodkännande här i chatten styr nu godkända totalsummor i samtliga resultat. Detta är en flödesändring och omräkning av befintliga källuppgifter, inte en ny webbinventering. Metod 3.2 införde intervallet för ospecificerat MW och typberoende årsenergifaktorer.
 
 Tidigare underlag och körningshistorik finns i Git, bland annat `9779acc`. Behåll stabila ID:n; nya löpnummer ska ligga över högsta använda nummer även i historiken. Utdataformat 3.1 återställer ursprungliga scenario-ID:n och skiljer nameplate från infasad kapacitet. Det saknar en femte potential-scenariofamilj. Kartornas ursprung/återanvändningsrätt är olösta och koordinaterna är ungefärliga visningspunkter.

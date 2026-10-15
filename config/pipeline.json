@@ -1,7 +1,7 @@
 {
-  "version": "3.2.0",
+  "version": "3.3.0",
   "as_of": "2026-10-11",
-  "purpose": "Public-project inventory and conditional planning scenarios; no automatic exclusion for missing review metadata or full commissioning dates.",
+  "purpose": "One scenario model for manually approved project totals, candidate impact reviews, and the website; unknowns and all project indicators are retained.",
   "tables": {
     "projects": [
       "project_id",
@@ -360,7 +360,7 @@
       2,
       3
     ],
-    "unknown_mw": "Unspecified datacenter MW (basis=unspecified) is an envelope between two readings: the facility/grid-side figure (MW x 1, lower) and nominal IT capacity (MW x upper PUE, upper; EPRI 2026 pp.10-11: nominal IT capacity is what is typically reported in public announcements). Reclassify from source wording when possible; the public tracker uses the lower, facility reading.",
+    "unknown_mw": "Unspecified datacenter MW is an envelope between the facility/grid-side reading (MW x 1) and nominal IT reading (MW x upper PUE; EPRI 2026 pp.10–11). Reclassify from source wording where possible. The same interval is used in reviews, approved results and the website.",
     "grid_mw": "Connection envelope only. Scenario equivalent assumes the allocated share is deployed as facility capacity; not measured demand.",
     "unknown_baseline": "Gross site envelope is retained; additional capacity range is 0 to gross unless comparable installed baseline is known.",
     "overlap": "Use one physical envelope; possible containment is assumed containment for aggregation, with the tenant retained in the project indicator.",
@@ -371,6 +371,7 @@
     ],
     "electrical_output": "Facility-side nameplate capacity proxy, including cooling and auxiliary loads. Explicit peak claims use the declared inverse empirical peak/nameplate sensitivity; source MW and basis are retained. Phased MW is deployed capacity, not actual peak. Energy uses the original peak denominator when supplied.",
     "unknown_timing": "An eligible undated claim has a 0–100% deployment interval, not an invented first year. Its entire nameplate envelope remains visible. Low and Stated use dated claims; High also includes undated claims.",
+    "campus_timing": "After explicit scope reconciliation, a sourced first-phase operation year on the same new campus may be recorded as first_capacity of its overall capacity envelope, with both sources and the application assumption in claim notes. Apply the existing five-year ramp; its completion year is modelled, not a source promise. This is our application of the phasing assumption below, not evidence that all campus MW is committed. Do not inherit the phase decision. Grid dates, later expansions of operating campuses and other sites are not automatic anchors. The worklist surfaces unresolved combinations for review without moving dates.",
     "grid_timing": "Grid availability is an earliest possible start, not commissioning. Lower deployment is zero; upper uses the same ramp from the earliest grid year, constrained by construction when known. No extra one-year delay.",
     "full_capacity_timing": "An explicit full-capacity year anchors completion of this capacity scope. Before that date, backcast the default ramp; construction timing constrains its start. This backcast is a model adaptation, not a sourced commissioning date.",
     "scenario_selection": "Names, IDs and decision/date selection are inherited from bb15b4e. First capacity or construction can anchor phasing; full-capacity dates are not mandatory. Selection is a conditional scenario definition, not a calibrated probability. No EPRI US completion percentages are transplanted to Nordic 2035.",
@@ -409,7 +410,7 @@
         "url": "https://powering-intelligence.epri.com/understanding-metrics.html",
         "locator": "Understanding Metrics; updated 2026-02-21",
         "use": "Separate nominal IT, facility nameplate/service capacity, active capacity and realized peak.",
-        "limitation": "Preserve uncertain source definitions. Unspecified headline-as-facility is the inherited reporting convention, not proof of its physical basis."
+        "limitation": "Preserve uncertain source definitions. The facility-to-IT interval is a sensitivity, not proof of the actual electrical denominator."
       },
       "pipeline_selection": {
         "url": "https://dso.nationalgrid.co.uk/downloads/15083/data-centre-impact-study2.pdf",
@@ -421,73 +422,61 @@
     "annual_use_by_type": "Load factor relative to nameplate depends on facility type (EPRI 2026 p.15: 75% hyperscale facility, 57% co-location average). type_assumptions gives one value per type category; nameplate_annual_fraction is only used when type is unknown."
   },
   "type_assumptions": {
-    "purpose": "One table for the research model and the public tracker. Category is derived from projects.type with the published tracker mapping (hyperscale/AI/HPC/colocation/research tags).",
-    "origin": "PUE and load factors are the values published on the tracker page (data/master/assumptions.csv at e3b85cc). Peak-relative factors from EPRI 2026 p.15.",
-    "model_use": "Model: annual energy = phased capacity x type load factor (relative to nameplate) x 8760, or x type peak load factor for explicit peak claims. Projects without type keep the generic ranges in assumptions.nameplate_annual_fraction / peak_annual_fraction. PUE in the model remains the 1.1-1.5 sensitivity (assumptions.pue); the tracker uses the type PUE as its point value.",
+    "purpose": "Type-specific annual use factors for the single scenario model. The website displays the computed result without a separate PUE, timing or scenario calculation.",
+    "origin": "Annual load factors from the previous method table, with peak-relative factors from EPRI 2026 p.15. PUE sensitivity is defined once in assumptions.pue and sourced claim-level pue.",
+    "model_use": "Annual energy uses phased capacity x type load factor x 8760, or the peak-relative factor for explicit peak claims. Unknown types retain the generic sensitivity. PUE uses assumptions.pue and any sourced claim-level design PUE for all outputs.",
     "categories": {
       "Hyperscale": {
-        "pue": 1.2,
         "load_factor": 0.75,
         "peak_load_factor": [
           0.94,
           0.94
         ],
-        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with large hyperscale facilities potentially as low as 1.1. Shehabi et al. 2024 supports low hyperscale PUE assumptions.",
         "load_factor_source": "EPRI 2026; observed large hyperscale facility annual load factor of 75% relative to nameplate capacity. Shehabi et al. 2024 used only as supporting evidence on high relative hyperscale server operational time.",
         "peak_load_factor_source": "EPRI 2026 p.15: annual load factor relative to realized peak 94% for the hyperscale facility."
       },
       "Hyperscale_AI": {
-        "pue": 1.2,
         "load_factor": 0.75,
         "peak_load_factor": [
           0.94,
           0.94
         ],
-        "pue_source": "EPRI 2026; large hyperscale facilities with liquid cooling may reach PUE as low as 1.1. Shehabi et al. 2024 models AI data centres separately by cooling system.",
         "load_factor_source": "EPRI 2026; hyperscale observed annual load factor of 75% relative to nameplate capacity. Shehabi et al. 2024 distinguishes AI training and inference operational time. Regen/National Grid DSO 2025 notes AI training is relatively flat while inference is peakier.",
         "peak_load_factor_source": "EPRI 2026 p.15: annual load factor relative to realized peak 94% for the hyperscale facility."
       },
       "AI_HPC": {
-        "pue": 1.25,
         "load_factor": 0.8,
         "peak_load_factor": [
           0.88,
           0.94
         ],
-        "pue_source": "Shehabi et al. 2024; AI data centres modelled separately for air and liquid cooling. EPRI 2026 supports lower PUE for newer large facilities.",
         "load_factor_source": "Shehabi et al. 2024; AI training server operational time assumed at 80%, varied between 75-85%. EPRI 2026 provides facility-level support that hyperscale load factors can be high but below nameplate.",
         "peak_load_factor_source": "No type-specific observation; EPRI 2026 p.15 range across hyperscale (94%) and co-location (88%)."
       },
       "Colocation_AI": {
-        "pue": 1.35,
         "load_factor": 0.6,
         "peak_load_factor": [
           0.88,
           0.88
         ],
-        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with older/smaller facilities higher. Shehabi et al. 2024 supports colocation PUE below roughly 1.4 in recent years.",
         "load_factor_source": "EPRI 2026; smaller multi-tenant co-location facilities averaged 57% annual load factor relative to nameplate. Regen/National Grid DSO 2025 notes colocation load is relatively consistent due to tenant diversity, while AI workloads may increase variability.",
         "peak_load_factor_source": "EPRI 2026 p.15: annual load factor relative to realized peak 88% on average for co-location facilities."
       },
       "Colocation": {
-        "pue": 1.35,
         "load_factor": 0.57,
         "peak_load_factor": [
           0.88,
           0.88
         ],
-        "pue_source": "EPRI 2026; average U.S. data centre PUE estimated at 1.32 in 2024, with older/smaller facilities higher. Shehabi et al. 2024 supports colocation PUE below roughly 1.4 in recent years.",
         "load_factor_source": "EPRI 2026; smaller multi-tenant co-location facilities averaged 57% annual load factor relative to nameplate capacity. Regen/National Grid DSO 2025 supports relatively consistent colocation load due to flat storage/cloud use cases and tenant diversity.",
         "peak_load_factor_source": "EPRI 2026 p.15: annual load factor relative to realized peak 88% on average for co-location facilities."
       },
       "Research_SMR": {
-        "pue": 1.25,
         "load_factor": 0.8,
         "peak_load_factor": [
           0.88,
           0.94
         ],
-        "pue_source": "Placeholder aligned with AI/HPC-oriented facilities. Concept entries are not translated into grid-side load unless IT load is specified.",
         "load_factor_source": "Placeholder aligned with AI/HPC-oriented facilities. Concept entries are not translated into annual electricity use unless IT/grid-side load is specified.",
         "peak_load_factor_source": "No type-specific observation; EPRI 2026 p.15 range across hyperscale (94%) and co-location (88%)."
       }
@@ -589,7 +578,8 @@
       "discover",
       "audit",
       "reconcile_review",
-      "apply_report"
+      "apply_report",
+      "manual_candidate_approval"
     ],
     "discovery_routes": [
       "operator",
@@ -611,20 +601,20 @@
       "capacity": 47,
       "sources": 143
     },
-    "id_floor_origin": "Highest P/C/S IDs across all CSV history through 9a08c22; later records are retained and new IDs advance above the live maximum."
+    "id_floor_origin": "Highest P/C/S IDs across all CSV history through 9a08c22; later records are retained and new IDs advance above the live maximum.",
+    "manual_candidate_approval": {
+      "authority": "Explicit human approval of named project IDs in the current chat. An inventory or workflow-change request does not approve candidates.",
+      "review": "Present sources, source MW, additional capacity envelope and per-scenario MW/TWh impact, unknowns and overlap. Individual conditional impacts are not automatically additive.",
+      "apply": "review creates a temporary snapshot; approve requires that unchanged snapshot and explicitly approved IDs. Inventory apply cannot promote candidates. Rebuild all approved outputs together after approval."
+    }
   },
   "tracker": {
-    "purpose": "Point-estimate export for the public tracker page (dfornis.github.io /projects/datacenter-tracker/). Same files, fields and scenario rules as the page JavaScript. Research ranges and phasing remain in model.R and assets/datacenters.json.",
+    "purpose": "Presentation of the same manually approved model result used in chat. No independent site calculation. Local site installation is separate from external publishing.",
     "output_dir": "assets/data/datacenters",
+    "result_file": "results.json",
     "public_record_types": [
       "existing"
     ],
-    "excluded_statuses": [
-      "Operational",
-      "Dormant",
-      "Cancelled"
-    ],
-    "unspecified_headline_as": "facility",
-    "unspecified_headline_note": "facility = headline MW is used as grid-side capacity and IT load = MW/PUE (published tracker convention). it = headline MW is nominal IT capacity and grid-side = MW*PUE (EPRI 2026, pp. 10-11: nominal IT capacity is what is typically reported in public announcements)."
+    "scope": "All approved project indicators, including unknown MW, missing geography and inactive/operating history. The capacity model determines additional MW; display status never invents capacity."
   }
 }

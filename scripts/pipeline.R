@@ -15,18 +15,31 @@ write_tables <- function(x,path) {
 run_worklist <- function(x,countries) {
   # The concrete to-do list for a country run. Recomputed from the tables, so it shrinks as work is done.
   p<-x$projects[x$projects$country %in% countries,,drop=FALSE];c<-x$capacity[x$capacity$project_id %in% p$project_id,,drop=FALSE]
-  s<-x$sources;excluded<-unlist(x$config$tracker$excluded_statuses)
+  s<-x$sources;excluded<-c('Operational','Dormant','Cancelled')
   load<-nzchar(c$mw) & !c$basis %in% c('backup','generation','density') & c$issue!='identity_conflict'
   excerpt<-function(ref)lapply(ids(ref),function(id)list(source_id=id,excerpt=s$excerpt[match(id,s$source_id)],url=s$url[match(id,s$source_id)]))
   live<-p[!p$status %in% c('Cancelled','Dormant'),,drop=FALSE]
   public<-p[p$record_type=='existing' & !p$status %in% excluded,,drop=FALSE]
-  dated<-unique(c$project_id[nzchar(c$first_year)|nzchar(c$construction_year)])
+  active<-!c$status %in% c('Operational','Cancelled','Dormant') &
+    !p$status[match(c$project_id,p$project_id)] %in% c('Cancelled','Dormant') &
+    !c$basis %in% c('backup','generation','density') & c$issue!='identity_conflict'
+  row_dated<-vapply(seq_len(nrow(c)),function(i)timing_share(c[i,],x$config$scenarios[[1]]$year,x$config)$dated,TRUE)
+  dated<-unique(c$project_id[active & row_dated])
+  timing_review<-Filter(Negate(is.null),lapply(which(load & active & !row_dated),function(i) {
+    anchors<-which(active & row_dated & c$project_id==c$project_id[i])
+    if(!length(anchors))return(NULL)
+    detail<-function(j)c(as.list(c[j,c('claim_id','phase','mw','basis','timing','first_year','last_year',
+      'construction_year','decision','baseline_scope','parent_id','relation','notes')]),list(sources=excerpt(c$source_ids[j])))
+    list(project_id=c$project_id[i],claim_id=c$claim_id[i],undated_capacity=detail(i),
+      dated_claims=lapply(anchors,detail))
+  }))
   missing_display<-p[!nzchar(p$type)|!nzchar(p$county)|!nzchar(p$bidding_zone)|!nzchar(p$latitude),,drop=FALSE]
   list(
     reclassify_unspecified=lapply(which(c$basis=='unspecified'),function(i)list(claim_id=c$claim_id[i],project_id=c$project_id[i],
       mw=c$mw[i],phase=c$phase[i],sources=excerpt(c$source_ids[i]))),
     projects_without_mw=as.list(setdiff(live$project_id,c$project_id[load])),
     capacity_sources_to_reconcile=Filter(function(f)f$project_id %in% p$project_id,capacity_followups(x)),
+    capacity_timing_to_reconcile=timing_review,
     public_projects_without_dates=as.list(setdiff(public$project_id[public$project_id %in% c$project_id[load]],dated)),
     candidates_to_assess=as.list(p$project_id[p$record_type=='candidate']),
     missing_display_fields=lapply(seq_len(nrow(missing_display)),function(i)list(project_id=missing_display$project_id[i],
@@ -107,43 +120,197 @@ review_run <- function(root='.',path) {
     stop('Country/claim ownership changed outside selected countries; use an all-country run')
   if(any(old$capacity$project_id!=new$capacity$project_id[match(old$capacity$claim_id,new$capacity$claim_id)]))
     stop('Existing claim reassigned to another project; retain it and use a new claim ID')
+  # Inventory runs may add facts, but only the separate manual approval step may promote projects.
+  promoted<-new$projects$project_id[new$projects$record_type=='existing' &
+    !new$projects$project_id %in% old$projects$project_id[old$projects$record_type=='existing']]
+  if(length(promoted))stop('Manual chat approval required; use review then approve for: ',paste(promoted,collapse=', '))
+  demoted<-old$projects$project_id[old$projects$record_type=='existing' &
+    new$projects$record_type[match(old$projects$project_id,new$projects$project_id)]!='existing']
+  if(length(demoted))stop('Inventory cannot revoke manual approval for: ',paste(demoted,collapse=', '))
   list(packet=packet,changes=changes)
 }
-apply_run <- function(root='.',path,output=file.path(root,'assets/datacenters.json')) {
-  # One writer, complete validation before replacement, and rollback on a normal I/O error.
+with_writer <- function(root,fn) {
   lock<-file.path(root,'.locks','pipeline');dir.create(dirname(lock),showWarnings=FALSE,recursive=TRUE)
-  if(!dir.create(lock,showWarnings=FALSE))stop('Another apply is active (or an interrupted apply needs inspection): ',lock)
+  if(!dir.create(lock,showWarnings=FALSE))stop('Another update is active (or an interrupted update needs inspection): ',lock)
   on.exit(unlink(lock,recursive=TRUE),add=TRUE)
-  review<-review_run(root,path);r<-build_result(root,path)
-  tracker<-build_tracker(root,path) # public export must be complete before anything is replaced
-  r$inventory_run<-list(date=review$packet$run_date,countries=review$packet$countries,mode=review$packet$mode)
-  files<-table_files(read_inputs(root)$config)
-  staged<-tempfile('datacenter-apply-');dir.create(staged);on.exit(unlink(staged,recursive=TRUE),add=TRUE)
-  if(!all(file.copy(file.path(path,files),staged)))stop('Could not stage input tables')
-  for(i in seq_along(files))if(file_hash(file.path(staged,files[i]))!=r$input_hashes[[i]])stop('Work tables changed during apply; retry')
-  atomic_output(r,file.path(staged,'result.json'))
-  destinations<-c(file.path(root,'data',files),output)
+  fn()
+}
+site_checkout <- function(root='.',site=NULL) {
+  # The existing sibling checkout convention also used by the site's compatibility script.
+  if(is.null(site)) {
+    sibling<-file.path(dirname(normalizePath(root)),'dfornis.github.io')
+    if(!dir.exists(sibling))return(NULL)
+    site<-sibling
+  }
+  if(!file.exists(file.path(site,'_config.yml')))stop('Expected the local Jekyll site checkout: ',site)
+  normalizePath(site)
+}
+site_presentation <- function(root,site) {
+  setNames(file.path(root,c('assets/js/datacenter-tracker.js','web/datacenter-tracker.md','web/build_datacenter_data.R')),
+    file.path(site,c('assets/js/datacenter-tracker.js','_projects/datacenter-tracker.md','scripts/build_datacenter_data.R')))
+}
+install_result <- function(root,result,data_dir=NULL,output=file.path(root,'assets/datacenters.json'),site=NULL) {
+  staged<-tempfile('datacenter-install-');dir.create(staged);on.exit(unlink(staged,recursive=TRUE),add=TRUE)
+  tracker<-build_tracker(root,data_dir %||% file.path(root,'data'),result)
+  atomic_output(result,file.path(staged,'result.json'))
+  write_tracker(tracker,file.path(staged,'tracker'))
+  cfg<-read_inputs(root,data_dir %||% file.path(root,'data'))$config
+  generated<-list.files(file.path(staged,'tracker'),full.names=TRUE)
+  replacements<-c(file.path(staged,'result.json'),generated)
+  canonical<-file.path(root,'assets/datacenters.json')
+  destinations<-c(canonical,file.path(root,cfg$tracker$output_dir,basename(generated)))
+  if(path_id(output)!=path_id(canonical)) {
+    json_destination(output,root,data_dir)
+    replacements<-c(replacements,file.path(staged,'result.json'));destinations<-c(destinations,output)
+  }
+  site<-site_checkout(root,site)
+  if(!is.null(site)) {
+    presentation<-site_presentation(root,site)
+    local_files<-file.path(staged,paste0('presentation-',seq_along(presentation)))
+    if(!all(file.copy(presentation,local_files)))stop('Could not stage site presentation')
+    replacements<-c(replacements,generated,local_files)
+    destinations<-c(destinations,file.path(site,cfg$tracker$output_dir,basename(generated)),names(presentation))
+  }
+  if(!is.null(data_dir)) {
+    files<-table_files(cfg)
+    stopifnot(all(file.copy(file.path(data_dir,files),staged)))
+    for(i in seq_along(files))if(file_hash(file.path(staged,files[i]))!=result$input_hashes[[i]])stop('Work tables changed during installation')
+    replacements<-c(file.path(staged,files),replacements)
+    destinations<-c(file.path(root,'data',files),destinations)
+  }
+  if(anyDuplicated(vapply(destinations,path_id,'')))stop('Output destinations overlap')
   existing<-file.exists(destinations);backups<-file.path(staged,paste0(seq_along(destinations),'.backup'))
   if(any(existing)&&!all(file.copy(destinations[existing],backups[existing])))stop('Could not back up destinations')
-  if(!identical(review$packet$input_hashes,input_hashes(root)))stop('Register changed during apply; retry')
-  complete<-FALSE
-  on.exit(if(!complete) {
-    for(i in which(existing))install_file(backups[i],destinations[i])
-    unlink(destinations[!existing])
+  installed<-integer();complete<-FALSE
+  on.exit(if(!complete)for(i in rev(installed)) {
+    if(existing[i])install_file(backups[i],destinations[i]) else unlink(destinations[i])
   },add=TRUE,after=FALSE)
-  dir.create(dirname(output),recursive=TRUE,showWarnings=FALSE)
-  replacements<-c(file.path(staged,files),file.path(staged,'result.json'))
-  for(i in seq_along(destinations))install_file(replacements[i],destinations[i])
+  for(i in seq_along(destinations)) {
+    dir.create(dirname(destinations[i]),recursive=TRUE,showWarnings=FALSE)
+    install_file(replacements[i],destinations[i]);installed<-c(installed,i)
+  }
   complete<-TRUE
-  tracker_dir<-file.path(root,read_inputs(root)$config$tracker$output_dir)
-  write_tracker(tracker,tracker_dir)
-  invisible(list(result=r,changes=review$changes,tracker=tracker_dir))
+  invisible(tracker)
 }
-json_destination <- function(path,root='.') {
-  if(!grepl('\\.json$',path))stop('Output must be a .json file')
-  protected<-c('config/pipeline.json','renv.lock',file.path('data',table_files(read_inputs(root)$config)))
-  if(normalizePath(path,mustWork=FALSE) %in% normalizePath(file.path(root,protected),mustWork=FALSE))stop('Output would overwrite an input')
+previous_inventory <- function(root,result) {
+  path<-file.path(root,'assets/datacenters.json')
+  if(file.exists(path))result$inventory_run<-json_read(path)$inventory_run
+  result
+}
+apply_run <- function(root='.',path,output=file.path(root,'assets/datacenters.json'),site=NULL) {
+  with_writer(root,function() {
+    review<-review_run(root,path);r<-build_result(root,path)
+    r$inventory_run<-list(date=review$packet$run_date,countries=review$packet$countries,mode=review$packet$mode)
+    if(!identical(review$packet$input_hashes,input_hashes(root)))stop('Register changed during apply; retry')
+    install_result(root,r,path,output,site)
+    invisible(list(result=r,changes=review$changes,tracker=file.path(root,read_inputs(root)$config$tracker$output_dir)))
+  })
+}
+result_totals <- function(result,country) {
+  d<-result$project_scenarios
+  d<-d[d$country==country & d$included_in_result,,drop=FALSE]
+  do.call(rbind,lapply(result$method$scenarios,function(sc) {
+    rows<-d[d$scenario==sc$id,,drop=FALSE]
+    total<-function(key)if(any(is.na(rows[[key]]) & rows$capacity_known))NA_real_ else sum(rows[[key]],na.rm=TRUE)
+    data.frame(scenario=sc$id,nameplate_mw_low=total('nameplate_mw_low'),nameplate_mw_high=total('nameplate_mw_high'),
+      mw_low=total('mw_low'),mw_high=total('mw_high'),annual_twh_low=total('annual_twh_low'),annual_twh_high=total('annual_twh_high'),
+      projects_without_mw=sum(!rows$capacity_known & !rows$indicator %in% c('operational','cancelled','dormant')),stringsAsFactors=FALSE)
+  }))
+}
+review_candidates <- function(root='.',country='SE') {
+  before<-input_hashes(root);x<-read_inputs(root);validate_inputs(x)
+  countries<-country_selection(x$config,country)
+  base<-build_result(root)
+  pending<-x$projects[x$projects$country %in% countries & x$projects$record_type=='candidate',,drop=FALSE]
+  shape<-function(r)list(project_scenarios=r$project_scenarios,method=list(scenarios=x$config$scenarios))
+  candidates<-lapply(seq_len(nrow(pending)),function(i) {
+    p<-pending[i,];trial<-x;trial$projects$record_type[trial$projects$project_id==p$project_id]<-'existing'
+    after<-calculate(trial,approved_only=TRUE)
+    old<-result_totals(base,p$country);new<-result_totals(shape(after),p$country)
+    delta<-new
+    for(k in setdiff(names(delta),'scenario'))delta[[k]]<-new[[k]]-old[[k]]
+    own<-after$project_scenarios[after$project_scenarios$project_id==p$project_id,,drop=FALSE]
+    if(any(!own$capacity_known) && !p$status %in% c('Operational','Cancelled','Dormant'))
+      for(k in c('nameplate_mw_low','nameplate_mw_high','mw_low','mw_high','annual_twh_low','annual_twh_high'))delta[[k]]<-NA_real_
+    claims<-x$capacity[x$capacity$project_id==p$project_id,,drop=FALSE]
+    refs<-unique(c(ids(p$source_ids),unlist(lapply(claims$source_ids,ids))))
+    list(project=as.list(p),reported_capacity=claims,
+      project_scenarios=after$project_scenarios[after$project_scenarios$project_id==p$project_id,,drop=FALSE],
+      country_totals_before=old,country_totals_after=new,delta_if_approved=delta,
+      sources=x$sources[x$sources$source_id %in% refs,,drop=FALSE])
+  })
+  if(!identical(before,input_hashes(root)))stop('Inputs changed during candidate review; regenerate')
+  list(scope='manual_candidate_review',instruction='Present project sources and MW impact in chat; wait for explicit user approval of IDs. Individual deltas are conditional and must not be added when projects overlap.',
+    input_hashes=before,countries=as.list(countries),candidates=candidates)
+}
+approve_candidates <- function(root='.',project_ids,review_path,site=NULL) {
+  with_writer(root,function() {
+    review<-json_read(review_path)
+    if(!identical(review$scope,'manual_candidate_review') || !identical(review$input_hashes,input_hashes(root)))
+      stop('Candidate review is stale or invalid; regenerate review and present it in chat')
+    if(!length(project_ids)||anyDuplicated(project_ids))stop('Provide unique explicitly approved project IDs')
+    allowed<-vapply(review$candidates,function(c)c$project$project_id,'')
+    if(any(!project_ids %in% allowed))stop('IDs were not candidates in this review: ',paste(setdiff(project_ids,allowed),collapse=', '))
+    x<-read_inputs(root);x$projects$record_type[x$projects$project_id %in% project_ids]<-'existing'
+    work<-tempfile('datacenter-approval-');dir.create(work);on.exit(unlink(work,recursive=TRUE),add=TRUE)
+    write_tables(x,work);r<-previous_inventory(root,build_result(root,work))
+    if(!identical(review$input_hashes,input_hashes(root)))stop('Register changed during approval; regenerate review')
+    install_result(root,r,work,site=site)
+    invisible(r)
+  })
+}
+rebuild_run <- function(root='.',site=NULL) {
+  with_writer(root,function() {
+    r<-previous_inventory(root,build_result(root));install_result(root,r,site=site);invisible(r)
+  })
+}
+install_site <- function(root='.',site) {
+  rebuild_run(root,site)
+  invisible(site)
+}
+path_id <- function(path) {
+  if(file.exists(path)||dir.exists(path))return(normalizePath(path,mustWork=TRUE))
+  if(basename(path)=='.')return(path_id(dirname(path)))
+  if(basename(path)=='..')return(dirname(path_id(dirname(path))))
+  file.path(path_id(dirname(path)),basename(path))
+}
+preview_destination <- function(path,root='.',data_dir=NULL) {
+  target<-path_id(path)
+  within<-function(dir)target==path_id(dir)||startsWith(target,paste0(path_id(dir),'/'))
+  if(any(vapply(file.path(root,c('data','config','scripts','web','.git')),within,TRUE)) ||
+     target==path_id(file.path(root,'renv.lock')))stop('Output would overwrite an input')
+  cfg<-read_inputs(root)$config
+  if(target==path_id(file.path(root,'assets/datacenters.json')) || within(file.path(root,cfg$tracker$output_dir)) ||
+     within(file.path(root,'assets/js')))stop('Preview cannot overwrite active outputs; use build without preview options')
+  site<-site_checkout(root)
+  if(!is.null(site)&&within(site))stop('Preview cannot overwrite the local site')
+  if(!is.null(data_dir) && target==path_id(file.path(data_dir,'packet.json')))stop('Output would overwrite the work packet')
   path
+}
+json_destination <- function(path,root='.',data_dir=NULL) {
+  if(!grepl('\\.json$',path))stop('Output must be a .json file')
+  preview_destination(path,root,data_dir)
+}
+check_outputs <- function(root='.',result=build_result(root),site=NULL) {
+  # Compare the persisted artifacts, not just a successful in-memory calculation.
+  stage<-tempfile('datacenter-check-');dir.create(stage);on.exit(unlink(stage,recursive=TRUE))
+  result<-previous_inventory(root,result)
+  atomic_output(result,file.path(stage,'analysis.json'))
+  write_tracker(build_tracker(root,result=result),file.path(stage,'tracker'))
+  files<-list.files(file.path(stage,'tracker'),full.names=TRUE)
+  expected<-c(file.path(stage,'analysis.json'),files)
+  cfg<-read_inputs(root)$config
+  actual<-c(file.path(root,'assets/datacenters.json'),file.path(root,cfg$tracker$output_dir,basename(files)))
+  site<-site_checkout(root,site)
+  if(!is.null(site)) {
+    presentation<-site_presentation(root,site)
+    expected<-c(expected,files,unname(presentation))
+    actual<-c(actual,file.path(site,cfg$tracker$output_dir,basename(files)),names(presentation))
+  }
+  good<-vapply(seq_along(actual),function(i)file.exists(actual[i])&&!dir.exists(actual[i])&&
+    file_hash(actual[i])==file_hash(expected[i]),TRUE)
+  if(!all(good))stop('Saved outputs are missing or stale; run build. Files: ',paste(actual[!good],collapse=', '))
+  list(saved_outputs_current=TRUE,local_site=site %||% 'not_present')
 }
 pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
   command<-if(length(args))args[1] else 'check';opts<-list()
@@ -153,17 +320,39 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
     if(kv[1] %in% names(opts))stop('Duplicate option')
     opts[[kv[1]]]<-paste(kv[-1],collapse='=')
   }
-  allowed<-list(check='data',build=c('data','output'),packet=c('data','output','country'),
-                prepare=c('output','country','mode'),apply=c('data','output'),tracker=c('data','output-dir'))
-  if(!command %in% names(allowed))stop('Commands: check, build, packet, prepare, apply, tracker')
+  allowed<-list(check=c('data','site'),build=c('data','output','site'),packet=c('data','output','country'),
+                prepare=c('output','country','mode'),apply=c('data','output','site'),tracker=c('data','output-dir','site'),
+                review=c('country','output'),approve=c('ids','review','site'))
+  if(!command %in% names(allowed))stop('Commands: check, build, packet, prepare, apply, tracker, review, approve')
   if(any(!names(opts) %in% allowed[[command]]))stop('Unknown option for ',command)
   data_dir<-opts$data %||% 'data'
+  if(command=='review') {
+    r<-review_candidates(country=opts$country %||% 'SE')
+    if(is.null(opts$output))cat(jsonlite::toJSON(r,auto_unbox=TRUE,pretty=TRUE,na='null'), '\n')
+    else {path<-json_destination(opts$output);atomic_output(r,path);cat('Review ready for manual approval in chat: ',path,'\n',sep='')}
+    return(invisible(r))
+  }
+  if(command=='approve') {
+    if(is.null(opts$ids)||is.null(opts$review))stop('approve needs --ids=<IDs explicitly approved in chat> and --review=<review.json>')
+    r<-approve_candidates(project_ids=trimws(strsplit(opts$ids,',',fixed=TRUE)[[1]]),review_path=opts$review,site=opts$site)
+    cat('Applied manual candidate approval; rebuilt the shared result and site files. No publication.\n')
+    return(invisible(r))
+  }
   if(command=='tracker') {
-    cfg<-read_inputs()$config
-    dir<-opts[['output-dir']] %||% cfg$tracker$output_dir
-    write_tracker(build_tracker('.',data_dir),dir)
-    cat('Wrote tracker files to ',dir,' (projects, capacity, scenario_zone, bidding_zones).\n',sep='')
-    return(invisible(dir))
+    dir<-opts[['output-dir']]
+    if(!is.null(opts$data)&&is.null(dir))stop('Preview with --data requires --output-dir outside active outputs')
+    if(is.null(dir)) {
+      rebuild_run(site=opts$site)
+      cat('Built approved results and local site when present. No publication.\n')
+    } else {
+      if(!is.null(opts$site))stop('Preview cannot be combined with --site')
+      preview_destination(dir)
+      files<-c('results.json','projects.json','capacity.json','scenario_zone.json','bidding_zones.geojson')
+      for(f in files)preview_destination(file.path(dir,f),data_dir=data_dir)
+      write_tracker(build_tracker('.',data_dir),dir)
+      cat('Built standalone tracker preview: ',dir,'\n',sep='')
+    }
+    return(invisible(NULL))
   }
   if(command=='prepare') {
     path<-opts$output %||% tempfile('datacenter-run-',tmpdir=Sys.getenv('TMPDIR',unset='/tmp'))
@@ -172,26 +361,36 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
     w<-worklist_counts(json_read(file.path(path,'packet.json'))$worklist)
     cat('Worklist: ',paste(names(w),w,sep='=',collapse=', '),'\n',sep='')
   } else if(command=='packet') {
-    path<-json_destination(opts$output %||% tempfile('datacenter-packet-',tmpdir=Sys.getenv('TMPDIR',unset='/tmp'),fileext='.json'))
+    path<-json_destination(opts$output %||% tempfile('datacenter-packet-',tmpdir=Sys.getenv('TMPDIR',unset='/tmp'),fileext='.json'),data_dir=data_dir)
     atomic_output(make_packet(data_dir=data_dir,country=opts$country %||% 'all'),path);cat('Prepared ',path,'\n',sep='')
   } else if(command=='apply') {
     if(is.null(opts$data))stop('apply needs --data=<prepared work directory>')
-    path<-json_destination(opts$output %||% 'assets/datacenters.json')
-    if(normalizePath(path,mustWork=FALSE)==normalizePath(file.path(data_dir,'packet.json'),mustWork=FALSE))stop('Output would overwrite the work packet')
-    r<-apply_run(path=data_dir,output=path)
-    cat('Applied tables and built ',path,'; ',r$result$coverage$projects,' projects represented in every scenario.\n',sep='')
+    path<-opts$output %||% 'assets/datacenters.json'
+    r<-apply_run(path=data_dir,output=path,site=opts$site)
+    cat('Applied tables and rebuilt all active outputs; ',r$result$coverage$projects,' projects represented in every scenario.\n',sep='')
   } else {
+    if(command=='build'&&!is.null(opts$data)&&is.null(opts$output))stop('Preview with --data requires --output outside active outputs')
+    if(command=='build'&&!is.null(opts$output)&&!is.null(opts$site))stop('Preview cannot be combined with --site')
+    if(command=='build'&&is.null(opts$output)) {
+      r<-rebuild_run(site=opts$site)
+      cat('Built all approved results and local site when present. No publication.\n')
+      return(invisible(r))
+    }
     review<-if(file.exists(file.path(data_dir,'packet.json')))review_run(path=data_dir) else NULL
     r<-build_result('.',data_dir)
     countries<-if(!is.null(review))unlist(review$packet$countries) else names(read_inputs()$config$countries)
     wl<-run_worklist(read_inputs('.',data_dir),countries)
-    if(command=='check')cat(jsonlite::toJSON(list(valid=TRUE,coverage=r$coverage,changes=review$changes,
-      worklist_remaining=as.list(worklist_counts(wl)),worklist=wl,
-      map_zones=length(r$bidding_zones$features)),auto_unbox=TRUE,pretty=TRUE),'\n')
-    else {
-      path<-json_destination(opts$output %||% 'assets/datacenters.json')
-      if(normalizePath(path,mustWork=FALSE)==normalizePath(file.path(data_dir,'packet.json'),mustWork=FALSE))stop('Output would overwrite the work packet')
-      atomic_output(r,path);cat('Built ',path,'; ',r$coverage$projects,' projects represented in every scenario.\n',sep='')
+    if(command=='check') {
+      live<-path_id(data_dir)==path_id('data')
+      if(!live&&!is.null(opts$site))stop('A work-copy check cannot verify the active site')
+      outputs<-if(live)check_outputs(result=r,site=opts$site) else list(saved_outputs_current=NA,scope='work_copy_only')
+      cat(jsonlite::toJSON(list(valid=TRUE,outputs=outputs,coverage=r$coverage,changes=review$changes,
+        worklist_remaining=as.list(worklist_counts(wl)),worklist=wl,
+        map_zones=length(r$bidding_zones$features)),auto_unbox=TRUE,pretty=TRUE),'\n')
+    } else {
+      path<-json_destination(opts$output,data_dir=data_dir)
+      atomic_output(r,path)
+      cat('Built standalone preview: ',path,'\n',sep='')
     }
   }
 }

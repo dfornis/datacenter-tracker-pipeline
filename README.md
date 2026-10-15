@@ -133,6 +133,12 @@ Rscript scripts/pipeline.R tracker --output-dir=/tmp/tracker-preview
 
 Varken paketförberedelse, kontroller eller `build` utför webbinventering. Agenten behöver fungerande sök-/läsverktyg för den delen. En omräkning av gamla data får aldrig presenteras som en ny inventering. Standardresultatet är en JSON med register, metod, projekt/scenarier, täckning och karta. Ingen extern publicering sker.
 
+## Avgränsning
+
+Registret gäller ny datacenterlast. Ett projekt registreras när det har en identifierad plats, en namngiven datacenteraktör eller slutkund, ny kapacitet (nybygge eller belagd utbyggnad) och ett platsspecifikt belägg utöver marknadsföring (markavtal, plan, MKB/YVA, tillstånd, nätavtal eller byggnation). Driftanläggningar utan utbyggnad, datacenterfärdig mark som marknadsförs utan aktör, konceptstudier utan operatör och projekt utan plats hör inte dit; sådana spår noteras i körloggen. `record_type=out_of_scope` är rader som redan fanns men inte uppfyller regeln: de behåller ID och källor för identitetsmatchning men räknas aldrig, syns inte på sajten och ger ingen arbetslista. En körning kan flytta kandidater dit; godkända projekt flyttas bara på ditt beslut med `exclude --ids=... --reason=...`.
+
+En inventering ändrar bara registret och körloggen. Kod- och metodändringar görs i separata sessioner och committas för sig; `prepare` vägrar starta på ett repo med ocommittade ändringar.
+
 ## Kandidater och manuellt godkännande
 
 `record_type=candidate` betyder att användarens godkännande väntar, oberoende av projektets byggstatus. `existing` är det befintliga interna värdet för en manuellt godkänd post; det betyder inte driftsatt. Byggstatus och kapacitetsradens genomförandebeslut är källuppgifter och ändras inte vid godkännande.
@@ -175,6 +181,6 @@ Förhandsvisningar kräver egen destination: `build --data=... --output=/tmp/pre
 
 ## Status och historik
 
-Metod 3.3 (oktober 2026) ersätter den separata äldre sajtberäkningen med den gemensamma modellen. Manuellt kandidatgodkännande här i chatten styr nu godkända totalsummor i samtliga resultat. Detta är en flödesändring och omräkning av befintliga källuppgifter, inte en ny webbinventering. Metod 3.2 införde intervallet för ospecificerat MW och typberoende årsenergifaktorer.
+Metod 3.4 (oktober 2026) inför avgränsningsregeln, `out_of_scope`, `exclude` och kravet på committat utgångsläge före en landskörning. Metod 3.3 (oktober 2026) ersätter den separata äldre sajtberäkningen med den gemensamma modellen. Manuellt kandidatgodkännande här i chatten styr nu godkända totalsummor i samtliga resultat. Detta är en flödesändring och omräkning av befintliga källuppgifter, inte en ny webbinventering. Metod 3.2 införde intervallet för ospecificerat MW och typberoende årsenergifaktorer.
 
 Tidigare underlag och körningshistorik finns i Git, bland annat `9779acc`. Behåll stabila ID:n; nya löpnummer ska ligga över högsta använda nummer även i historiken. Utdataformat 3.1 återställer ursprungliga scenario-ID:n och skiljer nameplate från infasad kapacitet. Det saknar en femte potential-scenariofamilj. Kartornas ursprung/återanvändningsrätt är olösta och koordinaterna är ungefärliga visningspunkter.

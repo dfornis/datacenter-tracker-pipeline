@@ -14,7 +14,8 @@ write_tables <- function(x,path) {
 }
 run_worklist <- function(x,countries) {
   # The concrete to-do list for a country run. Recomputed from the tables, so it shrinks as work is done.
-  p<-x$projects[x$projects$country %in% countries,,drop=FALSE];c<-x$capacity[x$capacity$project_id %in% p$project_id,,drop=FALSE]
+  # Out-of-scope rows are kept for identity only and never generate work.
+  p<-x$projects[x$projects$country %in% countries & x$projects$record_type!='out_of_scope',,drop=FALSE];c<-x$capacity[x$capacity$project_id %in% p$project_id,,drop=FALSE]
   s<-x$sources;excluded<-c('Operational','Dormant','Cancelled')
   load<-nzchar(c$mw) & !c$basis %in% c('backup','generation','density') & c$issue!='identity_conflict'
   excerpt<-function(ref)lapply(ids(ref),function(id)list(source_id=id,excerpt=s$excerpt[match(id,s$source_id)],url=s$url[match(id,s$source_id)]))
@@ -63,9 +64,19 @@ make_packet <- function(root='.',data_dir=file.path(root,'data'),country='all') 
   if(!identical(before,input_hashes(root,data_dir)))stop('Inputs changed during preparation; retry')
   packet
 }
+git_uncommitted <- function(root='.') {
+  # A country run starts from a committed state, so each run is one reviewable diff.
+  if(!nzchar(Sys.which('git')))return(character())
+  inside<-suppressWarnings(tryCatch(system2('git',c('-C',shQuote(root),'rev-parse','--is-inside-work-tree'),stdout=TRUE,stderr=FALSE),error=function(e)''))
+  if(!identical(inside,'true'))return(character())
+  paths<-c('data','config','scripts','prompts','tests','web','assets','runs','AGENTS.md','README.md')
+  suppressWarnings(system2('git',c('-C',shQuote(root),'status','--porcelain','--untracked-files=all','--',paths),stdout=TRUE,stderr=FALSE))
+}
 prepare_run <- function(root='.',path,country='all',mode='refresh') {
   if(!mode %in% c('refresh','scratch'))stop('Choose --mode=refresh or scratch')
   if(file.exists(path))stop('Work directory already exists; resume it or choose a new path')
+  dirty<-git_uncommitted(root)
+  if(length(dirty))stop('Commit the previous run and any code changes before a new country run:\n',paste(dirty,collapse='\n'))
   packet<-make_packet(root,country=country);packet$mode<-mode
   x<-read_inputs(root)
   if(mode=='scratch') {
@@ -114,6 +125,7 @@ review_run <- function(root='.',path) {
   }
   added_projects<-new$projects[!new$projects$project_id %in% old$projects$project_id,,drop=FALSE]
   if(any(!added_projects$country %in% countries))stop('New project outside selected countries')
+  if(any(added_projects$record_type!='candidate'))stop('New projects enter as candidate; out-of-scope leads belong in the run log')
   owned<-new$projects$project_id[new$projects$country %in% countries]
   if(any(!old$projects$project_id[old$projects$country %in% countries] %in% owned) ||
      any(!new$capacity$project_id[!new$capacity$claim_id %in% old$capacity$claim_id] %in% owned))
@@ -259,6 +271,24 @@ approve_candidates <- function(root='.',project_ids,review_path,site=NULL) {
     invisible(r)
   })
 }
+exclude_projects <- function(root='.',project_ids,reason,site=NULL) {
+  # Manual, user-instructed scope decision (also for previously approved rows). Rows stay for identity.
+  with_writer(root,function() {
+    if(!length(project_ids)||anyDuplicated(project_ids))stop('Provide unique project IDs')
+    if(!nzchar(trimws(reason %||% '')))stop('exclude needs --reason')
+    x<-read_inputs(root)
+    if(any(!project_ids %in% x$projects$project_id))stop('Unknown IDs: ',paste(setdiff(project_ids,x$projects$project_id),collapse=', '))
+    hit<-x$projects$project_id %in% project_ids
+    x$projects$record_type[hit]<-'out_of_scope'
+    x$projects$notes[hit]<-trimws(paste0(x$projects$notes[hit],' Out of scope (',Sys.Date(),'): ',reason))
+    work<-tempfile('datacenter-scope-');dir.create(work);on.exit(unlink(work,recursive=TRUE),add=TRUE)
+    before<-input_hashes(root)
+    write_tables(x,work);r<-previous_inventory(root,build_result(root,work))
+    if(!identical(before,input_hashes(root)))stop('Register changed during exclusion; retry')
+    install_result(root,r,work,site=site)
+    invisible(r)
+  })
+}
 rebuild_run <- function(root='.',site=NULL) {
   with_writer(root,function() {
     r<-previous_inventory(root,build_result(root));install_result(root,r,site=site);invisible(r)
@@ -322,8 +352,8 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
   }
   allowed<-list(check=c('data','site'),build=c('data','output','site'),packet=c('data','output','country'),
                 prepare=c('output','country','mode'),apply=c('data','output','site'),tracker=c('data','output-dir','site'),
-                review=c('country','output'),approve=c('ids','review','site'))
-  if(!command %in% names(allowed))stop('Commands: check, build, packet, prepare, apply, tracker, review, approve')
+                review=c('country','output'),approve=c('ids','review','site'),exclude=c('ids','reason','site'))
+  if(!command %in% names(allowed))stop('Commands: check, build, packet, prepare, apply, tracker, review, approve, exclude')
   if(any(!names(opts) %in% allowed[[command]]))stop('Unknown option for ',command)
   data_dir<-opts$data %||% 'data'
   if(command=='review') {
@@ -337,6 +367,12 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
     r<-approve_candidates(project_ids=trimws(strsplit(opts$ids,',',fixed=TRUE)[[1]]),review_path=opts$review,site=opts$site)
     cat('Applied manual candidate approval; rebuilt the shared result and site files. No publication.\n')
     return(invisible(r))
+  }
+  if(command=='exclude') {
+    if(is.null(opts$ids)||is.null(opts$reason))stop('exclude needs --ids=<IDs the user named> and --reason=<short reason>')
+    exclude_projects(project_ids=trimws(strsplit(opts$ids,',',fixed=TRUE)[[1]]),reason=opts$reason,site=opts$site)
+    cat('Marked out of scope; rebuilt the shared result and site files. No publication.\n')
+    return(invisible(NULL))
   }
   if(command=='tracker') {
     dir<-opts[['output-dir']]

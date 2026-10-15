@@ -292,7 +292,7 @@ calculate <- function(x,approved_only=TRUE) {
       if(approved_only && pr$record_type=='existing')
         scope<-scope[p$record_type[match(scope$project_id,p$project_id)]=='existing',,drop=FALSE]
       has_load<-any(is.finite(scope$gross_mw_high)|is.finite(scope$gross_mw_low))
-      category<-if(pr$status %in% c('Cancelled','Dormant'))tolower(pr$status) else if(pr$status=='Operational')'operational' else if(pr$record_type=='candidate')'candidate' else if(!has_load)'unquantified' else 'pipeline'
+      category<-if(pr$record_type=='out_of_scope')'out_of_scope' else if(pr$status %in% c('Cancelled','Dormant'))tolower(pr$status) else if(pr$status=='Operational')'operational' else if(pr$record_type=='candidate')'candidate' else if(!has_load)'unquantified' else 'pipeline'
       missing_load<-!has_load && !pr$status %in% c('Cancelled','Dormant','Operational')
       project_sum<-function(key) if(missing_load || anyNA(lr[[key]]))NA_real_ else sum(lr[[key]])
       overview[[length(overview)+1]]<-data.frame(scenario=scenario$id,project_id=pr$project_id,country=pr$country,
@@ -314,7 +314,7 @@ calculate <- function(x,approved_only=TRUE) {
     active<-!d$indicator %in% c('cancelled','dormant','operational')
     partial<-any(ledger$scenario==scenario$id & ledger$project_id %in% d$project_id & grepl('only_contained_capacity_known',ledger$assumptions,fixed=TRUE))
     zone_rows[[length(zone_rows)+1]]<-data.frame(scenario=scenario$id,bidding_zone=zone,projects=nrow(d),
-      pending_projects=sum(!all_d$included_in_result),participating_projects=sum(d$participates),candidate_projects=sum(p$record_type[match(d$project_id,p$project_id)]=='candidate'),
+      pending_projects=sum(all_d$record_type=='candidate'),participating_projects=sum(d$participates),candidate_projects=sum(p$record_type[match(d$project_id,p$project_id)]=='candidate'),
       operating_projects=sum(d$indicator=='operational'),cancelled_or_dormant=sum(d$indicator %in% c('cancelled','dormant')),
       projects_without_mw=sum(active & !d$capacity_known),
       nameplate_mw_low=sum_known('nameplate_mw_low'),nameplate_mw_high=sum_known('nameplate_mw_high'),
@@ -378,7 +378,8 @@ build_result <- function(root='.',data_dir=file.path(root,'data')) {
     scope='manually_approved_projects',
     method=list(scenarios=x$config$scenarios,assumptions=x$config$assumptions,type_assumptions=x$config$type_assumptions,geography_note=x$config$geography_note),
     approval=list(approved_project_ids=as.list(x$projects$project_id[x$projects$record_type=='existing']),
-      pending_project_ids=as.list(x$projects$project_id[x$projects$record_type=='candidate'])),
+      pending_project_ids=as.list(x$projects$project_id[x$projects$record_type=='candidate']),
+      out_of_scope_project_ids=as.list(x$projects$project_id[x$projects$record_type=='out_of_scope'])),
     projects=x$projects,capacity=x$capacity,sources=x$sources,
     scenarios=result$scenarios,project_scenarios=result$project_scenarios,ledger=result$ledger,
     coverage=list(projects=nrow(x$projects),claims=nrow(x$capacity),sources=nrow(x$sources),

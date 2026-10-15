@@ -1,5 +1,5 @@
 {
-  "version": "3.3.0",
+  "version": "3.4.0",
   "as_of": "2026-10-11",
   "purpose": "One scenario model for manually approved project totals, candidate impact reviews, and the website; unknowns and all project indicators are retained.",
   "tables": {
@@ -508,7 +508,8 @@
     ],
     "record_type": [
       "existing",
-      "candidate"
+      "candidate",
+      "out_of_scope"
     ],
     "basis": {
       "it_nameplate": "IT nameplate capacity",
@@ -588,7 +589,7 @@
       "trade_press",
       "country_discovery"
     ],
-    "scope": "Physical hyperscale, AI/HPC, colocation, cloud, enterprise and material edge sites, plus new phases at existing sites. Retain unquantified candidates. Exclude ordinary server rooms, unlocated GPU purchases and multi-site national investment totals as separate facilities.",
+    "scope": "New datacenter load: greenfield datacenters and evidenced new phases or expansions at existing sites. Exclude ordinary server rooms, unlocated GPU purchases and multi-site national investment totals as separate facilities.",
     "evidence_priority": {
       "capacity": "Exact scoped technical or operator statement; retain ambiguity when the measure is unspecified.",
       "grid": "Grid operator or regulatory document; distinguish requested, reserved and contracted connection.",
@@ -606,6 +607,22 @@
       "authority": "Explicit human approval of named project IDs in the current chat. An inventory or workflow-change request does not approve candidates.",
       "review": "Present sources, source MW, additional capacity envelope and per-scenario MW/TWh impact, unknowns and overlap. Individual conditional impacts are not automatically additive.",
       "apply": "review creates a temporary snapshot; approve requires that unchanged snapshot and explicitly approved IDs. Inventory apply cannot promote candidates. Rebuild all approved outputs together after approval."
+    },
+    "inclusion_rule": {
+      "register_if_all": [
+        "identified physical site (municipality and locality or plot)",
+        "named datacenter actor that will build or operate the facility, or a named end user (not only a landowner, energy, wind or real-estate company offering a site)",
+        "new capacity: greenfield or an evidenced new phase/expansion",
+        "site-specific evidence beyond marketing: land agreement, zoning/asemakaava/reguleringsplan for this datacenter, EIA/YVA, building or environmental permit, grid agreement, or observed construction"
+      ],
+      "keep_out": [
+        "operating facilities without an evidenced expansion (register only as baseline when an expansion is registered)",
+        "datacenter-ready land or grid-ready sites marketed by energy, wind, real-estate or site developers without a named datacenter actor",
+        "concept studies and municipal zoning initiatives without a named datacenter operator or end user",
+        "projects without an identified site"
+      ],
+      "leads": "Out-of-scope leads found during a run go to the run log (runs/), not the register. Existing register rows that fail the rule are set to record_type=out_of_scope with a reason in notes; they keep their ID for identity matching and can return to candidate with new evidence.",
+      "out_of_scope": "Kept for identity only: never in approved totals, candidate reviews, worklists or the website."
     }
   },
   "tracker": {

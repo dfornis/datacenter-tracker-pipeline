@@ -429,7 +429,7 @@ test('inventory apply cannot approve candidates or introduce preapproved new pro
     x$projects$record_type[x$projects$project_id=='P099']<-'existing';write_tables(x,work)
     fails(function()apply_run(root,work),'Manual chat approval required')
     x<-read_inputs(root,work);p<-x$projects[1,];p$project_id<-'P100';x$projects<-rbind(read_inputs(root)$projects,p)
-    write_tables(x,work);fails(function()apply_run(root,work),'Manual chat approval required')
+    write_tables(x,work);fails(function()apply_run(root,work),'New projects enter as candidate')
   })
 })
 test('inventory cannot revoke approval while factual construction status can change',function() {
@@ -577,6 +577,47 @@ test('a failed sibling site update restores register, analysis and site outputs 
     on.exit(assign('install_file',original_install,envir=.GlobalEnv))
     fails(function()apply_run(root,work),'Synthetic site write failure')
     stopifnot(failed,identical(before,vapply(files,file_hash,'')),!dir.exists(file.path(root,'.locks/pipeline')))
+  })
+})
+test('out-of-scope rows keep identity but never count, appear on the site or create work',function() {
+  x<-fixture(rbind(claim(),claim('C002','P099',300)))
+  x$projects$record_type[x$projects$project_id=='P099']<-'out_of_scope'
+  r<-calculate(x,approved_only=TRUE)
+  same(sum(r$scenarios$nameplate_mw_high[r$scenarios$scenario=='high_2035'],na.rm=TRUE),100)
+  stopifnot(project(r,'P099')$indicator=='out_of_scope',!project(r,'P099')$included_in_result,
+    all(r$scenarios$pending_projects==0))
+  w<-run_worklist(x,'SE')
+  stopifnot(!'P099' %in% unlist(w$candidates_to_assess),!'P099' %in% unlist(w$projects_without_mw))
+})
+test('a run may move a candidate out of scope but not a manually approved project, nor add out-of-scope rows',function() {
+  with_workflow(function(root,work) {
+    prepare_run(root,work);x<-read_inputs(root,work)
+    x$projects$record_type[x$projects$project_id=='P099']<-'out_of_scope';write_tables(x,work)
+    stopifnot(identical(unlist(review_run(root,work)$changes$projects$changed),'P099'))
+    x$projects$record_type[x$projects$project_id=='P001']<-'out_of_scope';write_tables(x,work)
+    fails(function()review_run(root,work),'Inventory cannot revoke manual approval')
+    x<-read_inputs(root);p<-x$projects[1,];p$project_id<-'P100';p$record_type<-'out_of_scope'
+    x$projects<-rbind(x$projects,p);write_tables(x,work)
+    fails(function()review_run(root,work),'New projects enter as candidate')
+  })
+})
+test('manual exclusion keeps the row and its sources and rebuilds without it',function() {
+  with_workflow(function(root,work) {
+    exclude_projects(root,'P001','synthetic operating site without expansion')
+    x<-read_inputs(root);stopifnot(x$projects$record_type[x$projects$project_id=='P001']=='out_of_scope',
+      grepl('Out of scope',x$projects$notes[x$projects$project_id=='P001']),nrow(x$capacity)==1)
+    res<-json_read(file.path(root,'assets/data/datacenters/results.json'))
+    stopifnot(!'P001' %in% vapply(res$projects,function(p)p$project_id,''))
+  })
+})
+test('a country run refuses to start on uncommitted changes in a git checkout',function() {
+  if(!nzchar(Sys.which('git')))return(invisible())
+  with_workflow(function(root,work) {
+    git<-function(...)system2('git',c('-C',shQuote(root),...),stdout=FALSE,stderr=FALSE)
+    git('init','-q');git('-c','user.name=t','-c','user.email=t@t','add','-A');git('-c','user.name=t','-c','user.email=t@t','commit','-qm','base')
+    prepare_run(root,work);unlink(work,recursive=TRUE)
+    cat('x',file=file.path(root,'data','projects.csv'),append=TRUE)
+    fails(function()prepare_run(root,work),'Commit the previous run')
   })
 })
 cat(count,' meaningful method and workflow checks passed.\n')

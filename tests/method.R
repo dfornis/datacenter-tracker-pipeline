@@ -85,11 +85,12 @@ test('unknown MW remains unknown and all projects appear in each scenario',funct
   stopifnot(all(is.na(r$project_scenarios$mw_high)),all(is.na(r$project_scenarios$nameplate_mw_high)))
   stopifnot(!any(grepl('review',unlist(x$config$tables))))
 })
-test('unspecified headline spans facility to IT reading; explicit IT gets PUE; facility MW is kept',function() {
-  r<-row(calculate(fixture(claim(basis='unspecified'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(100,150))
-  r<-row(calculate(fixture(claim(basis='unspecified',pue='1.2'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(100,120))
+test('unspecified and facility MW are preserved; only explicit IT gets PUE',function() {
+  r<-row(calculate(fixture(claim(basis='unspecified'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(100,100))
+  r<-row(calculate(fixture(claim(basis='unspecified',pue='1.2'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(100,100))
   r<-row(calculate(fixture(claim(basis='facility_nameplate'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(100,100))
   r<-row(calculate(fixture(claim(basis='it_nameplate'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(110,150))
+  r<-row(calculate(fixture(claim(basis='it_nameplate',pue='1.2'))));same(c(r$nameplate_mw_low,r$nameplate_mw_high),c(110,120))
   stopifnot(r$reported_mw==100,r$source_basis=='it_nameplate')
 })
 test('known installed baseline is subtracted in the source basis before PUE',function() {
@@ -220,7 +221,7 @@ test('electricity at full build-out is the envelope times the type load factor, 
   r<-calculate(x)
   for(sc in c('low_2030','stated_2030','high_2035'))
     same(c(project(r,sc=sc)$buildout_twh_low,project(r,sc=sc)$buildout_twh_high),rep(200*.75*8760/1e6,2))
-  x$capacity$basis[1]<-'unspecified';same(project(calculate(x))$buildout_twh_high,300*.75*8760/1e6)
+  x$capacity$basis[1]<-'unspecified';same(project(calculate(x))$buildout_twh_high,200*.75*8760/1e6)
 })
 test('the worklist asks for MW of executing phases and flags envelopes dated like their phases',function() {
   x<-fixture(rbind(claim(mw=500,decision='unclear',timing='first_capacity',first_year=2028,last_year=2028),

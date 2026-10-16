@@ -1,6 +1,6 @@
 {
-  "version": "3.5.0",
-  "as_of": "2026-10-11",
+  "version": "3.6.0",
+  "as_of": "2026-10-16",
   "purpose": "One scenario model for manually approved project totals, candidate impact reviews, and the website; unknowns and all project indicators are retained.",
   "tables": {
     "projects": [
@@ -360,7 +360,7 @@
       2,
       3
     ],
-    "unknown_mw": "Unspecified datacenter MW is an envelope between the facility/grid-side reading (MW x 1) and nominal IT reading (MW x upper PUE; EPRI 2026 pp.10–11). Reclassify from source wording where possible. The same interval is used in reviews, approved results and the website.",
+    "unknown_mw": "Unspecified datacenter MW preserves the source value or source range without PUE conversion. Reclassify from source wording where possible. PUE conversion is applied only when the source explicitly identifies the MW as IT power. The same rule is used in reviews, approved results and the website.",
     "grid_mw": "Connection envelope only. Scenario equivalent assumes the allocated share is deployed as facility capacity; not measured demand.",
     "unknown_baseline": "Gross site envelope is retained; additional capacity range is 0 to gross unless comparable installed baseline is known.",
     "overlap": "Use one physical envelope; possible containment is assumed containment for aggregation, with the tenant retained in the project indicator.",

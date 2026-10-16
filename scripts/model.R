@@ -213,8 +213,7 @@ electrical_range <- function(row,cfg,net=FALSE,claims=NULL,normalize_peak=TRUE) 
   pue<-unlist(cfg$assumptions$pue)
   if (nzchar(row$pue)) pue<-c(min(pue[1],number(row$pue)),number(row$pue))
   if (startsWith(row$basis,'it_')) {v<-v*pue[1];top<-top*pue[2]}
-  # Unspecified headline: lower = facility/grid-side reading, upper = nominal IT reading x upper PUE.
-  if (row$basis=='unspecified') top<-top*pue[2]
+  # Preserve an unspecified source MW as stated. PUE conversion requires an explicit IT basis.
   if (normalize_peak && grepl('_peak$',row$basis)) {
     factors<-unlist(cfg$assumptions$peak_to_nameplate_fraction)
     v<-v/factors[2];top<-top/factors[1]
@@ -257,7 +256,7 @@ calculate <- function(x,approved_only=TRUE) {
       if (reason=='modelled' && !selected) reason<-'outside_scenario_selection'
       if (reason=='modelled' && share[2]==0) reason<-'after_target_year'
       if (r$basis %in% c('unspecified','it_unspecified','facility_unspecified')) assumptions<-c(assumptions,'capacity_definition_assumed')
-      if (r$basis=='unspecified') assumptions<-c(assumptions,'unspecified_facility_to_IT_envelope')
+      if (r$basis=='unspecified') assumptions<-c(assumptions,'unspecified_source_MW_preserved')
       if (r$basis=='grid') assumptions<-c(assumptions,'connection_deployment_assumed')
       if (startsWith(r$basis,'it_')) assumptions<-c(assumptions,'PUE_conversion')
       if (grepl('_peak$',r$basis)) assumptions<-c(assumptions,'peak_to_nameplate_equivalent')

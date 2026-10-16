@@ -32,11 +32,11 @@ Källans MW, definition, datum och status bevaras separat. [EPRI:s måttdefiniti
 | IT-effekt | Omräkning till anläggningssidan med PUE 1,1–1,5 som känslighetsfall. Lokal design-PUE ersätter det övre fallet. |
 | Anläggningskapacitet | Behåll angivet MW-tal. |
 | Nätanslutning | Behåll ramen och märk antagandet att den används till datacenter. En ansökan är inte en beviljad anslutning eller faktisk last. |
-| Ospecificerat datacenter-MW | Intervall mellan två läsningar: MW×1 som anläggnings-/nätsida (nedre) och MW×PUE som nominell IT-effekt (övre). EPRI 2026, s. 10–11, anger att nominell IT-effekt typiskt är det som annonseras; nordiska källor anger ofta "power". Klassas om efter ordalydelse vid varje körning (`prompts/update.md`). Hela intervallet används även på sajten. |
+| Ospecificerat datacenter-MW | Behåll källans MW-tal eller källintervall utan PUE-konvertering. Klassas om efter ordalydelse vid varje körning (`prompts/update.md`). PUE används endast när källan uttryckligen anger IT-effekt. Samma regel används på sajten. |
 | Explicit toppeffekt | Bevara toppvärdet. För kapacitetsjämförelsen används ett uttryckligt känslighetsfall: topp / 0,80 till topp / 0,62. Årsenergi beräknas direkt från ursprunglig topp. |
 | Reservkraft, generation, rackdensitet | Behåll observationen utan automatisk omräkning till datacenterlast. En publicerad, motiverad skattning av datacenterlast kan registreras som egen kapacitetsuppgift med källa. |
 
-PUE-fallen och energi-/toppfaktorerna kommer från [EPRI:s energianalys, 2026](https://powering-intelligence.epri.com/annual-peak-use.html). PUE 1,5 är inte ett absolut tak. Att invertera toppfaktorn är vår tillämpning av källans observerade samband, inte en uppgift om projektets verkliga nameplate. Intervallen är känslighetsfall, inte konfidensintervall. `at_least` utan belagd övre gräns bevaras som källuppgift men blir inte ett projektmått eller en del av totalsumman; en separat avgränsad etapp kan fortfarande räknas. `up_to` är en annonserad ram.
+PUE-fallen och energi-/toppfaktorerna kommer från [EPRI:s energianalys, 2026](https://powering-intelligence.epri.com/annual-peak-use.html). PUE 1,5 är inte ett absolut tak och används bara för uttryckligen IT-klassade MW. Att invertera toppfaktorn är vår tillämpning av källans observerade samband, inte en uppgift om projektets verkliga nameplate. Intervallen är känslighetsfall, inte konfidensintervall. `at_least` utan belagd övre gräns bevaras som källuppgift men blir inte ett projektmått eller en del av totalsumman; en separat avgränsad etapp kan fortfarande räknas. `up_to` är en annonserad ram.
 
 ### Befintliga scenarier
 

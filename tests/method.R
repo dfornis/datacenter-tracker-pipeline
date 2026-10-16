@@ -240,7 +240,8 @@ with_workflow <- function(fn,empty=FALSE) {
   root<-file.path(sandbox,'pipeline');dir.create(root)
   on.exit(unlink(sandbox,recursive=TRUE))
   paths<-c('config/pipeline.json','scripts/model.R','scripts/tracker.R','scripts/pipeline.R','renv.lock',
-           'assets/js/datacenter-tracker.js','web/datacenter-tracker.md','web/build_datacenter_data.R',
+           'assets/js/datacenter-tracker.js','assets/js/datacenter-tracker/scenario-map-d3.js',
+           'assets/css/datacenter-tracker-map.css','web/datacenter-tracker.md','web/build_datacenter_data.R',
            'prompts/update.md','AGENTS.md','README.md',unique(vapply(live$config$zones,function(z)z$geometry,'')))
   for(f in paths) {
     target<-file.path(root,f);dir.create(dirname(target),recursive=TRUE,showWarnings=FALSE)
@@ -493,6 +494,9 @@ test('local site installation replaces its calculation with the shared presentat
     stopifnot(file.exists(file.path(site,'assets/data/datacenters/results.json')),
       identical(readLines(file.path(site,'_projects/datacenter-tracker.md')),readLines('web/datacenter-tracker.md')),
       any(grepl('pipeline.R',readLines(file.path(site,'scripts/build_datacenter_data.R')),fixed=TRUE)))
+    for(f in c('assets/js/datacenter-tracker.js','assets/js/datacenter-tracker/scenario-map-d3.js',
+               'assets/css/datacenter-tracker-map.css'))
+      stopifnot(identical(readLines(file.path(site,f)),readLines(f)))
   })
 })
 test('preview commands cannot replace active results, inputs or the work packet',function() {

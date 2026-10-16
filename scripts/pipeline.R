@@ -158,8 +158,10 @@ site_checkout <- function(root='.',site=NULL) {
   normalizePath(site)
 }
 site_presentation <- function(root,site) {
-  setNames(file.path(root,c('assets/js/datacenter-tracker.js','web/datacenter-tracker.md','web/build_datacenter_data.R')),
-    file.path(site,c('assets/js/datacenter-tracker.js','_projects/datacenter-tracker.md','scripts/build_datacenter_data.R')))
+  shared<-c('assets/js/datacenter-tracker.js','assets/js/datacenter-tracker/scenario-map-d3.js',
+            'assets/css/datacenter-tracker-map.css')
+  setNames(file.path(root,c(shared,'web/datacenter-tracker.md','web/build_datacenter_data.R')),
+    file.path(site,c(shared,'_projects/datacenter-tracker.md','scripts/build_datacenter_data.R')))
 }
 install_result <- function(root,result,data_dir=NULL,output=file.path(root,'assets/datacenters.json'),site=NULL) {
   staged<-tempfile('datacenter-install-');dir.create(staged);on.exit(unlink(staged,recursive=TRUE),add=TRUE)

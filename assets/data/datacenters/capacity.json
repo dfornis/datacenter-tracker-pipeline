@@ -20,7 +20,7 @@
     "pue": "",
     "source_ids": "S001;S002;S144;S145;S146",
     "issue": "",
-    "notes": "Basis remains unspecified: the primary release states possible campus capacity up to 1 GW without IT/facility/grid definition. SVT, citing municipal planning documents, dates the first two buildings at this same new campus to 2028 (S145/S146). Scope reconciliation: use 2028 as first_capacity for the overall envelope and apply the existing five-year ramp; full deployment in 2032 is a model result, not a sourced completion promise. The separate 2031 later-phase target does not establish MW for the full campus. No first-phase MW is invented. The overall scope stays Planned/decision no; permits and phase dates do not establish a campus execution decision."
+    "notes": "The release gives up to 1 GW without defining IT or total site power. The first two halls are targeted for 2028. The model phases the campus from that year, reaching full capacity in 2032; this is not an announced completion date. Permission for the halls does not confirm investment in the entire campus."
   },
   {
     "claim_id": "C003",
@@ -43,7 +43,7 @@
     "pue": "",
     "source_ids": "S003;S005;S101;S147",
     "issue": "",
-    "notes": "750 MW is a headline envelope. A 10–15 year construction process is not a source-dated 2035–2040 full commissioning interval. 2035–2040 is a relative 10–15-year window from the 2025 announcement, not a firm commissioning commitment; recheck original scope. Basis remains unspecified after rereading the Brookfield PDF: site capacity has no IT/facility definition. Municipal March 2026 follow-up supplies no firm commissioning date. The original 300 MW plan is contained in 750 MW, not an independently approved phase."
+    "notes": "The 750 MW plan includes the earlier 300 MW proposal. The source does not define IT or total site power. A construction period of 10–15 years from the 2025 announcement is not a firm commissioning date. Electricity supply and the schedule remain unresolved."
   },
   {
     "claim_id": "C004",
@@ -66,7 +66,7 @@
     "pue": "",
     "source_ids": "S006;S086;S084",
     "issue": "",
-    "notes": "Basis: Total available power, up to 600 MW, on the technical site page. The operator dates the first data center/first site phase at the same new campus to 2027 (S006/S084). Scope reconciliation: use that first-capacity year to phase the 600 MW envelope under the existing five-year model; 480 MW in 2030 and 600 MW from 2031 are conditional model outputs. This does not assert a 600 MW grid contract, completed halls or an execution decision for the entire campus. Decision no and Planned are retained. The 250 MW initial power-access envelope and the 24 MW B1/B2 halls retain their own measures, dates and decisions as contained scopes."
+    "notes": "The operator lists up to 600 MW of total available power and targets first operation in 2027. The model phases the campus from that year; it does not assume all 600 MW is contracted or under construction. The 250 MW supply and 24 MW B1/B2 halls are included in this total."
   },
   {
     "claim_id": "C005",
@@ -89,12 +89,12 @@
     "pue": "1.2",
     "source_ids": "S008;S148;S149;S150",
     "issue": "",
-    "notes": "Basis: Site power capacity 300 MW; local design PUE <=1.2. Operation was initially announced for H1 2028; the later E.ON/municipal connection update says autumn 2028 (same annual model year). The 200 MW contracted connection is a contained, different scope. September municipal update says construction start is still approaching; no execution decision for the entire 300 MW is inferred."
+    "notes": "The technical page gives 300 MW of site power and design PUE up to 1.2. First operation was announced for the first half of 2028; the later connection update targets autumn 2028. The 200 MW grid contract is included in the site total. Construction of the entire campus is unconfirmed."
   },
   {
     "claim_id": "C006",
     "project_id": "P002",
-    "phase": "Original site plan, contained in later envelope",
+    "phase": "Original 300 MW site plan",
     "mw": "300",
     "mw_max": "",
     "basis": "unspecified",
@@ -112,7 +112,7 @@
     "pue": "",
     "source_ids": "S004;S005;S102;S147",
     "issue": "",
-    "notes": "First phase of the Strängnäs AI centre, corresponding to the original 300 MW plan before the later expansion to 750 MW. Exact construction and commissioning dates have not been publicly specified. Basis remains unspecified after rereading the Brookfield PDF: site capacity has no IT/facility definition. Municipal March 2026 follow-up supplies no firm commissioning date. The original 300 MW plan is contained in 750 MW, not an independently approved phase."
+    "notes": "The original 300 MW plan is included in the later 750 MW proposal. The source does not define the electrical measure or give firm construction and commissioning dates. It is not treated as a separately approved phase."
   },
   {
     "claim_id": "C007",
@@ -135,12 +135,12 @@
     "pue": "",
     "source_ids": "S011;S012;S105;S151;S182",
     "issue": "",
-    "notes": "Historical withdrawn EdgeMode/Marviken plan. Original MW and unspecified denominator are retained; original announcements were reread, but their capacity wording does not establish IT versus facility. SEC filing says the company will not operate the property or use SAPL assets. No current execution/date or replacement developer is assumed."
+    "notes": "Historical Marviken plan. The source does not define IT or total site power. EdgeMode subsequently stated that it would not operate the property or use SAPL assets. No replacement operator or current construction schedule is assumed."
   },
   {
     "claim_id": "C008",
     "project_id": "P003",
-    "phase": "Initial available power envelope",
+    "phase": "Initial available power",
     "mw": "250",
     "mw_max": "",
     "basis": "grid",
@@ -158,7 +158,7 @@
     "pue": "",
     "source_ids": "S007",
     "issue": "",
-    "notes": "At launch the site will have access to 250 MW. This is a power-access envelope, not 250 MW of constructed halls. The annual report separately reports B1/B2 at 24 MW. Grid availability in 2027 remains an earliest-start assumption; no execution decision for 250 MW is inferred."
+    "notes": "The operator reports access to 250 MW at launch, rather than 250 MW of completed halls. The 24 MW B1/B2 phase is included. Grid availability in 2027 is the earliest possible start used in the model; investment in all 250 MW is unconfirmed."
   },
   {
     "claim_id": "C009",
@@ -181,7 +181,7 @@
     "pue": "",
     "source_ids": "S013;S015;S103",
     "issue": "",
-    "notes": "Historical cancelled Östersund scope. Original 2023 operator release describes 150 MW in its secured-power portfolio; classify as supply/grid, not IT. Cancellation is confirmed by the 2025 annual report. Old 20 MW first phase is contained; Borlänge remains a separate site."
+    "notes": "The original release describes 150 MW of secured power, rather than IT capacity. The 20 MW first phase is included. The annual report confirms cancellation of the Östersund project; Borlänge is a separate site."
   },
   {
     "claim_id": "C010",
@@ -204,7 +204,7 @@
     "pue": "",
     "source_ids": "S010;S012;S106;S151;S182",
     "issue": "",
-    "notes": "Historical withdrawn EdgeMode/Marviken plan. Original MW and unspecified denominator are retained; original announcements were reread, but their capacity wording does not establish IT versus facility. SEC filing says the company will not operate the property or use SAPL assets. No current execution/date or replacement developer is assumed."
+    "notes": "Historical Marviken plan with no definition of IT or total site power. EdgeMode subsequently withdrew from the property and SAPL assets. No current construction date or replacement operator is assumed."
   },
   {
     "claim_id": "C011",
@@ -227,7 +227,7 @@
     "pue": "",
     "source_ids": "S016",
     "issue": "",
-    "notes": "55 MWe per reactor is generation, not data-center load. The October 2025 MoU is a feasibility study at Studsvik. Early-2030s reactor aspirations do not establish a datacenter commissioning year; no usable load MW found after targeted follow-up."
+    "notes": "The 55 MWe per reactor describes electricity generation, not datacenter demand. The Studsvik agreement concerns a feasibility study. Neither datacenter capacity nor an operation date has been disclosed."
   },
   {
     "claim_id": "C012",
@@ -250,7 +250,7 @@
     "pue": "1.2",
     "source_ids": "S017;S152",
     "issue": "",
-    "notes": "Basis: Site power capacity 30 MW; local design PUE <=1.2. Q4 2027 is go-live, not an explicit full-deployment date; use the standard ramp. Primary release announces the plan without an explicit scoped execution decision."
+    "notes": "The operator gives 30 MW of site power and design PUE up to 1.2. Go-live in the fourth quarter of 2027 starts the model ramp; it is not a full-capacity date. A final investment decision for the facility is unconfirmed."
   },
   {
     "claim_id": "C013",
@@ -273,7 +273,7 @@
     "pue": "1.15",
     "source_ids": "S018;S108;S109",
     "issue": "",
-    "notes": "28 MW dedicated IT load; all capacity contracted for delivery in July 2027 per the Q2 report. Operator technical page says end-June ready for service and PUE around 1.15; annual timing is unchanged. A separate 40 MW power feed is contained in the same physical project and is not additive."
+    "notes": "All 28 MW IT is contracted for July 2027 according to the Q2 report. The technical page gives end-June readiness and design PUE around 1.15. The 40 MW power feed serves the same site and is not added to the IT figure."
   },
   {
     "claim_id": "C014",
@@ -296,7 +296,7 @@
     "pue": "",
     "source_ids": "S020;S021;S087",
     "issue": "",
-    "notes": "Issuer prospectus reports 23 MW of AI infrastructure at Borlänge, targeted operational in 2027, without an explicit IT/facility definition or fully deployed date. Possible containment in the wider campus is retained; whether this exactly matches B1/B2 remains unresolved. Do not add it to the operator envelope."
+    "notes": "The prospectus gives 23 MW of AI infrastructure at Borlänge, targeted for 2027, without defining the electrical measure. It is counted within the wider campus. Whether it exactly matches halls B1/B2 remains unresolved."
   },
   {
     "claim_id": "C015",
@@ -319,7 +319,7 @@
     "pue": "",
     "source_ids": "S014;S015;S104",
     "issue": "",
-    "notes": "The annual report records the September 2025 decision not to proceed with Östersund. Preserve historical identity and announced capacity; exclude from future scenarios. Original 2023 announcement reread: the historical MW denominator remains unspecified. Cancellation is reaffirmed by the 2025 annual report; Borlänge is a separate site."
+    "notes": "The annual report confirms the September 2025 decision not to proceed with Östersund. The historical 20 MW figure has no explicit electrical definition and contributes no future capacity. Borlänge is a separate site."
   },
   {
     "claim_id": "C016",
@@ -342,7 +342,7 @@
     "pue": "",
     "source_ids": "S009;S012;S107;S151;S182;S010",
     "issue": "",
-    "notes": "Historical withdrawn first scope: the Colliers release describes an initial secured power capacity of 20 MW. Classify that supply claim as grid, not IT. The SEC filing says EdgeMode will not use the Marviken/SAPL assets; no current execution date or replacement operator is assumed."
+    "notes": "The original release describes 20 MW of secured power. EdgeMode later withdrew from the Marviken property and SAPL assets. The historical figure is retained without assuming a new operator or construction date."
   },
   {
     "claim_id": "C017",
@@ -365,7 +365,7 @@
     "pue": "",
     "source_ids": "S022;S023",
     "issue": "",
-    "notes": "18 MW capacity in the February 2025 primary release has no explicit IT/facility denominator, so basis remains unspecified. Construction in H1 2025 and operation in H2 2026 were targets; the current operator page still describes building, without confirming full deployment. Preserve the source plan and apply the standard ramp. GPU counts are not MW."
+    "notes": "The release gives 18 MW without defining IT or total site power. Construction in early 2025 and operation in late 2026 were targets. The current page describes ongoing building work but does not confirm full operation. GPU counts are not converted to MW."
   },
   {
     "claim_id": "C018",
@@ -388,7 +388,7 @@
     "pue": "",
     "source_ids": "S019",
     "issue": "",
-    "notes": "Historical 14 MW IT phase from secondary reporting; contained in the later contracted 28 MW IT envelope. The current Q2 2026 report dates all 28 MW to July 2027, superseding the earlier June phase timetable."
+    "notes": "The earlier 14 MW IT phase is included in the contracted 28 MW IT total. The Q2 2026 report dates all 28 MW to July 2027, superseding the earlier June phase timetable."
   },
   {
     "claim_id": "C019",
@@ -411,7 +411,7 @@
     "pue": "",
     "source_ids": "S024;S030;S110;S111",
     "issue": "",
-    "notes": "Completed incremental 8 MW connection/power expansion of Stockholm 4 South. Q2 2026 issuer report confirms completion. Keep this operational history out of additional future pipeline totals."
+    "notes": "The Q2 2026 report confirms completion of the additional 8 MW power connection. The completed expansion contributes no future capacity."
   },
   {
     "claim_id": "C020",
@@ -434,7 +434,7 @@
     "pue": "1.2",
     "source_ids": "S025;S153",
     "issue": "",
-    "notes": "First phase prepared for up to 6 MW IT and move-in in Q4 2026 according to the December 2025 operator release; construction was ongoing by June 2026. No source establishes the inherited 2024 start year, so it is removed. Prepared capacity is not fully deployed IT load; standard ramp applies. Design PUE <=1.2 from the technical page."
+    "notes": "The first phase is prepared for up to 6 MW IT, with move-in targeted for late 2026. Construction was ongoing by June 2026; the earlier 2024 start year is unsupported. The model phases this capacity from first operation. Design PUE is up to 1.2."
   },
   {
     "claim_id": "C021",
@@ -457,12 +457,12 @@
     "pue": "",
     "source_ids": "S027;S113",
     "issue": "",
-    "notes": "Incremental 1.2 MW datacenter capacity and planned go-live in 2026 in the operator release. No explicit IT/facility denominator or fully deployed date is given; retain unspecified and use the standard ramp. No observed 2025 construction-start date is stated. The 2.7 MW post-expansion total is not additive; 10 MW heat output is not electrical load."
+    "notes": "The operator announces an additional 1.2 MW and go-live in 2026, without defining IT or total site power. The model phases the addition from first operation. The resulting 2.7 MW site total is not added again; 10 MW of heat output is not electrical demand."
   },
   {
     "claim_id": "C022",
     "project_id": "P015",
-    "phase": "Permitted backup plant — thermal fuel input",
+    "phase": "Permitted backup plant — thermal input",
     "mw": "1500",
     "mw_max": "",
     "basis": "backup",
@@ -480,7 +480,7 @@
     "pue": "",
     "source_ids": "S028;S029;S031",
     "issue": "",
-    "notes": "2021 permitted backup plant: maximum combined rated thermal fuel input of 1,500 MWth. This is fuel input to the generators, not their electrical output or datacenter demand, and contributes no load MW. Construction of the first facility does not establish installation of the whole permitted backup plant."
+    "notes": "The permit allows 1,500 MW of thermal fuel input to backup generators. This is neither their electrical output nor datacenter demand, and contributes no load MW. Construction of the first facility does not establish installation of the entire backup plant."
   },
   {
     "claim_id": "C023",
@@ -503,7 +503,7 @@
     "pue": "1.2",
     "source_ids": "S026;S112;S153;S025",
     "issue": "",
-    "notes": "Basis: Site power 10 MW on the current technical page. Earlier May 2025 release described 10 MW IT; the explicit technical site-power definition takes precedence, with the conflict retained. S025 dates first-phase move-in at this same new site to Q4 2026. Scope reconciliation: use 2026 as first_capacity for the overall 10 MW site-power envelope and apply the existing five-year ramp, reaching a modelled 10 MW in 2030. The first-phase 6 MW IT claim stays contained with its own decision and PUE; it is not added to the site total. Planned/decision no are retained for the overall scope."
+    "notes": "The current technical page gives 10 MW of site power; an earlier release called it IT capacity. The technical definition is used. The model phases the site from first-phase move-in in late 2026. The separate 6 MW IT phase is included, with its own construction status and PUE."
   },
   {
     "claim_id": "C024",
@@ -572,7 +572,7 @@
     "pue": "",
     "source_ids": "S034;S090;S091;S092",
     "issue": "",
-    "notes": "Full-campus potential at OSL-Hamar. Green Mountain says TikTok retains an option to expand to 150 MW and that planned capacity is fully committed, but timing and execution decision for the remaining capacity are not public. Not additive with the 90 MW completed-buildings row. Legacy evidence describes 90 MW completed and 150 MW same-campus potential in facility power. Conditional additional envelope is 60 MW; requires fresh baseline review."
+    "notes": "Green Mountain describes a customer option for a 150 MW campus, including the completed 90 MW. Timing and investment in the remaining capacity are not public. Historical sources use total site power for both figures, giving a conditional 60 MW addition. The installed base still needs a fresh source review."
   },
   {
     "claim_id": "C027",
@@ -595,7 +595,7 @@
     "pue": "",
     "source_ids": "S035;S114",
     "issue": "",
-    "notes": "Current operator page distinguishes 75 MW IT from 94 MW line-of-sight envelope and describes smaller completed buildings. Legacy 93 MW fully operational in 2024 is not supported."
+    "notes": "The current page distinguishes 75 MW IT from 94 MW of potential capacity and describes smaller completed buildings. The earlier claim that 93 MW was fully operational in 2024 is unsupported."
   },
   {
     "claim_id": "C028",
@@ -710,7 +710,7 @@
     "pue": "",
     "source_ids": "S040;S117",
     "issue": "",
-    "notes": "The 2024 operator announcement describes 42 MW of IT space. The former 2025 delivery target and current operational status remain unverified; the capacity is contained in the campus envelope."
+    "notes": "The operator’s 2024 announcement gives 42 MW IT for DCM102, included in the campus total. The former 2025 delivery target and current operation remain unverified."
   },
   {
     "claim_id": "C033",
@@ -779,7 +779,7 @@
     "pue": "",
     "source_ids": "S063;S071;S123;S194",
     "issue": "",
-    "notes": "Day One explicitly reports this capacity on an IT-load basis. First 50 MW building is contained in 128 MW total potential; the opening target does not commission the whole envelope."
+    "notes": "DayOne gives 50 MW IT for the first building, within the 128 MW IT campus plan. Its opening target does not date completion of the entire campus."
   },
   {
     "claim_id": "C036",
@@ -802,7 +802,7 @@
     "pue": "1.40625",
     "source_ids": "S063;S072;S124;S215",
     "issue": "",
-    "notes": "Day One explicitly reports this capacity on an IT-load basis. First 50 MW building is contained in 128 MW total potential; the opening target does not commission the whole envelope. Matched campus connection 180 MW/IT128 MW gives supply-to-IT design envelope ratio 1.40625 used as upper conversion, not measured PUE."
+    "notes": "The 128 MW IT campus plan includes the first 50 MW building. The paired 180 MW grid connection gives a supply-to-IT ratio of 1.40625, used for the upper conversion case. This is a design ratio, not measured operating PUE."
   },
   {
     "claim_id": "C037",
@@ -825,7 +825,7 @@
     "pue": "",
     "source_ids": "S064;S073;S125;S126",
     "issue": "",
-    "notes": "Basis: total power capacity / campus power capacity. 40 MW is an advertised envelope at an operating campus, not verified installed load. The announced 45 MW future gross total is a different-date scope; 40 cannot be subtracted as an installed baseline."
+    "notes": "The operating campus is advertised with 40 MW of total power. This is not verified installed capacity and cannot be subtracted from the later 45 MW post-expansion total as an installed baseline."
   },
   {
     "claim_id": "C038",
@@ -848,7 +848,7 @@
     "pue": "1.2",
     "source_ids": "S065;S074;S097;S096;S191;S293",
     "issue": "",
-    "notes": "Basis: operator campus power capacity 430 MW. First capacity in 2027 is supported by EC merger decision footnote 38 and YIT July 2026 contract including commissioning by end 2027. The standard ramp on the full campus is a modelling assumption, not full completion or full execution commitment. Older 2025/2026 marketing targets remain conflicting and are not treated as observed operation."
+    "notes": "The operator gives 430 MW of campus power. The EC decision and YIT contract support first capacity in 2027. The model phases the campus from that year; full-campus construction and completion are unconfirmed. Earlier 2025/2026 targets are not treated as actual operation."
   },
   {
     "claim_id": "C039",
@@ -871,7 +871,7 @@
     "pue": "",
     "source_ids": "S066;S075",
     "issue": "",
-    "notes": "Operator says expanded site up to 75 MW completed early 2026; exact IT/facility denominator remains unspecified. Operating baseline only, contributes no future addition. The new 70 MW second building is a separate additive scope."
+    "notes": "The operator reports completion of the expanded 75 MW site in early 2026, without defining IT or total site power. It is existing capacity. The new 70 MW second building is a separate addition."
   },
   {
     "claim_id": "C040",
@@ -894,7 +894,7 @@
     "pue": "",
     "source_ids": "S067;S076;S098;S193;S143",
     "issue": "",
-    "notes": "Basis: contractor explicitly says total power capacity 310 MW; supersedes unspecified operator headline. First capacity 2027 is retained from operator and Fira. First-building construction does not prove execution commitment for the entire campus; campus decision unclear. Campus phasing starts 2027 under the standard rule, not a promise of all 310 MW in that year."
+    "notes": "Fira defines the 310 MW figure as total site power. First capacity is targeted for 2027, starting the model ramp. Construction of the first building does not confirm investment in the full campus or delivery of all 310 MW in 2027."
   },
   {
     "claim_id": "C041",
@@ -917,7 +917,7 @@
     "pue": "",
     "source_ids": "S068;S077;S127;S122;S215",
     "issue": "",
-    "notes": "Basis: FCDC partner list connection capacity 70 MW at Gneissitie 3, operator partner Verne. Operator June 2026 confirms construction of first 70 MW. No IT multiplier; construction-lag phasing retained."
+    "notes": "FCDC identifies 70 MW as connection capacity at Gneissitie 3 and names Verne as partner. The operator confirms construction of the first 70 MW in June 2026. The model uses the standard construction-time assumption; no IT multiplier is applied."
   },
   {
     "claim_id": "C042",
@@ -940,7 +940,7 @@
     "pue": "",
     "source_ids": "S062;S078;S128",
     "issue": "identity_conflict",
-    "notes": "Critical identity conflict: YVA 100 MW IT/130 MW electrical describes Hyperco Data Systems development west of the under-construction Hyperco Fin Hold Co 1 site. Quarantine C042 and its alternate observation from totals."
+    "notes": "The 100 MW IT / 130 MW electrical figures belong to the separate western Hyperco Data Systems project, rather than Blackhawk. This misattributed observation is excluded from capacity totals."
   },
   {
     "claim_id": "C043",
@@ -963,7 +963,7 @@
     "pue": "",
     "source_ids": "S069;S079;S195",
     "issue": "",
-    "notes": "This is the first datacenter only. Four additional same-site datacenters are mentioned without public MW claims."
+    "notes": "The 22.5 MW IT figure covers the first datacenter. Four further buildings are mentioned without disclosed capacities; their number is not used to multiply the first-building figure."
   },
   {
     "claim_id": "C044",
@@ -986,7 +986,7 @@
     "pue": "",
     "source_ids": "S057;S080",
     "issue": "",
-    "notes": "Project completion is supported by Sweco; the MW value is from trade press/fact-sheet reporting and should be checked against Borealis material before promotion."
+    "notes": "Sweco confirms project completion. The MW figure comes from secondary reporting and still needs confirmation from Borealis."
   },
   {
     "claim_id": "C045",
@@ -1009,7 +1009,7 @@
     "pue": "",
     "source_ids": "S058;S081;S197",
     "issue": "",
-    "notes": "Basis: sähkön kokonaiskapasiteetti, including cooling and auxiliary uses. Original EIA section 2.7.2 checked directly; corrects previously unsubstantiated 200/150/220 MW summaries. Full-campus decision remains unclear. First-phase building completion 2026/2027 is not commissioning; Microsoft explicitly says commissioning will be announced separately. No full-campus date inherited from unknown-MW construction phase. Generic construction lag for that phase does not date the entire campus."
+    "notes": "The EIA gives total electrical capacity including cooling and auxiliaries. The first construction phase has no disclosed MW, and its building-completion date is not a commissioning date. Microsoft will announce commissioning separately. Full-campus investment and timing remain unconfirmed."
   },
   {
     "claim_id": "C046",
@@ -1032,7 +1032,7 @@
     "pue": "",
     "source_ids": "S059;S082;S058;S198",
     "issue": "",
-    "notes": "Basis: sähkön kokonaiskapasiteetti, including cooling and auxiliary uses. Original EIA section 2.7.2 checked directly; corrects previously unsubstantiated 200/150/220 MW summaries. Full-campus decision remains unclear. First-phase building completion 2026/2027 is not commissioning; Microsoft explicitly says commissioning will be announced separately. No full-campus date inherited from unknown-MW construction phase. Generic construction lag for that phase does not date the entire campus."
+    "notes": "The EIA gives total electrical capacity including cooling and auxiliaries. The first construction phase has no disclosed MW, and its building-completion date is not a commissioning date. Microsoft will announce commissioning separately. Full-campus investment and timing remain unconfirmed."
   },
   {
     "claim_id": "C047",
@@ -1055,7 +1055,7 @@
     "pue": "",
     "source_ids": "S060;S083;S058",
     "issue": "",
-    "notes": "Basis: sähkön kokonaiskapasiteetti, including cooling and auxiliary uses. Original EIA section 2.7.2 checked directly; corrects previously unsubstantiated 200/150/220 MW summaries. Full-campus decision remains unclear. First-phase building completion 2026/2027 is not commissioning; Microsoft explicitly says commissioning will be announced separately. No full-campus date inherited from unknown-MW construction phase. Generic construction lag for that phase does not date the entire campus."
+    "notes": "The EIA gives total electrical capacity including cooling and auxiliaries. The first construction phase has no disclosed MW, and its building-completion date is not a commissioning date. Microsoft will announce commissioning separately. Full-campus investment and timing remain unconfirmed."
   },
   {
     "claim_id": "C048",
@@ -1078,7 +1078,7 @@
     "pue": "",
     "source_ids": "S145;S146",
     "issue": "",
-    "notes": "First two buildings targeted for 2028; the later five-building phase targets early 2031. No phase-total MW is asserted. Per-hall 96–150 MW and unconfirmed 274+ MW recruitment material are not a defensible phase aggregate. Start clearance was outstanding on 1 October."
+    "notes": "The first two halls are targeted for 2028; five further halls are targeted for early 2031. A combined MW figure for these phases is unverified. Per-hall ratings and recruitment material do not establish it. Start clearance was still outstanding on 1 October."
   },
   {
     "claim_id": "C049",
@@ -1101,7 +1101,7 @@
     "pue": "",
     "source_ids": "S099;S084",
     "issue": "",
-    "notes": "Issuer annual report: the two halls under construction since 2025 total 24 MW upon commissioning. Operator site page targets completion of the first phase by mid-2027. Basis remains unspecified. Full-capacity timing applies to these two halls only, not 250 MW access or 600 MW campus."
+    "notes": "The annual report gives a combined 24 MW for B1/B2, under construction since 2025. The operator targets first-phase completion by mid-2027. The measure is unspecified. This completion date covers these halls, rather than the 250 MW supply or 600 MW campus."
   },
   {
     "claim_id": "C050",
@@ -1124,7 +1124,7 @@
     "pue": "",
     "source_ids": "S149",
     "issue": "",
-    "notes": "Binding 200 MW grid agreement; connection availability is not commissioning or proof of build-out of the full 300 MW campus. No actual construction-start year is inferred from the agreement."
+    "notes": "The binding agreement covers a 200 MW connection. Supply availability does not establish commissioning, actual construction start or investment in the entire 300 MW campus."
   },
   {
     "claim_id": "C051",
@@ -1147,12 +1147,12 @@
     "pue": "",
     "source_ids": "S108;S109",
     "issue": "",
-    "notes": "Operator states a 40 MW power feed and 28 MW dedicated IT. Feed capacity includes supply headroom and is not calculated IT x PUE; deployment is an explicit grid sensitivity. Contracting of IT load is not automatically a decision to consume the entire feed."
+    "notes": "The operator gives a 40 MW power feed alongside 28 MW IT. The feed includes supply headroom and is not calculated from IT times PUE. Contracting all IT capacity does not establish use of the entire feed."
   },
   {
     "claim_id": "C052",
     "project_id": "P015",
-    "phase": "Länsstyrelsen estimate — overall Horndal site",
+    "phase": "Länsstyrelsen campus estimate",
     "mw": "500",
     "mw_max": "",
     "basis": "facility_unspecified",
@@ -1170,7 +1170,7 @@
     "pue": "",
     "source_ids": "S155;S154",
     "issue": "",
-    "notes": "Adopted estimate of 500 MW electrical demand for the overall Horndal campus, attributed to Länsstyrelsen Dalarna, Trygg fossilfri elförsörjning i Dalarna, April 2021, p.88. Site total for the original plan of up to five server halls, derived by the report from backup dimensioning; approximate external demand estimate with no nameplate/peak distinction. Accepted by the user on 2026-10-15. Google targets completion of the first facility at this campus in 2028 (S154). Application assumption: use that event as first capacity of the accepted overall-site estimate and apply the existing five-year ramp. Modelled 100/200/300/400/500 MW in 2028/2029/2030/2031/2032; 2032 is a model result, not a sourced full-capacity date. The first facility is not assumed to be 500 MW. The overall estimate stays Planned/decision unclear and does not inherit the first facility investment decision, so it contributes to Stated and High, not Low. No PUE uplift or new conversion of 1,500 MWth."
+    "notes": "Länsstyrelsen Dalarna estimates 500 MW for the original plan of up to five halls (April 2021, p. 88), based on backup sizing. It does not distinguish rated capacity from peak demand. The model phases the campus from the first facility’s 2028 target, reaching 500 MW in 2032; that is not Google’s completion promise. The first facility’s investment decision does not cover the entire campus. No PUE uplift or conversion from thermal backup capacity is applied."
   },
   {
     "claim_id": "C053",
@@ -1193,12 +1193,12 @@
     "pue": "",
     "source_ids": "S154;S085",
     "issue": "",
-    "notes": "Observed construction start June 2026 and first-facility completion target 2028. MW of this first facility within the Horndal campus is undisclosed. It is contained within the overall 500 MW estimate C052 and cannot add a second independent campus. Its first-capacity date anchors the model rollout of that estimate; its execution decision applies only to this facility. It does not establish full-site completion in 2028 or confirm 500 MW for the first facility. Renewable procurement and thermal backup are not this facility electrical load."
+    "notes": "Construction began in June 2026, with first-facility completion targeted for 2028. Its MW has not been disclosed. It is included in the 500 MW campus estimate, whose model ramp starts from this date. Construction of this facility does not confirm investment in the entire campus."
   },
   {
     "claim_id": "C054",
     "project_id": "P039",
-    "phase": "Initial announced campus envelope",
+    "phase": "Initial campus plan",
     "mw": "150",
     "mw_max": "",
     "basis": "unspecified",
@@ -1216,12 +1216,12 @@
     "pue": "",
     "source_ids": "S129",
     "issue": "",
-    "notes": "Basis remains unspecified: immediate 150MW does not define IT, facility or grid. Early 2027 is a conditional planned construction start, not operation. A land agreement and operator green-light wording are insufficient for decision=yes or proof of an allocated connection."
+    "notes": "The announcement gives 150 MW without defining IT, site power or grid capacity. Early 2027 is a conditional construction target, rather than an operation date. The land agreement does not establish allocated supply or a final investment decision."
   },
   {
     "claim_id": "C055",
     "project_id": "P041",
-    "phase": "Current-site 1,000 MW potential and phase-one goal",
+    "phase": "Current-site capacity goal",
     "mw": "1000",
     "mw_max": "",
     "basis": "grid",
@@ -1239,7 +1239,7 @@
     "pue": "",
     "source_ids": "S156;S189",
     "issue": "",
-    "notes": "Municipal possible site supply of 1,000 MW (S156); TIP FAQ also describes a 1,000 MW phase-one goal (S189). Neither verifies a submitted or granted network connection. Application assumption: the reported first-phase completion milestone in 2030 anchors the existing five-year ramp of this current-site goal; the separately sourced 650 MW phase is fully dated to 2030 and dominates the smaller ramp share in that year. This does not promise the entire 1,000 MW in 2030 or inherit a phase investment decision. Planned/decision no retained. Contained within the distinct, undated 2,000 MW extended-site option; not additive."
+    "notes": "The municipality gives 1,000 MW of possible supply, also described by TIP as the first-phase goal. The model phases this goal from the conditional 2030 milestone. The separately dated 650 MW phase is included. Neither figure verifies a grid application or allocation. The later 2,000 MW land option is undated and includes this capacity."
   },
   {
     "claim_id": "C056",
@@ -1262,12 +1262,12 @@
     "pue": "",
     "source_ids": "S099",
     "issue": "",
-    "notes": "Issuer-reported installed campus capacity; denominator unspecified. Existing drift baseline, not a new addition."
+    "notes": "Installed campus capacity reported at the end of 2025. The source does not define IT or total site power. It is existing operation, rather than an addition."
   },
   {
     "claim_id": "C057",
     "project_id": "P053",
-    "phase": "Available site power — installed baseline not comparable",
+    "phase": "Available site power",
     "mw": "80",
     "mw_max": "",
     "basis": "facility_nameplate",
@@ -1285,7 +1285,7 @@
     "pue": "1.2",
     "source_ids": "S158",
     "issue": "",
-    "notes": "Total available power 80 MW includes an already operating campus. Existing 41 MW is unspecified and cannot be subtracted as a same-measure facility baseline. Net new envelope is uncertain; the separately sourced E/F addition provides a lower bound. Timing review: the dated 2026 E/F completion is a later expansion of an operating site, not first capacity of the whole 80 MW envelope. It does not establish when the unknown-baseline remainder will be deployed. The larger envelope therefore remains undated; do not substitute the expansion year as a new-campus start."
+    "notes": "The 80 MW of available power includes existing operation. The installed 41 MW uses an unspecified measure, so it cannot be subtracted directly. The E/F expansion establishes a minimum addition, but its 2026 completion does not date deployment of all remaining site power."
   },
   {
     "claim_id": "C058",
@@ -1308,7 +1308,7 @@
     "pue": "",
     "source_ids": "S099",
     "issue": "",
-    "notes": "Annual report: E/F under construction from 2025, F targeted Q3 and E Q4 2026, then total 65 MW. Subtract comparable 41 MW installed baseline before conversion; the 24 MW difference is arithmetic from sourced cumulative totals. Basis unspecified. No second ramp after the explicitly completed phase."
+    "notes": "Halls E/F are under construction from 2025, with F targeted for Q3 and E for Q4 2026. The resulting 65 MW total minus the comparable 41 MW installed base gives a 24 MW addition. The measure is unspecified. The explicit phase-completion date needs no further ramp."
   },
   {
     "claim_id": "C059",
@@ -1331,12 +1331,12 @@
     "pue": "",
     "source_ids": "S159",
     "issue": "",
-    "notes": "Explicit additional 30 MW; do not subtract an unrelated installed baseline or date commissioning from 2027 building-rights plans. Connection works are not proof that datacenter halls are constructed or full consumption committed."
+    "notes": "The source gives an additional 30 MW. Grid works do not establish datacenter construction or commissioning. The 2027 building-rights plans are not used as an operation date."
   },
   {
     "claim_id": "C060",
     "project_id": "P055",
-    "phase": "Full-site electrical envelope",
+    "phase": "Full-site electrical capacity",
     "mw": "12",
     "mw_max": "",
     "basis": "facility_nameplate",
@@ -1354,7 +1354,7 @@
     "pue": "",
     "source_ids": "S160;S162;S161",
     "issue": "",
-    "notes": "Basis: total electrical capacity. S162 pairs the planned 12 MW total at this new site with first-hall operation in Q1 2027. Scope reconciliation: use 2027 as first_capacity of the overall envelope, then apply the existing five-year ramp: 9.6 MW in 2030 and 12 MW from 2031 are modelled deployment, not operator promises of full completion. Planned/decision unclear are retained for the overall scope. The first hall keeps its separate 1 MW design observation and execution status. No per-hall 4.5 MW figure is multiplied by eight."
+    "notes": "The source gives 12 MW total electrical capacity and first-hall operation in early 2027. The model phases the site from then, reaching full capacity in 2031; that is not an operator commitment. The first hall’s separate 1 MW figure is included. Investment in the entire site is unconfirmed."
   },
   {
     "claim_id": "C061",
@@ -1377,7 +1377,7 @@
     "pue": "",
     "source_ids": "S161;S162",
     "issue": "",
-    "notes": "Operator describes one normal 1 MW per hall and first hall in Q1 2027. This is a conservative scoped first-hall claim, not 8 x 4.5 MW or full campus completion. No actual start year is inferred from the reporting date."
+    "notes": "The operator describes normal design power of 1 MW per hall and targets the first hall for early 2027. This observation covers one hall. No construction year or full-campus capacity is inferred from it."
   },
   {
     "claim_id": "C062",
@@ -1400,12 +1400,12 @@
     "pue": "",
     "source_ids": "S163",
     "issue": "",
-    "notes": "Existing Big Boden gross utility capacity; operated since 2018. The proposed 25 MW critical IT is another denominator of this same 32 MW supply, not new additional electrical load."
+    "notes": "The existing Big Boden site has 32 MW of utility capacity and has operated since 2018. The approximately 25 MW IT proposal uses the same supply and is not an additional electrical load."
   },
   {
     "claim_id": "C063",
     "project_id": "P056",
-    "phase": "HPC reuse of unchanged utility envelope",
+    "phase": "HPC conversion of existing supply",
     "mw": "32",
     "mw_max": "",
     "basis": "facility_nameplate",
@@ -1423,7 +1423,7 @@
     "pue": "",
     "source_ids": "S163",
     "issue": "",
-    "notes": "Nonbinding retrofit plan uses the existing 32 MW utility envelope. Subtract its same-measure 32 MW operating baseline: no claimed increment of grid capacity. Approximately 25 MW critical IT is retained as the corresponding source interpretation, not another additive claim or GPU conversion."
+    "notes": "The nonbinding HPC conversion uses the existing 32 MW utility supply. Subtracting the same 32 MW installed base gives no additional grid capacity. The approximately 25 MW IT figure describes the same proposal and is not added again."
   },
   {
     "claim_id": "C068",
@@ -1446,7 +1446,7 @@
     "pue": "1.25",
     "source_ids": "S177",
     "issue": "",
-    "notes": "Existing operating capacity; no future addition. Basis: power, maximum/nameplate as technical capacity."
+    "notes": "Existing rated power capacity; no future addition."
   },
   {
     "claim_id": "C069",
@@ -1469,7 +1469,7 @@
     "pue": "",
     "source_ids": "S109",
     "issue": "",
-    "notes": "Q2 2026 issuer CEO report explicitly says expansion started and adds 1.2 MW, without an IT/facility denominator or operational year. The quarter is an observation period, not a precise construction-start year. Undated addition remains in nameplate/High."
+    "notes": "The Q2 2026 report says the expansion has started and adds 1.2 MW. It does not define the electrical measure or give an operation date. No precise construction-start year is recorded. The undated addition remains in planned capacity and High."
   },
   {
     "claim_id": "C070",
@@ -1492,7 +1492,7 @@
     "pue": "",
     "source_ids": "S179",
     "issue": "",
-    "notes": "Basis: Site power 1–5 MW. Physical locality and calendar timing are unknown; kept in SE-unassigned and High timing sensitivity."
+    "notes": "The operator gives 1–5 MW of site power without a location or calendar date. The project remains unassigned within Sweden; High shows its timing uncertainty."
   },
   {
     "claim_id": "C071",
@@ -1515,12 +1515,12 @@
     "pue": "",
     "source_ids": "S181;S183",
     "issue": "",
-    "notes": "1.5 MW scoped project capacity remains unspecified as IT/facility. The current operator page dates customer availability to end-2027; apply first-capacity phasing. Old conditional construction targets are not used as observed starts."
+    "notes": "The operator gives 1.5 MW without defining IT or total site power. Customer access is targeted for late 2027, starting the model ramp. Older construction targets are not treated as actual starts."
   },
   {
     "claim_id": "C072",
     "project_id": "P041",
-    "phase": "Initial 650 MW phase - conditional completion milestone",
+    "phase": "Initial 650 MW phase",
     "mw": "650",
     "mw_max": "",
     "basis": "facility_unspecified",
@@ -1538,12 +1538,12 @@
     "pue": "",
     "source_ids": "S189",
     "issue": "",
-    "notes": "TIP detailed FAQ reports 650 MW initially and phase one completed by 2030-12-31 under the proposed transaction. Facility-side demand proxy; no IT or nameplate/peak distinction is stated. This dated plan is not a verified grid application, connection agreement, execution decision or observed commissioning. The June-version milestone is conditional on transaction, permits and electricity arrangements. Apply full_capacity only to these 650 MW, not the 1,000 MW goal or later 2,000 MW option. Modelled annual energy is a year-equivalent, not consumption during a 31 December commissioning day."
+    "notes": "TIP gives 650 MW initially and conditional phase completion by 31 December 2030. The figure is used as a site-power estimate; its precise electrical definition is unstated. Completion depends on the transaction, permits and electricity arrangements. It is not verified grid allocation or commissioning. The date covers these 650 MW, rather than the larger site options. Annual TWh represents a full year at the modelled capacity."
   },
   {
     "claim_id": "C073",
     "project_id": "P041",
-    "phase": "Extended-site future option - up to 2,000 MW total",
+    "phase": "Later site extension",
     "mw": "2000",
     "mw_max": "",
     "basis": "facility_unspecified",
@@ -1561,7 +1561,7 @@
     "pue": "",
     "source_ids": "S189",
     "issue": "",
-    "notes": "TIP FAQ describes a possible later extended site with additional land and up to 2,000 MW total, subject to future permits, grid and land decisions. This is a total envelope, not an extra 2,000 MW added to the current 1,000 MW. Timing review: the 2030 first-phase milestone concerns the present land/phase, not the separate future land expansion; the outer option remains undated. It contains C055 and C072, so only one physical envelope is counted. Not a verified network request or contracted power allocation."
+    "notes": "TIP describes a later option of up to 2,000 MW on an extended site, requiring further land, permits and grid decisions. This total includes the 1,000 MW current-site goal and 650 MW initial phase. The 2030 milestone does not cover the land extension. Its timing and supply allocation remain unconfirmed."
   },
   {
     "claim_id": "C074",
@@ -1584,7 +1584,7 @@
     "pue": "",
     "source_ids": "S190",
     "issue": "",
-    "notes": "Basis: expansion capacity 100+ MW, without IT/facility qualifier. Explicit expansion at Renforsin Ranta, separate from Otanmäki land reservation. Unknown upper retained, not capped at 100. No phase date or committed execution scope found."
+    "notes": "The source gives 100 MW or more of expansion at Renforsin Ranta, without defining the electrical measure. No upper limit, operation date or full investment decision is disclosed. This is separate from Otanmäki."
   },
   {
     "claim_id": "C075",
@@ -1607,7 +1607,7 @@
     "pue": "",
     "source_ids": "S058",
     "issue": "",
-    "notes": "Actual construction began late 2024. Completion of building works around 2026/2027 is not a commissioning promise; Microsoft explicitly defers commissioning announcement. Phase MW unknown. No full-campus execution decision inherited."
+    "notes": "Construction began in late 2024. Building completion around 2026/2027 does not establish commissioning, which Microsoft will announce separately. Phase MW is unknown. This construction decision does not cover the entire campus."
   },
   {
     "claim_id": "C076",
@@ -1630,7 +1630,7 @@
     "pue": "",
     "source_ids": "S058",
     "issue": "",
-    "notes": "Actual construction began late 2024. Completion of building works around 2026/2027 is not a commissioning promise; Microsoft explicitly defers commissioning announcement. Phase MW unknown. No full-campus execution decision inherited."
+    "notes": "Construction began in late 2024. Building completion around 2026/2027 does not establish commissioning, which Microsoft will announce separately. Phase MW is unknown. This construction decision does not cover the entire campus."
   },
   {
     "claim_id": "C077",
@@ -1653,7 +1653,7 @@
     "pue": "",
     "source_ids": "S058",
     "issue": "",
-    "notes": "Actual construction began late 2024. Completion of building works around 2026/2027 is not a commissioning promise; Microsoft explicitly defers commissioning announcement. Phase MW unknown. No full-campus execution decision inherited."
+    "notes": "Construction began in late 2024. Building completion around 2026/2027 does not establish commissioning, which Microsoft will announce separately. Phase MW is unknown. This construction decision does not cover the entire campus."
   },
   {
     "claim_id": "C078",
@@ -1676,7 +1676,7 @@
     "pue": "",
     "source_ids": "S126",
     "issue": "",
-    "notes": "Basis: bruttokapasiteetti / gross capacity across the whole facility. Unknown installed baseline means additional capacity is 0–45 MW, not +45 or 45−40. Autumn 2027 dates completion of this expansion scope; the uncertainty is the baseline, not the construction decision."
+    "notes": "The source gives 45 MW gross capacity after expansion. Installed capacity is unverified, so the addition is between 0 and 45 MW. The advertised 40 MW cannot be subtracted as an installed base. Autumn 2027 dates completion of this expansion."
   },
   {
     "claim_id": "C079",
@@ -1699,7 +1699,7 @@
     "pue": "",
     "source_ids": "S096;S293",
     "issue": "",
-    "notes": "YIT contract includes design, construction, technical services and commissioning by end 2027; EC also identifies planned FIN04 capacity by end 2027. Committed building MW undisclosed; decision not transferred to full campus."
+    "notes": "YIT’s contract includes design, construction, technical services and commissioning by the end of 2027. The building’s MW has not been disclosed. The contract does not confirm investment in the entire campus."
   },
   {
     "claim_id": "C080",
@@ -1722,7 +1722,7 @@
     "pue": "",
     "source_ids": "S192",
     "issue": "",
-    "notes": "70 MW substation for an explicitly new second building; additional to the operating 75 MW site. Basis: substation capacity, not IT. Autumn 2027 is grid availability only: model lower zero and upper ramp. Scope-specific supply construction is contracted; building operation date not disclosed."
+    "notes": "The 70 MW substation serves a new second building, additional to the operating 75 MW site. Autumn 2027 dates grid availability only: the model starts at zero in its lower case and phases from that date in its upper case. Building commissioning is undisclosed."
   },
   {
     "claim_id": "C081",
@@ -1745,7 +1745,7 @@
     "pue": "",
     "source_ids": "S193",
     "issue": "",
-    "notes": "Fira constructs first building; site works spring 2026 and main works July 2026. MW for this committed scope not disclosed."
+    "notes": "Fira is constructing the first building, with site works from spring 2026 and main works from July. Its MW has not been disclosed."
   },
   {
     "claim_id": "C082",
@@ -1768,7 +1768,53 @@
     "pue": "",
     "source_ids": "S062",
     "issue": "",
-    "notes": "YIT completion May 2027 is construction completion; no disclosed commissioned MW. Neighbouring 100 MW IT evidence is excluded by identity_conflict C042."
+    "notes": "YIT targets building completion for May 2027; commissioning and MW are undisclosed. The nearby 100 MW IT figure belongs to the separate western project and is excluded here."
+  },
+  {
+    "claim_id": "C083",
+    "project_id": "P051",
+    "phase": "Total electrical capacity",
+    "mw": "130",
+    "mw_max": "",
+    "basis": "facility_nameplate",
+    "qualifier": "approximate",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S078",
+    "issue": "",
+    "notes": "The authority gives 130 MW of total electrical capacity for the separate western parcel. The EIA conclusion of 1 June 2026 is not a construction or commissioning date. Timing remains unknown."
+  },
+  {
+    "claim_id": "C084",
+    "project_id": "P051",
+    "phase": "IT capacity within facility",
+    "mw": "100",
+    "mw_max": "",
+    "basis": "it_nameplate",
+    "qualifier": "approximate",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C083",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "1.3",
+    "source_ids": "S078",
+    "issue": "",
+    "notes": "The EIA pairs 100 MW IT with 130 MW total electrical capacity, giving a design ratio of 1.3. They describe the same development and are not added together. The 525 MW thermal backup rating is excluded from datacenter load."
   },
   {
     "claim_id": "C085",
@@ -1791,7 +1837,7 @@
     "pue": "",
     "source_ids": "S070",
     "issue": "",
-    "notes": "Do not copy the old LUMI 7.1 MW system rating or compute-performance multiples to this new facility. No scoped electrical power found in CSC construction/procurement sources."
+    "notes": "Electrical capacity has not been disclosed for the new LUMI-AI / LUMI-IQ facility. The existing LUMI system’s 7.1 MW rating and computing-performance multiples are not used as estimates."
   },
   {
     "claim_id": "C086",
@@ -1814,7 +1860,7 @@
     "pue": "",
     "source_ids": "S196",
     "issue": "",
-    "notes": "Additional second and third buildings exist; their MW is unknown. Do not multiply first-building 22.5 MW by building count. No full-campus total verified."
+    "notes": "The second and third buildings are contracted, but their capacities are undisclosed. The first building’s 22.5 MW is not multiplied by the number of planned buildings. A full-campus total is unverified."
   },
   {
     "claim_id": "C087",
@@ -1837,7 +1883,7 @@
     "pue": "1.2",
     "source_ids": "S197",
     "issue": "",
-    "notes": "Contained in explicit facility total. PUE about 1.2 is the report design value; facility total also includes auxiliaries. No second addition and no separate dated or committed scope."
+    "notes": "IT capacity is included in the reported total electrical capacity. The report’s PUE of about 1.2 is a design value. This is not an additional phase or a separate construction decision."
   },
   {
     "claim_id": "C088",
@@ -1860,7 +1906,7 @@
     "pue": "1.2",
     "source_ids": "S198",
     "issue": "",
-    "notes": "Contained in explicit facility total. PUE about 1.2 is the report design value; facility total also includes auxiliaries. No second addition and no separate dated or committed scope."
+    "notes": "IT capacity is included in the reported total electrical capacity. The report’s PUE of about 1.2 is a design value. This is not an additional phase or a separate construction decision."
   },
   {
     "claim_id": "C089",
@@ -1883,7 +1929,99 @@
     "pue": "1.2",
     "source_ids": "S083",
     "issue": "",
-    "notes": "Contained in explicit facility total. PUE about 1.2 is the report design value; facility total also includes auxiliaries. No second addition and no separate dated or committed scope."
+    "notes": "IT capacity is included in the reported total electrical capacity. The report’s PUE of about 1.2 is a design value. This is not an additional phase or a separate construction decision."
+  },
+  {
+    "claim_id": "C090",
+    "project_id": "P046",
+    "phase": "Full campus gross power",
+    "mw": "230",
+    "mw_max": "",
+    "basis": "facility_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S199",
+    "issue": "",
+    "notes": "The source gives 230 MW gross power for the campus. The Q3 2028 supply date covers only the first phase. Full-campus commissioning and investment remain unconfirmed."
+  },
+  {
+    "claim_id": "C091",
+    "project_id": "P046",
+    "phase": "IT capacity within campus total",
+    "mw": "160",
+    "mw_max": "",
+    "basis": "it_nameplate",
+    "qualifier": "up_to",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C090",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "1.4375",
+    "source_ids": "S199",
+    "issue": "",
+    "notes": "The paired 230 MW gross / 160 MW IT figures give a design ratio of 1.4375, rather than measured operating PUE. The IT capacity is included in the 230 MW site total."
+  },
+  {
+    "claim_id": "C092",
+    "project_id": "P046",
+    "phase": "First-phase secured supply",
+    "mw": "75",
+    "mw_max": "",
+    "basis": "grid",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2028",
+    "last_year": "2028",
+    "timing": "grid_availability",
+    "parent_id": "C090",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S136;S199",
+    "issue": "",
+    "notes": "The first phase has 75 MW of secured power from Q3 2028. This is supply availability, rather than operation or a construction decision. The model uses zero in the lower case and phases from that date in the upper case."
+  },
+  {
+    "claim_id": "C093",
+    "project_id": "P046",
+    "phase": "First-phase IT within secured supply",
+    "mw": "60",
+    "mw_max": "",
+    "basis": "it_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2028",
+    "last_year": "2028",
+    "timing": "grid_availability",
+    "parent_id": "C092",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "1.25",
+    "source_ids": "S199",
+    "issue": "",
+    "notes": "The paired 75 MW supply / 60 MW IT figures give a design ratio of 1.25, rather than measured PUE. Both cover the first phase and its grid-availability date; they are not added together."
   },
   {
     "claim_id": "C094",
@@ -1906,12 +2044,219 @@
     "pue": "",
     "source_ids": "S202",
     "issue": "",
-    "notes": "Potential land-enabled future expansion; no defensible electrical MW identified. Existing operating capacity not quantified or counted as future addition."
+    "notes": "Additional land could support expansion, but its electrical capacity is undisclosed. Existing operating capacity is not counted as a future addition."
+  },
+  {
+    "claim_id": "C095",
+    "project_id": "P084",
+    "phase": "Full campus IT potential",
+    "mw": "550",
+    "mw_max": "",
+    "basis": "it_nameplate",
+    "qualifier": "at_least",
+    "status": "Planned",
+    "decision": "no",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S203",
+    "issue": "",
+    "notes": "The campus could exceed 550 MW IT; the source gives no upper limit. Further development is conditional. The first hall’s substation does not establish construction or operation of the full campus."
+  },
+  {
+    "claim_id": "C096",
+    "project_id": "P084",
+    "phase": "First committed IT phase",
+    "mw": "110",
+    "mw_max": "",
+    "basis": "it_nameplate",
+    "qualifier": "unknown",
+    "status": "Under construction",
+    "decision": "yes",
+    "construction_year": "2026",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C095",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S203;S204",
+    "issue": "",
+    "notes": "The first phase is fully leased and under development in 2026, with power infrastructure already built. The standard construction-time assumption applies only to these 110 MW IT. No commissioning deadline is disclosed."
+  },
+  {
+    "claim_id": "C097",
+    "project_id": "P085",
+    "phase": "Contracted IT capacity",
+    "mw": "165",
+    "mw_max": "",
+    "basis": "it_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "yes",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S205",
+    "issue": "",
+    "notes": "Seven-year service orders cover 165 MW IT, to be delivered in phases. The September 2026 construction start concerns the first 50 MW and does not date commissioning of all 165 MW."
+  },
+  {
+    "claim_id": "C098",
+    "project_id": "P085",
+    "phase": "Initial IT phase",
+    "mw": "50",
+    "mw_max": "",
+    "basis": "it_nameplate",
+    "qualifier": "unknown",
+    "status": "Under construction",
+    "decision": "yes",
+    "construction_year": "2026",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C097",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S205",
+    "issue": "",
+    "notes": "Construction of the first 50 MW IT was confirmed in September 2026. The model applies its standard construction-time assumption to this phase."
+  },
+  {
+    "claim_id": "C099",
+    "project_id": "P085",
+    "phase": "Earlier two-hall plan",
+    "mw": "200",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C097",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S206;S289",
+    "issue": "",
+    "notes": "The earlier source describes two 100 MW halls without defining IT or total site power. They overlap the contracted 165 MW IT development and are not an additional 200 MW. The differing measures remain unresolved."
+  },
+  {
+    "claim_id": "C100",
+    "project_id": "P086",
+    "phase": "Alternative campus IT designs",
+    "mw": "100",
+    "mw_max": "130",
+    "basis": "it_nameplate",
+    "qualifier": "range",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "2027",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S207;S208",
+    "issue": "",
+    "notes": "Alternative designs have maximum IT capacities of 100 and 130 MW. They are not separate phases or committed demand. Construction is conditionally planned for 2027. Backup capacity is excluded."
+  },
+  {
+    "claim_id": "C101",
+    "project_id": "P087",
+    "phase": "Alternative campus IT designs",
+    "mw": "324",
+    "mw_max": "702",
+    "basis": "it_nameplate",
+    "qualifier": "range",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2031",
+    "last_year": "2031",
+    "timing": "first_capacity",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S209",
+    "issue": "",
+    "notes": "The EIA gives 324–486 MW IT for six halls, or 420–702 MW IT with four more halls. The combined design range is 324–702 MW. First operation is targeted for 2031. Conflicting completion dates of 2032 and 2035 prevent use of a firm full-capacity date, so the standard ramp applies from 2031. The EIA’s 4.5/6.6 TWh estimates are separate from this model."
+  },
+  {
+    "claim_id": "C102",
+    "project_id": "P088",
+    "phase": "Full datacenter development",
+    "mw": "200",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "unknown",
+    "status": "Permitted",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2028",
+    "last_year": "2028",
+    "timing": "full_capacity",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S210;S211;S212",
+    "issue": "",
+    "notes": "The municipality gives 200 MW without defining the electrical measure and targets phased completion by the end of 2028. Preparatory works do not confirm investment in the entire development. The separate 200 MW battery project is excluded."
+  },
+  {
+    "claim_id": "C103",
+    "project_id": "P090",
+    "phase": "Maximum grid power",
+    "mw": "560",
+    "mw_max": "",
+    "basis": "grid",
+    "qualifier": "up_to",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S214",
+    "issue": "",
+    "notes": "The source gives maximum grid power of 560 MW. Secured supply and an operation date are unconfirmed. The figure describes planned capacity, rather than actual demand."
   },
   {
     "claim_id": "C104",
     "project_id": "P031",
-    "phase": "Campus grid connection envelope",
+    "phase": "Campus grid connection",
     "mw": "180",
     "mw_max": "",
     "basis": "grid",
@@ -1929,12 +2274,196 @@
     "pue": "",
     "source_ids": "S215;S071",
     "issue": "",
-    "notes": "FCDC explicitly names Day One, same Lahti campus.180 MW connection contains 128 MW IT; standard ramp anchored by Day One first building operation 2027. Not additional to ITscope."
+    "notes": "FCDC identifies the same DayOne Lahti campus. Its 180 MW connection includes the 128 MW IT plan. The model phases the campus from first-building operation in 2027; the connection and IT figures are not added together."
+  },
+  {
+    "claim_id": "C105",
+    "project_id": "P091",
+    "phase": "Campus connection capacity",
+    "mw": "250",
+    "mw_max": "",
+    "basis": "grid",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2028",
+    "last_year": "2029",
+    "timing": "first_capacity",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S215;S216",
+    "issue": "",
+    "notes": "The 250 MW figure is connection capacity. The municipality’s first-operation target of 2028–2029 starts the model ramp. Investment in the entire capacity is unconfirmed."
+  },
+  {
+    "claim_id": "C106",
+    "project_id": "P093",
+    "phase": "Second-phase full campus potential",
+    "mw": "600",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "no",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S218",
+    "issue": "",
+    "notes": "The 600 MW total has no explicit electrical definition. Later phases are undated. Planned initial works in 2026 do not establish when the entire campus will operate."
+  },
+  {
+    "claim_id": "C107",
+    "project_id": "P093",
+    "phase": "Initial phase",
+    "mw": "200",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "2026",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C106",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S218",
+    "issue": "",
+    "notes": "Works were planned for 2026, but an actual start is unconfirmed. An anchor customer does not establish investment in the entire campus. The model applies the standard construction-time assumption only to this 200 MW phase."
+  },
+  {
+    "claim_id": "C110",
+    "project_id": "P095",
+    "phase": "Alternative total electrical designs",
+    "mw": "133",
+    "mw_max": "400",
+    "basis": "facility_nameplate",
+    "qualifier": "range",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2027",
+    "last_year": "2027",
+    "timing": "first_capacity",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S220;S265",
+    "issue": "",
+    "notes": "The EIA alternatives give 133–400 MW total electrical capacity, 100–300 MW IT and design PUE 1.3. The model phases the campus from first operation in 2027. This is a modelling assumption; first-phase construction does not confirm investment in the entire design."
+  },
+  {
+    "claim_id": "C111",
+    "project_id": "P095",
+    "phase": "IT in alternative designs",
+    "mw": "100",
+    "mw_max": "300",
+    "basis": "it_nameplate",
+    "qualifier": "range",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2027",
+    "last_year": "2027",
+    "timing": "first_capacity",
+    "parent_id": "C110",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "1.3",
+    "source_ids": "S220;S265",
+    "issue": "",
+    "notes": "The 100–300 MW IT alternatives are included in the 133–400 MW electrical design, with reported design PUE 1.3. The model phases the campus from first operation in 2027. The first construction phase does not confirm investment in the full design."
+  },
+  {
+    "claim_id": "C112",
+    "project_id": "P096",
+    "phase": "First phases - MW undisclosed",
+    "mw": "",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "unknown",
+    "status": "Under construction",
+    "decision": "yes",
+    "construction_year": "2026",
+    "first_year": "2027",
+    "last_year": "2027",
+    "timing": "first_capacity",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S221",
+    "issue": "",
+    "notes": "The landowner quotes the developer on ongoing earthworks and first operation in 2027. Capacity of the first phase is undisclosed."
+  },
+  {
+    "claim_id": "C113",
+    "project_id": "P097",
+    "phase": "Two-building IT total",
+    "mw": "96",
+    "mw_max": "",
+    "basis": "it_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "2027",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "1.3",
+    "source_ids": "S222",
+    "issue": "",
+    "notes": "The two buildings have 96 MW combined IT capacity and design PUE target 1.2–1.3. The model uses 1.3 for its upper conversion case and the standard construction-time assumption from the conditional 2027 start. The EIA’s 1 TWh estimate is retained as a source estimate."
+  },
+  {
+    "claim_id": "C115",
+    "project_id": "P099",
+    "phase": "Planned campus electrical capacity",
+    "mw": "100",
+    "mw_max": "",
+    "basis": "facility_nameplate",
+    "qualifier": "unknown",
+    "status": "Permitted",
+    "decision": "unclear",
+    "construction_year": "2026",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S225;S226",
+    "issue": "",
+    "notes": "The utility CEO gives approximately 100 MW of electrical power. The planned 2026 construction start is used with the standard construction-time assumption. Actual start and hall sequencing remain unconfirmed; no more precise primary capacity figure was found."
   },
   {
     "claim_id": "C129",
     "project_id": "P035",
-    "phase": "Developer available grid envelope",
+    "phase": "Developer-reported grid capacity",
     "mw": "350",
     "mw_max": "",
     "basis": "grid",
@@ -1952,6 +2481,420 @@
     "pue": "",
     "source_ids": "S244",
     "issue": "",
-    "notes": "Polarnode Pajarila development is the Nebius campus. Available grid envelope 350 MW is distinct from contracted/design facility scope 310 MW. Relative two-year power lead time does not date this extra headroom; no additive campus or full execution decision."
+    "notes": "Polarnode Pajarila is the Nebius campus. Its 350 MW grid figure differs from the 310 MW site design and is not a separate campus. A relative two-year supply lead time does not date the remaining capacity or confirm investment in it."
+  },
+  {
+    "claim_id": "C132",
+    "project_id": "P121",
+    "phase": "Campus power potential",
+    "mw": "500",
+    "mw_max": "",
+    "basis": "facility_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2027",
+    "last_year": "2027",
+    "timing": "first_capacity",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S247",
+    "issue": "",
+    "notes": "The source describes 500 MW of power and development potential. The model phases the campus from the initial 60 MW availability target in 2027. That assumption does not establish investment in all 500 MW or a full-completion date."
+  },
+  {
+    "claim_id": "C133",
+    "project_id": "P121",
+    "phase": "Initial phase",
+    "mw": "60",
+    "mw_max": "",
+    "basis": "facility_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2027",
+    "last_year": "2027",
+    "timing": "first_capacity",
+    "parent_id": "C132",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S247",
+    "issue": "",
+    "notes": "The first 60 MW could be available in 2027. The target remains conditional."
+  },
+  {
+    "claim_id": "C134",
+    "project_id": "P121",
+    "phase": "Second cumulative phase",
+    "mw": "100",
+    "mw_max": "",
+    "basis": "facility_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2029",
+    "last_year": "2029",
+    "timing": "full_capacity",
+    "parent_id": "C132",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S247",
+    "issue": "",
+    "notes": "The 100 MW target for 2029 includes the initial 60 MW. It is not another 100 MW."
+  },
+  {
+    "claim_id": "C141",
+    "project_id": "P125",
+    "phase": "Available campus power",
+    "mw": "320",
+    "mw_max": "",
+    "basis": "facility_nameplate",
+    "qualifier": "up_to",
+    "status": "Permitted",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2028",
+    "last_year": "2028",
+    "timing": "first_capacity",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S249",
+    "issue": "",
+    "notes": "The source gives 320 MW of available power and a 2028 service target. The model phases the campus from that year. The target does not establish full commissioning or investment in all 320 MW."
+  },
+  {
+    "claim_id": "C142",
+    "project_id": "P125",
+    "phase": "Secured supply",
+    "mw": "90",
+    "mw_max": "",
+    "basis": "grid",
+    "qualifier": "unknown",
+    "status": "Permitted",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2028",
+    "last_year": "2028",
+    "timing": "first_capacity",
+    "parent_id": "C141",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S249",
+    "issue": "",
+    "notes": "The 90 MW secured supply is included in the larger site capacity. The service target does not confirm investment in the entire campus."
+  },
+  {
+    "claim_id": "C143",
+    "project_id": "P126",
+    "phase": "Campus electrical capacity",
+    "mw": "250",
+    "mw_max": "",
+    "basis": "facility_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2028",
+    "last_year": "2029",
+    "timing": "first_capacity",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S250",
+    "issue": "",
+    "notes": "FCDC gives 250 MW of electrical power. The model phases the campus from the first-building operation target of 2028–2029. Later stages remain conditional; their investment is unconfirmed."
+  },
+  {
+    "claim_id": "C155",
+    "project_id": "P095",
+    "phase": "First construction phase - MW undisclosed",
+    "mw": "",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "unknown",
+    "status": "Under construction",
+    "decision": "yes",
+    "construction_year": "2026",
+    "first_year": "2027",
+    "last_year": "2027",
+    "timing": "first_capacity",
+    "parent_id": "C110",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S265",
+    "issue": "",
+    "notes": "Foundation piling is ongoing. The developer targets first operation by the end of 2027, without disclosing phase MW."
+  },
+  {
+    "claim_id": "C159",
+    "project_id": "P150",
+    "phase": "Long-term campus potential",
+    "mw": "300",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "up_to",
+    "status": "Planned",
+    "decision": "no",
+    "construction_year": "",
+    "first_year": "2026",
+    "last_year": "2026",
+    "timing": "first_capacity",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S273",
+    "issue": "",
+    "notes": "The 300 MW expansion potential has no explicit electrical definition. The model phases the campus from the first 8 MW IT service target in 2026. That assumption does not establish construction or investment in the entire campus."
+  },
+  {
+    "claim_id": "C160",
+    "project_id": "P150",
+    "phase": "Initial deployment",
+    "mw": "8",
+    "mw_max": "",
+    "basis": "it_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2026",
+    "last_year": "2026",
+    "timing": "first_capacity",
+    "parent_id": "C159",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S273",
+    "issue": "",
+    "notes": "The agreement gives an initial IT phase and service target. Actual commissioning and a construction commitment are unconfirmed. IT capacity is not total site power."
+  },
+  {
+    "claim_id": "C161",
+    "project_id": "P151",
+    "phase": "Long-term campus potential",
+    "mw": "1000",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "up_to",
+    "status": "Planned",
+    "decision": "no",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S274;S275",
+    "issue": "",
+    "notes": "The 1 GW potential has no explicit electrical definition and remains undated. The 2027 target covers initial power availability only."
+  },
+  {
+    "claim_id": "C162",
+    "project_id": "P151",
+    "phase": "Engineering study capacity",
+    "mw": "520",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C161",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S275",
+    "issue": "",
+    "notes": "Engineering and due diligence cover 520 MW within the wider site potential. This does not establish an investment decision or operating capacity."
+  },
+  {
+    "claim_id": "C163",
+    "project_id": "P151",
+    "phase": "Currently available supply",
+    "mw": "10",
+    "mw_max": "",
+    "basis": "grid",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C161",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S274",
+    "issue": "",
+    "notes": "The source describes available power supply, rather than operating demand. The website access date is not used as a commissioning year."
+  },
+  {
+    "claim_id": "C164",
+    "project_id": "P151",
+    "phase": "Near-term substation supply",
+    "mw": "55",
+    "mw_max": "",
+    "basis": "grid",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C161",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S274",
+    "issue": "",
+    "notes": "The source describes near-term power supply, rather than operating demand. The website access date is not used as a commissioning year."
+  },
+  {
+    "claim_id": "C165",
+    "project_id": "P151",
+    "phase": "Initial dated power phase",
+    "mw": "80",
+    "mw_max": "",
+    "basis": "facility_nameplate",
+    "qualifier": "unknown",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "2027",
+    "last_year": "2027",
+    "timing": "grid_availability",
+    "parent_id": "C161",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S275",
+    "issue": "",
+    "notes": "The release targets 80 MW of power in the first half of 2027. This is treated as supply availability. Its relationship to the technical page’s 55 MW is unclear, so they are not added together. It does not date full-campus operation."
+  },
+  {
+    "claim_id": "C166",
+    "project_id": "P152",
+    "phase": "Alternative campus electrical designs",
+    "mw": "369",
+    "mw_max": "884",
+    "basis": "facility_nameplate",
+    "qualifier": "range",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S276",
+    "issue": "",
+    "notes": "The EIA gives alternative total electrical capacities. Neither an operation date nor secured demand is established. Preparatory earthworks may also occur without the datacenter project, so they do not date hall construction."
+  },
+  {
+    "claim_id": "C167",
+    "project_id": "P152",
+    "phase": "IT within alternative designs",
+    "mw": "284",
+    "mw_max": "680",
+    "basis": "it_nameplate",
+    "qualifier": "range",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C166",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "1.3",
+    "source_ids": "S276",
+    "issue": "",
+    "notes": "The explicit IT alternatives are paired with total electrical capacity at a design ratio of about 1.3. They are included in the same development. Thermal backup capacity is excluded."
+  },
+  {
+    "claim_id": "C171",
+    "project_id": "P159",
+    "phase": "Expansion potential",
+    "mw": "100",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "at_least",
+    "status": "Planned",
+    "decision": "no",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "",
+    "relation": "independent",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S286",
+    "issue": "",
+    "notes": "The source gives expansion capacity of 100 MW or more, with no upper limit. An operation date and full investment decision are undisclosed."
+  },
+  {
+    "claim_id": "C172",
+    "project_id": "P159",
+    "phase": "Initial development scope",
+    "mw": "30",
+    "mw_max": "",
+    "basis": "unspecified",
+    "qualifier": "at_least",
+    "status": "Planned",
+    "decision": "unclear",
+    "construction_year": "",
+    "first_year": "",
+    "last_year": "",
+    "timing": "unknown",
+    "parent_id": "C171",
+    "relation": "included_in",
+    "baseline_id": "",
+    "baseline_scope": "new_capacity",
+    "pue": "",
+    "source_ids": "S286",
+    "issue": "",
+    "notes": "The original proposal gives at least 30 MW without identifying IT capacity. It is included in the wider expansion potential."
   }
 ]

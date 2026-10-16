@@ -21,4 +21,28 @@ for (const zone of data.scenarios) {
 const contaminated = {...data, projects: [...data.projects, {record_type:'candidate'}]};
 assert.throws(() => view.assertContract(contaminated), /Unapproved/);
 assert.throws(() => view.assertContract({...data,project_scenarios:data.project_scenarios.slice(1)}), /Incomplete/);
+for (const scenario of data.method.scenarios) {
+  const all = view.makeView(data, scenario.id);
+  const sweden = view.makeView(data, scenario.id, {countries:['SE']});
+  assert.equal(sweden.rows.length, data.projects.filter(project => project.country === 'SE').length);
+  assert.equal(sweden.zones.FI.excluded, true);
+  assert.equal(all.zones.FI.excluded, false);
+  assert.equal(sweden.countries.NO.excluded, true);
+  const se1 = view.makeView(data, scenario.id, {zones:['SE1']});
+  assert.ok(se1.rows.every(row => row.bidding_zone === 'SE1'));
+  assert.equal(se1.countries.FI.excluded, true);
+  assert.equal(se1.countries.SE.excluded, false);
+  assert.deepEqual(se1.totals.mw, view.sumBounds(se1.rows,'mw_low','mw_high'));
+  const unknown = all.rows.filter(row => !row.capacity_known && row.indicator === 'unquantified');
+  assert.ok(unknown.length, 'Unknown-capacity projects must remain visible');
+}
+assert.equal(view.operationYears([{timing:'grid_availability',first_year:'2028'}]), 'Unknown');
+assert.equal(view.operationYears([{timing:'first_capacity',first_year:'2027',last_year:'2029'}]), '2027–2029');
+assert.equal(view.operationYears([{status:'Operational',timing:'first_capacity',first_year:'2025'},{status:'Planned',timing:'unknown',first_year:''}]), 'Unknown');
+assert.equal(view.projectDecision([{status:'Planned',basis:'facility_nameplate',decision:'unclear'}, {status:'Under construction',basis:'it_nameplate',decision:'yes'}]), 'Confirmed for part');
+const page = fs.readFileSync('web/datacenter-tracker.md','utf8');
+for (const text of ['filter-country-group','filter-zone-group','filter-status-group','filter-type-group','filter-scenario-group','Developer','Investment decision','Expected operation','Last checked','Planned capacity (MW)']) assert.ok(page.includes(text), 'Missing original tracker control or field: '+text);
+assert.ok(!page.includes('Capacity envelope'));
+assert.ok(!page.includes('Max reported MW'));
+assert.ok(!page.includes('Reported IT load MW'));
 console.log('PASS website contract, unknowns, and exact table/map MW and TWh parity in every scenario and zone');

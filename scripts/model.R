@@ -145,6 +145,31 @@ timing_share <- function(row,year,cfg) {
   if (is.finite(built)) return(answer(c(ramp(built+lag[2]),ramp(built+lag[1])),'IEA_construction_lag_and_EPRI_ramp'))
   answer(c(0,1),'undated_deployment_0_to_1',FALSE)
 }
+executing_phase_anchors <- function(c,cfg) {
+  # An undated MW envelope with a contained phase that is being executed (construction under way or an
+  # investment decision) but has no disclosed MW: deployment lies between 0 and the envelope ramped from
+  # that phase's start. A planned phase, a grid date or another site never dates the envelope.
+  lag<-unlist(cfg$assumptions$construction_to_first_years)
+  out<-rep(NA_real_,nrow(c))
+  inside<-function(k,i) {
+    j<-k;n<-0L
+    while(c$relation[j] %in% c('included_in','possibly_included_in') && n<50L) {
+      j<-match(c$parent_id[j],c$claim_id);n<-n+1L
+      if(is.na(j))return(FALSE)
+      if(j==i)return(TRUE)
+    }
+    FALSE
+  }
+  for(i in seq_len(nrow(c))) {
+    if(!nzchar(c$mw[i]) || nzchar(c$first_year[i]) || nzchar(c$construction_year[i]))next
+    k<-which(vapply(seq_len(nrow(c)),function(k)k!=i && c$project_id[k]==c$project_id[i] && inside(k,i),TRUE))
+    k<-k[!nzchar(c$mw[k]) & (c$status[k]=='Under construction' | c$decision[k]=='yes') &
+         !c$status[k] %in% c('Cancelled','Dormant') & (nzchar(c$first_year[k]) | nzchar(c$construction_year[k]))]
+    if(!length(k))next
+    out[i]<-min(vapply(k,function(j)if(nzchar(c$first_year[j]))number(c$first_year[j]) else number(c$construction_year[j])+lag[1],0))
+  }
+  out
+}
 scenario_selected <- function(row,scenario,timing) {
   switch(scenario$selection,all=TRUE,dated=timing$dated,decided_dated=timing$dated && row$decision=='yes')
 }
@@ -173,8 +198,12 @@ annual_fraction <- function(row,type,cfg) {
   v <- if(peak) unlist(a$peak_load_factor) else rep(a$load_factor,2)
   list(value=v,rule=paste0('load_factor_',category))
 }
+capacity_without_upper_limit <- function(row) row$qualifier=='at_least' && !nzchar(row$mw_max)
 electrical_range <- function(row,cfg,net=FALSE,claims=NULL,normalize_peak=TRUE) {
-  if (row$basis %in% c('backup','generation','density') || row$issue=='identity_conflict' || !nzchar(row$mw)) return(c(NA_real_,NA_real_))
+  # "At least X" preserves a useful source fact, but without a finite project scope it is not a
+  # project capacity measure. Keep it in the ledger and source detail; do not turn the
+  # lower bound into a full-build or scenario value.
+  if (row$basis %in% c('backup','generation','density') || row$issue=='identity_conflict' || !nzchar(row$mw) || capacity_without_upper_limit(row)) return(c(NA_real_,NA_real_))
   v<-number(row$mw);top<-if(row$qualifier=='range')number(row$mw_max) else if(row$qualifier=='at_least')NA_real_ else v
   if (net && row$baseline_scope=='existing_known') {
     b<-claims[match(row$baseline_id,claims$claim_id),]
@@ -201,12 +230,16 @@ maximum_known <- function(values) if(all(is.na(values))) NA_real_ else max(value
 calculate <- function(x,approved_only=TRUE) {
   validate_inputs(x);p<-x$projects;c<-x$capacity;cfg<-x$config
   all_rows<-list();overview<-list();zone_rows<-list()
+  anchors<-executing_phase_anchors(c,cfg)
   for (scenario in cfg$scenarios) {
     rows<-lapply(seq_len(nrow(c)),function(i) {
       r<-c[i,];pr<-p[match(r$project_id,p$project_id),]
       group<-c$claim_id[top_claim(c,i)]
       gross<-electrical_range(r,cfg);net<-electrical_range(r,cfg,TRUE,c)
       timing<-timing_share(r,scenario$year,cfg)
+      if (!timing$dated && is.finite(anchors[i]))
+        timing<-list(share=c(0,max(0,min(1,(scenario$year-anchors[i]+1)/cfg$assumptions$first_to_full_years))),
+          rule='executing_phase_without_mw_0_to_envelope',dated=TRUE)
       selected<-scenario_selected(r,scenario,timing)
       share<-if(selected)timing$share else c(0,0)
       reason<-'modelled';assumptions<-timing$rule
@@ -215,9 +248,11 @@ calculate <- function(x,approved_only=TRUE) {
       if (r$issue=='identity_conflict') reason<-'identity_conflict'
       if (nzchar(pr$related_project_id)) reason<-'related_identity'
       if (r$basis %in% c('backup','generation','density')) reason<-'no_datacenter_load'
+      if (capacity_without_upper_limit(r)) reason<-'capacity_without_upper_limit'
       if (!nzchar(r$mw)) reason<-'capacity_unknown'
       if (approved_only && pr$record_type!='existing') reason<-'pending_approval'
-      nameplate<-if(reason=='modelled')net else c(0,0)
+      in_envelope<-reason=='modelled'
+      nameplate<-if(in_envelope)net else c(0,0)
       if (reason!='modelled') share<-c(0,0)
       if (reason=='modelled' && !selected) reason<-'outside_scenario_selection'
       if (reason=='modelled' && share[2]==0) reason<-'after_target_year'
@@ -229,21 +264,23 @@ calculate <- function(x,approved_only=TRUE) {
       if (r$baseline_scope=='existing_unknown') assumptions<-c(assumptions,'increment_unknown_0_to_site_envelope')
       if (r$relation=='possibly_included_in') assumptions<-c(assumptions,'overlap_assumed_contained')
       if (nzchar(pr$related_project_id)) assumptions<-c(assumptions,'related_identity_unresolved')
-      # A zero deployment is known even when an at-least claim has no upper MW.
       value<-ifelse(share>0,net*share,0)
       af<-annual_fraction(r,pr$type,cfg);lf<-af$value;assumptions<-c(assumptions,af$rule)
       energy_power<-ifelse(share>0,electrical_range(r,cfg,TRUE,c,normalize_peak=FALSE)*share,0)
       energy<-energy_power*lf*8760/1e6
+      # Annual electricity if the whole envelope row were built: same conversion, no timing.
+      buildout<-if(in_envelope)electrical_range(r,cfg,TRUE,c,normalize_peak=FALSE)*lf*8760/1e6 else c(0,0)
       data.frame(scenario=scenario$id,project_id=r$project_id,claim_id=r$claim_id,group_id=group,
         share_low=share[1],share_high=share[2],reason=reason,assumptions=paste(assumptions,collapse=';'),
         source_basis=r$basis,reported_mw=number(r$mw),gross_mw_low=gross[1],gross_mw_high=gross[2],
         nameplate_mw_low=nameplate[1],nameplate_mw_high=nameplate[2],
+        buildout_twh_low=buildout[1],buildout_twh_high=buildout[2],
         direct_mw_low=value[1],direct_mw_high=value[2],direct_twh_low=energy[1],direct_twh_high=energy[2],
         counted_mw_low=0,counted_mw_high=0,annual_twh_low=0,annual_twh_high=0,stringsAsFactors=FALSE)
     })
     ledger<-if(length(rows))do.call(rbind,rows) else as.data.frame(c(
       setNames(rep(list(character()),7),c('scenario','project_id','claim_id','group_id','reason','assumptions','source_basis')),
-      setNames(rep(list(numeric()),15),c('share_low','share_high','reported_mw','gross_mw_low','gross_mw_high','nameplate_mw_low','nameplate_mw_high','direct_mw_low','direct_mw_high','direct_twh_low','direct_twh_high','counted_mw_low','counted_mw_high','annual_twh_low','annual_twh_high'))),stringsAsFactors=FALSE)
+      setNames(rep(list(numeric()),17),c('share_low','share_high','reported_mw','gross_mw_low','gross_mw_high','nameplate_mw_low','nameplate_mw_high','buildout_twh_low','buildout_twh_high','direct_mw_low','direct_mw_high','direct_twh_low','direct_twh_high','counted_mw_low','counted_mw_high','annual_twh_low','annual_twh_high'))),stringsAsFactors=FALSE)
     # One electrical envelope per containment tree. A tenant never removes its campus.
     # Explicit independent/incremental rows remain separate; contained alternatives use max.
     owner_claim<-ledger$group_id
@@ -264,7 +301,7 @@ calculate <- function(x,approved_only=TRUE) {
       }
       owner_claim[members]<-ledger$claim_id[owner]
       if(approved_only)members<-members[p$record_type[match(ledger$project_id[members],p$project_id)]=='existing']
-      for(key in c('nameplate_mw_low','nameplate_mw_high')) {
+      for(key in c('nameplate_mw_low','nameplate_mw_high','buildout_twh_low','buildout_twh_high')) {
         v<-ledger[[key]][members]
         ledger[[key]][members]<-0
         ledger[[key]][owner]<-if(anyNA(v) && grepl('high$',key))NA_real_ else maximum_known(v)
@@ -291,7 +328,15 @@ calculate <- function(x,approved_only=TRUE) {
       scope<-ledger[ledger$project_id==pr$project_id | owner_claim %in% lr$claim_id,,drop=FALSE]
       if(approved_only && pr$record_type=='existing')
         scope<-scope[p$record_type[match(scope$project_id,p$project_id)]=='existing',,drop=FALSE]
-      has_load<-any(is.finite(scope$gross_mw_high)|is.finite(scope$gross_mw_low))
+      # Capacity is known only when a usable new-load claim survives the model rules.
+      # An operating baseline or an "at least" source without an upper value must not turn an
+      # otherwise unquantified expansion into a displayed zero.
+      # Candidate status controls whether a claim is included in approved totals. A quantified
+      # candidate claim still tells us that the project's capacity is known.
+      excluded_capacity_reasons<-c('operational','cancelled','dormant','identity_conflict','related_identity',
+        'no_datacenter_load','capacity_unknown','capacity_without_upper_limit')
+      usable<-!scope$reason %in% excluded_capacity_reasons
+      has_load<-any(usable & (is.finite(scope$gross_mw_high)|is.finite(scope$gross_mw_low)))
       category<-if(pr$record_type=='out_of_scope')'out_of_scope' else if(pr$status %in% c('Cancelled','Dormant'))tolower(pr$status) else if(pr$status=='Operational')'operational' else if(pr$record_type=='candidate')'candidate' else if(!has_load)'unquantified' else 'pipeline'
       missing_load<-!has_load && !pr$status %in% c('Cancelled','Dormant','Operational')
       project_sum<-function(key) if(missing_load || anyNA(lr[[key]]))NA_real_ else sum(lr[[key]])
@@ -300,6 +345,7 @@ calculate <- function(x,approved_only=TRUE) {
         record_type=pr$record_type,included_in_result=!approved_only || pr$record_type=='existing',
         indicator=category,capacity_known=has_load,participates=live,related_project_id=pr$related_project_id,
         nameplate_mw_low=project_sum('nameplate_mw_low'),nameplate_mw_high=project_sum('nameplate_mw_high'),
+        buildout_twh_low=project_sum('buildout_twh_low'),buildout_twh_high=project_sum('buildout_twh_high'),
         mw_low=project_sum('counted_mw_low'),mw_high=project_sum('counted_mw_high'),
         annual_twh_low=project_sum('annual_twh_low'),annual_twh_high=project_sum('annual_twh_high'),
         note=if(nzchar(pr$related_project_id))'Related identity retained; not a separate quantified addition.' else if(!nrow(lr))'No capacity claim; project remains visible.' else paste(unique(lr$reason),collapse=';'),stringsAsFactors=FALSE)
@@ -318,6 +364,7 @@ calculate <- function(x,approved_only=TRUE) {
       operating_projects=sum(d$indicator=='operational'),cancelled_or_dormant=sum(d$indicator %in% c('cancelled','dormant')),
       projects_without_mw=sum(active & !d$capacity_known),
       nameplate_mw_low=sum_known('nameplate_mw_low'),nameplate_mw_high=sum_known('nameplate_mw_high'),
+      buildout_twh_low=sum_known('buildout_twh_low'),buildout_twh_high=sum_known('buildout_twh_high'),
       mw_low=sum_known('mw_low'),mw_high=sum_known('mw_high'),
       annual_twh_low=sum_known('annual_twh_low'),annual_twh_high=sum_known('annual_twh_high'),
       scope=if(!nrow(d))'no_inventory' else if(partial||sum(active & !d$capacity_known)||anyNA(d$mw_high))'quantified_subset' else 'modelled_inventory',stringsAsFactors=FALSE)

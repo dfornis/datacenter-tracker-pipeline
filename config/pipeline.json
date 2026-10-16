@@ -1,5 +1,5 @@
 {
-  "version": "3.4.0",
+  "version": "3.5.0",
   "as_of": "2026-10-11",
   "purpose": "One scenario model for manually approved project totals, candidate impact reviews, and the website; unknowns and all project indicators are retained.",
   "tables": {
@@ -371,7 +371,6 @@
     ],
     "electrical_output": "Facility-side nameplate capacity proxy, including cooling and auxiliary loads. Explicit peak claims use the declared inverse empirical peak/nameplate sensitivity; source MW and basis are retained. Phased MW is deployed capacity, not actual peak. Energy uses the original peak denominator when supplied.",
     "unknown_timing": "An eligible undated claim has a 0–100% deployment interval, not an invented first year. Its entire nameplate envelope remains visible. Low and Stated use dated claims; High also includes undated claims.",
-    "campus_timing": "After explicit scope reconciliation, a sourced first-phase operation year on the same new campus may be recorded as first_capacity of its overall capacity envelope, with both sources and the application assumption in claim notes. Apply the existing five-year ramp; its completion year is modelled, not a source promise. This is our application of the phasing assumption below, not evidence that all campus MW is committed. Do not inherit the phase decision. Grid dates, later expansions of operating campuses and other sites are not automatic anchors. The worklist surfaces unresolved combinations for review without moving dates.",
     "grid_timing": "Grid availability is an earliest possible start, not commissioning. Lower deployment is zero; upper uses the same ramp from the earliest grid year, constrained by construction when known. No extra one-year delay.",
     "full_capacity_timing": "An explicit full-capacity year anchors completion of this capacity scope. Before that date, backcast the default ramp; construction timing constrains its start. This backcast is a model adaptation, not a sourced commissioning date.",
     "scenario_selection": "Names, IDs and decision/date selection are inherited from bb15b4e. First capacity or construction can anchor phasing; full-capacity dates are not mandatory. Selection is a conditional scenario definition, not a calibrated probability. No EPRI US completion percentages are transplanted to Nordic 2035.",
@@ -419,7 +418,11 @@
         "limitation": "Supports the approach, not our exact Low/Stated/High definitions. These remain the project’s existing conditional selections, not externally estimated probabilities."
       }
     },
-    "annual_use_by_type": "Load factor relative to nameplate depends on facility type (EPRI 2026 p.15: 75% hyperscale facility, 57% co-location average). type_assumptions gives one value per type category; nameplate_annual_fraction is only used when type is unknown."
+    "annual_use_by_type": "Load factor relative to nameplate depends on facility type (EPRI 2026 p.15: 75% hyperscale facility, 57% co-location average). type_assumptions gives one value per type category; nameplate_annual_fraction is only used when type is unknown.",
+    "phase_timing": "A date applies only to the MW figure the source dates. A campus envelope or larger goal is never phased from the date of a phase, building, hall, grid connection, tenant or another site; without its own date it counts only in High (0 to 100%). Exception, as an interval: when a contained phase of the same project is under construction or has an investment decision but no disclosed MW, the envelope counts as 0 up to the envelope ramped from that phase's start (its first operation year, else construction start + the lower construction lag). The lower bound states that the phase size is unknown.",
+    "investment_decision": "decision=yes means an evidenced investment decision for that scope: an explicit final investment decision or observed construction start of that phase. Low 2030 counts only such figures.",
+    "buildout_energy": "Electricity at full build-out: the project's capacity envelope (same conversion as nameplate) x type load factor x 8760 h, without timing. It describes size, not a forecast year.",
+    "capacity_without_upper_limit": "A source claim stated only as at least X MW, without a finite project scope or upper figure, is preserved in the source ledger but is not used as a project full-build or scenario capacity measure. A separately quantified phase within the same project can still count."
   },
   "type_assumptions": {
     "purpose": "Type-specific annual use factors for the single scenario model. The website displays the computed result without a separate PUE, timing or scenario calculation.",

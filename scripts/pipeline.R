@@ -26,13 +26,19 @@ run_worklist <- function(x,countries) {
     !c$basis %in% c('backup','generation','density') & c$issue!='identity_conflict'
   row_dated<-vapply(seq_len(nrow(c)),function(i)timing_share(c[i,],x$config$scenarios[[1]]$year,x$config)$dated,TRUE)
   dated<-unique(c$project_id[active & row_dated])
-  timing_review<-Filter(Negate(is.null),lapply(which(load & active & !row_dated),function(i) {
-    anchors<-which(active & row_dated & c$project_id==c$project_id[i])
-    if(!length(anchors))return(NULL)
-    detail<-function(j)c(as.list(c[j,c('claim_id','phase','mw','basis','timing','first_year','last_year',
-      'construction_year','decision','baseline_scope','parent_id','relation','notes')]),list(sources=excerpt(c$source_ids[j])))
-    list(project_id=c$project_id[i],claim_id=c$claim_id[i],undated_capacity=detail(i),
-      dated_claims=lapply(anchors,detail))
+  inside<-function(k,i){j<-k;n<-0L;while(c$relation[j] %in% c('included_in','possibly_included_in') && n<50L){j<-match(c$parent_id[j],c$claim_id);n<-n+1L;if(is.na(j))return(FALSE);if(j==i)return(TRUE)};FALSE}
+  detail<-function(j)c(as.list(c[j,c('claim_id','phase','mw','basis','status','decision','timing','first_year','last_year',
+    'construction_year','parent_id','relation','notes')]),list(sources=excerpt(c$source_ids[j])))
+  # Phases being executed without a disclosed MW: find the phase size (EIA/YVA, permits, grid agreements).
+  executing<-which(!nzchar(c$mw) & (c$status=='Under construction' | c$decision=='yes') &
+    !c$status %in% c('Operational','Cancelled','Dormant') & !c$basis %in% c('backup','generation','density'))
+  phases_without_mw<-lapply(executing,detail)
+  # A dated envelope that shares its year with a contained phase may carry a borrowed date.
+  borrowed<-Filter(Negate(is.null),lapply(which(load & active & (nzchar(c$first_year)|nzchar(c$construction_year))),function(i) {
+    k<-which(vapply(seq_len(nrow(c)),function(k)k!=i && c$project_id[k]==c$project_id[i] && inside(k,i),TRUE))
+    same<-k[(nzchar(c$first_year[k]) & c$first_year[k]==c$first_year[i]) | (nzchar(c$construction_year[k]) & c$construction_year[k]==c$construction_year[i])]
+    if(!length(same) || grepl('own date verified',c$notes[i],ignore.case=TRUE))return(NULL)
+    list(project_id=c$project_id[i],envelope=detail(i),phases_with_same_date=lapply(same,detail))
   }))
   missing_display<-p[!nzchar(p$type)|!nzchar(p$county)|!nzchar(p$bidding_zone)|!nzchar(p$latitude),,drop=FALSE]
   list(
@@ -40,7 +46,8 @@ run_worklist <- function(x,countries) {
       mw=c$mw[i],phase=c$phase[i],sources=excerpt(c$source_ids[i]))),
     projects_without_mw=as.list(setdiff(live$project_id,c$project_id[load])),
     capacity_sources_to_reconcile=Filter(function(f)f$project_id %in% p$project_id,capacity_followups(x)),
-    capacity_timing_to_reconcile=timing_review,
+    phases_without_mw=phases_without_mw,
+    envelope_dates_to_verify=borrowed,
     public_projects_without_dates=as.list(setdiff(public$project_id[public$project_id %in% c$project_id[load]],dated)),
     candidates_to_assess=as.list(p$project_id[p$record_type=='candidate']),
     missing_display_fields=lapply(seq_len(nrow(missing_display)),function(i)list(project_id=missing_display$project_id[i],

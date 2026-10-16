@@ -36,7 +36,7 @@ Källans MW, definition, datum och status bevaras separat. [EPRI:s måttdefiniti
 | Explicit toppeffekt | Bevara toppvärdet. För kapacitetsjämförelsen används ett uttryckligt känslighetsfall: topp / 0,80 till topp / 0,62. Årsenergi beräknas direkt från ursprunglig topp. |
 | Reservkraft, generation, rackdensitet | Behåll observationen utan automatisk omräkning till datacenterlast. En publicerad, motiverad skattning av datacenterlast kan registreras som egen kapacitetsuppgift med källa. |
 
-PUE-fallen och energi-/toppfaktorerna kommer från [EPRI:s energianalys, 2026](https://powering-intelligence.epri.com/annual-peak-use.html). PUE 1,5 är inte ett absolut tak. Att invertera toppfaktorn är vår tillämpning av källans observerade samband, inte en uppgift om projektets verkliga nameplate. Intervallen är känslighetsfall, inte konfidensintervall. `at_least` utan belagd övre gräns behåller okänd övre effekt; `up_to` är en annonserad ram.
+PUE-fallen och energi-/toppfaktorerna kommer från [EPRI:s energianalys, 2026](https://powering-intelligence.epri.com/annual-peak-use.html). PUE 1,5 är inte ett absolut tak. Att invertera toppfaktorn är vår tillämpning av källans observerade samband, inte en uppgift om projektets verkliga nameplate. Intervallen är känslighetsfall, inte konfidensintervall. `at_least` utan belagd övre gräns bevaras som källuppgift men blir inte ett projektmått eller en del av totalsumman; en separat avgränsad etapp kan fortfarande räknas. `up_to` är en annonserad ram.
 
 ### Befintliga scenarier
 
@@ -67,7 +67,7 @@ Byggtiden 2–3 år är en uttrycklig tillämpning av [IEA, Energy and AI, 2025]
 
 Mer precist källunderlag används med samma regler för alla projekt. En uttryckligen fullt driftsatt etapp får ingen andra femårsinfasning. Saknas sådan precision används standarden. Landsuppdateraren tolkar omfattning och datum; användaren behöver inte lägga in undantag. Ett campus kan ha en känd första etapp och en större odaterad ram samtidigt.
 
-När campusets MW och den första etappens datum kommer från olika uppgifter ska kopplingen prövas uttryckligen. Ett belagt driftår för den första etappen på samma nya campus kan vara `first_capacity` för rampen på campusramen, med båda källorna och tillämpningen som modellantagande i notes. Det daterar starten, inte full utbyggnad, och överför inte etappens genomförandebeslut till hela ramen. Nätår, senare utbyggnader på ett driftcampus och andra platser är inte automatiskt sådana ankare. `check` och landspaketet lyfter dessa fall under `capacity_timing_to_reconcile`; de kopplar inte datum automatiskt.
+**Datum och etapper.** Ett datum gäller bara det MW-tal som källan själv daterar. En campusram eller ett större mål utan eget datum fasas aldrig in från en etapps, byggnads eller halls datum; den räknas bara i High. Etapper med eget MW och datum fasas in som vanligt. Ett undantag, som ger ett spann snarare än ett tal: om en etapp byggs eller har investeringsbeslut men källan inte anger dess MW, räknas ramen som 0 upp till ramen infasad från etappens start (driftår, annars byggstart + 2 år). Låga värdet säger att storleken är okänd; höga värdet att den kan vara hela ramen. `phases_without_mw` i arbetslistan ber nästa körning hitta etappernas MW, vilket ersätter spannet med ett säkrare tal.
 
 ### Överlapp och befintlig drift
 
@@ -181,6 +181,6 @@ Förhandsvisningar kräver egen destination: `build --data=... --output=/tmp/pre
 
 ## Status och historik
 
-Metod 3.4 (oktober 2026) inför avgränsningsregeln, `out_of_scope`, `exclude` och kravet på committat utgångsläge före en landskörning. Metod 3.3 (oktober 2026) ersätter den separata äldre sajtberäkningen med den gemensamma modellen. Manuellt kandidatgodkännande här i chatten styr nu godkända totalsummor i samtliga resultat. Detta är en flödesändring och omräkning av befintliga källuppgifter, inte en ny webbinventering. Metod 3.2 införde intervallet för ospecificerat MW och typberoende årsenergifaktorer.
+Metod 3.5 (oktober 2026) daterar bara de MW-tal källan daterar, ger etapper under genomförande utan MW spannet 0 till ramen, lägger till elanvändning vid full utbyggnad och döper om sajtens kolumner. Metod 3.4 (oktober 2026) inför avgränsningsregeln, `out_of_scope`, `exclude` och kravet på committat utgångsläge före en landskörning. Metod 3.3 (oktober 2026) ersätter den separata äldre sajtberäkningen med den gemensamma modellen. Manuellt kandidatgodkännande här i chatten styr nu godkända totalsummor i samtliga resultat. Detta är en flödesändring och omräkning av befintliga källuppgifter, inte en ny webbinventering. Metod 3.2 införde intervallet för ospecificerat MW och typberoende årsenergifaktorer.
 
 Tidigare underlag och körningshistorik finns i Git, bland annat `9779acc`. Behåll stabila ID:n; nya löpnummer ska ligga över högsta använda nummer även i historiken. Utdataformat 3.1 återställer ursprungliga scenario-ID:n och skiljer nameplate från infasad kapacitet. Det saknar en femte potential-scenariofamilj. Kartornas ursprung/återanvändningsrätt är olösta och koordinaterna är ungefärliga visningspunkter.

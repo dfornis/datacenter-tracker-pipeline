@@ -132,11 +132,16 @@ test('unresolved related identities cannot count as a second campus',function() 
   x<-fixture();x$projects$related_project_id[1]<-'P099';r<-calculate(x)
   same(row(r)$nameplate_mw_high,0);same(row(r)$counted_mw_high,0);stopifnot(row(r)$reason=='related_identity')
 })
-test('lower-bound-only capacity has no invented upper value, but zero deployment stays zero',function() {
+test('lower-bound-only claims stay as source facts, not project measures; quantified phases still count',function() {
   x<-fixture(claim(qualifier='at_least'));r<-calculate(x)
-  stopifnot(is.na(row(r)$nameplate_mw_high),is.na(row(r)$counted_mw_high))
-  x$capacity$first_year<-x$capacity$last_year<-'2040';r<-calculate(x)
-  same(row(r)$counted_mw_high,0);stopifnot(is.na(row(r)$nameplate_mw_high))
+  stopifnot(row(r)$reason=='capacity_without_upper_limit',!project(r)$capacity_known,
+    is.na(project(r)$nameplate_mw_low),is.na(project(r)$mw_high))
+  x<-fixture(rbind(claim('C001',mw=10,status='Operational'),
+    claim('C002',mw=100,qualifier='at_least')))
+  r<-calculate(x);stopifnot(!project(r)$capacity_known,is.na(project(r)$nameplate_mw_low))
+  x<-fixture(rbind(claim('C001',mw=550,basis='it_nameplate',qualifier='at_least'),
+    claim('C002',mw=110,basis='it_nameplate',parent_id='C001',relation='included_in')))
+  r<-calculate(x);same(c(project(r)$nameplate_mw_low,project(r)$nameplate_mw_high),c(121,165))
 })
 test('energy uses the type load factor, the right denominator and exactly one operational ramp',function() {
   # Fixture projects are typed 'hyperscale': EPRI hyperscale 0.75 of nameplate, 0.94 of realised peak.
@@ -186,44 +191,45 @@ test('MW-bearing project sources without capacity claims are surfaced for automa
   x$capacity$issue<-'identity_conflict';stopifnot(length(capacity_followups(x))==2)
   x$sources$excerpt<-'Construction has started.';stopifnot(length(capacity_followups(x))==0)
 })
-test('an undated MW envelope is reviewed even when its first phase already dates the project',function() {
+test('an executing phase without MW gives its undated envelope 0 up to a ramp from the phase start',function() {
   x<-fixture(rbind(claim(mw=500,decision='unclear',timing='unknown',first_year='',last_year=''),
     claim('C002',mw='',status='Under construction',timing='first_capacity',first_year=2028,last_year=2028,
       parent_id='C001',relation='included_in')))
-  before<-x$capacity;w<-run_worklist(x,'SE')
-  stopifnot(length(w$public_projects_without_dates)==0,length(w$capacity_timing_to_reconcile)==1)
-  f<-w$capacity_timing_to_reconcile[[1]]
-  stopifnot(f$claim_id=='C001',f$undated_capacity$mw=='500',f$dated_claims[[1]]$claim_id=='C002',
-    f$dated_claims[[1]]$first_year=='2028',identical(before,x$capacity))
-})
-test('timing review excludes backup, inactive claims and dates on another project',function() {
-  campus<-claim(mw=500,timing='unknown',first_year='',last_year='')
-  phase<-claim('C002',mw='',timing='first_capacity',first_year=2028,last_year=2028)
-  for(basis in c('backup','generation','density')) {
-    r<-phase;r$basis<-basis
-    w<-run_worklist(fixture(rbind(campus,r)),'SE')
-    stopifnot(length(w$capacity_timing_to_reconcile)==0,'P001' %in% unlist(w$public_projects_without_dates))
-  }
-  for(status in c('Operational','Cancelled','Dormant')) {
-    r<-phase;r$status<-status
-    stopifnot(length(run_worklist(fixture(rbind(campus,r)),'SE')$capacity_timing_to_reconcile)==0)
-  }
-  phase$project_id<-'P002'
-  x<-fixture(rbind(campus,phase))
-  stopifnot(length(run_worklist(x,'SE')$capacity_timing_to_reconcile)==0,
-    length(run_worklist(x,'NO')$capacity_timing_to_reconcile)==0)
-})
-test('a reviewed first-phase anchor ramps the campus without inheriting its full date or decision',function() {
-  x<-fixture(rbind(claim(mw=500,decision='unclear',timing='first_capacity',first_year=2028,last_year=2028),
-    claim('C002',mw=24,status='Under construction',timing='full_capacity',first_year=2028,last_year=2028,
-      parent_id='C001',relation='included_in')))
   r<-calculate(x)
-  same(project(r,sc='low_2030')$mw_high,24)
-  same(project(r,sc='stated_2030')$mw_high,300)
-  same(project(r,sc='stated_2035')$mw_high,500)
-  same(project(r)$mw_high,500)
-  stopifnot(x$capacity$decision[1]=='unclear',x$capacity$timing[2]=='full_capacity',
-    length(run_worklist(x,'SE')$capacity_timing_to_reconcile)==0)
+  same(c(project(r,sc='stated_2030')$mw_low,project(r,sc='stated_2030')$mw_high),c(0,300))
+  same(c(project(r,sc='stated_2035')$mw_low,project(r,sc='stated_2035')$mw_high),c(0,500))
+  same(project(r,sc='low_2030')$mw_high,0)
+  stopifnot(grepl('executing_phase_without_mw',row(r,'C001','stated_2030')$assumptions))
+  x$capacity$first_year[2]<-x$capacity$last_year[2]<-'';x$capacity$construction_year[2]<-'2026'
+  same(project(calculate(x),sc='stated_2030')$mw_high,300) # construction 2026 + 2 years = start 2028
+})
+test('a planned phase, a phase with MW or another project never dates an envelope',function() {
+  campus<-claim(mw=1000,decision='no',timing='unknown',first_year='',last_year='')
+  planned<-claim('C002',mw='',status='Planned',decision='unclear',timing='first_capacity',first_year=2028,last_year=2028,parent_id='C001',relation='included_in')
+  r<-calculate(fixture(rbind(campus,planned)))
+  same(project(r,sc='stated_2030')$mw_high,0);same(project(r,sc='high_2035')$mw_high,1000)
+  phase<-claim('C002',mw=100,status='Planned',decision='unclear',timing='full_capacity',first_year=2029,last_year=2029,parent_id='C001',relation='included_in')
+  r<-calculate(fixture(rbind(campus,phase)))
+  same(project(r,sc='stated_2030')$mw_high,100);same(project(r,sc='stated_2035')$mw_high,100)
+  same(c(project(r,sc='high_2035')$mw_low,project(r,sc='high_2035')$mw_high),c(100,1000))
+  other<-planned;other$status<-'Under construction';other$project_id<-'P002';other$parent_id<-'';other$relation<-'independent'
+  same(project(calculate(fixture(rbind(campus,other))),sc='stated_2030')$mw_high,0)
+})
+test('electricity at full build-out is the envelope times the type load factor, independent of scenario',function() {
+  x<-fixture(rbind(claim(mw=200,timing='unknown',first_year='',last_year=''),claim('C002',mw=50,parent_id='C001',relation='included_in')))
+  r<-calculate(x)
+  for(sc in c('low_2030','stated_2030','high_2035'))
+    same(c(project(r,sc=sc)$buildout_twh_low,project(r,sc=sc)$buildout_twh_high),rep(200*.75*8760/1e6,2))
+  x$capacity$basis[1]<-'unspecified';same(project(calculate(x))$buildout_twh_high,300*.75*8760/1e6)
+})
+test('the worklist asks for MW of executing phases and flags envelopes dated like their phases',function() {
+  x<-fixture(rbind(claim(mw=500,decision='unclear',timing='first_capacity',first_year=2028,last_year=2028),
+    claim('C002',mw='',status='Under construction',timing='first_capacity',first_year=2028,last_year=2028,parent_id='C001',relation='included_in')))
+  w<-run_worklist(x,'SE')
+  stopifnot(length(w$phases_without_mw)==1,w$phases_without_mw[[1]]$claim_id=='C002',
+    length(w$envelope_dates_to_verify)==1,w$envelope_dates_to_verify[[1]]$envelope$claim_id=='C001')
+  x$capacity$notes[1]<-'Own date verified (test): the source dates this figure.'
+  stopifnot(length(run_worklist(x,'SE')$envelope_dates_to_verify)==0)
 })
 test('complete output is deterministic, includes all projects and leaves source tables intact',function() {
   before<-lapply(c('projects','capacity','sources'),function(n)file_hash(file.path('data',paste0(n,'.csv'))))
@@ -252,21 +258,18 @@ with_workflow <- function(fn,empty=FALSE) {
   write_tables(x,file.path(root,'data'))
   fn(root,file.path(root,'work'))
 }
-test('prepare retains split timing evidence and the reviewed anchor survives check and apply',function() {
+test('prepare lists phases without MW and a sourced phase MW counts after apply',function() {
   with_workflow(function(root,work) {
     x<-fixture(rbind(claim(mw=500,decision='unclear',timing='unknown',first_year='',last_year=''),
       claim('C002',mw='',status='Under construction',timing='first_capacity',first_year=2028,last_year=2028,
         parent_id='C001',relation='included_in')))
     write_tables(x,file.path(root,'data'));prepare_run(root,work,country='SE')
     w<-json_read(file.path(work,'packet.json'))$worklist
-    stopifnot(length(w$capacity_timing_to_reconcile)==1,w$capacity_timing_to_reconcile[[1]]$claim_id=='C001')
-    x<-read_inputs(root,work);x$capacity$first_year[1]<-x$capacity$last_year[1]<-'2028'
-    x$capacity$timing[1]<-'first_capacity';write_tables(x,work)
-    stopifnot(length(run_worklist(read_inputs(root,work),'SE')$capacity_timing_to_reconcile)==0)
-    review_run(root,work);r<-apply_run(root,work)$result
-    same(project(r,sc='stated_2030')$mw_high,300)
-    same(project(r,sc='low_2030')$mw_high,0)
-    stopifnot(read_inputs(root)$capacity$decision[1]=='unclear')
+    stopifnot(length(w$phases_without_mw)==1)
+    x<-read_inputs(root,work);x$capacity$mw[2]<-'60';x$capacity$basis[2]<-'facility_nameplate';write_tables(x,work)
+    stopifnot(length(run_worklist(read_inputs(root,work),'SE')$phases_without_mw)==0)
+    r<-apply_run(root,work)$result
+    same(c(project(r,sc='stated_2030')$mw_low,project(r,sc='stated_2030')$mw_high),c(36,36))
   })
 })
 test('empty first installation reaches applied output with quantified and unquantified projects',function() {

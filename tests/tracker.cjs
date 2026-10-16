@@ -7,7 +7,8 @@ assert.equal(view.range(null, null), 'Unknown');
 assert.equal(view.range(30, 90), '30–90');
 assert.equal(view.range(10, null), '≥ 10');
 assert.deepEqual(view.sumBounds([{mw_low:null,mw_high:null,capacity_known:false,indicator:'unquantified'}], 'mw_low','mw_high'), {low:null,high:null,unknown:1});
-assert.deepEqual(view.sumBounds([{mw_low:10,mw_high:null,capacity_known:true,indicator:'pipeline'}], 'mw_low','mw_high'), {low:10,high:null,unknown:0});
+assert.deepEqual(view.sumBounds([{mw_low:null,mw_high:null,capacity_known:false,indicator:'unquantified'},{mw_low:5,mw_high:20,capacity_known:true,indicator:'pipeline'}], 'mw_low','mw_high'), {low:5,high:20,unknown:1});
+assert.equal(view.totalRange({low:1234,high:5678,unknown:0}), '1,230–5,680');
 const data = view.assertContract(JSON.parse(fs.readFileSync('assets/data/datacenters/results.json', 'utf8')));
 for (const zone of data.scenarios) {
   const rows = data.project_scenarios.filter(row => row.scenario === zone.scenario && row.bidding_zone === zone.bidding_zone);
@@ -36,12 +37,24 @@ for (const scenario of data.method.scenarios) {
   const unknown = all.rows.filter(row => !row.capacity_known && row.indicator === 'unquantified');
   assert.ok(unknown.length, 'Unknown-capacity projects must remain visible');
 }
-assert.equal(view.operationYears([{timing:'grid_availability',first_year:'2028'}]), 'Unknown');
+assert.equal(view.operationYears([{timing:'grid_availability',first_year:'2028'}]), 'Grid 2028');
+assert.equal(view.operationYears([{timing:'unknown',construction_year:'2026'},{timing:'grid_availability',first_year:'2028'}]), 'Construction 2026');
+assert.equal(view.operationYears([{timing:'first_capacity',first_year:'2029'},{timing:'unknown',construction_year:'2026'}]), '2029');
 assert.equal(view.operationYears([{timing:'first_capacity',first_year:'2027',last_year:'2029'}]), '2027–2029');
 assert.equal(view.operationYears([{status:'Operational',timing:'first_capacity',first_year:'2025'},{status:'Planned',timing:'unknown',first_year:''}]), 'Unknown');
 assert.equal(view.projectDecision([{status:'Planned',basis:'facility_nameplate',decision:'unclear'}, {status:'Under construction',basis:'it_nameplate',decision:'yes'}]), 'Confirmed for part');
 const page = fs.readFileSync('web/datacenter-tracker.md','utf8');
-for (const text of ['filter-country-group','filter-zone-group','filter-status-group','filter-type-group','filter-scenario-group','Developer','Investment decision','Expected operation','Last checked','Planned capacity (MW)']) assert.ok(page.includes(text), 'Missing original tracker control or field: '+text);
+for (const text of ['filter-country-group','filter-zone-group','filter-status-group','filter-type-group','filter-scenario-group','Developer','Investment decision','Announced dates','Last checked','Full build-out (MW)','Full build-out (TWh/yr)']) assert.ok(page.includes(text), 'Missing original tracker control or field: '+text);
+assert.ok(!page.includes('with no stated upper limit'));
+const mapSource = fs.readFileSync('assets/js/datacenter-tracker/scenario-map-d3.js','utf8');
+for (const state of ['scenario-active','scenario-mixed','scenario-inactive']) assert.ok(mapSource.includes(state), 'Missing scenario marker state: '+state);
+for (const text of ['projects have unknown capacity','Totals cover the quantified part','no assigned bidding zone','Project locations are approximate']) assert.ok(!mapSource.includes(text), 'Obsolete map note remains: '+text);
+const trackerSource = fs.readFileSync('assets/js/datacenter-tracker.js','utf8');
+assert.ok(trackerSource.includes('Selected scenario'));
+assert.ok(trackerSource.includes('>In campus</span>'));
+assert.ok(trackerSource.includes('without assigned capacity'));
+assert.ok(!trackerSource.includes('(not counted)'));
+for (const text of ['How the tracker is updated','rules-based search routine','documented codebook','Search for new capacity','Reconcile identity, phases and dates','Record what each source actually measures','Calculate and review the scenarios']) assert.ok(page.includes(text), 'Missing workflow section: '+text);
 assert.ok(!page.includes('Capacity envelope'));
 assert.ok(!page.includes('Max reported MW'));
 assert.ok(!page.includes('Reported IT load MW'));

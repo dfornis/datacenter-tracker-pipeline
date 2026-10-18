@@ -23,7 +23,7 @@ fixture<-function(claims=claim()) {
       status='Planned',record_type=if(id=='P099')'candidate' else 'existing',source_ids='S001',
       type='hyperscale',municipality='Synthetic',latitude='59.3',longitude='18.0'))))
   list(config=live$config,projects=p,capacity=claims,sources=fixture_row('sources',list(source_id='S001',
-    url='https://example.org/synthetic',title='Synthetic fixture, not evidence',kind='summary')))
+    url='https://example.org/synthetic',title='Synthetic fixture, not evidence',kind='summary')),actors=empty_actors(live$config))
 }
 row<-function(r,id='C001',sc='high_2035')r$ledger[r$ledger$claim_id==id & r$ledger$scenario==sc,,drop=FALSE]
 project<-function(r,id='P001',sc='high_2035')r$project_scenarios[r$project_scenarios$project_id==id & r$project_scenarios$scenario==sc,,drop=FALSE]
@@ -249,7 +249,7 @@ with_workflow <- function(fn,empty=FALSE) {
   paths<-c('config/pipeline.json','scripts/model.R','scripts/tracker.R','scripts/pipeline.R','renv.lock',
            'assets/js/datacenter-tracker.js','assets/js/datacenter-tracker/scenario-map-d3.js',
            'assets/css/datacenter-tracker-map.css','web/datacenter-tracker.md','web/build_datacenter_data.R',
-           'prompts/update.md','AGENTS.md','README.md',unique(vapply(live$config$zones,function(z)z$geometry,'')))
+           'prompts/update.md','prompts/actors.md','AGENTS.md','README.md',unique(vapply(live$config$zones,function(z)z$geometry,'')))
   for(f in paths) {
     target<-file.path(root,f);dir.create(dirname(target),recursive=TRUE,showWarnings=FALSE)
     stopifnot(file.copy(f,target))
@@ -259,6 +259,22 @@ with_workflow <- function(fn,empty=FALSE) {
   write_tables(x,file.path(root,'data'))
   fn(root,file.path(root,'work'))
 }
+test('prepare preserves a dated immutable baseline before discovery',function() {
+  with_workflow(function(root,work) {
+    packet<-prepare_run(root,work,country='SE')
+    snapshot<-file.path(root,packet$baseline_snapshot)
+    files<-table_files(read_inputs(root)$config)
+    original_hashes<-vapply(files,function(file)file_hash(file.path(root,'data',file)),'')
+    stopifnot(dir.exists(snapshot),all(vapply(files,function(file)
+      identical(file_hash(file.path(root,'data',file)),file_hash(file.path(snapshot,'data',file))),TRUE)))
+    same_path<-data_snapshot(root,'SE',packet$run_date)
+    stopifnot(identical(same_path,packet$baseline_snapshot))
+    x<-read_inputs(root);x$projects$notes[1]<-'A later state';write_tables(x,file.path(root,'data'))
+    next_path<-data_snapshot(root,'SE',packet$run_date)
+    stopifnot(next_path!=same_path,grepl('-2$',next_path),
+      identical(file_hash(file.path(snapshot,'data/projects.csv')),original_hashes[['projects.csv']]))
+  })
+})
 test('prepare lists phases without MW and a sourced phase MW counts after apply',function() {
   with_workflow(function(root,work) {
     x<-fixture(rbind(claim(mw=500,decision='unclear',timing='unknown',first_year='',last_year=''),
@@ -278,7 +294,7 @@ test('empty first installation reaches applied output with quantified and unquan
     prepare_run(root,work,mode='scratch')
     packet<-json_read(file.path(work,'packet.json'))
     stopifnot(setequal(unlist(packet$countries),c('SE','NO','FI')),length(packet$projects)==0,
-      packet$id_above$sources==143,length(list.files(work))==4)
+      packet$id_above$sources==143,length(list.files(work))==5)
     x<-fixture(claim('C048','P053',timing='unknown',first_year='',last_year=''))
     x$projects$project_id[x$projects$project_id=='P099']<-'P054'
     x$projects$record_type<-'candidate'
@@ -626,6 +642,79 @@ test('a country run refuses to start on uncommitted changes in a git checkout',f
     prepare_run(root,work);unlink(work,recursive=TRUE)
     cat('x',file=file.path(root,'data','projects.csv'),append=TRUE)
     fails(function()prepare_run(root,work),'Commit the previous run')
+  })
+})
+actor <- function(name='Synthetic operator',project='P001',country='SE',...) {
+  v<-list(project_id=project,actor_name=name,role='developer;operator',actor_type='datacenter_developer_operator',
+    hq_country=country,source_ids='S001',checked_at='2026-10-16',identity_status='identified')
+  more<-list(...);v[names(more)]<-more;fixture_row('actors',v)
+}
+test('actor rows use project identity, reject duplicate actors and require traceable evidence',function() {
+  x<-fixture();x$actors<-actor();validate_inputs(x)
+  x$actors$project_id<-'C001';fails(function()validate_inputs(x),'Orphaned actor')
+  x$actors<-rbind(actor(),actor(name='  SYNTHETIC OPERATOR  '));fails(function()validate_inputs(x),'Duplicate project/actor key')
+  x$actors<-actor(source_ids='S999');fails(function()validate_inputs(x),'Missing actor source reference')
+  x$actors<-actor(checked_at='2026-02-30');fails(function()validate_inputs(x),'Invalid actor check date')
+  x$actors<-actor(identity_status='unresolved');fails(function()validate_inputs(x),'Unresolved actor cannot have an assigned HQ')
+  x$actors<-actor(country='');fails(function()validate_inputs(x),'Unknown HQ needs an explanation')
+})
+test('HQ origin distinguishes domestic, foreign, mixed and incomplete identities without inferring ownership',function() {
+  x<-fixture();origin<-function(a)classify_actors(x$projects,a,x$config)$actor_hq_origin[1]
+  stopifnot(origin(actor())=='domestic',origin(actor(country='US'))=='foreign')
+  mixed<-rbind(actor(),actor('Foreign partner',country='FR',actor_type='ai_compute_provider'))
+  stopifnot(origin(mixed)=='mixed')
+  mixed<-rbind(mixed,actor('Undisclosed operator',country='',identity_status='unresolved',notes='Not named'))
+  stopifnot(origin(mixed)=='unknown',origin(empty_actors(x$config))=='unknown')
+  x$actors<-actor(ownership_notes='A foreign fund owns this operator')
+  stopifnot(origin(x$actors)=='domestic')
+  regions<-actor_display(rbind(actor(country='IS'),actor('US partner',country='US')),x$config)
+  stopifnot('region:eu_eea' %in% ids(regions$hq_facets[1]),'region:outside_europe' %in% ids(regions$hq_facets[2]))
+  stopifnot(!'region:eu' %in% ids(regions$hq_facets[1]),'region:eu' %in% ids(actor_display(actor(country='FR'),x$config)$hq_facets[1]))
+  stopifnot(length(x$config$actor_classification$regions$eu)==27)
+  stopifnot(all(vapply(regions$hq_facets,function(f)'region:outside_eu' %in% ids(f),logical(1))))
+  a<-rbind(actor(country='FR'),actor('US partner',country='US'))
+  groups<-ids(classify_actors(x$projects,a,x$config)$actor_hq_groups[1])
+  stopifnot(all(c('other_europe','outside_europe') %in% groups))
+  unknown<-actor('Unknown actor',country='',identity_status='unresolved',notes='Not named')
+  stopifnot(!any(c('other_europe','outside_europe') %in% ids(classify_actors(x$projects,unknown,x$config)$actor_hq_groups[1])))
+})
+test('multiple actors never change phase accounting, energy factors or project scenario counts',function() {
+  x<-fixture(rbind(claim(),claim('C002',mw=25,relation='included_in',parent_id='C001')))
+  before<-calculate(x)
+  x$actors<-rbind(actor(),actor('AI customer',country='FR',actor_type='ai_compute_provider'))
+  stopifnot(identical(calculate(x),before))
+})
+test('public actor export retains actor-only sources and excludes pending project actors',function() {
+  with_workflow(function(root,work) {
+    x<-read_inputs(root);s<-x$sources[1,];s$source_id<-'S144';s$excerpt<-'HQ evidence, no capacity claim';x$sources<-rbind(x$sources,s)
+    x$actors<-rbind(actor(source_ids='S144'),actor('Pending actor',project='P099',country='US'))
+    write_tables(x,file.path(root,'data'))
+    r<-build_result(root);q<-public_result(r)
+    stopifnot(nrow(q$actors)==1,q$actors$project_id=='P001','S144' %in% q$sources$source_id,
+      q$actor_coverage$projects==1,q$actor_coverage$reviewed==1,nrow(q$project_scenarios)==4)
+  })
+})
+test('country work protects other-country actors and sources used only by those actors',function() {
+  with_workflow(function(root,work) {
+    x<-read_inputs(root);x$projects$country[2]<-'FI';x$projects$bidding_zone[2]<-'FI'
+    s<-x$sources[1,];s$source_id<-'S144';x$sources<-rbind(x$sources,s)
+    x$actors<-rbind(actor(),actor('Finnish operator',project='P099',country='FI',source_ids='S144'))
+    write_tables(x,file.path(root,'data'));prepare_run(root,work,country='SE')
+    y<-read_inputs(root,work);y$actors$notes[2]<-'Unrelated country edit';write_tables(y,work)
+    fails(function()review_run(root,work),'Changes outside selected countries in actors')
+    y<-read_inputs(root);y$sources$excerpt[2]<-'Unrelated actor-source edit';write_tables(y,work)
+    fails(function()review_run(root,work),'Changes outside selected countries in sources')
+  })
+})
+test('scratch keeps other-country actor-only evidence and packets expose the actor worklist',function() {
+  with_workflow(function(root,work) {
+    x<-read_inputs(root);x$projects$country[2]<-'FI';x$projects$bidding_zone[2]<-'FI'
+    s<-x$sources[1,];s$source_id<-'S144';x$sources<-rbind(x$sources,s)
+    x$actors<-rbind(actor(),actor('Finnish operator',project='P099',country='FI',source_ids='S144'))
+    write_tables(x,file.path(root,'data'));prepare_run(root,work,country='SE',mode='scratch')
+    y<-read_inputs(root,work);packet<-json_read(file.path(work,'packet.json'))
+    stopifnot(nrow(y$actors)==1,y$actors$project_id=='P099','S144' %in% y$sources$source_id,
+      length(packet$actor_worklist)==1,length(packet$actor_instructions)>0,is.null(packet$id_above$actors))
   })
 })
 cat(count,' meaningful method and workflow checks passed.\n')

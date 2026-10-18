@@ -12,11 +12,13 @@ Kör ett land per Codex-session. Repot ska vara committat innan en körning star
 
 Detta är den gemensamma körinstruktionen, även i en ny chatt utan tidigare samtal. Standardläget är `refresh`. Använd `scratch` bara när användaren uttryckligen vill börja med tomma arbetsregister. `--country=all` fungerar men är för stort för en session. En begäran att bara förbereda eller rätta flödet startar inte inventeringen. En agent genomför hela flödet och en andra genomläsning; kalla inte den genomläsningen oberoende granskning.
 
+Aktörsregistret `data/actors.csv` följer med arbetskopian och kopplas via hela project_id. Befintliga aktörsrader och deras källor ska bevaras. Huvudkontors-/ägarinventering görs separat enligt `prompts/actors.md`; ny kapacitet eller projektgodkännande får aldrig härledas från en aktörsklassning.
+
 ## 1. Prepare – ett utgångsläge och en arbetskopia
 
 Läs AGENTS.md, README:s metod och config/pipeline.json. Använd befintlig metod och scenarier: Low 2030, Stated 2030, Stated 2035 och High 2035. Ändra inte metoden under en inventering för att få en viss totalsiffra.
 
-**En inventering ändrar bara registret och körloggen.** Rör inte `scripts/`, `config/`, `tests/`, `prompts/`, `web/`, `README.md` eller `AGENTS.md`. Hittar du ett fel i kod, kontroller eller metod: stanna, beskriv felet i chatten och invänta användaren. Rättelser görs i en separat session, inte mitt i en landskörning.
+**En inventering ändrar bara registret, körloggen, den automatiska lägesbilden och de utdata som flödet bygger.** Rör inte `scripts/`, `config/`, `tests/`, `prompts/`, `web/`, `README.md` eller `AGENTS.md`. Hittar du ett fel i kod, kontroller eller metod: stanna, beskriv felet i chatten och invänta användaren. Rättelser görs i en separat session, inte mitt i en landskörning.
 
 Kör från projektroten:
 
@@ -24,7 +26,9 @@ Kör från projektroten:
 Rscript scripts/pipeline.R prepare --country=SE --mode=refresh   # NO eller FI i de andra körningarna
 ```
 
-Kommandot skriver ut en unik tillfällig arbetskatalog. Den innehåller bara de tre arbets-CSV:erna och `packet.json`: körinstruktion, landsprofiler, utgångsdata, gemensamt identitetsindex, ID-gränser och fingeravtryck av ingångsdata/instruktioner. Skriv katalogens faktiska sökväg i alla efterföljande kommandon. Byt `refresh` till `scratch` för tomma tabeller i valda länder; gamla poster finns då i paketet för senare avstämning. Vid en helt ny installation räcker de tre CSV-rubrikerna som startunderlag.
+Kommandot skriver ut en unik tillfällig arbetskatalog. Den innehåller bara de fyra arbets-CSV:erna och `packet.json`: körinstruktion, landsprofiler, utgångsdata, gemensamt identitetsindex, ID-gränser och fingeravtryck av ingångsdata/instruktioner. Skriv katalogens faktiska sökväg i alla efterföljande kommandon. Byt `refresh` till `scratch` för tomma tabeller i valda länder. Gamla poster och aktörsrader finns då i paketet för senare avstämning och ska återföras. Vid en helt ny installation räcker de fyra CSV-rubrikerna som startunderlag.
+
+Precis före upptäckten kopierar `prepare` de fyra aktuella filerna i `data/` till en datummärkt mapp under `runs/snapshots/`. Sökvägen finns i `packet.json` som `baseline_snapshot`. Kopian är körningens utgångsläge. Ändra den inte och använd den inte som register.
 
 Kommandot skriver också ut arbetslistans storlek. Hela listan finns i `packet.json` under `worklist` (se steg 3) och räknas om av `check`, så den krymper när arbetet görs.
 
@@ -118,7 +122,7 @@ Rscript scripts/pipeline.R apply --data=/sökväg/till/arbetskatalog
 Rscript scripts/pipeline.R check
 ```
 
-`apply` inför de tre tabellerna och bygger assets/datacenters.json samt trackerfilerna i assets/data/datacenters/ i samma steg. Det kontrollerar att utgångsläget är oförändrat, att inga tidigare ID:n försvunnit och att en landskörning håller sig till sitt land. Det bedömer inte källornas sanningshalt eller om sökningen är tillräcklig: det är steg 2–4:s uppgift. Om utgångsläget ändrats, förbered en ny arbetskopia och återför redan undersökta ändringar mot det nya läget; kringgå inte jämförelsen. Vid vanligt skrivfel återställs tidigare filer. Ingen extern publicering sker.
+`apply` inför de fyra tabellerna och bygger assets/datacenters.json samt trackerfilerna i assets/data/datacenters/ i samma steg. Det kontrollerar att utgångsläget är oförändrat, att inga tidigare ID:n försvunnit och att en landskörning håller sig till sitt land. Det bedömer inte källornas sanningshalt eller om sökningen är tillräcklig: det är steg 2–4:s uppgift. Om utgångsläget ändrats, förbered en ny arbetskopia och återför redan undersökta ändringar mot det nya läget; kringgå inte jämförelsen. Vid vanligt skrivfel återställs tidigare filer. Ingen extern publicering sker.
 
 Den lokala sajten i syskonkatalogen `../dfornis.github.io` uppdateras i samma införande när den finns. Ligger sajtens checkout någon annanstans, ange `--site=...` på `apply`, `approve` och slutkontrollen. Vanlig `check` ska bekräfta att de sparade resultaten och den lokala sajtkopian är aktuella. `check --data=...` granskar bara arbetskopian. Inventeringen får varken godkänna kandidater eller återkalla tidigare godkännanden.
 

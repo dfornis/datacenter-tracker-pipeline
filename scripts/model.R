@@ -1,4 +1,4 @@
-# Three input tables, one method configuration, one calculation path.
+# Project, capacity, source and actor tables; one capacity calculation path.
 `%||%` <- function(x,y) if (is.null(x) || !length(x)) y else x
 # Console output (check/packet summaries) in UTF-8 even when the agent shell has no locale set.
 if (!isTRUE(l10n_info()$`UTF-8`)) for (loc in c('C.UTF-8','en_US.UTF-8','UTF-8'))
@@ -19,7 +19,10 @@ read_inputs <- function(root='.',data_dir=file.path(root,'data')) {
     d
   })
   names(tables) <- names(cfg$tables)
-  list(config=cfg,projects=tables$projects,capacity=tables$capacity,sources=tables$sources)
+  c(list(config=cfg),tables)
+}
+empty_actors <- function(cfg) {
+  as.data.frame(setNames(rep(list(character()),length(cfg$tables$actors)),unlist(cfg$tables$actors)),stringsAsFactors=FALSE)
 }
 csv_field <- function(v) {
   v <- enc2utf8(as.character(v))
@@ -35,11 +38,11 @@ write_csv_table <- function(d,path) {
 input_hashes <- function(root='.',data_dir=file.path(root,'data')) {
   cfg<-json_read(file.path(root,'config/pipeline.json'))
   maps<-unique(vapply(cfg$zones,function(z)z$geometry,character(1)))
-  paths <- c(file.path(data_dir,c('projects.csv','capacity.csv','sources.csv')),
+  paths <- c(file.path(data_dir,paste0(names(cfg$tables),'.csv')),
              file.path(root,c('config/pipeline.json','scripts/model.R','scripts/tracker.R','scripts/pipeline.R','renv.lock',
-                              'prompts/update.md','AGENTS.md','README.md',maps)))
-  setNames(lapply(paths,file_hash),c('projects','capacity','sources','method','model','tracker','command','environment',
-                                   'prompt','instructions','readme',maps))
+                              'prompts/update.md','prompts/actors.md','AGENTS.md','README.md',maps)))
+  setNames(lapply(paths,file_hash),c(names(cfg$tables),'method','model','tracker','command','environment',
+                                   'prompt','actor_prompt','instructions','readme',maps))
 }
 validate_inputs <- function(x,allow_empty=FALSE) {
   p<-x$projects;c<-x$capacity;s<-x$sources;cfg<-x$config
@@ -75,6 +78,23 @@ validate_inputs <- function(x,allow_empty=FALSE) {
   require_true(c$qualifier!='range' | nzchar(c$mw_max),'Range needs upper value')
   require_true(!nzchar(c$first_year) | !nzchar(c$last_year) | number(c$first_year)<=number(c$last_year),'Reversed timing interval')
   for (d in list(p,c)) for (ref in d$source_ids) require_true(ids(ref) %in% s$source_id,'Missing source reference')
+  a<-x$actors %||% empty_actors(cfg)
+  require_true(!anyDuplicated(paste(a$project_id,tolower(trimws(a$actor_name)),sep=':')),'Duplicate project/actor key')
+  require_true(a$project_id %in% p$project_id,'Orphaned actor: use project_id, never claim_id')
+  require_true(nzchar(trimws(a$actor_name)),'Actor name is required')
+  require_true(a$identity_status %in% unlist(cfg$actor_classification$identity_status),'Unknown actor identity status')
+  require_true(!nzchar(a$hq_country) | grepl('^[A-Z]{2}$',a$hq_country),'Invalid HQ country code')
+  require_true(!nzchar(a$hq_city) | nzchar(a$hq_country),'HQ city needs a known country')
+  require_true(a$identity_status!='unresolved' | (!nzchar(a$hq_country) & !nzchar(a$hq_city)),'Unresolved actor cannot have an assigned HQ')
+  require_true(nzchar(a$hq_country) | nzchar(a$notes),'Unknown HQ needs an explanation')
+  for(field in c('role','actor_type')) {
+    allowed<-names(cfg$actor_classification[[if(field=='role')'roles' else 'types']])
+    require_true(vapply(a[[field]],function(v)length(ids(v))>0 && all(ids(v) %in% allowed),TRUE),paste('Unknown actor',field))
+  }
+  require_true(nzchar(a$source_ids),'Actor classification needs sources')
+  for(ref in a$source_ids)require_true(ids(ref) %in% s$source_id,'Missing actor source reference')
+  dates<-suppressWarnings(as.Date(a$checked_at,format='%Y-%m-%d'))
+  require_true(grepl('^[0-9]{4}-[0-9]{2}-[0-9]{2}$',a$checked_at) & !is.na(dates) & format(dates,'%Y-%m-%d')==a$checked_at,'Invalid actor check date')
   for (i in seq_len(nrow(c))) {
     for (field in c('parent_id','baseline_id')) require_true(!nzchar(c[[field]][i]) || c[[field]][i] %in% c$claim_id,paste('Missing',field))
     require_true(!c$relation[i] %in% c('included_in','possibly_included_in') || nzchar(c$parent_id[i]),'Containment needs parent')
@@ -417,16 +437,68 @@ capacity_followups <- function(x) {
   }
   findings
 }
+classify_actors <- function(projects,actors,cfg) {
+  p<-projects
+  for(field in c('actor_hq_countries','actor_hq_origin','actor_hq_groups','actor_types'))p[[field]]<-rep('',nrow(p))
+  for(i in seq_len(nrow(p))) {
+    a<-actors[actors$project_id==p$project_id[i],,drop=FALSE]
+    countries<-sort(unique(a$hq_country[nzchar(a$hq_country)]))
+    complete<-nrow(a)>0 && all(a$identity_status=='identified' & nzchar(a$hq_country))
+    origin<-if(!complete)'unknown' else if(all(countries==p$country[i]))'domestic' else if(all(countries!=p$country[i]))'foreign' else 'mixed'
+    groups<-origin
+    for(region in names(cfg$actor_classification$regions))if(any(countries %in% unlist(cfg$actor_classification$regions[[region]])))groups<-c(groups,region)
+    if(any(!countries %in% unlist(cfg$actor_classification$regions$eu)))groups<-c(groups,'outside_eu')
+    if(any(countries %in% unlist(cfg$actor_classification$regions$europe) & countries!=p$country[i]))groups<-c(groups,'other_europe')
+    if(any(!countries %in% unlist(cfg$actor_classification$regions$europe)))groups<-c(groups,'outside_europe')
+    p$actor_hq_countries[i]<-paste(countries,collapse=';')
+    p$actor_hq_origin[i]<-origin
+    p$actor_hq_groups[i]<-paste(unique(groups),collapse=';')
+    p$actor_types[i]<-if(nrow(a))paste(sort(unique(unlist(lapply(a$actor_type,ids)))),collapse=';') else 'unknown'
+  }
+  p
+}
+actor_display <- function(actors,cfg) {
+  a<-actors;a$hq_facets<-rep('',nrow(a))
+  for(i in seq_len(nrow(a))) {
+    country<-a$hq_country[i]
+    facets<-if(nzchar(country))paste0('country:',country) else 'unknown'
+    if(nzchar(country)) {
+      for(region in names(cfg$actor_classification$regions))if(country %in% unlist(cfg$actor_classification$regions[[region]]))facets<-c(facets,paste0('region:',region))
+      if(!country %in% unlist(cfg$actor_classification$regions$eu))facets<-c(facets,'region:outside_eu')
+      if(!country %in% unlist(cfg$actor_classification$regions$europe))facets<-c(facets,'region:outside_europe')
+    }
+    a$hq_facets[i]<-paste(facets,collapse=';')
+  }
+  a
+}
+actor_worklist <- function(x,countries=names(x$config$countries)) {
+  p<-classify_actors(x$projects,x$actors %||% empty_actors(x$config),x$config)
+  p<-p[p$country %in% countries & p$record_type!='out_of_scope',,drop=FALSE]
+  lapply(seq_len(nrow(p)),function(i)list(project_id=p$project_id[i],project_name=p$project_name[i],developer=p$developer[i],
+    hq_origin=p$actor_hq_origin[i],reviewed=p$project_id[i] %in% (x$actors %||% empty_actors(x$config))$project_id))
+}
+actor_coverage <- function(projects,actors,cfg=NULL) {
+  p<-projects[projects$record_type!='out_of_scope',,drop=FALSE]
+  if(!'actor_hq_origin' %in% names(p))p<-classify_actors(p,actors,cfg)
+  countries<-if(is.null(cfg))sort(unique(p$country)) else names(cfg$countries)
+  if(!length(countries))return(data.frame(country=character(),projects=integer(),reviewed=integer(),complete_hq=integer()))
+  do.call(rbind,lapply(countries,function(country) {
+    own<-p[p$country==country,,drop=FALSE]
+    data.frame(country=country,projects=nrow(own),reviewed=sum(own$project_id %in% actors$project_id),
+      complete_hq=sum(own$actor_hq_origin!='unknown'),stringsAsFactors=FALSE)
+  }))
+}
 build_result <- function(root='.',data_dir=file.path(root,'data')) {
   before<-input_hashes(root,data_dir);x<-read_inputs(root,data_dir);result<-calculate(x,approved_only=TRUE);map<-assemble_map(x$config,root)
   if(!identical(before,input_hashes(root,data_dir)))stop('Inputs changed during build; retry after edits finish')
   list(version=x$config$version,as_of=x$config$as_of,input_hashes=before,
     scope='manually_approved_projects',
-    method=list(scenarios=x$config$scenarios,assumptions=x$config$assumptions,type_assumptions=x$config$type_assumptions,geography_note=x$config$geography_note),
+    method=list(scenarios=x$config$scenarios,assumptions=x$config$assumptions,type_assumptions=x$config$type_assumptions,geography_note=x$config$geography_note,actor_classification=x$config$actor_classification),
     approval=list(approved_project_ids=as.list(x$projects$project_id[x$projects$record_type=='existing']),
       pending_project_ids=as.list(x$projects$project_id[x$projects$record_type=='candidate']),
       out_of_scope_project_ids=as.list(x$projects$project_id[x$projects$record_type=='out_of_scope'])),
-    projects=x$projects,capacity=x$capacity,sources=x$sources,
+    projects=classify_actors(x$projects,x$actors,x$config),capacity=x$capacity,sources=x$sources,actors=actor_display(x$actors,x$config),
+    actor_coverage=actor_coverage(x$projects,x$actors,x$config),
     scenarios=result$scenarios,project_scenarios=result$project_scenarios,ledger=result$ledger,
     coverage=list(projects=nrow(x$projects),claims=nrow(x$capacity),sources=nrow(x$sources),
       scenario_rows=nrow(result$project_scenarios),every_project_represented=TRUE,

@@ -58,11 +58,14 @@ make_packet <- function(root='.',data_dir=file.path(root,'data'),country='all') 
   before<-input_hashes(root,data_dir);x<-read_inputs(root,data_dir);validate_inputs(x,allow_empty=TRUE)
   countries<-country_selection(x$config,country)
   selected<-x$projects$project_id[x$projects$country %in% countries]
-  limits<-setNames(lapply(names(x$config$tables),function(n)
-    max(c(x$config$workflow$id_floor[[n]],number(sub('^[PCS]','',x[[n]][[1]]))))),names(x$config$tables))
+  permanent<-c('projects','capacity','sources')
+  limits<-setNames(lapply(permanent,function(n)
+    max(c(x$config$workflow$id_floor[[n]],number(sub('^[PCS]','',x[[n]][[1]]))))),permanent)
   packet<-list(country=country,countries=as.list(countries),run_date=as.character(Sys.Date()),
     input_hashes=before,id_above=limits,method=x$config,
     instructions=readLines(file.path(root,'prompts/update.md'),warn=FALSE),
+    actor_instructions=readLines(file.path(root,'prompts/actors.md'),warn=FALSE),
+    actors=x$actors[x$actors$project_id %in% selected,,drop=FALSE],actor_worklist=actor_worklist(x,countries),
     projects=x$projects[x$projects$project_id %in% selected,,drop=FALSE],
     capacity=x$capacity[x$capacity$project_id %in% selected,,drop=FALSE],sources=x$sources,
     capacity_sources_to_reconcile=Filter(function(f)f$project_id %in% selected,capacity_followups(x)),
@@ -79,6 +82,36 @@ git_uncommitted <- function(root='.') {
   paths<-c('data','config','scripts','prompts','tests','web','assets','runs','AGENTS.md','README.md')
   suppressWarnings(system2('git',c('-C',shQuote(root),'status','--porcelain','--untracked-files=all','--',paths),stdout=TRUE,stderr=FALSE))
 }
+same_data_snapshot <- function(path,sources,files) {
+  copies<-file.path(path,'data',files)
+  all(file.exists(copies)) && all(vapply(seq_along(files),function(i)
+    identical(file_hash(copies[i]),file_hash(sources[i])),TRUE))
+}
+data_snapshot <- function(root='.',country='all',run_date=Sys.Date()) {
+  x<-read_inputs(root);validate_inputs(x,allow_empty=TRUE)
+  country_selection(x$config,country)
+  stamp<-format(as.Date(run_date),'%Y-%m-%d')
+  if(is.na(stamp))stop('Invalid snapshot date')
+  files<-table_files(x$config);sources<-file.path(root,'data',files)
+  base<-file.path(root,'runs','snapshots',paste0(stamp,'-',tolower(country),'-before-discovery'))
+  target<-base;suffix<-1L
+  while(dir.exists(target) && !same_data_snapshot(target,sources,files)) {
+    suffix<-suffix+1L;target<-paste0(base,'-',suffix)
+  }
+  relative<-file.path('runs','snapshots',basename(target))
+  if(dir.exists(target))return(relative)
+  dir.create(dirname(target),recursive=TRUE,showWarnings=FALSE)
+  stage<-tempfile('.snapshot-',dirname(target));dir.create(stage)
+  complete<-FALSE
+  on.exit(if(!complete)unlink(stage,recursive=TRUE),add=TRUE)
+  for(i in seq_along(files)) {
+    destination<-file.path(stage,'data',files[i]);dir.create(dirname(destination),recursive=TRUE,showWarnings=FALSE)
+    if(!file.copy(sources[i],destination) || !identical(file_hash(destination),file_hash(sources[i])))stop('Could not preserve data snapshot: ',files[i])
+  }
+  if(!file.rename(stage,target))stop('Could not install snapshot: ',relative)
+  complete<-TRUE
+  relative
+}
 prepare_run <- function(root='.',path,country='all',mode='refresh') {
   if(!mode %in% c('refresh','scratch'))stop('Choose --mode=refresh or scratch')
   if(file.exists(path))stop('Work directory already exists; resume it or choose a new path')
@@ -90,12 +123,15 @@ prepare_run <- function(root='.',path,country='all',mode='refresh') {
     selected<-x$projects$project_id[x$projects$country %in% unlist(packet$countries)]
     x$projects<-x$projects[!x$projects$project_id %in% selected,,drop=FALSE]
     x$capacity<-x$capacity[!x$capacity$project_id %in% selected,,drop=FALSE]
-    refs<-unique(c(unlist(lapply(x$projects$source_ids,ids)),unlist(lapply(x$capacity$source_ids,ids))))
+    x$actors<-x$actors[!x$actors$project_id %in% selected,,drop=FALSE]
+    refs<-unique(c(unlist(lapply(x$projects$source_ids,ids)),unlist(lapply(x$capacity$source_ids,ids)),unlist(lapply(x$actors$source_ids,ids))))
     x$sources<-x$sources[x$sources$source_id %in% refs,,drop=FALSE]
   }
   complete<-FALSE
   on.exit(if(!complete)unlink(path,recursive=TRUE),add=TRUE)
   write_tables(x,path)
+  if(!identical(packet$input_hashes,input_hashes(root)))stop('Inputs changed during preparation; retry')
+  packet$baseline_snapshot<-data_snapshot(root,country=country,run_date=packet$run_date)
   atomic_output(packet,file.path(path,'packet.json'))
   if(!identical(packet$input_hashes,input_hashes(root)))stop('Inputs changed during preparation; retry')
   complete<-TRUE
@@ -105,6 +141,13 @@ same_rows <- function(a,b,keys) {
   aa<-a[match(keys,a[[1]]),,drop=FALSE];bb<-b[match(keys,b[[1]]),,drop=FALSE]
   rownames(aa)<-rownames(bb)<-NULL
   identical(aa,bb)
+}
+same_actor_rows <- function(a,b,projects) {
+  select<-function(d) {
+    d<-d[d$project_id %in% projects,,drop=FALSE]
+    d<-d[order(d$project_id,d$actor_name),,drop=FALSE];rownames(d)<-NULL;d
+  }
+  identical(select(a),select(b))
 }
 install_file <- function(from,to) {
   tmp<-tempfile('.datacenters-install-',dirname(to));on.exit(unlink(tmp))
@@ -118,10 +161,11 @@ review_run <- function(root='.',path) {
   if(!length(countries)||any(!countries %in% names(old$config$countries)))stop('Invalid packet countries')
   other<-old$projects$project_id[!old$projects$country %in% countries]
   protected_sources<-unique(c(unlist(lapply(old$projects$source_ids[old$projects$project_id %in% other],ids)),
-    unlist(lapply(old$capacity$source_ids[old$capacity$project_id %in% other],ids))))
+    unlist(lapply(old$capacity$source_ids[old$capacity$project_id %in% other],ids)),
+    unlist(lapply(old$actors$source_ids[old$actors$project_id %in% other],ids))))
   protected<-list(projects=other,capacity=old$capacity$claim_id[old$capacity$project_id %in% other],sources=protected_sources)
   changes<-list()
-  for(n in names(old$config$tables)) {
+  for(n in c('projects','capacity','sources')) {
     a<-old[[n]];b<-new[[n]];missing<-setdiff(a[[1]],b[[1]])
     if(length(missing))stop('Rows disappeared from ',n,': ',paste(missing,collapse=', '),'; reconcile and retain their IDs')
     added<-setdiff(b[[1]],a[[1]])
@@ -130,6 +174,11 @@ review_run <- function(root='.',path) {
     changed<-a[[1]][vapply(a[[1]],function(id)!same_rows(a,b,id),logical(1))]
     changes[[n]]<-list(added=as.list(added),changed=as.list(changed))
   }
+  if(!same_actor_rows(old$actors,new$actors,other))stop('Changes outside selected countries in actors')
+  lost_actors<-setdiff(unique(old$actors$project_id),unique(new$actors$project_id))
+  if(length(lost_actors))stop('Actor rows disappeared from project(s): ',paste(lost_actors,collapse=', '),'; reconcile the actor register too')
+  actor_projects<-union(old$actors$project_id,new$actors$project_id)
+  changes$actors<-list(changed_projects=as.list(actor_projects[!vapply(actor_projects,function(id)same_actor_rows(old$actors,new$actors,id),TRUE)]))
   added_projects<-new$projects[!new$projects$project_id %in% old$projects$project_id,,drop=FALSE]
   if(any(!added_projects$country %in% countries))stop('New project outside selected countries')
   if(any(added_projects$record_type!='candidate'))stop('New projects enter as candidate; out-of-scope leads belong in the run log')

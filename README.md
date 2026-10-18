@@ -9,11 +9,26 @@ Ett register och en scenariomodell för både chatten och sajten. Godkända tota
 | `data/projects.csv` | Projekt, kandidater, identitet, land/elområde, län/region, typ och status. 15 kolumner. |
 | `data/capacity.csv` | Källornas kapacitetsuppgifter, mått, datum och samband. 21 kolumner. |
 | `data/sources.csv` | Källor, korta utdrag, datum och hänvisningar. 9 kolumner. |
+| `data/actors.csv` | Separat aktörsregister med hela projektets ID, aktör, roll, verksamhetstyp, globalt huvudkontor, ägarbeskrivning, källor och granskning. 11 kolumner. |
 | `config/pipeline.json` | Scenarier, beräkningsantaganden och deras källor/tillämpningsgränser. |
 
-Tre tabeller, sammanlagt 45 kolumner. Inga separata granskningsregister eller lokala arkivkopior. Git håller historiken. Uppdatera tabellerna som en sammanhängande ändring, med en uppdaterare i taget.
+Fyra tabeller, sammanlagt 56 kolumner. Aktörsregistret är uttryckligen beställt som en separat projektrelation. Före upptäcktssteget kopieras de fyra tabellerna till en datummärkt mapp under `runs/snapshots/`. Kopian är körningens utgångsläge, inte ett parallellt register. Git håller den övriga historiken. Uppdatera tabellerna som en sammanhängande ändring, med en uppdaterare i taget.
 
 `scripts/model.R` räknar och kontrollerar; `scripts/tracker.R` formaterar samma godkända beräkning för sajten; `scripts/pipeline.R` är ingången. `tests/method.R` testar beteendet med syntetiska projekt. `prompts/update.md` styr landsuppdateringen. Sju kartfiler täcker tio elområden.
+
+## Aktörer, huvudkontor och ägarbeskrivning
+
+`prompts/actors.md` styr en separat inventering av aktörerna i redan registrerade projekt. Aktörsinventeringen omfattar Sveriges 31, Finlands 46 och Norges 32 projekt som inte är `out_of_scope`. Ingen kapacitet, projektstatus eller godkännandestatus ändras av klassningen.
+
+`actors.csv` har den sammansatta nyckeln `project_id` + `actor_name`. Ett samarbetsprojekt kan därför ha flera rader, medan etapper och kapacitetsuppgifter aldrig får egna aktörsrader. Lokala bolag och historiska namn beskrivs i notes; finansiella ägare bakom den operativa aktören beskrivs i ownership_notes. Källor länkas till befintliga sources.csv. `checked_at` är granskningsdag och `identity_status` skiljer identifierad aktör från en anonym/olöst identitet.
+
+Kartans **HQ**-knappar väljer projekt med minst en aktör med globalt huvudkontor i projektlandet (Domestic), i ett annat europeiskt land (Other Europe) eller utanför Europa (Outside Europe). All återställer hela scenariot. Punkterna är alltid solida och har fasta lägen mellan scenarier. Projekt som deltar i valt scenario och matchar HQ-urvalet får färg. Vid ett HQ-val markeras också projekt med okända MW när deras huvudkontor matchar. Övriga är samma ljusgrå. Projekt som inte deltar i något scenario och saknar okänd ny kapacitet visas inte på kartan. Klickrutan skiljer okänt från ett känt uteblivet bidrag. Siffror i färgade punkter räknar valda projekt.
+
+HQ-valet styr också kartans områdesfärger och summeringen under kartan. Samma färdigräknade projektrader summeras utan att ändra modellvärden eller fördela kapacitet mellan aktörer. Tabellen och dess sammanfattning påverkas inte. HQ-valet ligger kvar vid scenariobyten. Ett streck i HQ-filtrerade siffror markerar länder utan HQ-underlag. Okänd kapacitet visas som Unknown eller med en asterisk efter den kvantifierade delen. Asterisken förklaras i kartans explainer.
+
+HQ beskriver huvudkontor, inte ett fastställt ägarland. Ett samarbetsprojekt kan matcha flera HQ-grupper men räknas en gång i varje urval. En känd aktör kan matcha även när en annan är anonym. Okända och ogranskade huvudkontor ger ingen träff. Granskningens täckning och HQ-metoden beskrivs i sajtens explainer och metodavsnitt.
+
+Modellen exporterar också samlad inhemsk, utländsk, blandad eller okänd HQ-klassning. Om någon relevant aktör saknar identitet eller land blir den samlade klassningen okänd. EU, EU/EES och den bredare Europagruppen har explicita landlistor i config/pipeline.json; Island ingår i EU/EES men inte EU. Verksamhetstypen påverkar aldrig anläggningens energifaktor. Befintliga campus-/kundrelationer och färdigräknade projekt/scenariorader används oförändrade. Expandera projektet för huvudkontor, roller, typ, daterad ägarbeskrivning och källor.
 
 ## Metod
 
@@ -98,7 +113,7 @@ Mellan länderna (för dig):
 
 | Steg | Fast uppgift |
 | --- | --- |
-| Prepare | Skapa arbetskopior av de tre tabellerna och ett paket med instruktion, landsprofil, utgångsdata, identitetsindex, ID-gränser och arbetslista. |
+| Prepare | Spara en daterad lägesbild och skapa arbetskopior av de fyra tabellerna samt ett paket med instruktion, landsprofil, utgångsdata, identitetsindex, ID-gränser och arbetslista. Aktörsrader följer med. Separat aktörsinventering styrs av prompts/actors.md. |
 | Discover | Sök brett i landet via operatörer, plan/tillstånd, nät, branschpress och landssökning, på alla angivna språk. |
 | Audit | Följ upp varje befintligt och nytt projekt och alla kapacitetsuppgifter; klassa MW efter ordalydelse; arbeta igenom arbetslistan. |
 | Reconcile/review | Stäm av projekt och MW mot resultatet, granska ändringar, gör en andra sök-/granskningspassage och följ upp bortfall. |
@@ -118,7 +133,9 @@ Rscript scripts/pipeline.R apply --data=/sökväg/till/arbetskatalog
 Rscript scripts/pipeline.R check
 ```
 
-`prepare` skapar endast tre CSV-kopior och ett packet.json i en unik tillfällig katalog; det ändrar inte registret. Paketet innehåller också svenska/norska/finska sökord, måttbegrepp, källvägar och språkkrav från de tidigare landsprofilerna. Inga nya permanenta tabeller eller kolumner tillkommer. Metodens källdatum i konfigurationen är inte bevis på en ny inventering; paketet och det införda resultatets inventory_run anger körningens datum och länder.
+`prepare` kopierar först de fyra aktuella CSV-filerna i `data/` till `runs/snapshots/ÅÅÅÅ-MM-DD-<land>-before-discovery/data/`. Därefter skapar kommandot fyra arbetskopior och ett packet.json i en unik tillfällig katalog. Sökvägen till den daterade datakopian finns i paketets `baseline_snapshot`. En identisk kopia återanvänds. Om data har ändrats samma dag skapas ett numrerat namn, så en tidigare kopia aldrig skrivs över. Kopian används inte av modellen och ändrar inte registret.
+
+Paketet innehåller också svenska/norska/finska sökord, måttbegrepp, källvägar och språkkrav från de tidigare landsprofilerna samt aktörsinstruktion och projektlista. Metodens källdatum i konfigurationen är inte bevis på en ny inventering. Paketet och det införda resultatets inventory_run anger kapacitetskörningens datum och länder. Aktörernas granskning har egna checked_at-datum och täckningsuppgifter.
 
 `check --data=...` validerar arbetskopian och visar luckor/ändringar. Vanlig `check` kontrollerar dessutom att sparade analys- och sajtfiler motsvarar dagens register och modell, inklusive den lokala sajtkopian när den finns. Saknade eller inaktuella filer ger fel; kör `build` efter metodändringar eller vid första installationen. `apply` kontrollerar utgångsläge, bevarade ID:n, godkännandestatus och landsavgränsning och inför tabeller och resultat tillsammans. Vanliga skrivfel återställer tidigare filer; ett avbrutet system under införandet behöver kontrolleras innan arbetet fortsätter. Sökningens kvalitet bedöms i promptens granskningssteg.
 
@@ -137,7 +154,7 @@ Varken paketförberedelse, kontroller eller `build` utför webbinventering. Agen
 
 Registret gäller ny datacenterlast. Ett projekt registreras när det har en identifierad plats, en namngiven datacenteraktör eller slutkund, ny kapacitet (nybygge eller belagd utbyggnad) och ett platsspecifikt belägg utöver marknadsföring (markavtal, plan, MKB/YVA, tillstånd, nätavtal eller byggnation). Driftanläggningar utan utbyggnad, datacenterfärdig mark som marknadsförs utan aktör, konceptstudier utan operatör och projekt utan plats hör inte dit; sådana spår noteras i körloggen. `record_type=out_of_scope` är rader som redan fanns men inte uppfyller regeln: de behåller ID och källor för identitetsmatchning men räknas aldrig, syns inte på sajten och ger ingen arbetslista. En körning kan flytta kandidater dit; godkända projekt flyttas bara på ditt beslut med `exclude --ids=... --reason=...`.
 
-En inventering ändrar bara registret och körloggen. Kod- och metodändringar görs i separata sessioner och committas för sig; `prepare` vägrar starta på ett repo med ocommittade ändringar.
+En inventering ändrar bara registret, körloggen, den daterade lägesbilden och de utdata som byggs av flödet. Kod- och metodändringar görs i separata sessioner och committas för sig. `prepare` vägrar starta på ett repo med ocommittade ändringar.
 
 ## Kandidater och manuellt godkännande
 

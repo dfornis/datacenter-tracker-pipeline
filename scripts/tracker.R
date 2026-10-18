@@ -8,7 +8,9 @@ public_result <- function(result) {
   out$capacity<-result$capacity[result$capacity$project_id %in% ids_,,drop=FALSE]
   out$project_scenarios<-result$project_scenarios[result$project_scenarios$project_id %in% ids_,,drop=FALSE]
   out$ledger<-result$ledger[result$ledger$project_id %in% ids_,,drop=FALSE]
-  refs<-unique(c(unlist(lapply(p$source_ids,ids)),unlist(lapply(out$capacity$source_ids,ids))))
+  out$actors<-result$actors[result$actors$project_id %in% ids_,,drop=FALSE]
+  out$actor_coverage<-actor_coverage(p,out$actors)
+  refs<-unique(c(unlist(lapply(p$source_ids,ids)),unlist(lapply(out$capacity$source_ids,ids)),unlist(lapply(out$actors$source_ids,ids))))
   out$sources<-result$sources[result$sources$source_id %in% refs,,drop=FALSE]
   out$approval<-list(approved_project_ids=as.list(ids_))
   # Pending identifiers/counts belong to the local review, not the public view.

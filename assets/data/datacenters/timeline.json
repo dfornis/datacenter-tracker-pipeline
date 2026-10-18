@@ -4,9 +4,9 @@
   "assessment_date": "2026-10-18",
   "base_year": 2025,
   "source_hashes": {
-    "projects": "10bcfef3bf27e913a70fb31a1440b1718144965c95d8f1958845f0a0e1f18d2f",
-    "capacity": "0c64bbd68524d11593a0bc09a5b0af60597d45496026acdd84667ea52370b527",
-    "sources": "dccb31e7257df63b12dbfe854fcf454916f49e4141e0d951ba99b9b822e7e48e",
+    "projects": "edd53d5a483389ca36415d9dfbaa943133ec2dbf1b4ca577e1233727a5893cee",
+    "capacity": "a8e4d5c46cd592cea027c92410cfae9bfded451dffe82f086b186bb109a26c76",
+    "sources": "fd5ffefda104c47722dea5c08b1100d5c16f989d52bde26d4af5b4c49f076acd",
     "actors": "74bdbdfb3421379a9f4a5e1cbeba4097c162e4c308b1b2a1eba1967b63d70fcb",
     "model": "986ed67a2a73c9e21811b9812c4d9b481d0d79e0aeef33fb0cf826af9ab3b27e",
     "method": "bed86dc722d0bf90ee6b5a703da20dc4eb9e5f82aaee22a5ff2c0a7d97e00b12"

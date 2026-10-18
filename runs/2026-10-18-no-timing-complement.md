@@ -81,8 +81,8 @@ Alla 30 godkända norska projekt har nu minst en MW-observation, men Suldals nä
 
 | Grupp | ID, aktör och plats | Källomfattning och tid | Beslut och huvudkälla |
 |---|---|---|---|
-| Föreslås | P178 Polar, DRA02 Drammen / NO1 | 40 MW IT; 55 MW tillstånd för uttag; odaterat | Tillstånd, FID okänt; [myndighetsunderlag](https://www.nve.no/konsesjon/konsesjonssaker/konsesjonssak?id=25996&type=A-1) via S342, operatör S315 |
-| Föreslås | P179 Polar, HER01 Kristiansand / NO2 | 100 MW facility / 41 MW IT; odaterat för dessa MW | Plan/tillståndsprocess, FID okänt; [operatör](https://www.polardc.com/post/polar-announces-new-ai-ready-data-center-development-in-her%C3%B8ya-norway), S318/343–344 |
+| Föreslås | P178 Polar, DRA02 Drangedal / NO2 | 40 MW IT; 55 MW tillstånd för uttag; odaterat | Tillstånd, FID okänt; [myndighetsunderlag](https://www.nve.no/konsesjon/konsesjonssaker/konsesjonssak?id=25996&type=A-1) via S342, operatör S315 |
+| Föreslås | P179 Polar, HER01 Herøya, Porsgrunn / NO2 | 100 MW facility / 41 MW IT; odaterat för dessa MW | Plan/tillståndsprocess, FID okänt; [operatör](https://www.polardc.com/post/polar-announces-new-ai-ready-data-center-development-in-her%C3%B8ya-norway), S318/343–344 |
 | Föreslås | P192 ASP K11, Sola / NO2 | Ny 6 MW IT-del från Q3 2027; 8/11 MW överlappande ramar | Kundkontrakt, FID okänt; [operatör](https://aspdatacenter.no/news/asp-data-center-signs-6-mw-agreement-at-k11) |
 | Föreslås | P194 ASP M12, Stavanger / NO2 | 9→12 MW power, alltså 3 MW tillkommande; odaterat | Plan, FID okänt; [operatör](https://aspdatacenter.no/locations/m12) |
 | Osäker omfattning | P191 Nscale Glomfjord, Meløy / NO4 | 30→60 MW facility; passerat fullmål Q2 2025; 6,4 MW AI-drift annat/oklart mått | Genomförd del och återstående netto behöver stämmas av; [operatör](https://www.nscale.com/ai-infrastructure/glomfjord) |
@@ -104,3 +104,5 @@ Review skapad efter införandet (`/tmp/no-review.json`). Kända delar inom grupp
 |---|---:|---:|---:|---:|
 | Föreslås | 0.00–0.00 / 0.000–0.000 | 5.28–7.20 / 0.026–0.036 | 6.60–9.00 / 0.033–0.045 | 89.00–169.00 / 0.444–0.844 |
 | Osäker omfattning, plus okända P195/P196 | 0.00–0.00 / 0.000–0.000 | 0.00–30.40 / 0.000–0.171 | 24.00–53.00 / 0.158–0.312 | 24.00–330.00 / 0.158–1.695 |
+
+Rapportens kandidatorter för Polar har rättats till registrets redan korrekta Drangedal/NO2 respektive Herøya, Porsgrunn/NO2. Inga projektdata eller godkända summor ändrades av denna texträttning. Fortsatt norsk avstämning finns i `2026-10-18-no-bitzero-addendum.md`.

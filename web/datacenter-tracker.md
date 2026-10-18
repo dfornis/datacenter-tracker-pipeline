@@ -58,16 +58,16 @@ The classification uses global headquarters. Ownership is described separately i
 
 <section id="dc-timeline" class="dc-timeline" aria-labelledby="dc-timeline-title" data-timeline="{{ '/assets/data/datacenters/timeline.json' | relative_url }}?v=4.0.0">
   <h2 id="dc-timeline-title">New capacity, year by year</h2>
-  <p class="dc-timeline-deck">Capacity added after the fixed 2025 year-end baseline, 2026–2035. Switch between cumulative additions, annual additions and capacity still to deliver. Includes cooling and other site electricity use.</p>
+  <p class="dc-timeline-deck">Capacity added after the fixed 2025 year-end baseline, 2026–2035. Switch between cumulative additions and capacity added each year. Includes cooling and other site electricity use.</p>
   <div class="dc-timeline-content" hidden>
     <div class="dc-timeline-controls">
-      <label>Measure
-        <select name="timeline-measure" aria-label="Capacity measure">
-          <option value="mw">Cumulative additions</option>
-          <option value="annual_addition_mw">Added during year</option>
-          <option value="remaining_mw">Still to deliver</option>
-        </select>
-      </label>
+      <div class="dc-timeline-measure-control">
+        <span id="dc-timeline-measure-label">Measure</span>
+        <div class="dc-timeline-measure-switch" role="group" aria-labelledby="dc-timeline-measure-label">
+          <label><input type="radio" name="timeline-measure" value="mw" checked><span>Cumulative</span></label>
+          <label><input type="radio" name="timeline-measure" value="annual_addition_mw"><span>Added/year</span></label>
+        </div>
+      </div>
       <label>Scenario
         <select name="timeline-family" aria-label="Capacity scenario selection">
           <option value="low">Low — confirmed investment</option>
@@ -97,7 +97,7 @@ The classification uses global headquarters. Ownership is described separately i
       <p class="dc-timeline-note dc-timeline-unknown" hidden>* Projects without assigned MW are not included in the quantified totals.</p>
       <p class="dc-timeline-note">Stated includes plans with a reported year for construction, operation or grid connection. Low shows the part with a confirmed investment decision. High adds all other active plans, including those without dates. These use the same Low, Stated and High selections as the map, calculated for each year through 2035.</p>
       <p class="dc-timeline-note">Undated plans follow the same implementation and grid logic as dated plans. First operation and full buildout remain separate. Modelled dates never turn an undated plan into a Low or Stated project. For each measure, the axis is fixed across all scenarios, years and filters.</p>
-      <p class="dc-timeline-note">Lines show upper estimates and shaded bands show the range. Cumulative additions retain source-confirmed deliveries after the fixed baseline, even after their status changes to Operational. Older operating capacity is excluded. Annual additions are the range of additions along the early and late model paths; their separate interval bounds must not be added across years. Still to deliver is the announced incremental envelope minus delivery to date, including scopes outside the selected scenario. Missing MW and unknown phase sizes remain flagged. 1 GW = 1,000 MW. Move across the chart or tap it to inspect a year. All values are also available in the table below.</p>
+      <p class="dc-timeline-note">Lines show upper estimates and shaded bands show the range. Cumulative additions retain source-confirmed deliveries after the fixed baseline, even after their status changes to Operational. Older operating capacity is excluded. Annual additions are the range of additions along the early and late model paths; their separate interval bounds must not be added across years. Missing MW and unknown phase sizes remain flagged. 1 GW = 1,000 MW. Move across the chart or tap it to inspect a year. All values are also available in the table below.</p>
       <p class="dc-timeline-note">The <a href="#tracker-filters">country, zone, status and type filters</a> also apply here. The chart's scenario and HQ choices are independent of the map controls. Partnerships can match more than one HQ group. Each selected project is counted once. Projects without reviewed headquarters do not match an HQ filter.</p>
       <div class="dc-timeline-table-wrap" tabindex="0" aria-label="Annual capacity data. Scroll horizontally for more columns."><table class="dc-timeline-table"></table></div>
     </details>

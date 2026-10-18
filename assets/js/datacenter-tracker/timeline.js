@@ -87,7 +87,7 @@
       const d3 = global.d3;
       const familySelect = container.querySelector("[name='timeline-family']");
       const hqSelect = container.querySelector("[name='timeline-hq']");
-      const measureSelect = container.querySelector("[name='timeline-measure']");
+      const measureInputs = container.querySelectorAll("[name='timeline-measure']");
       const readout = container.querySelector(".dc-timeline-readout");
       const chart = container.querySelector(".dc-timeline-chart");
       const table = container.querySelector(".dc-timeline-table");
@@ -119,19 +119,18 @@
       let selectedYear = timeline.years.at(-1);
       const resizeObserver = new ResizeObserver(() => render());
       resizeObserver.observe(chart);
-      [familySelect, hqSelect, measureSelect].forEach((select) => select.addEventListener("change", render));
+      [familySelect, hqSelect, ...measureInputs].forEach((control) => control.addEventListener("change", render));
 
       function render() {
         const options = {
           family: familySelect.value,
           hq: hqSelect.value,
-          measure: measureSelect.value,
+          measure: container.querySelector("[name='timeline-measure']:checked").value,
         };
         const maxCapacity = capacityMax(timeline, data, options.measure);
         const measureLabels = {
           mw: "Cumulative additions (GW)",
           annual_addition_mw: "Added during year (GW)",
-          remaining_mw: "Still to deliver (GW)",
         };
         unit.text(measureLabels[options.measure]);
         svg.select("title").text(measureLabels[options.measure]);
@@ -347,7 +346,7 @@
         // Text-based equivalent, also usable without pointer interaction.
         table.replaceChildren();
         const caption = document.createElement("caption");
-        caption.textContent = "Cumulative additional site capacity (GW). Lower–upper estimates.";
+        caption.textContent = measureLabels[options.measure] + ". Lower–upper estimates.";
         const head = document.createElement("thead"),
           header = document.createElement("tr");
         ["Year", ...series.map((series) => series.label)].forEach((label) => {

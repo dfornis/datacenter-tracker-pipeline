@@ -1,8 +1,8 @@
 Package: datacenterTrackerPipeline
 Type: Project
 Title: Evidence and Capacity Accounting for Nordic Data Centres
-Version: 3.5.0
-Description: Three-table Nordic datacenter inventory with explicit planning scenarios.
+Version: 4.1.0
+Description: Four-table Nordic datacenter inventory with explicit planning scenarios.
 Encoding: UTF-8
 Depends: R (>= 4.6.0)
 Imports: jsonlite, digest

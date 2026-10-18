@@ -84,6 +84,9 @@ validate_inputs <- function(x,allow_empty=FALSE) {
   for(key in c('construction_event','timing_event')) require_true(c[[key]] %in% unlist(cfg$values$event_kind),'Unknown event kind')
   require_true(c$delivery_profile %in% unlist(cfg$values$delivery_profile),'Unknown delivery profile')
   require_true(c$grid_status %in% unlist(cfg$values$grid_status),'Unknown grid status')
+  require_true(c$timing_status %in% unlist(cfg$values$timing_status),'Unknown timing status')
+  require_true(c$timing_status!='superseded' | (c$timing_event!='actual' & c$construction_event!='actual'),
+    'Superseded targets cannot invalidate observed events; separate their scopes')
   require_true(!nzchar(c$full_capacity_last_year) | (nzchar(c$full_capacity_year) & number(c$full_capacity_last_year)>=number(c$full_capacity_year)),'Reversed full-capacity interval')
   require_true(!nzchar(c$full_capacity_year) | c$timing=='first_capacity','Additional full-capacity year needs a first-capacity anchor')
   require_true(!nzchar(c$status_as_of) | valid_date(c$status_as_of),'Invalid status date')
@@ -180,8 +183,16 @@ year_interval <- function(first,last='') {
   v<-number(c(first,last));if(!is.finite(v[2]))v[2]<-v[1];if(!is.finite(v[1]))v[1]<-v[2];v
 }
 source_dated <- function(row) {
+  if(field(row,'timing_status')=='superseded')return(FALSE)
   (row$timing!='unknown' && any(is.finite(number(c(row$first_year,row$last_year))))) ||
     is.finite(number(row$construction_year)) || is.finite(number(field(row,'full_capacity_year')))
+}
+current_timing <- function(row) {
+  if(field(row,'timing_status')=='superseded') {
+    for(k in c('first_year','last_year','construction_year','full_capacity_year','full_capacity_last_year'))row[[k]]<-''
+    row$timing<-'unknown'
+  }
+  row
 }
 observed_delivery <- function(row) field(row,'timing_event')=='actual' && row$timing %in% c('first_capacity','full_capacity')
 post_baseline_operation <- function(row,cfg) {
@@ -191,12 +202,13 @@ post_baseline_operation <- function(row,cfg) {
   t<-timing_schedule(row,cfg)
   any(t$full>cfg$timeline$base_year)
 }
-timing_schedule <- function(row,cfg,claims=NULL) {
+timing_schedule <- function(row,cfg,claims=NULL,ignore_grid=FALSE) {
+  superseded<-field(row,'timing_status')=='superseded';row<-current_timing(row)
   now<-assessment_year(cfg);years<-if(field(row,'delivery_profile')=='single_phase')1 else cfg$assumptions$first_to_full_years
   lag<-unlist(cfg$assumptions$construction_to_first_years)
   stage<-cfg$assumptions$stage_lead_times[[row$status]]
   lead<-unlist(stage$to_construction)+unlist(stage$remaining_construction)
-  feasible<-now+lead;flags<-character();rule<-'remaining_lead_time_from_stage'
+  feasible<-now+lead;flags<-if(superseded)'superseded_target' else character();rule<-'remaining_lead_time_from_stage'
   supplied<-year_interval(row$first_year,row$last_year);built<-number(row$construction_year)
   actual<-observed_delivery(row)
   fully_observed<-actual && (row$timing=='full_capacity' || field(row,'delivery_profile')=='single_phase')
@@ -247,13 +259,9 @@ timing_schedule <- function(row,cfg,claims=NULL) {
   grid<-NULL
   if(row$basis=='grid' || row$timing=='grid_availability')grid<-row
   if(nzchar(field(row,'grid_claim_id')) && !is.null(claims))grid<-claims[match(row$grid_claim_id,claims$claim_id),,drop=FALSE]
+  if(!is.null(grid))grid<-current_timing(grid)
   zero_lower<-FALSE
-  if(!is.null(grid)) {
-    if(fully_observed && nzchar(field(row,'grid_claim_id'))) {
-      observed_mw<-electrical_range(row,cfg);grid_mw<-electrical_range(grid,cfg)
-      if(is.finite(observed_mw[1]) && is.finite(grid_mw[2]) && observed_mw[1]>grid_mw[2])
-        flags<-c(flags,'observed_capacity_grid_conflict')
-    }
+  if(!is.null(grid) && !ignore_grid) {
     g<-year_interval(grid$first_year,grid$last_year)
     if(all(is.finite(g))) {
       if(any(g>first)) {
@@ -278,15 +286,65 @@ schedule_share <- function(schedule,year) {
   ramp<-function(i)max(0,min(1,(year-schedule$first[i]+1)/(schedule$full[i]-schedule$first[i]+1)))
   c(if(schedule$zero_lower)0 else ramp(2),ramp(1))
 }
+high_schedule <- function(row,cfg,claims) {
+  t<-timing_schedule(row,cfg,claims,ignore_grid=TRUE)
+  horizon<-cfg$timeline$end_year
+  if(any(t$full>horizon))t$flags<-c(t$flags,'compressed_to_horizon')
+  t$first<-pmin(t$first,horizon);t$full<-pmin(t$full,horizon)
+  t$rule<-paste(t$rule,'high_full_by_horizon',sep=';')
+  t
+}
+commissioning_dated <- function(row) {
+  source_dated(row) && (is.finite(number(row$construction_year)) ||
+    is.finite(number(field(row,'full_capacity_year'))) ||
+    (row$timing %in% c('first_capacity','full_capacity') && any(is.finite(number(c(row$first_year,row$last_year))))))
+}
+contained_by <- function(claims,child,parent) {
+  while(claims$relation[child] %in% c('included_in','possibly_included_in')) {
+    child<-match(claims$parent_id[child],claims$claim_id)
+    if(child==parent)return(TRUE)
+  }
+  FALSE
+}
+executing_campus_schedule <- function(i,cfg,claims,schedules) {
+  r<-claims[i,];t<-schedules[[i]]
+  if(!nzchar(r$mw) || commissioning_dated(r) || r$basis %in% c('backup','generation','density') ||
+     r$status %in% c('Cancelled','Dormant','Operational') || r$issue=='identity_conflict')return(t)
+  executing<-which(claims$project_id==r$project_id & !claims$status %in% c('Cancelled','Dormant') &
+    !claims$basis %in% c('backup','generation','density') & claims$issue!='identity_conflict' &
+    ((claims$status=='Under construction' & claims$construction_event=='actual' & nzchar(claims$construction_year)) | claims$decision=='yes'))
+  executing<-executing[vapply(executing,function(j)j!=i && commissioning_dated(claims[j,]) && contained_by(claims,j,i) &&
+    (claims$status[j]!='Operational' || post_baseline_operation(claims[j,],cfg)),TRUE)]
+  if(!length(executing))return(t)
+  # The first included phase starts this campus. Its MW is irrelevant to eligibility;
+  # a quantified phase remains a separate floor through the normal max-envelope rule.
+  t$first<-c(min(vapply(schedules[executing],function(s)s$first[1],0)),
+             min(vapply(schedules[executing],function(s)s$first[2],0)))
+  horizon<-cfg$timeline$end_year
+  t$first<-pmin(t$first,horizon)
+  t$full<-c(min(t$first[1]+cfg$assumptions$first_to_full_years-1,horizon),horizon)
+  if(!is.null(t$grid)) {
+    g<-year_interval(t$grid$first_year,t$grid$last_year)
+    if(all(is.finite(g))) {
+      t$first<-pmax(t$first,g);t$full<-pmax(t$full,t$first)
+      if(any(g>horizon))t$flags<-c(t$flags,'full_before_grid')
+    }
+  }
+  t$rule<-'executing_campus_full_by_horizon'
+  t$executing_phase_ids<-paste(claims$claim_id[executing],collapse=';')
+  t
+}
 timing_share <- function(row,year,cfg,claims=NULL) {
   t<-timing_schedule(row,cfg,claims);t$share<-schedule_share(t,year);t
 }
 scenario_selected <- function(row,scenario,timing) {
-  switch(scenario$selection,all=TRUE,dated=timing$dated,decided_dated=timing$dated && row$decision=='yes')
+  switch(scenario$selection,all=TRUE,dated=timing$dated || timing$rule=='executing_campus_full_by_horizon',
+    decided_dated=timing$dated && row$decision=='yes')
 }
 type_category <- function(type) {
   # Shared mapping from project type tags to an annual-use assumption category.
-  tags <- tolower(trimws(unlist(strsplit(type %||% '', ';', fixed=TRUE))))
+  normalized<-gsub('ai\\s*/\\s*hpc','ai;hpc',tolower(type %||% ''),perl=TRUE)
+  tags <- trimws(unlist(strsplit(normalized, ';', fixed=TRUE)))
   if (!length(tags) || all(!nzchar(tags))) return(NA_character_)
   if (any(c('research','smr-linked') %in% tags)) return('Research_SMR')
   if ('colocation' %in% tags && 'ai' %in% tags) return('Colocation_AI')
@@ -311,11 +369,9 @@ annual_fraction <- function(row,type,cfg) {
 }
 capacity_without_upper_limit <- function(row) row$qualifier=='at_least' && !nzchar(row$mw_max)
 electrical_range <- function(row,cfg,net=FALSE,claims=NULL,normalize_peak=TRUE) {
-  # "At least X" preserves a useful source fact, but without a finite project scope it is not a
-  # project capacity measure. Keep it in the ledger and source detail; do not turn the
-  # lower bound into a full-build or scenario value.
-  if (row$basis %in% c('backup','generation','density') || row$issue=='identity_conflict' || !nzchar(row$mw) || capacity_without_upper_limit(row)) return(c(NA_real_,NA_real_))
-  v<-number(row$mw);top<-if(row$qualifier=='range')number(row$mw_max) else if(row$qualifier=='at_least')NA_real_ else v
+  # NA above a known lower bound means an open upper bound, not missing MW.
+  if (row$basis %in% c('backup','generation','density') || row$issue=='identity_conflict' || !nzchar(row$mw)) return(c(NA_real_,NA_real_))
+  v<-number(row$mw);top<-if(nzchar(row$mw_max))number(row$mw_max) else if(row$qualifier=='at_least')NA_real_ else v
   if (net && row$baseline_scope=='existing_known') {
     b<-claims[match(row$baseline_id,claims$claim_id),]
     bottom_b<-number(b$mw);top_b<-if(b$qualifier=='range')number(b$mw_max) else if(b$qualifier=='at_least')Inf else bottom_b
@@ -341,13 +397,16 @@ calculate <- function(x,approved_only=TRUE) {
   validate_inputs(x);p<-x$projects;c<-x$capacity;cfg<-x$config
   all_rows<-list();overview<-list();zone_rows<-list()
   schedules<-lapply(seq_len(nrow(c)),function(i)timing_schedule(c[i,],cfg,c))
+  high_schedules<-lapply(seq_len(nrow(c)),function(i)high_schedule(c[i,],cfg,c))
+  stated_schedules<-lapply(seq_len(nrow(c)),function(i)executing_campus_schedule(i,cfg,c,schedules))
   for (scenario in cfg$scenarios) {
     rows<-lapply(seq_len(nrow(c)),function(i) {
       r<-c[i,];pr<-p[match(r$project_id,p$project_id),]
       group<-c$claim_id[top_claim(c,i)]
       gross<-electrical_range(r,cfg);net<-electrical_range(r,cfg,TRUE,c)
-      timing<-schedules[[i]];timing$share<-schedule_share(timing,scenario$year)
-      baseline_share<-if(r$baseline_scope=='new_capacity')schedule_share(timing,cfg$timeline$base_year) else c(0,0)
+      timing<-switch(scenario$selection,all=high_schedules[[i]],dated=stated_schedules[[i]],schedules[[i]])
+      timing$share<-schedule_share(timing,scenario$year)
+      baseline_share<-if(r$baseline_scope=='new_capacity')schedule_share(schedules[[i]],cfg$timeline$base_year) else c(0,0)
       path_shares<-pmax(0,timing$share-baseline_share);timing$share<-sort(path_shares)
       selected<-scenario_selected(r,scenario,timing)
       share<-if(selected)timing$share else c(0,0)
@@ -357,7 +416,6 @@ calculate <- function(x,approved_only=TRUE) {
       if (r$issue=='identity_conflict') reason<-'identity_conflict'
       if (nzchar(pr$related_project_id)) reason<-'related_identity'
       if (r$basis %in% c('backup','generation','density')) reason<-'no_datacenter_load'
-      if (capacity_without_upper_limit(r)) reason<-'capacity_without_upper_limit'
       if (!nzchar(r$mw)) reason<-'capacity_unknown'
       if (approved_only && pr$record_type!='existing') reason<-'pending_approval'
       in_envelope<-reason=='modelled'
@@ -371,6 +429,7 @@ calculate <- function(x,approved_only=TRUE) {
       if (startsWith(r$basis,'it_')) assumptions<-c(assumptions,'PUE_conversion')
       if (grepl('_peak$',r$basis)) assumptions<-c(assumptions,'peak_to_nameplate_equivalent')
       if (r$baseline_scope=='existing_unknown') assumptions<-c(assumptions,'increment_unknown_0_to_site_envelope')
+      if (capacity_without_upper_limit(r)) assumptions<-c(assumptions,'source_lower_bound_open_upper')
       if (r$relation=='possibly_included_in') assumptions<-c(assumptions,'overlap_assumed_contained')
       if (nzchar(pr$related_project_id)) assumptions<-c(assumptions,'related_identity_unresolved')
       value<-ifelse(share>0,net*share,0)
@@ -378,20 +437,13 @@ calculate <- function(x,approved_only=TRUE) {
       af<-annual_fraction(r,pr$type,cfg);lf<-af$value;assumptions<-c(assumptions,af$rule)
       energy_power<-ifelse(share>0,electrical_range(r,cfg,TRUE,c,normalize_peak=FALSE)*share,0)
       energy<-energy_power*lf*8760/1e6
-      # Grid MW is already on the facility side. Apply the scoped ceiling once, after PUE conversion.
-      if(!is.null(timing$grid) && nzchar(field(r,'grid_claim_id')) && !timing$fully_observed) {
-        cap<-electrical_range(timing$grid,cfg)
-        for(j in 1:2)if(is.finite(cap[j]) && is.finite(value[j]) && value[j]>cap[j]) {
-          energy[j]<-energy[j]*cap[j]/value[j];value[j]<-cap[j]
-        }
-        for(j in 1:2)if(is.finite(cap[j]))path_values[j,]<-pmin(path_values[j,],cap[j])
-        assumptions<-c(assumptions,'scoped_grid_capacity_ceiling')
-      }
+      # Grid observations constrain scoped dates in Low/Stated, never the load MW.
       # Annual electricity if the whole envelope row were built: same conversion, no timing.
       buildout<-if(in_envelope)electrical_range(r,cfg,TRUE,c,normalize_peak=FALSE)*sort(1-baseline_share)*lf*8760/1e6 else c(0,0)
       data.frame(scenario=scenario$id,project_id=r$project_id,claim_id=r$claim_id,group_id=group,
         share_low=share[1],share_high=share[2],reason=reason,assumptions=paste(assumptions,collapse=';'),
         source_dated=timing$dated,selected=selected,first_early=timing$first[1],first_late=timing$first[2],
+        timing_rule=timing$rule,executing_phase_ids=timing$executing_phase_ids %||% '',
         full_early=timing$full[1],full_late=timing$full[2],timing_flags=paste(timing$flags,collapse=';'),
         source_basis=r$basis,reported_mw=number(r$mw),gross_mw_low=gross[1],gross_mw_high=gross[2],
         nameplate_mw_low=nameplate[1],nameplate_mw_high=nameplate[2],
@@ -402,7 +454,7 @@ calculate <- function(x,approved_only=TRUE) {
         counted_mw_low=0,counted_mw_high=0,annual_twh_low=0,annual_twh_high=0,stringsAsFactors=FALSE)
     })
     ledger<-if(length(rows))do.call(rbind,rows) else as.data.frame(c(
-      setNames(rep(list(character()),8),c('scenario','project_id','claim_id','group_id','reason','assumptions','source_basis','timing_flags')),
+      setNames(rep(list(character()),10),c('scenario','project_id','claim_id','group_id','reason','assumptions','source_basis','timing_flags','timing_rule','executing_phase_ids')),
       setNames(rep(list(logical()),2),c('source_dated','selected')),
       setNames(rep(list(numeric()),8),c('direct_late_mw_low','direct_late_mw_high','direct_early_mw_low','direct_early_mw_high','counted_late_mw_low','counted_late_mw_high','counted_early_mw_low','counted_early_mw_high')),
       setNames(rep(list(numeric()),21),c('first_early','first_late','full_early','full_late','share_low','share_high','reported_mw','gross_mw_low','gross_mw_high','nameplate_mw_low','nameplate_mw_high','buildout_twh_low','buildout_twh_high','direct_mw_low','direct_mw_high','direct_twh_low','direct_twh_high','counted_mw_low','counted_mw_high','annual_twh_low','annual_twh_high'))),stringsAsFactors=FALSE)
@@ -456,19 +508,26 @@ calculate <- function(x,approved_only=TRUE) {
       if(approved_only && pr$record_type=='existing')
         scope<-scope[p$record_type[match(scope$project_id,p$project_id)]=='existing',,drop=FALSE]
       # Capacity is known only when a usable new-load claim survives the model rules.
-      # An operating baseline or an "at least" source without an upper value must not turn an
-      # otherwise unquantified expansion into a displayed zero.
+      # An operating baseline must not turn an unquantified expansion into a displayed zero.
       # Candidate status controls whether a claim is included in approved totals. A quantified
       # candidate claim still tells us that the project's capacity is known.
       excluded_capacity_reasons<-c('operational','cancelled','dormant','identity_conflict','related_identity',
-        'no_datacenter_load','capacity_unknown','capacity_without_upper_limit')
+        'no_datacenter_load','capacity_unknown')
       usable<-!scope$reason %in% excluded_capacity_reasons
       has_load<-any(usable & (is.finite(scope$gross_mw_high)|is.finite(scope$gross_mw_low)))
       sr<-c[match(scope$claim_id,c$claim_id),,drop=FALSE]
       active_unknown<-!sr$status %in% c('Cancelled','Dormant','Operational') |
         vapply(seq_len(nrow(sr)),function(j)post_baseline_operation(sr[j,],cfg),TRUE)
+      # At full delivery a quantified enclosing campus already bounds its unknown phase.
+      # Low keeps the unknown marker because the campus itself is not selected there.
+      bounded_phase<-vapply(seq_len(nrow(scope)),function(j) {
+        if(scope$reason[j]!='capacity_unknown')return(FALSE)
+        child<-match(scope$claim_id[j],c$claim_id)
+        parents<-which(is.finite(scope$gross_mw_high) & scope$share_low>=1 & scope$selected)
+        any(vapply(parents,function(k)contained_by(c,child,match(scope$claim_id[k],c$claim_id)),TRUE))
+      },TRUE)
       partial_capacity<-!pr$status %in% c('Cancelled','Dormant') &&
-        any(active_unknown & scope$reason=='capacity_unknown' & scope$selected & scenario$year>=scope$first_early)
+        any(active_unknown & !bounded_phase & scope$reason=='capacity_unknown' & scope$selected & scenario$year>=scope$first_early)
       category<-if(pr$record_type=='out_of_scope')'out_of_scope' else if(pr$status %in% c('Cancelled','Dormant'))tolower(pr$status) else if(pr$status=='Operational')'operational' else if(pr$record_type=='candidate')'candidate' else if(!has_load)'unquantified' else 'pipeline'
       missing_load<-!has_load && !pr$status %in% c('Cancelled','Dormant','Operational')
       project_sum<-function(key) if(missing_load || anyNA(lr[[key]]))NA_real_ else sum(lr[[key]])
@@ -523,13 +582,18 @@ calculate_timeline <- function(x,input_hashes=NULL) {
     # The resulting annual interval bounds need not sum to a cumulative interval bound.
     paths<-c('early_mw_low','early_mw_high','late_mw_low','late_mw_high')
     changes<-lapply(paths,function(key)c(0,pmax(0,diff(a[[key]]))))
-    d$annual_addition_mw_low[k]<-do.call(pmin,changes);d$annual_addition_mw_high[k]<-do.call(pmax,changes)
+    # Known lower paths remain usable when source upper bounds are open.
+    d$annual_addition_mw_low[k]<-do.call(pmin,changes[c(1,3)]);d$annual_addition_mw_high[k]<-do.call(pmax,changes)
     at<-match(assessment_year(cfg),a$year)
     changes<-lapply(paths,function(key)pmax(0,a[[key]]-a[[key]][at]))
-    d$future_addition_mw_low[k]<-do.call(pmin,changes);d$future_addition_mw_high[k]<-do.call(pmax,changes)
+    d$future_addition_mw_low[k]<-do.call(pmin,changes[c(1,3)]);d$future_addition_mw_high[k]<-do.call(pmax,changes)
     # Cross-bound subtraction preserves capacity and timing uncertainty in the remainder.
     d$remaining_mw_low[k]<-pmax(0,a$nameplate_mw_low-a$mw_high)
     d$remaining_mw_high[k]<-pmax(0,a$nameplate_mw_high-a$mw_low)
+    open<-!is.na(a$nameplate_mw_low) & is.na(a$nameplate_mw_high)
+    d$remaining_mw_low[k[open & is.na(d$remaining_mw_low[k])]]<-0
+    completed<-open & f$id=='high' & a$year==cfg$timeline$end_year
+    d$remaining_mw_low[k[completed]]<-d$remaining_mw_high[k[completed]]<-0
   }
   d<-d[d$year>cfg$timeline$base_year,,drop=FALSE];d$scenario<-NULL;rownames(d)<-NULL
   list(version=3,as_of=cfg$as_of,assessment_date=cfg$timeline$assessment_date,base_year=cfg$timeline$base_year,
@@ -560,6 +624,7 @@ timing_followups <- function(x,countries=names(x$config$countries)) {
     grid_scope_missing='Find the site-specific grid status, available MW, connection dates and reinforcements; link the matching grid claim explicitly.',
     operational_history_unknown='Find actual delivery dates and the already-operating baseline; retain any post-baseline addition when status changes.',
     passed_target='Verify whether the dated milestone happened, was revised or remains unconfirmed; find a current operator, permit or grid update.',
+    superseded_target='Find a current date for this scope; retain the historical target and the later comparable source that superseded it.',
     schedule_conflict='Reconcile contradictory scoped dates with actual construction and grid restrictions; generic lead times alone do not invalidate a source target.')
   for(i in seq_len(nrow(c))) {
     r<-c[i,];pr<-p[match(r$project_id,p$project_id),]
@@ -578,7 +643,8 @@ timing_followups <- function(x,countries=names(x$config$countries)) {
        (r$basis!='grid' && !nzchar(field(r,'grid_claim_id'))))reasons<-c(reasons,'grid_scope_missing')
     if(r$status=='Operational' && !observed_delivery(r))reasons<-c(reasons,'operational_history_unknown')
     if(any(grepl('^past_|overdue',t$flags)))reasons<-c(reasons,'passed_target')
-    if(length(t$flags))reasons<-c(reasons,'schedule_conflict')
+    if('superseded_target' %in% t$flags)reasons<-c(reasons,'superseded_target')
+    if(length(setdiff(t$flags,'superseded_target')))reasons<-c(reasons,'schedule_conflict')
     if(!length(reasons))next
     refs<-unique(c(ids(r$source_ids),if(nzchar(r$grid_claim_id))ids(c$source_ids[match(r$grid_claim_id,c$claim_id)])))
     evidence<-s[s$source_id %in% refs,,drop=FALSE]

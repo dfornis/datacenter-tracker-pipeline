@@ -5,9 +5,9 @@ assert.equal(view.numeric(null), null);
 assert.equal(view.numeric(''), null);
 assert.equal(view.range(null, null), 'Unknown');
 assert.equal(view.range(30, 90), '30–90');
-assert.equal(view.range(10, null), '≥ 10');
-assert.deepEqual(view.sumBounds([{mw_low:null,mw_high:null,capacity_known:false,indicator:'unquantified'}], 'mw_low','mw_high'), {low:null,high:null,unknown:1,openUpper:0});
-assert.deepEqual(view.sumBounds([{mw_low:null,mw_high:null,capacity_known:false,indicator:'unquantified'},{mw_low:5,mw_high:20,capacity_known:true,indicator:'pipeline'}], 'mw_low','mw_high'), {low:5,high:20,unknown:1,openUpper:0});
+assert.equal(view.range(10, null), 'Unknown');
+assert.deepEqual(view.sumBounds([{mw_low:null,mw_high:null,capacity_known:false,indicator:'unquantified'}], 'mw_low','mw_high'), {low:null,high:null,unknown:1});
+assert.deepEqual(view.sumBounds([{mw_low:null,mw_high:null,capacity_known:false,indicator:'unquantified'},{mw_low:5,mw_high:20,capacity_known:true,indicator:'pipeline'}], 'mw_low','mw_high'), {low:5,high:20,unknown:1});
 assert.equal(view.totalRange({low:1234,high:5678,unknown:0}), '1,230–5,680');
 assert.equal(view.totalRange({low:0,high:0,unknown:1}), 'Unknown');
 assert.equal(view.totalRange({low:5,high:20,unknown:1}), '5–20*');
@@ -91,7 +91,7 @@ for(const scenario of data.method.scenarios) {
     assert.equal(new Set(selected.rows.map(row=>row.project_id)).size,selected.rows.length,'Several matching actors still count the project once');
     for(const country of ['SE','NO','FI']) {
       const sum=view.sumBounds(expected.filter(row=>row.country===country),'mw_low','mw_high');
-      assert.deepEqual({low:selected.countries[country].low,high:selected.countries[country].high,unknown:selected.countries[country].unknown,openUpper:selected.countries[country].openUpper},sum);
+      assert.deepEqual({low:selected.countries[country].low,high:selected.countries[country].high,unknown:selected.countries[country].unknown},sum);
     }
     assert.equal(selected.countries.SE.hq_unreviewed,false);
     assert.equal(selected.countries.NO.hq_unreviewed,false);
@@ -163,8 +163,16 @@ assert.ok(!page.includes('Max reported MW'));
 assert.ok(!page.includes('Reported IT load MW'));
 console.log('PASS website contract, unknowns, and exact table/map MW and TWh parity in every scenario and zone');
 
-assert.deepEqual(view.sumBounds([{capacity_known:true,mw_low:50,mw_high:null},{capacity_known:true,mw_low:10,mw_high:20}], 'mw_low','mw_high'), {low:60,high:null,unknown:0,openUpper:1});
-assert.equal(map.capacityLabel({low:100,high:null,unknown:0}), '≥ 100 MW');
+for(const scenario of data.method.scenarios) {
+ const totals=view.makeView(data,scenario.id,{}).totals;
+ for(const value of Object.values(totals)) if(value && typeof value==='object' && 'low' in value) {
+   assert.equal(value.low===null,value.high===null);
+   assert.ok(!view.totalRange(value).includes('≥'));
+   assert.ok(!('openUpper' in value));
+ }
+}
+assert.equal(view.reported({mw:100,qualifier:'at_least'}), '≥ 100');
+assert.equal(map.capacityLabel({low:100,high:150,unknown:0}), '100–150 MW');
 assert.equal(view.operationYears([{timing:'first_capacity',first_year:'2027',timing_status:'superseded'}]), 'Unknown');
 for (const row of data.project_scenarios.filter(row=>row.scenario==='high_2035')) {
  assert.equal(row.mw_low,row.nameplate_mw_low);

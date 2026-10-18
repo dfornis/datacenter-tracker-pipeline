@@ -166,11 +166,7 @@ test('empty claims and unknown zones retain their project indicators',function()
   x<-fixture();x$capacity<-x$capacity[FALSE,];x$projects$bidding_zone<-'';r<-calculate(x)
   stopifnot(nrow(r$project_scenarios)==8,all(r$project_scenarios$bidding_zone=='SE-unassigned'),all(is.na(r$project_scenarios$mw_high)))
 })
-test('a first inventory can start from empty tables while empty final builds still fail',function() {
-  x<-fixture();x$projects<-x$projects[FALSE,];x$capacity<-x$capacity[FALSE,];x$sources<-x$sources[FALSE,]
-  validate_inputs(x,allow_empty=TRUE)
-  fails(function()calculate(x),'Project inventory is empty')
-})
+
 test('phased totals stay within the pipeline envelope and grow with horizon/selection',function() {
   r<-calculate(fixture(rbind(claim(timing='first_capacity',first_year=2029,last_year=2031),
     claim('C002','P002',timing='unknown',first_year='',last_year=''))))
@@ -238,15 +234,7 @@ test('the worklist asks for MW of executing phases and flags envelopes dated lik
   x$capacity$notes[1]<-'Own date verified (test): the source dates this figure.'
   stopifnot(length(run_worklist(x,'SE')$envelope_dates_to_verify)==0)
 })
-test('complete output is deterministic, includes all projects and leaves source tables intact',function() {
-  before<-lapply(c('projects','capacity','sources'),function(n)file_hash(file.path('data',paste0(n,'.csv'))))
-  a<-build_result();b<-build_result();stopifnot(identical(a,b),a$coverage$every_project_represented)
-  stopifnot(nrow(a$project_scenarios)==nrow(live$projects)*4)
-  for(sc in live$config$scenarios)stopifnot(setequal(a$project_scenarios$project_id[a$project_scenarios$scenario==sc$id],live$projects$project_id))
-  f<-tempfile(fileext='.json');on.exit(unlink(f));atomic_output(a,f)
-  stopifnot(length(json_read(f)$project_scenarios)==nrow(live$projects)*4)
-  stopifnot(identical(before,lapply(c('projects','capacity','sources'),function(n)file_hash(file.path('data',paste0(n,'.csv'))))))
-})
+
 # Exercise the real workflow against an isolated synthetic repository, never live data.
 with_workflow <- function(fn,empty=FALSE) {
   sandbox<-tempfile('datacenter-workflow-test-');dir.create(sandbox)
@@ -298,6 +286,8 @@ test('prepare lists phases without MW and a sourced phase MW counts after apply'
 })
 test('empty first installation reaches applied output with quantified and unquantified projects',function() {
   with_workflow(function(root,work) {
+    validate_inputs(read_inputs(root),allow_empty=TRUE)
+    fails(function()build_result(root),'Project inventory is empty')
     prepare_run(root,work,mode='scratch')
     packet<-json_read(file.path(work,'packet.json'))
     stopifnot(setequal(unlist(packet$countries),c('SE','NO','FI')),length(packet$projects)==0,
@@ -315,18 +305,7 @@ test('empty first installation reaches applied output with quantified and unquan
     stopifnot(is.na(project(r,'P054')$mw_high),identical(r$input_hashes,input_hashes(root)))
   },empty=TRUE)
 })
-test('refresh follows the same path, preserves undated capacity, and applies all three tables',function() {
-  with_workflow(function(root,work) {
-    prepare_run(root,work);x<-read_inputs(root,work)
-    x$capacity$mw<-'150';x$capacity<-rbind(x$capacity,claim('C048','P099',200,timing='unknown',first_year='',last_year=''))
-    write_tables(x,work);review<-review_run(root,work)
-    stopifnot(identical(unlist(review$changes$capacity$changed),'C001'))
-    r<-apply_run(root,work)$result
-    same(project(r,'P099')$nameplate_mw_high,0)
-    for(n in names(x$config$tables))stopifnot(identical(read_inputs(root)[[n]],x[[n]]))
-    stopifnot(!dir.exists(file.path(root,'.locks/pipeline')))
-  })
-})
+
 test('scratch retains the old identity context and requires reconciliation before replacing data',function() {
   with_workflow(function(root,work) {
     prepare_run(root,work,mode='scratch');packet<-json_read(file.path(work,'packet.json'))
@@ -385,27 +364,23 @@ test('an installation error restores the original tables and removes its writer 
     stopifnot(identical(before,input_hashes(root)),!dir.exists(file.path(root,'.locks/pipeline')))
   })
 })
-test('the command interface executes prepare, check and apply in an isolated repository',function() {
+
+test('deterministic export preserves sources, every indicator and the approved model projection',function() {
   with_workflow(function(root,work) {
-    previous<-getwd();setwd(root);on.exit(setwd(previous))
-    invisible(capture.output(pipeline_main(c('prepare','--country=SE',paste0('--output=',work)))))
-    invisible(capture.output(pipeline_main(c('check',paste0('--data=',work)))))
-    invisible(capture.output(pipeline_main(c('apply',paste0('--data=',work)))))
-    stopifnot(file.exists('assets/datacenters.json'))
-    fails(function()pipeline_main(c('build','--country=FI')),'Unknown option')
-    fails(function()pipeline_main(c('apply')),'apply needs')
-    fails(function()pipeline_main(c('build','--output=config/pipeline.json')),'overwrite an input')
+    files<-file.path(root,'data',table_files(live$config));before<-vapply(files,file_hash,'')
+    a<-build_result(root);b<-build_result(root);stopifnot(identical(a,b),a$coverage$every_project_represented)
+    for(sc in a$method$scenarios)stopifnot(setequal(a$project_scenarios$project_id[a$project_scenarios$scenario==sc$id],a$projects$project_id))
+    f<-file.path(root,'roundtrip.json');atomic_output(a,f)
+    stopifnot(length(json_read(f)$project_scenarios)==nrow(a$projects)*4)
+    t<-build_tracker(root,result=a)
+    stopifnot(setequal(t$projects$project_id,a$projects$project_id[a$projects$record_type=='existing']),
+      identical(t$results$project_scenarios,a$project_scenarios[a$project_scenarios$record_type=='existing',,drop=FALSE]),
+      identical(t$results$scope,'manually_approved_projects'),all(t$results$project_scenarios$included_in_result),
+      length(t$bidding_zones$features)==10,nrow(t$scenario_zone)==nrow(a$scenarios),
+      identical(before,vapply(files,file_hash,'')))
+    same(t$scenario_zone$mw_low,a$scenarios$mw_low);same(t$scenario_zone$mw_high,a$scenarios$mw_high)
+    same(t$scenario_zone$annual_twh_high,a$scenarios$annual_twh_high)
   })
-})
-test('website export is a filtered view of the approved model including all approved indicators',function() {
-  r<-build_result();t<-build_tracker(result=r);p<-read_inputs()$projects
-  stopifnot(setequal(t$projects$project_id,p$project_id[p$record_type=='existing']),
-    identical(t$results$project_scenarios,r$project_scenarios[r$project_scenarios$record_type=='existing',,drop=FALSE]),
-    identical(t$results$scope,'manually_approved_projects'),all(t$results$project_scenarios$included_in_result),
-    length(t$bidding_zones$features)==10,nrow(t$scenario_zone)==52)
-  same(t$scenario_zone$mw_low,r$scenarios$mw_low)
-  same(t$scenario_zone$mw_high,r$scenarios$mw_high)
-  same(t$scenario_zone$annual_twh_high,r$scenarios$annual_twh_high)
 })
 test('pending candidates cannot affect approved totals but retain all scenario indicators',function() {
   x<-fixture(rbind(claim(mw=100),claim('C002','P099',500)))
@@ -560,18 +535,13 @@ test('check rejects stale or altered saved outputs even when the register is val
     fails(function()check_outputs(root),'Saved outputs are missing or stale')
     rebuild_run(root);unlink(file.path(root,'assets/data/datacenters/capacity.json'))
     fails(function()check_outputs(root),'Saved outputs are missing or stale')
+    rebuild_run(root);f<-file.path(root,'assets/data/datacenters/timeline.json');stopifnot(file.exists(f))
+    cat(' ',file=f,append=TRUE);fails(function()check_outputs(root),'timeline.json')
     rebuild_run(root);x<-read_inputs(root);x$capacity$mw<-'120';write_tables(x,file.path(root,'data'))
     fails(function()check_outputs(root),'Saved outputs are missing or stale')
   })
 })
-test('an optional apply export cannot leave the canonical analysis behind',function() {
-  with_workflow(function(root,work) {
-    rebuild_run(root);prepare_run(root,work);x<-read_inputs(root,work);x$capacity$mw<-'120';write_tables(x,work)
-    extra<-file.path(root,'extra.json');apply_run(root,work,output=extra)
-    stopifnot(file_hash(extra)==file_hash(file.path(root,'assets/datacenters.json')))
-    check_outputs(root)
-  })
-})
+
 test('the standard CLI keeps inventory, manual approval and the sibling site together',function() {
   with_workflow(function(root,work) {
     site<-file.path(dirname(root),'dfornis.github.io');dir.create(site);writeLines('title: Synthetic site',file.path(site,'_config.yml'))
@@ -580,7 +550,13 @@ test('the standard CLI keeps inventory, manual approval and the sibling site tog
     run<-function(args)invisible(capture.output(pipeline_main(args)))
     run('build');run(c('prepare','--country=SE',paste0('--output=',work)))
     x<-read_inputs('.',work);x$capacity$mw[x$capacity$claim_id=='C001']<-'120';write_tables(x,work)
+    stopifnot(identical(unlist(review_run('.',work)$changes$capacity$changed),'C001'))
     run(c('check',paste0('--data=',work)));run(c('apply',paste0('--data=',work),'--output=extra.json'))
+    for(n in names(x$config$tables))stopifnot(identical(read_inputs()[[n]],x[[n]]))
+    stopifnot(file_hash('extra.json')==file_hash('assets/datacenters.json'),!dir.exists('.locks/pipeline'))
+    fails(function()pipeline_main(c('build','--country=FI')),'Unknown option')
+    fails(function()pipeline_main(c('apply')),'apply needs')
+    fails(function()pipeline_main(c('build','--output=config/pipeline.json')),'overwrite an input')
     run(c('review','--country=SE','--output=review.json'))
     stopifnot(read_inputs()$projects$record_type[2]=='candidate')
     run(c('approve','--ids=P099','--review=review.json'));run('check')
@@ -764,13 +740,40 @@ test('single deliveries avoid double phasing and scoped first/full schedules rep
   q$delivery_profile<-'staged';q$full_capacity_year<-'2029';same(share(q,2027),c(1/3,1/3));same(share(q,2029),c(1,1))
   q$full_capacity_year<-'2026';stopifnot('full_before_first' %in% timing_schedule(q,live$config)$flags)
 })
-test('actual post-baseline deliveries survive Operational status in cumulative and annual additions',function() {
-  x<-fixture(claim(timing='full_capacity',first_year=2026,last_year=2026,timing_event='actual',delivery_profile='single_phase',status='Under construction'))
-  a<-calculate_timeline(x)$rows;x$capacity$status<-'Operational';x$projects$status[1]<-'Operational'
-  b<-calculate_timeline(x)$rows;k<-b$project_id=='P001' & b$family=='stated'
-  same(a$mw_high,b$mw_high);same(b$annual_addition_mw_high[k],c(100,rep(0,9)))
-  same(b$mw_high[k],rep(100,10));same(b$remaining_mw_high[k],rep(0,10))
-  x$capacity$first_year<-x$capacity$last_year<-'2024';same(project(calculate(x))$mw_high,0)
+test('actual deliveries preserve net additions across status changes and all baseline scopes',function() {
+  # Test the accounting interaction, not a production project or a copied model formula.
+  cases<-list(
+    list(scope='new_capacity',gross=100,expected=c(100,100)),
+    list(scope='existing_known',gross=75,baseline=25,expected=c(50,50)),
+    list(scope='existing_known',gross=75,baseline=20,baseline_max=30,expected=c(45,55)),
+    list(scope='existing_unknown',gross=75,expected=c(0,75)))
+  for(case in cases)for(event in c('first_capacity','full_capacity')) {
+    q<-claim(mw=case$gross,timing=event,first_year=2026,last_year=2026,timing_event='actual',
+      delivery_profile='single_phase',status='Under construction',baseline_scope=case$scope)
+    if(case$scope=='existing_known') {
+      q$baseline_id<-'C002'
+      q<-rbind(q,claim('C002',mw=case$baseline,mw_max=case$baseline_max %||% '',
+        qualifier=if(is.null(case$baseline_max))'exact' else 'range',status='Operational',
+        timing='full_capacity',first_year=2024,last_year=2024,timing_event='actual',
+        parent_id='C001',relation='included_in'))
+    }
+    x<-fixture(q);before<-calculate(x)$project_scenarios
+    x$capacity$status[1]<-'Operational';x$projects$status[1]<-'Operational'
+    after<-calculate(x)$project_scenarios;timeline<-calculate_timeline(x)$rows
+    same(before$mw_low,after$mw_low);same(before$mw_high,after$mw_high)
+    d<-after[after$project_id=='P001',]
+    same(d$mw_low,rep(case$expected[1],4));same(d$mw_high,rep(case$expected[2],4))
+    for(family in c('low','stated','high')) {
+      d<-timeline[timeline$project_id=='P001' & timeline$family==family,]
+      same(d$mw_low,rep(case$expected[1],10));same(d$mw_high,rep(case$expected[2],10))
+      same(d$annual_addition_mw_low,c(case$expected[1],rep(0,9)))
+      same(d$annual_addition_mw_high,c(case$expected[2],rep(0,9)))
+      same(d$future_addition_mw_high,rep(0,10))
+      if(diff(case$expected)==0)same(d$remaining_mw_high,rep(0,10))
+    }
+    x$capacity$first_year[1]<-x$capacity$last_year[1]<-'2024'
+    same(project(calculate(x))$mw_high,0)
+  }
 })
 test('historical full delivery is a step, never a fabricated backcast, and actual evidence beats conflicting targets',function() {
   q<-claim(timing='full_capacity',first_year=2026,last_year=2026,timing_event='actual')
@@ -809,10 +812,5 @@ test('timing review notes close uncertainty and changed evidence reopens it',fun
   x$sources$excerpt<-'New information changes the evidence.'
   stopifnot(timing_followups(x)[[1]]$review_status=='open')
 })
-test('saved annual output is part of the ordinary build and stale-output check',function() {
-  with_workflow(function(root,work) {
-    rebuild_run(root);f<-file.path(root,'assets/data/datacenters/timeline.json');stopifnot(file.exists(f))
-    cat(' ',file=f,append=TRUE);fails(function()check_outputs(root),'timeline.json')
-  })
-})
-cat(count,' meaningful method and workflow checks passed.\n')
+
+cat(count,' behavior groups passed (model, workflow, export and actors).\n')

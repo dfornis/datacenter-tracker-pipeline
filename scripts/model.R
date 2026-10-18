@@ -186,7 +186,8 @@ source_dated <- function(row) {
 observed_delivery <- function(row) field(row,'timing_event')=='actual' && row$timing %in% c('first_capacity','full_capacity')
 post_baseline_operation <- function(row,cfg) {
   # Status is not the historical cohort boundary. A verified delivery after the fixed baseline remains.
-  if(!observed_delivery(row) || row$baseline_scope!='new_capacity')return(FALSE)
+  # Existing installed MW is subtracted by electrical_range(), not by dropping the delivery.
+  if(!observed_delivery(row))return(FALSE)
   t<-timing_schedule(row,cfg)
   any(t$full>cfg$timeline$base_year)
 }

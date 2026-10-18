@@ -16,6 +16,8 @@ Fyra tabeller, sammanlagt 64 kolumner. Aktörsregistret är uttryckligen bestäl
 
 `scripts/model.R` räknar och kontrollerar; `scripts/tracker.R` formaterar samma godkända beräkning för sajten; `scripts/pipeline.R` är ingången. `tests/method.R` testar beteendet med syntetiska projekt. `prompts/update.md` styr landsuppdateringen. Sju kartfiler täcker tio elområden.
 
+Testsviten omfattar beräkningsregler, käll- och identitetsvalidering, aktörsklassning samt arbetsflödet i isolerade testrepon. Antalet utskrivna testgrupper är inte ett täckningsmått: en grupp kan pröva flera kombinationer. Statusbyte till drift prövas exempelvis tillsammans med ny kapacitet, känd eller okänd äldre driftbas och leverans före/efter basåret. Överlappande export- och CLI-kontroller delar samma körning; skydd för godkännanden, landsgränser och återställning vid olika skrivfel behålls. Det aktuella registrets sparade resultat verifieras separat av `check`.
+
 ## Aktörer, huvudkontor och ägarbeskrivning
 
 `prompts/actors.md` styr en separat inventering av aktörerna i redan registrerade projekt. Aktörsinventeringen omfattar Sveriges 31, Finlands 46 och Norges 32 projekt som inte är `out_of_scope`. Ingen kapacitet, projektstatus eller godkännandestatus ändras av klassningen.

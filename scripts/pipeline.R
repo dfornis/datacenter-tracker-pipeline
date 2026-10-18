@@ -48,6 +48,7 @@ run_worklist <- function(x,countries) {
     capacity_sources_to_reconcile=Filter(function(f)f$project_id %in% p$project_id,capacity_followups(x)),
     phases_without_mw=phases_without_mw,
     envelope_dates_to_verify=borrowed,
+    timing_followups=timing_followups(x,countries),
     public_projects_without_dates=as.list(setdiff(public$project_id[public$project_id %in% c$project_id[load]],dated)),
     candidates_to_assess=as.list(p$project_id[p$record_type=='candidate']),
     missing_display_fields=lapply(seq_len(nrow(missing_display)),function(i)list(project_id=missing_display$project_id[i],
@@ -70,7 +71,7 @@ make_packet <- function(root='.',data_dir=file.path(root,'data'),country='all') 
     capacity=x$capacity[x$capacity$project_id %in% selected,,drop=FALSE],sources=x$sources,
     capacity_sources_to_reconcile=Filter(function(f)f$project_id %in% selected,capacity_followups(x)),
     identity_index=x$projects[,c('project_id','country','project_name','developer','municipality','related_project_id','notes')],
-    worklist=run_worklist(x,countries))
+    timing_diagnostics=timing_diagnostics(x),worklist=run_worklist(x,countries))
   if(!identical(before,input_hashes(root,data_dir)))stop('Inputs changed during preparation; retry')
   packet
 }
@@ -215,9 +216,9 @@ site_checkout <- function(root='.',site=NULL) {
 }
 site_presentation <- function(root,site) {
   shared<-c('assets/js/datacenter-tracker.js','assets/js/datacenter-tracker/scenario-map-d3.js',
-            'assets/css/datacenter-tracker-map.css')
-  setNames(file.path(root,c(shared,'web/datacenter-tracker.md','web/build_datacenter_data.R')),
-    file.path(site,c(shared,'_projects/datacenter-tracker.md','scripts/build_datacenter_data.R')))
+            'assets/css/datacenter-tracker-map.css','assets/js/datacenter-tracker/timeline.js','assets/css/datacenter-tracker-timeline.css')
+  setNames(file.path(root,c(shared,'web/datacenter-tracker.md','web/build_datacenter_data.R','web/build_datacenter_timeline.R')),
+    file.path(site,c(shared,'_projects/datacenter-tracker.md','scripts/build_datacenter_data.R','scripts/build_datacenter_timeline.R')))
 }
 install_result <- function(root,result,data_dir=NULL,output=file.path(root,'assets/datacenters.json'),site=NULL) {
   staged<-tempfile('datacenter-install-');dir.create(staged);on.exit(unlink(staged,recursive=TRUE),add=TRUE)
@@ -441,7 +442,7 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
     } else {
       if(!is.null(opts$site))stop('Preview cannot be combined with --site')
       preview_destination(dir)
-      files<-c('results.json','projects.json','capacity.json','scenario_zone.json','bidding_zones.geojson')
+      files<-c('results.json','projects.json','capacity.json','scenario_zone.json','timeline.json','bidding_zones.geojson')
       for(f in files)preview_destination(file.path(dir,f),data_dir=data_dir)
       write_tracker(build_tracker('.',data_dir),dir)
       cat('Built standalone tracker preview: ',dir,'\n',sep='')
@@ -479,6 +480,8 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
       if(!live&&!is.null(opts$site))stop('A work-copy check cannot verify the active site')
       outputs<-if(live)check_outputs(result=r,site=opts$site) else list(saved_outputs_current=NA,scope='work_copy_only')
       cat(jsonlite::toJSON(list(valid=TRUE,outputs=outputs,coverage=r$coverage,changes=review$changes,
+        timing_diagnostics=r$timing_diagnostics,timing_followups_open=sum(vapply(wl$timing_followups,function(z)z$review_status=='open',TRUE)),
+        timing_followups_documented=sum(vapply(wl$timing_followups,function(z)z$review_status=='documented_uncertainty',TRUE)),
         worklist_remaining=as.list(worklist_counts(wl)),worklist=wl,
         map_zones=length(r$bidding_zones$features)),auto_unbox=TRUE,pretty=TRUE),'\n')
     } else {

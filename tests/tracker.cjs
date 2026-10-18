@@ -9,6 +9,8 @@ assert.equal(view.range(10, null), '≥ 10');
 assert.deepEqual(view.sumBounds([{mw_low:null,mw_high:null,capacity_known:false,indicator:'unquantified'}], 'mw_low','mw_high'), {low:null,high:null,unknown:1});
 assert.deepEqual(view.sumBounds([{mw_low:null,mw_high:null,capacity_known:false,indicator:'unquantified'},{mw_low:5,mw_high:20,capacity_known:true,indicator:'pipeline'}], 'mw_low','mw_high'), {low:5,high:20,unknown:1});
 assert.equal(view.totalRange({low:1234,high:5678,unknown:0}), '1,230–5,680');
+assert.equal(view.totalRange({low:0,high:0,unknown:1}), 'Unknown');
+assert.equal(view.totalRange({low:5,high:20,unknown:1}), '5–20*');
 const data = view.assertContract(JSON.parse(fs.readFileSync(process.env.TRACKER_RESULTS || 'assets/data/datacenters/results.json', 'utf8')));
 for (const zone of data.scenarios) {
   const rows = data.project_scenarios.filter(row => row.scenario === zone.scenario && row.bidding_zone === zone.bidding_zone);
@@ -17,7 +19,7 @@ for (const zone of data.scenarios) {
   const near = (a,b) => a === null || b === null ? assert.equal(a,b) : assert.ok(Math.abs(a-b) < 1e-8, `${a} != ${b}`);
   near(mw.low, zone.mw_low); near(mw.high, zone.mw_high);
   near(twh.low, zone.annual_twh_low); near(twh.high, zone.annual_twh_high);
-  assert.equal(mw.unknown, zone.projects_without_mw);
+  assert.equal(mw.unknown, zone.projects_without_mw + zone.projects_with_unknown_phases);
 }
 const contaminated = {...data, projects: [...data.projects, {record_type:'candidate'}]};
 assert.throws(() => view.assertContract(contaminated), /Unapproved/);
@@ -105,13 +107,14 @@ for(const scenario of data.method.scenarios) {
 }
 assert.equal(map.mapState({participates:true,indicator:'pipeline'}),'included');
 assert.equal(map.mapState({participates:false,indicator:'pipeline',capacity_known:true}),'excluded');
+assert.equal(map.mapState({participates:false,indicator:'pipeline',capacity_known:true,partial_capacity:true}),'unknown','A known campus cannot erase an unquantified dated phase');
 assert.equal(map.mapState({participates:false,indicator:'unquantified',capacity_known:false}),'unknown','Unknown contribution must not become zero');
 assert.equal(map.mapState({participates:true,indicator:'operational'}),'included','Modelled capacity additions at operating sites must remain on the map');
 assert.equal(map.mapState({participates:false,indicator:'operational'}),'excluded');
 assert.equal(map.mapState({participates:false,indicator:'cancelled'}),'excluded');
 for (const scenario of data.method.scenarios) {
   const all=view.makeView(data,scenario.id);
-  const knownExcluded=all.rows.filter(row=>row.capacity_known && !row.participates);
+  const knownExcluded=all.rows.filter(row=>row.capacity_known && !row.partial_capacity && !row.participates);
   assert.ok(knownExcluded.every(row=>map.mapState(row)==='excluded'));
   assert.ok(all.rows.filter(row=>row.indicator==='unquantified').every(row=>map.mapState(row)==='unknown'));
   assert.ok(all.rows.filter(row=>row.participates).every(row=>map.mapState(row)==='included'));

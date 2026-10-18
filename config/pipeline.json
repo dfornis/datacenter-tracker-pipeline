@@ -1,5 +1,5 @@
 {
-  "version": "3.7.2",
+  "version": "4.0.0",
   "as_of": "2026-10-16",
   "purpose": "One scenario model for manually approved project totals, candidate impact reviews, and the website; unknowns and all project indicators are retained.",
   "tables": {
@@ -41,7 +41,15 @@
       "pue",
       "source_ids",
       "issue",
-      "notes"
+      "notes",
+      "construction_event",
+      "timing_event",
+      "status_as_of",
+      "delivery_profile",
+      "full_capacity_year",
+      "full_capacity_last_year",
+      "grid_claim_id",
+      "grid_status"
     ],
     "sources": [
       "source_id",
@@ -377,22 +385,22 @@
     "grid_mw": "Connection envelope only. Scenario equivalent assumes the allocated share is deployed as facility capacity; not measured demand.",
     "unknown_baseline": "Gross site envelope is retained; additional capacity range is 0 to gross unless comparable installed baseline is known.",
     "overlap": "Use one physical envelope; possible containment is assumed containment for aggregation, with the tenant retained in the project indicator.",
-    "interpretation": "The original Low/Stated/High project selections are retained. Selected capacity is phased once; no generic maturity percentages. nameplate_mw is the undated incremental pipeline envelope, mw is the phased capacity by target year, and annual_twh is an annual equivalent at that deployment. None is measured demand.",
+    "interpretation": "Cumulative commissioned capacity since the fixed baseline; energy is a steady annual equivalent at that capacity. Annual additions, additional deployment after the assessment year, and capacity still to deliver are separate exports. No second utilization ramp.",
     "peak_to_nameplate_fraction": [
       0.62,
       0.8
     ],
     "electrical_output": "Facility-side nameplate capacity proxy, including cooling and auxiliary loads. Explicit peak claims use the declared inverse empirical peak/nameplate sensitivity; source MW and basis are retained. Phased MW is deployed capacity, not actual peak. Energy uses the original peak denominator when supplied.",
-    "unknown_timing": "An eligible undated claim has a 0–100% deployment interval, not an invented first year. Its entire nameplate envelope remains visible. Low and Stated use dated claims; High also includes undated claims.",
-    "grid_timing": "Grid availability is an earliest possible start, not commissioning. Lower deployment is zero; upper uses the same ramp from the earliest grid year, constrained by construction when known. No extra one-year delay.",
-    "full_capacity_timing": "An explicit full-capacity year anchors completion of this capacity scope. Before that date, backcast the default ramp; construction timing constrains its start. This backcast is a model adaptation, not a sourced commissioning date.",
-    "scenario_selection": "Names, IDs and decision/date selection are inherited from bb15b4e. First capacity or construction can anchor phasing; full-capacity dates are not mandatory. Selection is a conditional scenario definition, not a calibrated probability. No EPRI US completion percentages are transplanted to Nordic 2035.",
+    "unknown_timing": "Undated scopes use an explicit early/late remaining lead time from their own recorded stage at the assessment date. Only High selects them. No immediate 0–100% availability and no borrowed phase date.",
+    "grid_timing": "A same-scope grid year is an availability floor, never an operation date. An explicitly linked grid_claim_id also constrains commissioning and facility-side MW. Requested/unknown allocation has a zero lower bound. No constraint is inherited across unlinked scopes.",
+    "full_capacity_timing": "A usable scoped full-build target is honored over generic stage and buildout durations. Infer first operation within the remaining window and shorten the proxy ramp when needed; never create unobserved historical commissioning. Only contradictory scoped evidence (later construction/first operation/grid availability) or an already elapsed target can move modelled completion. Preserve source values and expose evidence conflicts. An actual full-delivery event is a step, never a fabricated historical ramp.",
+    "scenario_selection": "Source date/decision selection and scenario IDs are retained. Only dates explicitly stored for that scope count; model dates never qualify Low or Stated. The former executing-phase-without-MW exception is removed: it promoted undated campus envelopes into Stated (and sometimes Low).",
     "evidence": {
       "phasing": {
         "url": "https://powering-intelligence.epri.com/annual-peak-use.html",
         "locator": "Annual and Peak Electricity Use; updated 2026-02-24; operational-capacity ramp paragraph",
-        "use": "Five years: 20%, 40%, 60%, 80%, 100% from first operation. Applies to all capacity sizes when the source has not dated full deployment.",
-        "limitation": "An EPRI modelling assumption informed by US aggregate observations, not a measured Nordic or project-specific ramp."
+        "use": "Retain five years as a provisional physical-buildout proxy for staged/unknown scopes only. Known single-phase deliveries and scoped first/full schedules replace it. Do not interpret it as both construction and electricity-use ramp.",
+        "limitation": "EPRI operational ramp is not direct evidence for physical commissioning. National Grid/Regen phase examples support a multi-year buildout, but five years is an uncalibrated adaptation; explicit phase schedules take precedence."
       },
       "phasing_crosscheck": {
         "url": "https://dso.nationalgrid.co.uk/downloads/15083/data-centre-impact-study2.pdf",
@@ -429,13 +437,104 @@
         "locator": "November 2025, pp. 28–30, baseline/pipeline research and scenario treatment",
         "use": "Use a project inventory, planning/connection evidence and explicit scenario selection. Reconcile overlapping project and connection records.",
         "limitation": "Supports the approach, not our exact Low/Stated/High definitions. These remain the project’s existing conditional selections, not externally estimated probabilities."
+      },
+      "stage_lead_times": {
+        "urls": [
+          "https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai",
+          "https://dso.nationalgrid.co.uk/downloads/15083/data-centre-impact-study2.pdf"
+        ],
+        "locator": "IEA outlook paragraph; National Grid/Regen pp. 26–28",
+        "use": "Own provisional sensitivity assumptions: concept/unclear 2–5 years to construction, planned 1–3, permitted 0–1; then 2–3 construction years. Under construction without a usable start: 0–2 remaining years (zero means possible later in the assessment calendar year).",
+        "limitation": "Sources support separating delivery, phases and grid constraints, not these exact stage intervals. They are not observed Nordic durations or confidence intervals; calibrate against documented milestones of completed, comparable phases."
       }
     },
     "annual_use_by_type": "Load factor relative to nameplate depends on facility type (EPRI 2026 p.15: 75% hyperscale facility, 57% co-location average). type_assumptions gives one value per type category; nameplate_annual_fraction is only used when type is unknown.",
-    "phase_timing": "A date applies only to the MW figure the source dates. A campus envelope or larger goal is never phased from the date of a phase, building, hall, grid connection, tenant or another site; without its own date it counts only in High (0 to 100%). Exception, as an interval: when a contained phase of the same project is under construction or has an investment decision but no disclosed MW, the envelope counts as 0 up to the envelope ramped from that phase's start (its first operation year, else construction start + the lower construction lag). The lower bound states that the phase size is unknown.",
+    "phase_timing": "Known single-phase delivery is a step at its own commissioning date. Staged/unknown scopes use the five-year buildout proxy unless their own first and full dates specify another schedule. A phase without MW neither dates nor quantifies its parent. Existing max-envelope overlap accounting is unchanged; independent/incremental rows remain additive.",
     "investment_decision": "decision=yes means an evidenced investment decision for that scope: an explicit final investment decision or observed construction start of that phase. Low 2030 counts only such figures.",
     "buildout_energy": "Electricity at full build-out: the project's capacity envelope (same conversion as nameplate) x type load factor x 8760 h, without timing. It describes size, not a forecast year.",
-    "capacity_without_upper_limit": "A source claim stated only as at least X MW, without a finite project scope or upper figure, is preserved in the source ledger but is not used as a project full-build or scenario capacity measure. A separately quantified phase within the same project can still count."
+    "capacity_without_upper_limit": "A source claim stated only as at least X MW, without a finite project scope or upper figure, is preserved in the source ledger but is not used as a project full-build or scenario capacity measure. A separately quantified phase within the same project can still count.",
+    "stage_lead_times": {
+      "Concept study": {
+        "to_construction": [
+          2,
+          5
+        ],
+        "remaining_construction": [
+          2,
+          3
+        ]
+      },
+      "Planned": {
+        "to_construction": [
+          1,
+          3
+        ],
+        "remaining_construction": [
+          2,
+          3
+        ]
+      },
+      "Permitted": {
+        "to_construction": [
+          0,
+          1
+        ],
+        "remaining_construction": [
+          2,
+          3
+        ]
+      },
+      "Under construction": {
+        "to_construction": [
+          0,
+          0
+        ],
+        "remaining_construction": [
+          0,
+          2
+        ]
+      },
+      "Unclear": {
+        "to_construction": [
+          2,
+          5
+        ],
+        "remaining_construction": [
+          2,
+          3
+        ]
+      },
+      "Operational": {
+        "to_construction": [
+          0,
+          0
+        ],
+        "remaining_construction": [
+          0,
+          0
+        ]
+      },
+      "Dormant": {
+        "to_construction": [
+          2,
+          5
+        ],
+        "remaining_construction": [
+          2,
+          3
+        ]
+      },
+      "Cancelled": {
+        "to_construction": [
+          2,
+          5
+        ],
+        "remaining_construction": [
+          2,
+          3
+        ]
+      }
+    }
   },
   "type_assumptions": {
     "purpose": "Type-specific annual use factors for the single scenario model. The website displays the computed result without a separate PUE, timing or scenario calculation.",
@@ -578,6 +677,26 @@
     "source_kind": [
       "quote",
       "summary"
+    ],
+    "event_kind": [
+      "",
+      "unknown",
+      "planned",
+      "actual"
+    ],
+    "delivery_profile": [
+      "",
+      "unknown",
+      "staged",
+      "single_phase"
+    ],
+    "grid_status": [
+      "",
+      "unknown",
+      "requested",
+      "reserved",
+      "contracted",
+      "available"
     ]
   },
   "field_notes": {
@@ -639,7 +758,8 @@
       ],
       "leads": "Out-of-scope leads found during a run go to the run log (runs/), not the register. Existing register rows that fail the rule are set to record_type=out_of_scope with a reason in notes; they keep their ID for identity matching and can return to candidate with new evidence.",
       "out_of_scope": "Kept for identity only: never in approved totals, candidate reviews, worklists or the website."
-    }
+    },
+    "timing_followup": "prepare and check expose per-claim timing gaps, scoped existing excerpts, search questions and review keys. Resolve with source data or record a dated Timing review in capacity.notes using the current key and a substantive remaining-uncertainty explanation. No parallel review register."
   },
   "tracker": {
     "purpose": "Presentation of the same manually approved model result used in chat. No independent site calculation. Local site installation is separate from external publishing.",
@@ -804,5 +924,28 @@
     ],
     "coverage_rule": "Survey every non-out_of_scope project in the chosen country. Missing rows remain unknown. A project has unknown overall HQ origin if any relevant actor is unresolved or lacks a country.",
     "counting_rule": "Actors join by project_id, never claim_id. Multiple matching actors select a project once. Existing campus/customer capacity allocations are not reassigned by actor filters."
+  },
+  "timeline": {
+    "base_year": 2025,
+    "end_year": 2035,
+    "assessment_date": "2026-10-18",
+    "meaning": "End-of-year additions after the fixed 2025 year-end baseline. Assessment date is the latest of this configured floor, capacity status dates and accessed dates of sources directly linked to capacity; never the system clock or an actor-only review. Actual scoped events preserve historical additions.",
+    "families": [
+      {
+        "id": "low",
+        "label": "Low — confirmed investment",
+        "selection": "decided_dated"
+      },
+      {
+        "id": "stated",
+        "label": "Stated — plans with dates",
+        "selection": "dated"
+      },
+      {
+        "id": "high",
+        "label": "High — all active plans",
+        "selection": "all"
+      }
+    ]
   }
 }

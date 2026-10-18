@@ -13,7 +13,7 @@ fixture_row<-function(table,values) {
 }
 claim<-function(id='C001',project='P001',mw=100,basis='facility_nameplate',...) {
   v<-list(claim_id=id,project_id=project,phase='Synthetic scope',mw=mw,basis=basis,qualifier='exact',
-    status='Planned',decision='yes',timing='full_capacity',first_year='2030',last_year='2030',
+    status='Permitted',decision='yes',timing='full_capacity',first_year='2030',last_year='2030',
     relation='independent',baseline_scope='new_capacity',source_ids='S001')
   more<-list(...);v[names(more)]<-more;fixture_row('capacity',v)
 }
@@ -35,7 +35,7 @@ test('the original scenario IDs, names and horizons are preserved',function() {
   stopifnot(identical(vapply(live$config$scenarios,function(s)s$label,''),c('Low','Stated','Stated','High')))
   same(vapply(live$config$scenarios,function(s)s$year,0),c(2030,2030,2035,2035))
 })
-test('default deployment follows the published EPRI five-year ramp exactly',function() {
+test('unknown staged deployment uses the documented five-year physical buildout proxy',function() {
   r<-claim(timing='first_capacity',first_year='2027',last_year='2027')
   expected<-c(0,.2,.4,.6,.8,1,1)
   for(i in seq_along(expected))same(share(r,2025+i),rep(expected[i],2))
@@ -52,21 +52,28 @@ test('both endpoints of source timing intervals enter the result',function() {
   r<-claim(timing='first_capacity',first_year=2027,last_year=2029)
   same(share(r,2030),c(.4,.8))
 })
-test('source-dated full capacity anchors completion, with explicit backcasting beforehand',function() {
-  r<-claim();same(share(r,2030),c(1,1));same(share(r,2025),c(0,0));same(share(r,2028),c(.6,.6))
-  r$construction_year<-'2028';same(share(r,2029),c(0,0))
-  same(share(r,2030),c(1,1)) # A supplied full date overrides generic construction duration.
+test('scoped full targets override generic durations without inventing historical commissioning',function() {
+  r<-claim(status='Planned');same(share(r,2026),c(0,0));same(share(r,2029),c(0,.5));same(share(r,2030),c(1,1))
+  t<-timing_schedule(r,live$config);same(t$first,c(2029,2030));same(t$full,c(2030,2030));stopifnot(!length(t$flags))
+  r$construction_year<-'2028';same(share(r,2029),c(0,0));same(share(r,2030),c(1,1))
+  r$construction_year<-'2031';same(share(r,2030),c(0,0))
+  stopifnot('full_before_construction' %in% timing_schedule(r,live$config)$flags)
 })
-test('grid availability constrains earliest deployment without inventing commissioning',function() {
-  r<-claim(timing='grid_availability',first_year=2027,last_year=2027)
-  same(share(r,2030),c(0,.8));r$construction_year<-'2029';same(share(r,2030),c(0,0))
+test('grid availability constrains delivery without inventing commissioning',function() {
+  r<-claim(timing='grid_availability',first_year=2033,last_year=2034)
+  same(share(r,2030),c(0,0));same(share(r,2033),c(0,.2))
+  r$construction_year<-'2034';same(share(r,2035),c(0,0))
 })
-test('undated capacity remains in the pipeline and High without an invented start year',function() {
-  x<-fixture(claim(timing='unknown',first_year='',last_year=''));r<-calculate(x)
-  h<-row(r);same(c(h$counted_mw_low,h$counted_mw_high),c(0,100))
-  for(sc in live$config$scenarios) same(row(r,sc=sc$id)$nameplate_mw_high,100)
+test('undated capacity uses stage assumptions but never qualifies a source-dated selection',function() {
+  x<-fixture(claim(status='Planned',timing='unknown',first_year='',last_year=''));r<-calculate(x)
+  h<-row(r);same(c(h$counted_mw_low,h$counted_mw_high),c(80,100))
+  for(sc in live$config$scenarios)same(row(r,sc=sc$id)$nameplate_mw_high,100)
   same(row(r,sc='stated_2030')$counted_mw_high,0)
-  stopifnot(grepl('undated_deployment_0_to_1',h$assumptions),project(r)$participates)
+  stopifnot(!h$source_dated,!row(r,sc='low_2030')$selected,grepl('remaining_lead_time_from_stage',h$assumptions))
+  for(stage in c('Concept study','Planned','Permitted','Under construction')) {
+    q<-x$capacity;q$status<-stage;t<-timing_schedule(q,x$config)
+    stopifnot(all(t$first>=2026),!t$dated)
+  }
 })
 test('Low uses the decision for the actual scope, without generic maturity percentages',function() {
   x<-fixture(claim(decision='no',status='Permitted',timing='first_capacity',first_year=2027,last_year=2027))
@@ -192,27 +199,26 @@ test('MW-bearing project sources without capacity claims are surfaced for automa
   x$capacity$issue<-'identity_conflict';stopifnot(length(capacity_followups(x))==2)
   x$sources$excerpt<-'Construction has started.';stopifnot(length(capacity_followups(x))==0)
 })
-test('an executing phase without MW gives its undated envelope 0 up to a ramp from the phase start',function() {
+test('a phase without MW cannot promote or date its campus and remains an explicit unknown',function() {
   x<-fixture(rbind(claim(mw=500,decision='unclear',timing='unknown',first_year='',last_year=''),
     claim('C002',mw='',status='Under construction',timing='first_capacity',first_year=2028,last_year=2028,
       parent_id='C001',relation='included_in')))
   r<-calculate(x)
-  same(c(project(r,sc='stated_2030')$mw_low,project(r,sc='stated_2030')$mw_high),c(0,300))
-  same(c(project(r,sc='stated_2035')$mw_low,project(r,sc='stated_2035')$mw_high),c(0,500))
-  same(project(r,sc='low_2030')$mw_high,0)
-  stopifnot(grepl('executing_phase_without_mw',row(r,'C001','stated_2030')$assumptions))
+  same(project(r,sc='stated_2030')$mw_high,0)
+  same(project(r,sc='stated_2035')$mw_high,0)
+  stopifnot(project(r,sc='stated_2030')$partial_capacity,!row(r,'C001','stated_2030')$selected)
   x$capacity$first_year[2]<-x$capacity$last_year[2]<-'';x$capacity$construction_year[2]<-'2026'
-  same(project(calculate(x),sc='stated_2030')$mw_high,300) # construction 2026 + 2 years = start 2028
+  same(project(calculate(x),sc='stated_2030')$mw_high,0)
 })
 test('a planned phase, a phase with MW or another project never dates an envelope',function() {
   campus<-claim(mw=1000,decision='no',timing='unknown',first_year='',last_year='')
   planned<-claim('C002',mw='',status='Planned',decision='unclear',timing='first_capacity',first_year=2028,last_year=2028,parent_id='C001',relation='included_in')
   r<-calculate(fixture(rbind(campus,planned)))
   same(project(r,sc='stated_2030')$mw_high,0);same(project(r,sc='high_2035')$mw_high,1000)
-  phase<-claim('C002',mw=100,status='Planned',decision='unclear',timing='full_capacity',first_year=2029,last_year=2029,parent_id='C001',relation='included_in')
+  phase<-claim('C002',mw=100,status='Planned',decision='unclear',timing='first_capacity',delivery_profile='single_phase',first_year=2029,last_year=2029,parent_id='C001',relation='included_in')
   r<-calculate(fixture(rbind(campus,phase)))
   same(project(r,sc='stated_2030')$mw_high,100);same(project(r,sc='stated_2035')$mw_high,100)
-  same(c(project(r,sc='high_2035')$mw_low,project(r,sc='high_2035')$mw_high),c(100,1000))
+  same(c(project(r,sc='high_2035')$mw_low,project(r,sc='high_2035')$mw_high),c(1000,1000))
   other<-planned;other$status<-'Under construction';other$project_id<-'P002';other$parent_id<-'';other$relation<-'independent'
   same(project(calculate(fixture(rbind(campus,other))),sc='stated_2030')$mw_high,0)
 })
@@ -248,7 +254,8 @@ with_workflow <- function(fn,empty=FALSE) {
   on.exit(unlink(sandbox,recursive=TRUE))
   paths<-c('config/pipeline.json','scripts/model.R','scripts/tracker.R','scripts/pipeline.R','renv.lock',
            'assets/js/datacenter-tracker.js','assets/js/datacenter-tracker/scenario-map-d3.js',
-           'assets/css/datacenter-tracker-map.css','web/datacenter-tracker.md','web/build_datacenter_data.R',
+           'assets/css/datacenter-tracker-map.css','assets/css/datacenter-tracker-timeline.css','assets/js/datacenter-tracker/timeline.js',
+           'web/datacenter-tracker.md','web/build_datacenter_data.R','web/build_datacenter_timeline.R',
            'prompts/update.md','prompts/actors.md','AGENTS.md','README.md',unique(vapply(live$config$zones,function(z)z$geometry,'')))
   for(f in paths) {
     target<-file.path(root,f);dir.create(dirname(target),recursive=TRUE,showWarnings=FALSE)
@@ -715,6 +722,97 @@ test('scratch keeps other-country actor-only evidence and packets expose the act
     y<-read_inputs(root,work);packet<-json_read(file.path(work,'packet.json'))
     stopifnot(nrow(y$actors)==1,y$actors$project_id=='P099','S144' %in% y$sources$source_id,
       length(packet$actor_worklist)==1,length(packet$actor_instructions)>0,is.null(packet$id_above$actors))
+  })
+})
+test('scoped late grid constraints delay commissioning and cap facility MW after PUE',function() {
+  x<-fixture(rbind(claim('C001',mw=100,basis='it_nameplate',timing='first_capacity',first_year=2028,last_year=2028,
+    delivery_profile='single_phase',grid_claim_id='C002'),
+    claim('C002',mw=80,basis='grid',timing='grid_availability',first_year=2032,last_year=2033,grid_status='contracted',
+      parent_id='C001',relation='included_in')))
+  r<-calculate(x);same(row(r,sc='stated_2030')$counted_mw_high,0)
+  same(row(r)$counted_mw_high,80);stopifnot(grepl('grid_delays_delivery',row(r)$timing_flags))
+  same(row(r)$annual_twh_high,80*.75*8760/1e6)
+  x$capacity$grid_claim_id[1]<-'C001';fails(function()calculate(x),'Missing/self grid constraint')
+})
+test('an elapsed target is retained as evidence but rebased from the current stage',function() {
+  q<-claim(status='Planned',timing='first_capacity',first_year=2024,last_year=2024,timing_event='planned')
+  t<-timing_schedule(q,live$config);same(t$first,c(2029,2032));same(share(q,2026),c(0,0))
+  stopifnot('past_operation_target' %in% t$flags,q$first_year=='2024')
+  q$timing<-'full_capacity';t<-timing_schedule(q,live$config)
+  same(t$first,c(2029,2032));same(t$full,c(2033,2036));stopifnot('past_full_target' %in% t$flags)
+})
+test('grid evidence compresses a scoped full schedule and only later grid dates defer its target',function() {
+  x<-fixture(rbind(claim(grid_claim_id='C002'),claim('C002',basis='grid',mw=100,timing='grid_availability',
+    first_year=2029,last_year=2029,grid_status='contracted',parent_id='C001',relation='included_in')))
+  t<-timing_schedule(x$capacity[1,],x$config,x$capacity);same(t$full,c(2030,2030));same(schedule_share(t,2030),c(1,1))
+  x$capacity$first_year[2]<-x$capacity$last_year[2]<-'2032'
+  t<-timing_schedule(x$capacity[1,],x$config,x$capacity);same(t$full,c(2032,2032));same(schedule_share(t,2030),c(0,0))
+  stopifnot('full_before_grid' %in% t$flags)
+  x$capacity$relation[2]<-'independent';x$capacity$parent_id[2]<-''
+  fails(function()calculate(x),'Grid constraint and load must share one physical envelope')
+})
+test('actual construction and unknown start use different remaining-time rules',function() {
+  q<-claim(status='Under construction',timing='unknown',first_year='',last_year='',construction_year=2026,construction_event='actual')
+  same(timing_schedule(q,live$config)$first,c(2028,2029))
+  q$construction_year<-'';q$construction_event<-'';same(timing_schedule(q,live$config)$first,c(2026,2028))
+  q$construction_year<-'2020';q$construction_event<-'actual'
+  t<-timing_schedule(q,live$config);same(t$first,c(2026,2028));stopifnot('construction_overdue' %in% t$flags)
+})
+test('single deliveries avoid double phasing and scoped first/full schedules replace the proxy',function() {
+  q<-claim(timing='first_capacity',first_year=2027,last_year=2027,delivery_profile='single_phase')
+  same(share(q,2027),c(1,1))
+  q$delivery_profile<-'staged';q$full_capacity_year<-'2029';same(share(q,2027),c(1/3,1/3));same(share(q,2029),c(1,1))
+  q$full_capacity_year<-'2026';stopifnot('full_before_first' %in% timing_schedule(q,live$config)$flags)
+})
+test('actual post-baseline deliveries survive Operational status in cumulative and annual additions',function() {
+  x<-fixture(claim(timing='full_capacity',first_year=2026,last_year=2026,timing_event='actual',delivery_profile='single_phase',status='Under construction'))
+  a<-calculate_timeline(x)$rows;x$capacity$status<-'Operational';x$projects$status[1]<-'Operational'
+  b<-calculate_timeline(x)$rows;k<-b$project_id=='P001' & b$family=='stated'
+  same(a$mw_high,b$mw_high);same(b$annual_addition_mw_high[k],c(100,rep(0,9)))
+  same(b$mw_high[k],rep(100,10));same(b$remaining_mw_high[k],rep(0,10))
+  x$capacity$first_year<-x$capacity$last_year<-'2024';same(project(calculate(x))$mw_high,0)
+})
+test('historical full delivery is a step, never a fabricated backcast, and actual evidence beats conflicting targets',function() {
+  q<-claim(timing='full_capacity',first_year=2026,last_year=2026,timing_event='actual')
+  same(share(q,2025),c(0,0));same(share(q,2026),c(1,1))
+  q$construction_year<-'2027';q$construction_event<-'actual';fails(function()calculate(fixture(q)),'Actual construction needs a non-future year')
+})
+test('an observed first opening does not prove the full campus delivered beyond its grid ceiling',function() {
+  x<-fixture(rbind(claim(timing='first_capacity',first_year=2026,last_year=2026,timing_event='actual',grid_claim_id='C002'),
+    claim('C002',basis='grid',mw=60,timing='grid_availability',first_year=2026,last_year=2026,grid_status='available',
+      parent_id='C001',relation='included_in')))
+  same(project(calculate(x))$mw_high,60)
+  x$capacity$timing[1]<-'full_capacity';same(project(calculate(x))$mw_high,100)
+  stopifnot(grepl('observed_capacity_grid_conflict',row(calculate(x))$timing_flags))
+})
+test('an unquantified old operating baseline does not become an unknown new phase',function() {
+  x<-fixture(rbind(claim(timing='unknown',first_year='',last_year=''),
+    claim('C002',mw='',status='Operational',timing='first_capacity',first_year=2020,last_year=2020,parent_id='C001',relation='included_in')))
+  stopifnot(!any(calculate(x)$project_scenarios$partial_capacity))
+})
+test('annual export has every project and reproduces all four scenario endpoints',function() {
+  x<-fixture(rbind(claim(timing='first_capacity',first_year=2027,last_year=2029),claim('C002','P002',mw='')))
+  r<-calculate(x);t<-calculate_timeline(x)$rows
+  for(sc in x$config$scenarios) {
+    a<-r$project_scenarios[r$project_scenarios$scenario==sc$id,]
+    b<-t[t$family==sub('_.*','',sc$id) & t$year==sc$year,];b<-b[match(a$project_id,b$project_id),]
+    same(a$mw_low,b$mw_low);same(a$mw_high,b$mw_high)
+  }
+  stopifnot(nrow(t)==nrow(x$projects)*30,all(t$annual_addition_mw_low<=t$annual_addition_mw_high,na.rm=TRUE),
+    all(t$mw_low<=t$mw_high,na.rm=TRUE),all(is.na(t$mw_high[t$project_id=='P002'])))
+})
+test('timing review notes close uncertainty and changed evidence reopens it',function() {
+  x<-fixture(claim(status='Planned',timing='unknown',first_year='',last_year=''))
+  f<-timing_followups(x)[[1]];stopifnot(f$review_status=='open',length(f$questions)>0)
+  x$capacity$notes<-paste0('Timing review 2026-10-18 [',f$review_key,']: Remaining uncertainty: no scoped construction date after reviewing the listed sources.')
+  stopifnot(timing_followups(x)[[1]]$review_status=='documented_uncertainty')
+  x$sources$excerpt<-'New information changes the evidence.'
+  stopifnot(timing_followups(x)[[1]]$review_status=='open')
+})
+test('saved annual output is part of the ordinary build and stale-output check',function() {
+  with_workflow(function(root,work) {
+    rebuild_run(root);f<-file.path(root,'assets/data/datacenters/timeline.json');stopifnot(file.exists(f))
+    cat(' ',file=f,append=TRUE);fails(function()check_outputs(root),'timeline.json')
   })
 })
 cat(count,' meaningful method and workflow checks passed.\n')

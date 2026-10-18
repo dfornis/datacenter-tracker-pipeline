@@ -91,7 +91,7 @@ Samma metod 4.0 före/efter: fasta basåret 2025, horisont 2035, gemensamma prel
 
 ## Paus vid upptäckt modellfel
 
-**Finland är inte infört.** Arbetskopian är sparad i `/var/folders/hg/r7q9tvdd17nbqcw_3tk0m43h0000gn/T/datacenter-run-67e364f1dd49`. Före-lägesbilden och denna körlogg är kvar i repot. Källkompletteringarna har genomgått första radkontroll och förhandsberäkning, men timing-review-nycklar är inte slutstängda och kandidat-review/apply/sparad slutkontroll återstår. Siffrorna i `/tmp/dc-fi-preview.json` är preliminära och ska inte levereras som godkända resultat.
+**Historisk pausnotering (återupptagen och införd nedan).** Finland var ännu inte infört vid denna kontroll. Arbetskopian är sparad i `/var/folders/hg/r7q9tvdd17nbqcw_3tk0m43h0000gn/T/datacenter-run-67e364f1dd49`. Före-lägesbilden och denna körlogg är kvar i repot. Källkompletteringarna har genomgått första radkontroll och förhandsberäkning, men timing-review-nycklar är inte slutstängda och kandidat-review/apply/sparad slutkontroll återstår. Siffrorna i `/tmp/dc-fi-preview.json` är preliminära och ska inte levereras som godkända resultat.
 
 `post_baseline_operation` i `scripts/model.R:189` kräver `baseline_scope=new_capacity`. Därmed räknas C039 (75 MW faktiskt färdigställt 2026, minus den äldre verifierade basen 25 MW) bort som `operational`, trots att nettoomfattningen är 50 MW. Samma källrad med status Under construction räknas; statusbytet förlorar alltså den historiska leveransen. Befintliga 81 tester passerar men täcker inte kombinationen Operational + existing_known. Reproduktion sparad i `/tmp/dc-fi-baseline-repro.R` och dess utskrift `/tmp/dc-fi-baseline-repro.txt`; inga fakta eller modellfiler ändras av reproduktionen.
 
@@ -102,3 +102,43 @@ Enligt AGENTS.md pausades landsinförandet vid modellfel. Användaren godkände 
 Filtret för faktisk leverans efter basåret bevarar nu även leveranser med känd eller okänd äldre driftbas. Basen subtraheras fortsatt i den gemensamma kapacitetsberäkningen. C039 ger därmed 50 MW oavsett statusbyte till Operational; inga tidsantaganden ändras. En ombyggnad med oförändrat aktivt register visar oförändrade scenario-MW/TWh per projekt för redan införda SE/NO och äldre FI-underlag. Sparad slutkontroll verifierar både registret och den lokala sajten.
 
 Sex överlappande testgrupper har slagits ihop (81 → 75). Den nya regressionsmatrisen omfattar ny kapacitet, känd bas, basintervall och okänd bas, faktisk första/full leverans, samtliga scenariofamiljer, årliga historiska tillskott och leverans före basåret. Godkännande-, lands-, aktörs- och återställningsskydd finns kvar. Landskompletteringen återupptas från en ny prepare-bas efter rättningens kontroll; den gamla arbetskopian och den oföränderliga lägesbilden bevaras.
+
+## Återupptagning och införande
+
+Separata rättningen är committad i 80c11a7. Ny prepare-arbetskopia: `/var/folders/hg/r7q9tvdd17nbqcw_3tk0m43h0000gn/T/datacenter-run-6ff0126fb5a4`. Alla fyra aktiva tabeller jämfördes byte för byte med den ursprungliga FI-lägesbilden före återföring av de redan granskade faktaändringarna. Paketets fingeravtryck ändrades inte manuellt.
+
+75 rationaliserade metod-/flödesgrupper passerade. Arbetskopian var giltig med 0 öppna och 83 dokumenterade finska tidsuppföljningar. Apply genomfördes och byggde alla aktiva resultat samt lokal sajt. Två nya projekt (P197/P198), återaktivering av P110 till kandidat, 14 nya kapacitetsrader och 18 nya källor. 72 äldre kapacitetsrader och 63 äldre källor ändrades eller kompletterades; huvuddelen av källändringarna avser kontrollerad åtkomst. Aktörer och tidigare godkännanden är oförändrade.
+
+Godkänd annonserad tillkommande kapacitetsram: 7 735,31–9 463,61 MW. Elområdet FI och landet sammanfaller; inga finska projekt saknar elområde. Summorna omfattar den kvantifierade delen: 11 godkända projekt saknar användbart MW, och sex har okända etapper i Stated/High.
+
+| Scenario | Infasad MW | Årsenergi TWh |
+|---|---:|---:|
+| low_2030 | 344.15–612.15 | 2.328–4.021 |
+| stated_2030 | 1116.47–1885.78 | 7.534–12.502 |
+| stated_2035 | 2442.11–3789.11 | 16.245–24.972 |
+| high_2035 | 5853.55–9463.61 | 38.375–61.960 |
+
+Största faktabaserade flytten är Microsofts egna YVA-mål för full kapacitet 2031: tre campus ger sammanlagt 621,56 MW i Stated 2035. Kirkkonummi och Vihti får källbelagda 48 MW IT-etapper 2028, i stället för att den odaterade campusramen dateras av byggstart. Blackhawk får ett försvarbart 64 MW anläggningstal och Nova Kouvola en avgränsad första 40 MW-del. Nätstatus skärps för Salo/Pori och Bitzeros första leverans skiljs från nätöppning. Den separata modellrättningen bidrar med +50 MW och +0,3504 TWh i alla scenarier för de nya Nebiusfakta; övriga skillnader är käll-/scopeändringar under samma antaganden. Den äldre 25 MW-basens exakta utveckling under 2025 är fortfarande en begränsning.
+
+## Kandidater och slutkontroll
+
+Sparad check bekräftar aktuella resultat och lokal sajt: 0 öppna och 190 dokumenterade tidsuppföljningar i alla tre länder (83 FI). Aktuell manuell review skapad efter införandet. Ingen kandidat godkänd.
+
+| Grupp | ID, aktör och plats | Källomfattning, tid, beslut | Huvudkälla |
+|---|---|---|---|
+| Föreslås | P166 FCDC, Mikkeli / FI | 250 MW ospecificerat, odaterat; bygglov, FID okänt | [kommunen](https://mikkeli.cloudnc.fi/fi-FI/Toimielimet/Kaupunkikehityslautakunta/Kokous_1722026/Rakennuskiellon_maaraaminen_Mikkelin_1_v%2881664%29) |
+| Föreslås | P167 Regant, Mikkeli / FI | 50 MW ospecificerat, odaterat; plan, FID okänt | samma kommunbeslut S455 |
+| Föreslås | P168 FCDC, Mahlianmaa Valkeakoski / FI | MW/år okända; planläggning, FID okänt | befintliga S290/S291, granskade i denna körning |
+| Föreslås | P197 Aurora Core, Pellos Mikkeli / FI | 6 MW första fas H2 2026, 50 MW nätpotential; bygglov, FID/nätavtal okända | [kommunens bygglovsbesked](https://mikkeli.fi/en/2026/04/02/aurora-core-technology-data-centre-project-building-permit-becomes-legally-binding/), S460/S462/S463 |
+| Föreslås | P198 FCDC, Akaa Point / FI | MW/år okända; bygglov, FID okänt | S464, kommunens bygglovsbesked 18 september 2026 |
+| Osäker nettoomfattning | P110 Verne, Vantaa / FI | 70 MW brutto, två framtida byggnader; äldre bas/år/FID okända | [operatörens expansion](https://www.verne.co/news/news-verne-expands-helsinki-data-center-campus-with-strategic-site-acquisition) |
+| Osäker identitet för MW | P155 Nova, Loviisa / FI | Platsen heter NF03; FIN01:s 500 MW IT/1 GW hör inte säkert hit. MW/år/FID okända | [operatörens Loviisabesked](https://www.novacomplex.com/news/details_445_765.html) |
+
+Gruppvis villkorad effekt, beräknad med samma modell: separata platser gör de kvantifierade delarna additiva mellan kandidaterna. Inom varje projekt är ramar och etapper redan överlappshanterade. Okända delar får inte läsas som noll.
+
+| Grupp | Low 2030 MW / TWh | Stated 2030 MW / TWh | Stated 2035 MW / TWh | High 2035 MW / TWh |
+|---|---:|---:|---:|---:|
+| Föreslås, plus okända P168/P198 | 0 / 0 | 0–6 / 0–0,039 | 0–6 / 0–0,039 | 290–350 / 1,905–2,300 |
+| Osäker netto/identitet, plus okänd P155 | 0 / 0 | 0 / 0 | 0 / 0 | 0–70 / 0–0,350 |
+
+Inga godkända finska projekt föreslås för exkludering. Tidigare out_of_scope-spår behålls endast för identitet; inga nya marknadsföringsspår blir registerposter. Ingen extern publicering.

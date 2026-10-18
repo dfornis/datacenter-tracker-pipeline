@@ -1,5 +1,5 @@
 {
-  "version": "4.1.0",
+  "version": "4.1.1",
   "as_of": "2026-10-16",
   "purpose": "One scenario model for manually approved project totals, candidate impact reviews, and the website; unknowns and all project indicators are retained.",
   "tables": {
@@ -400,7 +400,7 @@
       "phasing": {
         "url": "https://powering-intelligence.epri.com/annual-peak-use.html",
         "locator": "Annual and Peak Electricity Use; updated 2026-02-24; operational-capacity ramp paragraph",
-        "use": "Retain five years as a provisional physical-buildout proxy for staged/unknown scopes only. Known single-phase deliveries and scoped first/full schedules replace it. Do not interpret it as both construction and electricity-use ramp.",
+        "use": "Retain five years as a provisional physical-buildout proxy for staged or unknown delivery. Known single-phase deliveries and scoped first/full schedules replace it. Campus paths whose start is derived from an executing phase use a linear ramp to 2035 instead. Apply no second electricity-use ramp.",
         "limitation": "EPRI operational ramp is not direct evidence for physical commissioning. National Grid/Regen phase examples support a multi-year buildout, but five years is an uncalibrated adaptation; explicit phase schedules take precedence."
       },
       "phasing_crosscheck": {
@@ -450,15 +450,19 @@
       },
       "method_4_1": {
         "source": "User method decision, 2026-10-18; runs/2026-10-18-method-4.1.md",
-        "use": "Defines horizon completion, executing-campus selection, removal of grid MW caps, open lower-bound claims and superseded-target treatment.",
+        "use": "Established horizon completion, executing-campus selection, removal of grid MW caps and superseded-target treatment. The minimum-quantity and derived-campus rules were revised in method 4.1.1.",
         "limitation": "Explicit scenario policy, not empirical delivery probabilities or confirmation that announced capacity will be built. Grid-date evidence can still constrain Low/Stated."
+      },
+      "method_4_1_1": {
+        "source": "User method decision, 2026-10-18. runs/2026-10-18-method-4.1.1.md",
+        "use": "Calculates source minima as stated quantities, flags containment contradictions for review, ramps both derived campus paths linearly to 2035 and restricts activating phases to datacenter capacity.",
+        "limitation": "Scenario conventions applied to existing evidence. No new source verification or probability of delivery is implied."
       }
     },
     "annual_use_by_type": "Load factor relative to nameplate depends on facility type (EPRI 2026 p.15: 75% hyperscale facility, 57% co-location average). type_assumptions gives one value per type category; nameplate_annual_fraction is only used when type is unknown.",
-    "phase_timing": "Known single-phase delivery is a step at its own commissioning date. Undated campus with an included same-project executing phase (observed construction or decision=yes, own operation/construction/full date) starts at the phase first operation; construction-only uses 2–3 years. Early campus path uses five years capped at 2035; late path is linear through 2035. The phase need not have MW. Planned phases without FID, grid dates alone, other projects and old operating baselines do not qualify. Low never inherits this campus selection. Quantified phases provide early floors using max-envelope overlap accounting.",
+    "phase_timing": "An undated campus qualifies for Stated through an included same-project datacenter phase with observed construction or decision=yes and its own operation, construction or full-capacity date. Phase MW need not be known. Both campus paths ramp linearly through 2035: the early path starts at the earliest calculated first operation, the late path at the latest among qualifying phases. Annual shares include the first-operation year. The five-year proxy does not apply to these derived campus paths. Only the start is evidenced, while completion is a horizon assumption. Quantified phases retain their own rules and provide a floor through max-envelope accounting. Grid, backup, generation and density rows never trigger the rule. Planned phases without FID, other projects and old operating baselines do not qualify. Own source dates and Low selection are unchanged.",
     "investment_decision": "decision=yes means an evidenced investment decision for that scope: an explicit final investment decision or observed construction start of that phase. Low 2030 counts only such figures.",
     "buildout_energy": "Electricity at full build-out is the net capacity envelope times the type load factor and 8760 h, without a second ramp. High 2035 equals this full build-out equivalent.",
-    "capacity_without_upper_limit": "at_least without mw_max supplies a known lower bound and an open upper bound. Convert and subtract comparable baselines normally; display ≥ X for projects and sums containing open bounds. Never classify the known minimum as missing MW.",
     "stage_lead_times": {
       "Concept study": {
         "to_construction": [
@@ -542,7 +546,9 @@
       }
     },
     "horizon": "High includes all active announced MW fully by timeline.end_year (2035), after existing-capacity and overlap accounting. Its endpoint equals full build-out; shorten later schedules to this horizon. This is an upper envelope, not a forecast.",
-    "superseded_targets": "A later source for the same/comparable scope that omits or replaces an earlier target makes that target undated (timing_status=superseded). Preserve the historical date and MW, cite both sources and their temporal ordering in notes. Access date alone does not establish a newer statement. Actual events are not superseded targets; separate mixed scopes."
+    "superseded_targets": "A later source for the same/comparable scope that omits or replaces an earlier target makes that target undated (timing_status=superseded). Preserve the historical date and MW, cite both sources and their temporal ordering in notes. Access date alone does not establish a newer statement. Actual events are not superseded targets; separate mixed scopes.",
+    "source_minimum": "at_least without mw_max is calculated as the stated MW in every scenario and full build-out, with the normal measure conversion and comparable-baseline subtraction. Preserve the qualifier in source records. Show ≥ only beside the source figure in the detail row. Missing finite total capacity is a research question, not missing MW.",
+    "containment_conflict": "An included_in or possibly_included_in claim exceeding its direct parent in either corresponding gross facility-capacity bound after measure conversion creates a containment_conflict follow-up. Compare before timing and baseline deductions, never child upper against parent lower. Keep the largest applicable scope in the overlap group. Resolve with source-backed MW, measure or relation corrections, or source-linked remaining uncertainty. Changes to either scope or its source reopen review."
   },
   "type_assumptions": {
     "purpose": "Type-specific annual use factors for the single scenario model. The website displays the computed result without a separate PUE, timing or scenario calculation.",
@@ -773,7 +779,7 @@
       "leads": "Out-of-scope leads found during a run go to the run log (runs/), not the register. Existing register rows that fail the rule are set to record_type=out_of_scope with a reason in notes; they keep their ID for identity matching and can return to candidate with new evidence.",
       "out_of_scope": "Kept for identity only: never in approved totals, candidate reviews, worklists or the website."
     },
-    "timing_followup": "prepare and check expose per-claim timing gaps, scoped existing excerpts, search questions and review keys. Resolve with source data or record a dated Timing review in capacity.notes using the current key and a substantive remaining-uncertainty explanation. No parallel review register."
+    "timing_followup": "prepare and check expose per-claim timing gaps, scoped existing excerpts, search questions and review keys. Resolve with source data or record a dated Timing review in capacity.notes using the current key and a substantive remaining-uncertainty explanation. No parallel review register. Containment conflicts include both child and parent evidence and must close with a source-backed correction or a source-linked uncertainty note."
   },
   "tracker": {
     "purpose": "Presentation of the same manually approved model result used in chat. No independent site calculation. Local site installation is separate from external publishing.",

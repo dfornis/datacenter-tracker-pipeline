@@ -482,6 +482,7 @@ pipeline_main <- function(args=commandArgs(trailingOnly=TRUE)) {
       cat(jsonlite::toJSON(list(valid=TRUE,outputs=outputs,coverage=r$coverage,changes=review$changes,
         timing_diagnostics=r$timing_diagnostics,timing_followups_open=sum(vapply(wl$timing_followups,function(z)z$review_status=='open',TRUE)),
         timing_followups_documented=sum(vapply(wl$timing_followups,function(z)z$review_status=='documented_uncertainty',TRUE)),
+        containment_conflicts=sum(vapply(wl$timing_followups,function(z)'containment_conflict' %in% z$reasons,TRUE)),
         worklist_remaining=as.list(worklist_counts(wl)),worklist=wl,
         map_zones=length(r$bidding_zones$features)),auto_unbox=TRUE,pretty=TRUE),'\n')
     } else {

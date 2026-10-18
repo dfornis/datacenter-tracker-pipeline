@@ -105,7 +105,7 @@ test('known installed baseline is subtracted in the source basis before PUE',fun
   x<-fixture(rbind(claim('C001',mw=90,basis='it_nameplate',status='Operational'),
     claim('C002',mw=150,basis='it_nameplate',baseline_scope='existing_known',baseline_id='C001')))
   r<-row(calculate(x),'C002');same(c(r$counted_mw_low,r$counted_mw_high),c(66,90))
-  x$capacity$qualifier[1]<-'at_least';same(row(calculate(x),'C002')$counted_mw_low,0)
+  x$capacity$qualifier[1]<-'at_least';same(row(calculate(x),'C002')$counted_mw_low,66)
 })
 test('unknown baseline retains its envelope while a known new phase anchors the lower case',function() {
   x<-fixture(rbind(claim('C001',mw=1000,baseline_scope='existing_unknown'),
@@ -141,18 +141,46 @@ test('unresolved related identities cannot count as a second campus',function() 
   x<-fixture();x$projects$related_project_id[1]<-'P099';r<-calculate(x)
   same(row(r)$nameplate_mw_high,0);same(row(r)$counted_mw_high,0);stopifnot(row(r)$reason=='related_identity')
 })
-test('lower-bound-only claims contribute known minima with open upper bounds through overlap and baselines',function() {
-  x<-fixture(claim(qualifier='at_least'));r<-calculate(x)
-  stopifnot(project(r)$capacity_known,is.na(project(r)$nameplate_mw_high),is.na(project(r)$mw_high))
-  same(c(project(r)$nameplate_mw_low,project(r)$mw_low),c(100,100))
-  x<-fixture(rbind(claim('C001',mw=10,status='Operational'),
+test('source minima behave as stated quantities in every scenario, conversion, baseline and annual export',function() {
+  for(basis in c('facility_nameplate','it_nameplate','unspecified','facility_peak')) {
+    x<-fixture(claim(basis=basis,qualifier='at_least'));r<-calculate(x)
+    exact<-x;exact$capacity$qualifier<-'exact';e<-calculate(exact)
+    for(table in c('ledger','project_scenarios','scenarios')) {
+      keys<-grep('mw_|twh_',names(r[[table]]),value=TRUE)
+      for(key in keys)same(r[[table]][[key]],e[[table]][[key]])
+    }
+    stopifnot(all(r$project_scenarios$capacity_known[r$project_scenarios$project_id=='P001']))
+  }
+  x<-fixture(rbind(claim('C001',mw=10,status='Operational',qualifier='at_least'),
     claim('C002',mw=100,qualifier='at_least',baseline_scope='existing_known',baseline_id='C001')))
-  same(project(calculate(x))$nameplate_mw_low,90)
+  same(c(project(calculate(x))$nameplate_mw_low,project(calculate(x))$nameplate_mw_high),c(90,90))
   x<-fixture(rbind(claim('C001',mw=550,basis='it_nameplate',qualifier='at_least'),
     claim('C002',mw=110,basis='it_nameplate',parent_id='C001',relation='included_in')))
-  r<-calculate(x);same(project(r)$nameplate_mw_low,605);stopifnot(is.na(project(r)$nameplate_mw_high))
-  t<-calculate_timeline(x)$rows;t<-t[t$project_id=='P001' & t$family=='high',]
-  stopifnot(all(is.finite(t$annual_addition_mw_low)),is.na(t$mw_high[t$year==2035]))
+  r<-calculate(x);same(c(project(r)$nameplate_mw_low,project(r)$nameplate_mw_high),c(605,825))
+  t<-calculate_timeline(x)$rows;t<-t[t$project_id=='P001',]
+  stopifnot(all(is.finite(t$annual_addition_mw_low)),all(is.finite(t$annual_addition_mw_high)))
+  for(d in list(r$project_scenarios,r$scenarios,t))for(key in grep('_low$',names(d),value=TRUE)) {
+    high<-sub('_low$','_high',key)
+    if(high %in% names(d))stopifnot(identical(is.na(d[[key]]),is.na(d[[high]])))
+  }
+})
+test('larger contained scopes trigger source follow-up without changing max-envelope accounting',function() {
+  for(relation in c('included_in','possibly_included_in')) {
+    x<-fixture(rbind(claim(mw=310),claim('C002',mw=350,basis='grid',parent_id='C001',relation=relation)))
+    r<-calculate(x);same(project(r)$mw_high,350)
+    followup<-function(x)Filter(function(z)z$claim_id=='C002',run_worklist(x,'SE')$timing_followups)[[1]]
+    f<-followup(x);stopifnot('containment_conflict' %in% f$reasons,f$containment_conflict$parent_id=='C001')
+    same(c(f$containment_conflict$child_mw_high,f$containment_conflict$parent_mw_high),c(350,310))
+    x$capacity$notes[2]<-paste0('Timing review 2026-10-18 [',f$review_key,']: S001 leaves the discrepancy between grid and campus scope unresolved.')
+    stopifnot(followup(x)$review_status=='documented_uncertainty')
+    x$capacity$mw[1]<-'320';stopifnot(followup(x)$review_status=='open')
+    x$capacity$mw[1]<-'350';stopifnot(!'containment_conflict' %in% followup(x)$reasons)
+    # Compare like bounds after conversion, not raw IT MW or child upper vs parent lower.
+    x$capacity$basis[2]<-'it_nameplate';x$capacity$mw[2]<-'250'
+    stopifnot('containment_conflict' %in% followup(x)$reasons)
+    x$capacity$basis[1]<-'it_nameplate';x$capacity$mw[1]<-'250'
+    stopifnot(!'containment_conflict' %in% followup(x)$reasons)
+  }
 })
 test('energy uses the type load factor, the right denominator and exactly one operational ramp',function() {
   # Fixture projects are typed 'hyperscale': EPRI hyperscale 0.75 of nameplate, 0.94 of realised peak.
@@ -204,7 +232,7 @@ test('executing phases activate the same Stated campus path with or without thei
   phase<-claim('C002',mw='',status='Under construction',timing='first_capacity',first_year=2028,last_year=2028,
       delivery_profile='single_phase',parent_id='C001',relation='included_in')
   x<-fixture(rbind(campus,phase));r<-calculate(x)
-  same(c(project(r,sc='stated_2030')$mw_low,project(r,sc='stated_2030')$mw_high),c(187.5,300))
+  same(c(project(r,sc='stated_2030')$mw_low,project(r,sc='stated_2030')$mw_high),c(187.5,187.5))
   same(c(project(r,sc='stated_2035')$mw_low,project(r,sc='stated_2035')$mw_high),c(500,500))
   same(project(r,sc='low_2030')$mw_high,0);stopifnot(project(r,sc='low_2030')$partial_capacity)
   stopifnot(row(r,sc='stated_2030')$timing_rule=='executing_campus_full_by_horizon',
@@ -215,6 +243,22 @@ test('executing phases activate the same Stated campus path with or without thei
   x$capacity$first_year[2]<-x$capacity$last_year[2]<-'';x$capacity$construction_year[2]<-'2026'
   r<-calculate(x);same(c(row(r,sc='stated_2030')$first_early,row(r,sc='stated_2030')$first_late),c(2028,2029))
   same(project(r,sc='stated_2030')$mw_low,500*2/7)
+  same(project(r,sc='stated_2030')$mw_high,500*3/8)
+  # Every year follows a straight line to the common horizon, with the phase as a floor.
+  timeline<-calculate_timeline(x)$rows
+  for(y in 2026:2035) {
+    d<-timeline[timeline$project_id=='P001' & timeline$family=='stated' & timeline$year==y,]
+    same(d$mw_low,max(if(y>=2029)100 else 0,500*max(0,y-2029+1)/7))
+    same(d$mw_high,max(if(y>=2028)100 else 0,500*max(0,y-2028+1)/8))
+  }
+  # Own first-operation evidence keeps its ordinary five-year ramp.
+  own<-x;own$capacity$timing[1]<-'first_capacity';own$capacity$first_year[1]<-own$capacity$last_year[1]<-'2028'
+  same(project(calculate(own),sc='stated_2030')$mw_high,300)
+  # Multiple executing phases span earliest early and latest late starts.
+  later<-x$capacity[2,];later$claim_id<-'C003';later$construction_year<-'2027'
+  multi<-x;multi$capacity<-rbind(multi$capacity,later)
+  q<-row(calculate(multi),sc='stated_2030')
+  same(c(q$first_early,q$first_late,q$full_early,q$full_late),c(2028,2030,2035,2035))
   x$capacity$decision[2]<-'unclear';x$capacity$construction_event[2]<-'actual'
   same(project(calculate(x),sc='stated_2035')$mw_low,500)
   # Completing a new phase must not revoke the campus selection; an old baseline cannot start it.
@@ -236,6 +280,17 @@ test('uncommitted planned phases, grid dates alone and other projects never acti
   same(c(project(r,sc='high_2035')$mw_low,project(r,sc='high_2035')$mw_high),c(1000,1000))
   grid<-planned;grid$basis<-'grid';grid$timing<-'grid_availability';grid$decision<-'yes'
   stopifnot(!row(calculate(fixture(rbind(campus,grid))),sc='stated_2035')$selected)
+  for(basis in c('grid','backup','generation','density'))for(decision in c('yes','unclear')) {
+    infrastructure<-claim('C002',mw=100,basis=basis,status='Under construction',decision=decision,
+      construction_year=2026,construction_event='actual',timing='unknown',first_year='',last_year='',
+      parent_id='C001',relation='included_in')
+    r<-calculate(fixture(rbind(campus,infrastructure)))
+    stopifnot(!row(r,sc='stated_2035')$selected)
+    # A separate dated datacenter phase remains eligible on its own terms.
+    independent<-phase;independent$claim_id<-'C003'
+    r<-calculate(fixture(rbind(campus,infrastructure,independent)))
+    stopifnot(!row(r,sc='stated_2035')$selected,row(r,'C003',sc='stated_2035')$selected)
+  }
   other<-planned;other$status<-'Under construction';other$project_id<-'P002';other$decision<-'yes'
   same(project(calculate(fixture(rbind(campus,other))),sc='stated_2030')$mw_high,0)
 })
@@ -302,7 +357,7 @@ test('prepare lists phases without MW and a sourced phase MW counts after apply'
     x<-read_inputs(root,work);x$capacity$mw[2]<-'60';x$capacity$basis[2]<-'facility_nameplate';write_tables(x,work)
     stopifnot(length(run_worklist(read_inputs(root,work),'SE')$phases_without_mw)==0)
     r<-apply_run(root,work)$result
-    same(c(project(r,sc='stated_2030')$mw_low,project(r,sc='stated_2030')$mw_high),c(187.5,300))
+    same(c(project(r,sc='stated_2030')$mw_low,project(r,sc='stated_2030')$mw_high),c(187.5,187.5))
     same(project(r,sc='low_2030')$mw_high,36)
   })
 })
@@ -827,6 +882,13 @@ test('annual export has every project and reproduces all four scenario endpoints
   }
   stopifnot(nrow(t)==nrow(x$projects)*30,all(t$annual_addition_mw_low<=t$annual_addition_mw_high,na.rm=TRUE),
     all(t$mw_low<=t$mw_high,na.rm=TRUE),all(is.na(t$mw_high[t$project_id=='P002'])))
+  # A larger existing upper-path phase leaves a smaller annual increment to its enclosing frame.
+  x<-fixture(rbind(claim(mw=200,timing='first_capacity',first_year=2031,last_year=2031,delivery_profile='single_phase'),
+    claim('C002',mw=100,basis='it_nameplate',timing='first_capacity',first_year=2030,last_year=2030,
+      delivery_profile='single_phase',parent_id='C001',relation='included_in')))
+  t<-calculate_timeline(x)$rows;d<-t[t$project_id=='P001' & t$family=='stated' & t$year==2031,]
+  same(c(d$mw_low,d$mw_high),c(200,200))
+  same(c(d$annual_addition_mw_low,d$annual_addition_mw_high),c(50,90))
 })
 test('timing review notes close uncertainty and changed evidence reopens it',function() {
   x<-fixture(claim(status='Planned',timing='unknown',first_year='',last_year=''))
@@ -843,7 +905,7 @@ test('superseded targets preserve source facts but no longer select dated scenar
   same(project(r)$mw_low,100);same(project(r,sc='stated_2035')$mw_high,0);stopifnot(x$capacity$first_year=='2027')
   x$capacity$timing_event<-'actual';fails(function()calculate(x),'Superseded targets cannot invalidate observed events')
 })
-test('High endpoints equal full buildout per project and zone, including open bounds and retained history',function() {
+test('High endpoints equal full buildout per project and zone, including source minima and retained history',function() {
   for(x in list(fixture(rbind(claim(status='Concept study',timing='unknown',first_year='',last_year='',decision='no'),
     claim('C002','P002',mw=50,qualifier='at_least'),claim('C003','P003',first_year=2040,last_year=2040))),live)) {
     r<-calculate(x)

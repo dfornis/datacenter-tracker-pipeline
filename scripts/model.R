@@ -311,18 +311,19 @@ executing_campus_schedule <- function(i,cfg,claims,schedules) {
   if(!nzchar(r$mw) || commissioning_dated(r) || r$basis %in% c('backup','generation','density') ||
      r$status %in% c('Cancelled','Dormant','Operational') || r$issue=='identity_conflict')return(t)
   executing<-which(claims$project_id==r$project_id & !claims$status %in% c('Cancelled','Dormant') &
-    !claims$basis %in% c('backup','generation','density') & claims$issue!='identity_conflict' &
+    !claims$basis %in% c('grid','backup','generation','density') & claims$issue!='identity_conflict' &
     ((claims$status=='Under construction' & claims$construction_event=='actual' & nzchar(claims$construction_year)) | claims$decision=='yes'))
   executing<-executing[vapply(executing,function(j)j!=i && commissioning_dated(claims[j,]) && contained_by(claims,j,i) &&
     (claims$status[j]!='Operational' || post_baseline_operation(claims[j,],cfg)),TRUE)]
   if(!length(executing))return(t)
-  # The first included phase starts this campus. Its MW is irrelevant to eligibility;
-  # a quantified phase remains a separate floor through the normal max-envelope rule.
+  # Phase evidence establishes a start, while completion is a horizon assumption.
+  # Span the earliest and latest eligible starts and ramp both paths to that horizon.
+  # Quantified phases retain their own paths as floors through the normal max envelope.
   t$first<-c(min(vapply(schedules[executing],function(s)s$first[1],0)),
-             min(vapply(schedules[executing],function(s)s$first[2],0)))
+             max(vapply(schedules[executing],function(s)s$first[2],0)))
   horizon<-cfg$timeline$end_year
   t$first<-pmin(t$first,horizon)
-  t$full<-c(min(t$first[1]+cfg$assumptions$first_to_full_years-1,horizon),horizon)
+  t$full<-rep(horizon,2)
   if(!is.null(t$grid)) {
     g<-year_interval(t$grid$first_year,t$grid$last_year)
     if(all(is.finite(g))) {
@@ -367,14 +368,13 @@ annual_fraction <- function(row,type,cfg) {
   v <- if(peak) unlist(a$peak_load_factor) else rep(a$load_factor,2)
   list(value=v,rule=paste0('load_factor_',category))
 }
-capacity_without_upper_limit <- function(row) row$qualifier=='at_least' && !nzchar(row$mw_max)
 electrical_range <- function(row,cfg,net=FALSE,claims=NULL,normalize_peak=TRUE) {
-  # NA above a known lower bound means an open upper bound, not missing MW.
+  # A source minimum supplies the stated quantity. Its qualifier stays in the evidence.
   if (row$basis %in% c('backup','generation','density') || row$issue=='identity_conflict' || !nzchar(row$mw)) return(c(NA_real_,NA_real_))
-  v<-number(row$mw);top<-if(nzchar(row$mw_max))number(row$mw_max) else if(row$qualifier=='at_least')NA_real_ else v
+  v<-number(row$mw);top<-if(nzchar(row$mw_max))number(row$mw_max) else v
   if (net && row$baseline_scope=='existing_known') {
     b<-claims[match(row$baseline_id,claims$claim_id),]
-    bottom_b<-number(b$mw);top_b<-if(b$qualifier=='range')number(b$mw_max) else if(b$qualifier=='at_least')Inf else bottom_b
+    bottom_b<-number(b$mw);top_b<-if(nzchar(b$mw_max))number(b$mw_max) else bottom_b
     v<-max(0,v-top_b);top<-max(0,top-bottom_b)
   }
   pue<-unlist(cfg$assumptions$pue)
@@ -393,6 +393,16 @@ top_claim <- function(claims,index) {
   index
 }
 maximum_known <- function(values) if(all(is.na(values))) NA_real_ else max(values,na.rm=TRUE)
+containment_conflict <- function(row,cfg,claims) {
+  if(!row$relation %in% c('included_in','possibly_included_in'))return(NULL)
+  parent<-claims[match(row$parent_id,claims$claim_id),,drop=FALSE]
+  child_mw<-electrical_range(row,cfg);parent_mw<-electrical_range(parent,cfg)
+  # Compare corresponding gross facility-capacity bounds, before timing and baseline deductions.
+  # A larger child remains in the normal max envelope. This is a source-review flag only.
+  if(!all(is.finite(c(child_mw,parent_mw))) || !any(child_mw>parent_mw+1e-8))return(NULL)
+  list(parent_id=parent$claim_id,parent_project_id=parent$project_id,relation=row$relation,
+    child_mw_low=child_mw[1],child_mw_high=child_mw[2],parent_mw_low=parent_mw[1],parent_mw_high=parent_mw[2])
+}
 calculate <- function(x,approved_only=TRUE) {
   validate_inputs(x);p<-x$projects;c<-x$capacity;cfg<-x$config
   all_rows<-list();overview<-list();zone_rows<-list()
@@ -429,7 +439,7 @@ calculate <- function(x,approved_only=TRUE) {
       if (startsWith(r$basis,'it_')) assumptions<-c(assumptions,'PUE_conversion')
       if (grepl('_peak$',r$basis)) assumptions<-c(assumptions,'peak_to_nameplate_equivalent')
       if (r$baseline_scope=='existing_unknown') assumptions<-c(assumptions,'increment_unknown_0_to_site_envelope')
-      if (capacity_without_upper_limit(r)) assumptions<-c(assumptions,'source_lower_bound_open_upper')
+      if (r$qualifier=='at_least' && !nzchar(r$mw_max)) assumptions<-c(assumptions,'source_minimum_as_stated')
       if (r$relation=='possibly_included_in') assumptions<-c(assumptions,'overlap_assumed_contained')
       if (nzchar(pr$related_project_id)) assumptions<-c(assumptions,'related_identity_unresolved')
       value<-ifelse(share>0,net*share,0)
@@ -481,7 +491,7 @@ calculate <- function(x,approved_only=TRUE) {
       for(key in c('nameplate_mw_low','nameplate_mw_high','buildout_twh_low','buildout_twh_high')) {
         v<-ledger[[key]][members]
         ledger[[key]][members]<-0
-        ledger[[key]][owner]<-if(anyNA(v) && grepl('high$',key))NA_real_ else maximum_known(v)
+        ledger[[key]][owner]<-maximum_known(v)
       }
       a<-unique(unlist(lapply(ledger$assumptions[members],ids)))
       if(!any(is.finite(c(ledger$gross_mw_low[owner],ledger$gross_mw_high[owner])))) a<-c(a,'only_contained_capacity_known')
@@ -492,7 +502,7 @@ calculate <- function(x,approved_only=TRUE) {
       for(path in c('early','late'))for(bound in c('low','high'))pairs<-c(pairs,list(c(paste0('direct_',path,'_mw_',bound),paste0('counted_',path,'_mw_',bound))))
       for (pair in pairs) {
         v<-ledger[[pair[1]]][active]
-        ledger[[pair[2]]][owner]<-if(anyNA(v) && grepl('high$',pair[2]))NA_real_ else maximum_known(v)
+        ledger[[pair[2]]][owner]<-maximum_known(v)
       }
       if (ledger$share_high[owner]==0) ledger$reason[owner]<-'contains_modelled_phase'
       children<-setdiff(active,owner);ledger$reason[children]<-paste0('included_in:',group)
@@ -549,7 +559,7 @@ calculate <- function(x,approved_only=TRUE) {
   for (scenario in cfg$scenarios) for (zone in zone_ids) {
     all_d<-project_scenarios[project_scenarios$scenario==scenario$id & project_scenarios$bidding_zone==zone,,drop=FALSE]
     d<-all_d[all_d$included_in_result,,drop=FALSE]
-    sum_known<-function(key) if(!nrow(d))0 else if(all(is.na(d[[key]]))||any(is.na(d[[key]]) & d$capacity_known))NA_real_ else sum(d[[key]],na.rm=TRUE)
+    sum_known<-function(key) if(!nrow(d))0 else if(all(is.na(d[[key]])))NA_real_ else sum(d[[key]],na.rm=TRUE)
     active<-!d$indicator %in% c('cancelled','dormant','operational')
     partial<-any(ledger$scenario==scenario$id & ledger$project_id %in% d$project_id & grepl('only_contained_capacity_known',ledger$assumptions,fixed=TRUE))
     zone_rows[[length(zone_rows)+1]]<-data.frame(scenario=scenario$id,bidding_zone=zone,projects=nrow(d),
@@ -582,18 +592,13 @@ calculate_timeline <- function(x,input_hashes=NULL) {
     # The resulting annual interval bounds need not sum to a cumulative interval bound.
     paths<-c('early_mw_low','early_mw_high','late_mw_low','late_mw_high')
     changes<-lapply(paths,function(key)c(0,pmax(0,diff(a[[key]]))))
-    # Known lower paths remain usable when source upper bounds are open.
-    d$annual_addition_mw_low[k]<-do.call(pmin,changes[c(1,3)]);d$annual_addition_mw_high[k]<-do.call(pmax,changes)
+    d$annual_addition_mw_low[k]<-do.call(pmin,changes);d$annual_addition_mw_high[k]<-do.call(pmax,changes)
     at<-match(assessment_year(cfg),a$year)
     changes<-lapply(paths,function(key)pmax(0,a[[key]]-a[[key]][at]))
-    d$future_addition_mw_low[k]<-do.call(pmin,changes[c(1,3)]);d$future_addition_mw_high[k]<-do.call(pmax,changes)
+    d$future_addition_mw_low[k]<-do.call(pmin,changes);d$future_addition_mw_high[k]<-do.call(pmax,changes)
     # Cross-bound subtraction preserves capacity and timing uncertainty in the remainder.
     d$remaining_mw_low[k]<-pmax(0,a$nameplate_mw_low-a$mw_high)
     d$remaining_mw_high[k]<-pmax(0,a$nameplate_mw_high-a$mw_low)
-    open<-!is.na(a$nameplate_mw_low) & is.na(a$nameplate_mw_high)
-    d$remaining_mw_low[k[open & is.na(d$remaining_mw_low[k])]]<-0
-    completed<-open & f$id=='high' & a$year==cfg$timeline$end_year
-    d$remaining_mw_low[k[completed]]<-d$remaining_mw_high[k[completed]]<-0
   }
   d<-d[d$year>cfg$timeline$base_year,,drop=FALSE];d$scenario<-NULL;rownames(d)<-NULL
   list(version=3,as_of=cfg$as_of,assessment_date=cfg$timeline$assessment_date,base_year=cfg$timeline$base_year,
@@ -625,7 +630,8 @@ timing_followups <- function(x,countries=names(x$config$countries)) {
     operational_history_unknown='Find actual delivery dates and the already-operating baseline; retain any post-baseline addition when status changes.',
     passed_target='Verify whether the dated milestone happened, was revised or remains unconfirmed; find a current operator, permit or grid update.',
     superseded_target='Find a current date for this scope; retain the historical target and the later comparable source that superseded it.',
-    schedule_conflict='Reconcile contradictory scoped dates with actual construction and grid restrictions; generic lead times alone do not invalidate a source target.')
+    schedule_conflict='Reconcile contradictory scoped dates with actual construction and grid restrictions; generic lead times alone do not invalidate a source target.',
+    containment_conflict='Compare this claim with its parent using their source MW, electrical measures and scope. Correct MW, measure or containment only with source evidence, or document the remaining uncertainty with source IDs.')
   for(i in seq_len(nrow(c))) {
     r<-c[i,];pr<-p[match(r$project_id,p$project_id),]
     if(!pr$country %in% countries || pr$record_type=='out_of_scope' || pr$status %in% c('Cancelled','Dormant') ||
@@ -645,11 +651,15 @@ timing_followups <- function(x,countries=names(x$config$countries)) {
     if(any(grepl('^past_|overdue',t$flags)))reasons<-c(reasons,'passed_target')
     if('superseded_target' %in% t$flags)reasons<-c(reasons,'superseded_target')
     if(length(setdiff(t$flags,'superseded_target')))reasons<-c(reasons,'schedule_conflict')
+    conflict<-containment_conflict(r,cfg,c)
+    if(!is.null(conflict))reasons<-c(reasons,'containment_conflict')
     if(!length(reasons))next
-    refs<-unique(c(ids(r$source_ids),if(nzchar(r$grid_claim_id))ids(c$source_ids[match(r$grid_claim_id,c$claim_id)])))
+    parent<-if(!is.null(conflict))c[match(r$parent_id,c$claim_id),,drop=FALSE] else NULL
+    refs<-unique(c(ids(r$source_ids),if(nzchar(r$grid_claim_id))ids(c$source_ids[match(r$grid_claim_id,c$claim_id)]),
+      if(!is.null(parent))ids(parent$source_ids)))
     evidence<-s[s$source_id %in% refs,,drop=FALSE]
     factual_notes<-gsub('Timing review [0-9-]+ \\[[a-f0-9]+\\]: [^\\n]+','',r$notes,perl=TRUE)
-    key<-substr(digest::digest(list(r[,setdiff(names(r),'notes'),drop=FALSE],trimws(factual_notes),evidence,cfg$timeline,cfg$assumptions),algo='sha256'),1,12)
+    key<-substr(digest::digest(list(r[,setdiff(names(r),'notes'),drop=FALSE],trimws(factual_notes),parent,evidence,cfg$timeline,cfg$assumptions),algo='sha256'),1,12)
     pattern<-paste0('Timing review ([0-9]{4}-[0-9]{2}-[0-9]{2}) \\[',key,'\\]: ([^\\n]+)')
     m<-regmatches(r$notes,regexec(pattern,r$notes,perl=TRUE))[[1]]
     documented<-length(m)==3 && valid_date(m[2]) && m[2]>=cfg$timeline$assessment_date && nchar(trimws(m[3]))>=20
@@ -660,6 +670,7 @@ timing_followups <- function(x,countries=names(x$config$countries)) {
     out[[length(out)+1]]<-list(project_id=r$project_id,claim_id=r$claim_id,country=pr$country,bidding_zone=pr$bidding_zone,
       project_name=pr$project_name,developer=pr$developer,municipality=pr$municipality,phase=r$phase,
       source_mw=r$mw,basis=r$basis,record_type=pr$record_type,reasons=as.list(unique(reasons)),timing_flags=as.list(t$flags),
+      containment_conflict=conflict,
       first_early=t$first[1],first_late=t$first[2],full_early=t$full[1],full_late=t$full[2],
       timing_spread_mw_2030=if(is.finite(v[2]))v[2]*(sh[2]-sh[1]) else NA_real_,scope_mw_high=v[2],
       timing_spread_mw_near_term=if(is.finite(v[2]))v[2]*spreads[largest] else NA_real_,timing_spread_year=near_years[largest],
